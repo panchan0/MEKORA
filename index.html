@@ -1394,7 +1394,7 @@
 
 
 <style id="mekora-v301-draft-and-ammo">
-  /* v3.0.1: compact, equal-size upgrade cards and color-only rarity language. */
+  /* v3.0.2: compact, equal-size upgrade cards and color-only rarity language. */
   #roguelike-draft-modal {
     overflow: hidden !important;
     padding: 5px !important;
@@ -1661,6 +1661,8 @@
     .mekora-draft-card, .mekora-draft-card::after { animation: none !important; }
   }
 </style>
+
+
 
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
@@ -1992,7 +1994,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.0.1</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.0.2</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2365,6 +2367,11 @@ stats.recentRuns = stats.recentRuns || [];
         { id: 'w-highbeam', type: 'weapon', title: 'Megahaz de Luz', desc: 'Dispara un haz de luz gigante devastador al frente', icon: '🔦' },
         { id: 'w-summons', type: 'weapon', title: 'Unidad de Apoyo', desc: 'Invoca mini-mechas aliados que combaten a tu lado', icon: '🤖' },
 
+
+        // v3.0.2 · First renewed kinetic arsenal package
+        { id: 'w-rotarycannon', type: 'weapon', title: 'Cañón rotatorio', desc: 'Aumenta su cadencia mientras mantiene fuego; la dispersión crece al alcanzar máxima velocidad.', icon: '✺' },
+        { id: 'w-pistonshotgun', type: 'weapon', title: 'Escopeta de pistones', desc: 'Descarga cinética de corto alcance que empuja ligeramente al mecha en dirección contraria.', icon: '▰' },
+
         // Passive Abilities
         { id: 'p-bounce', type: 'passive', title: 'Rebote de Proyectiles', desc: 'Las balas rebotan entre enemigos cercanos', icon: '⤳' },
         { id: 'p-pierce', type: 'passive', title: 'Balas Perforantes', desc: 'Los proyectiles atraviesan a los objetivos', icon: '➔' },
@@ -2381,7 +2388,10 @@ stats.recentRuns = stats.recentRuns || [];
         { id: 'p-shield-reflect', type: 'passive', title: 'Escudo Reflector', desc: 'Los escudos reflejan los proyectiles enemigos', icon: '🛡' },
         { id: 'p-melee-wave', type: 'passive', title: 'Ondas de Energía', desc: 'Los ataques cuerpo a cuerpo generan ondas de energía', icon: '🌊' },
         { id: 'p-evolve', type: 'passive', title: 'Evolución de Armas', desc: 'Combina armas y pasivas para desbloquear evoluciones', icon: '👑' },
-        { id: 'p-cooldown', type: 'passive', title: 'Enfriamiento Rápido', desc: 'Reduce el tiempo de recarga de todas las armas', icon: '⏱' }
+        { id: 'p-cooldown', type: 'passive', title: 'Enfriamiento Rápido', desc: 'Reduce el tiempo de recarga de todas las armas', icon: '⏱' },
+
+        { id: 'p-last-magazine', type: 'passive', title: 'Último cargador', desc: 'Las últimas tres balas del cargador principal causan daño adicional.', icon: '➉' },
+        { id: 'p-first-impact', type: 'passive', title: 'Primer impacto', desc: 'El primer disparo después de recargar gana daño y penetración.', icon: 'Ⅰ' },
       ];
 
       // Synergy definitions
@@ -2410,6 +2420,8 @@ stats.recentRuns = stats.recentRuns || [];
         { id: 'syn-dimensional', name: 'Cortador Dimensional', reqs: ['w-teleport', 'w-energysword'], icon: '🌀', desc: 'Cada teletransporte realiza automáticamente un corte que atraviesa todos los enemigos del recorrido.' },
         { id: 'syn-helios', name: 'Enjambre Helios', reqs: ['w-drones', 'w-laser', 'p-lightning'], icon: '☀️', desc: 'Tres drones orbitan al jugador disparando rayos conectados entre sí.' },
         { id: 'syn-apocalipsis', name: 'Tormenta Apocalipsis', reqs: ['w-orbital', 'w-missile', 'p-explode'], icon: '☄️', desc: 'Invoca una lluvia continua de misiles inteligentes sobre toda el área de combate.' },
+
+        { id: 'syn-cyclonic', name: 'Cañón ciclónico', reqs: ['w-rotarycannon', 'p-bounce'], icon: '🌀', desc: 'La cadencia máxima perfora y rebota; cada ocho impactos libera una onda de presión.' },
         // Legendary Synergies
         { id: 'syn-celestial', name: 'Arsenal Celestial', reqs: ['w-machinegun', 'w-missile', 'w-drones', 'w-reactor'], icon: '🌌', desc: 'Todas las armas disparan simultáneamente durante un periodo de tiempo, aumentando drásticamente la potencia ofensiva.' },
         { id: 'syn-nova', name: 'Nova Solar', reqs: ['w-laser', 'w-plasma', 'p-lightning', 'p-bounce'], icon: '💥', desc: 'Genera un gigantesco rayo prismático que atraviesa todo el escenario, rebota y aplica daño continuo.' },
@@ -2436,7 +2448,8 @@ stats.recentRuns = stats.recentRuns || [];
 
       const PROJECTILE_WEAPONS = new Set([
         'w-machinegun', 'w-energycannon', 'w-laser', 'w-shotgun', 'w-missile',
-        'w-grenadelauncher', 'w-railgun', 'w-sniper', 'w-flamethrower', 'w-plasma'
+        'w-grenadelauncher', 'w-railgun', 'w-sniper', 'w-flamethrower', 'w-plasma',
+        'w-rotarycannon', 'w-pistonshotgun'
       ]);
 
       //#endregion content_database
@@ -2469,6 +2482,8 @@ stats.recentRuns = stats.recentRuns || [];
           draftConfirmArmed: false,
           draftArmReadyAt: 0,
           draftOpenToken: 0,
+          runEvolutionCores: 0,
+          awardedEvolutionMilestones: [],
 
           // Developer/test flags
           devInfHp: false,
@@ -2504,6 +2519,7 @@ stats.recentRuns = stats.recentRuns || [];
           spectralCopies: [],
           lightnings: [],
           shotCount: 0,
+          weaponRuntime: {},
 
           // Computed mecha attributes
           mecha: {
@@ -2523,6 +2539,7 @@ stats.recentRuns = stats.recentRuns || [];
             reloadProgress: 1.0,
             reloadStartTime: 0,
             reloadDuration: 1500,
+            primaryFirstShotReady: true,
             weight: 0,
             energyMax: 100,
             energyCost: 0,
@@ -2638,8 +2655,10 @@ stats.recentRuns = stats.recentRuns || [];
           'w-grenadelauncher': 50,
           'w-railgun': 90,
           'w-sniper': 120,
-          'w-flamethrower': 8,
+          'w-flamethrower': 6,
           'w-plasma': 55,
+          'w-rotarycannon': 11,
+          'w-pistonshotgun': 12,
           'w-energysword': 60,
           'w-kinetichammer': 80,
           'w-lance': 75,
@@ -2650,7 +2669,7 @@ stats.recentRuns = stats.recentRuns || [];
           'w-turrets': 20,
           'w-mines': 90,
           'w-shield': 3000,
-          'w-gravityfield': 4000,
+          'w-gravityfield': 40,
           'w-emp': 100,
           'w-teleport': 60,
           'w-dash': 40,
@@ -2687,7 +2706,8 @@ stats.recentRuns = stats.recentRuns || [];
           'syn-nova': 60,
           'syn-dragon': 50,
           'syn-motor-vacio': 150,
-          'syn-berserker': 6000
+          'syn-berserker': 6000,
+          'syn-cyclonic': 16
         });
 
       const WEAPON_BASE_COOLDOWN = Object.freeze({
@@ -2699,8 +2719,10 @@ stats.recentRuns = stats.recentRuns || [];
           'w-grenadelauncher': 1600,
           'w-railgun': 2000,
           'w-sniper': 2600,
-          'w-flamethrower': 120,
+          'w-flamethrower': 5200,
           'w-plasma': 1000,
+          'w-rotarycannon': 380,
+          'w-pistonshotgun': 1450,
           'w-energysword': 900,
           'w-kinetichammer': 1800,
           'w-lance': 1100,
@@ -2748,7 +2770,8 @@ stats.recentRuns = stats.recentRuns || [];
           'syn-nova': 500,
           'syn-dragon': 1000,
           'syn-motor-vacio': 2500,
-          'syn-berserker': 12000
+          'syn-berserker': 12000,
+          'syn-cyclonic': 105
         });
 
       function getWeaponStats(weaponId, lvl) {
@@ -2759,7 +2782,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.0.1';
+      const MEKORA_VERSION = '3.0.2';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -2789,8 +2812,8 @@ stats.recentRuns = stats.recentRuns || [];
         legendary: { label: 'LEGENDARIA',  color: '#f4bd52', normalWeight: 0.5, eliteWeight: 3, bossWeight: 15, rank: 4 }
       });
       const POWER_IDS_V3 = new Set(["w-dash", "w-emp", "w-gravityfield", "w-orbital", "w-reactor", "w-shield", "w-teleport"]);
-      const FAMILY_BY_ID_V3 = Object.freeze({"w-machinegun": "kinetic", "w-shotgun": "kinetic", "w-railgun": "kinetic", "w-sniper": "kinetic", "w-kinetichammer": "kinetic", "w-claws": "kinetic", "w-energycannon": "energy", "w-laser": "energy", "w-plasma": "energy", "w-energysword": "energy", "w-lance": "energy", "w-highbeam": "energy", "w-missile": "explosive", "w-grenadelauncher": "explosive", "w-flamethrower": "explosive", "w-mines": "explosive", "w-drones": "autonomous", "w-repairdrones": "autonomous", "w-turrets": "autonomous", "w-summons": "autonomous", "w-boomerang": "experimental", "w-shield": "experimental", "w-gravityfield": "experimental", "w-emp": "experimental", "w-teleport": "experimental", "w-dash": "experimental", "w-reactor": "experimental", "w-orbital": "experimental"});
-      const PROPOSED_RARITY_BY_ID_V3 = Object.freeze({"w-machinegun": "common", "w-energycannon": "common", "w-shotgun": "common", "w-flamethrower": "common", "w-energysword": "common", "w-claws": "common", "w-drones": "common", "w-repairdrones": "common", "w-turrets": "common", "w-mines": "common", "w-shield": "common", "w-dash": "common", "w-laser": "uncommon", "w-missile": "uncommon", "w-grenadelauncher": "uncommon", "w-plasma": "uncommon", "w-lance": "uncommon", "w-boomerang": "uncommon", "w-summons": "uncommon", "w-teleport": "uncommon", "w-reactor": "uncommon", "w-railgun": "rare", "w-sniper": "rare", "w-kinetichammer": "rare", "w-gravityfield": "rare", "w-emp": "rare", "w-orbital": "rare", "w-highbeam": "epic", "p-bounce": "common", "p-pierce": "common", "p-explode": "common", "p-fire-zone": "common", "p-lightning": "common", "p-extra-projectile": "common", "p-elemental": "common", "p-cooldown": "common", "p-extra-missile": "uncommon", "p-crit-effect": "uncommon", "p-drone-copy": "uncommon", "p-kill-cooldown": "uncommon", "p-dash-wave": "uncommon", "p-shield-reflect": "uncommon", "p-melee-wave": "uncommon", "p-evolve": "rare"});
+      const FAMILY_BY_ID_V3 = Object.freeze({"w-machinegun": "kinetic", "w-shotgun": "kinetic", "w-railgun": "kinetic", "w-sniper": "kinetic", "w-kinetichammer": "kinetic", "w-claws": "kinetic", "w-energycannon": "energy", "w-laser": "energy", "w-plasma": "energy", "w-energysword": "energy", "w-lance": "energy", "w-highbeam": "energy", "w-missile": "explosive", "w-grenadelauncher": "explosive", "w-flamethrower": "explosive", "w-mines": "explosive", "w-drones": "autonomous", "w-repairdrones": "autonomous", "w-turrets": "autonomous", "w-summons": "autonomous", "w-boomerang": "experimental", "w-shield": "experimental", "w-gravityfield": "experimental", "w-emp": "experimental", "w-teleport": "experimental", "w-dash": "experimental", "w-reactor": "experimental", "w-orbital": "experimental", "w-rotarycannon": "kinetic", "w-pistonshotgun": "kinetic"});
+      const PROPOSED_RARITY_BY_ID_V3 = Object.freeze({"w-machinegun": "common", "w-energycannon": "common", "w-shotgun": "common", "w-flamethrower": "common", "w-energysword": "common", "w-claws": "common", "w-drones": "common", "w-repairdrones": "common", "w-turrets": "common", "w-mines": "common", "w-shield": "common", "w-dash": "common", "w-laser": "uncommon", "w-missile": "uncommon", "w-grenadelauncher": "uncommon", "w-plasma": "uncommon", "w-lance": "uncommon", "w-boomerang": "uncommon", "w-summons": "uncommon", "w-teleport": "uncommon", "w-reactor": "uncommon", "w-railgun": "rare", "w-sniper": "rare", "w-kinetichammer": "rare", "w-gravityfield": "rare", "w-emp": "rare", "w-orbital": "rare", "w-highbeam": "epic", "p-bounce": "common", "p-pierce": "common", "p-explode": "common", "p-fire-zone": "common", "p-lightning": "common", "p-extra-projectile": "common", "p-elemental": "common", "p-cooldown": "common", "p-extra-missile": "uncommon", "p-crit-effect": "uncommon", "p-drone-copy": "uncommon", "p-kill-cooldown": "uncommon", "p-dash-wave": "uncommon", "p-shield-reflect": "uncommon", "p-melee-wave": "uncommon", "p-evolve": "rare", "w-rotarycannon": "common", "w-pistonshotgun": "common", "p-last-magazine": "uncommon", "p-first-impact": "uncommon"});
 
       function getDesignTypeV3(item) {
         if (!item) return EQUIPMENT_KIND_V3.MODULE;
@@ -2839,6 +2862,7 @@ stats.recentRuns = stats.recentRuns || [];
         return {
           schemaVersion: CONTENT_SCHEMA_VERSION,
           cores: 0,
+          evolutionCores: 0,
           blueprints,
           discoveredEvolutions: [],
           discoveredContent: ['w-plasma'],
@@ -2899,7 +2923,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function selectDraftCardsV3(eligible, count, stateRef) {
-        const unlocked = eligible.filter(item => isContentUnlockedV3(item.id));
+        const unlocked = eligible.filter(item => item.type === 'evolution' || isContentUnlockedV3(item.id));
         const pool = unlocked.length ? unlocked : eligible;
         const selected = [];
         const forceRare = (progressionV3.pity.rareMisses || 0) >= 8;
@@ -2909,7 +2933,7 @@ stats.recentRuns = stats.recentRuns || [];
           const rarity = chooseRarityV3(rarities, stateRef, forceRare && slot === 0);
           const candidates = remaining.filter(item => (getContentMetaV3(item.id)?.rarity || 'common') === rarity);
           const chosen = weightedPickV3(candidates.length ? candidates : remaining, item => {
-            const owned = item.type === 'weapon' ? stateRef.activeWeapons.includes(item.id) : stateRef.passives.includes(item.id);
+            const owned = item.type === 'evolution' ? false : (item.type === 'weapon' ? stateRef.activeWeapons.includes(item.id) : stateRef.passives.includes(item.id));
             const rejection = progressionV3.pity.rejected[item.id] || 0;
             return (owned ? 2.4 : 1) * Math.pow(0.72, Math.min(5, rejection));
           });
@@ -3028,11 +3052,135 @@ stats.recentRuns = stats.recentRuns || [];
           state.mecha.isReloading = false;
           state.mecha.ammo = getPrimaryMagazineCapacityV301();
           state.mecha.reloadProgress = 1;
+          state.mecha.primaryFirstShotReady = true;
         }
         updatePrimaryAmmoHudV301();
         return state.mecha.isReloading;
       }
       //#endregion primary_magazine_v301
+
+
+      //#region arsenal_v302 · Renewed weapons, modules, evolution cores and balance
+      const WEAPON_MAX_LEVEL_V302 = Object.freeze({ 'w-rotarycannon': 5, 'w-pistonshotgun': 5 });
+      const FLAMETHROWER_BURST_DURATION_V302 = 1800;
+      const FLAMETHROWER_PULSE_MS_V302 = 120;
+
+      const WEAPON_BALANCE_V302 = Object.freeze({
+        'w-machinegun': { status:'balanced', role:'rapid kinetic', note:'Stable baseline.' },
+        'w-energycannon': { status:'balanced', role:'slow energy burst', note:'Moderate area impact.' },
+        'w-laser': { status:'watch', role:'fast precision energy', note:'Monitor evolved piercing.' },
+        'w-shotgun': { status:'balanced', role:'close spread', note:'Five pellets and long cooldown.' },
+        'w-missile': { status:'balanced', role:'homing explosive', note:'High damage, slow cycle.' },
+        'w-grenadelauncher': { status:'balanced', role:'area explosive', note:'Delayed detonation and bounce.' },
+        'w-railgun': { status:'balanced', role:'penetrating line', note:'High commitment.' },
+        'w-sniper': { status:'balanced', role:'precision burst', note:'Long cooldown.' },
+        'w-flamethrower': { status:'reworked', role:'timed flame burst', note:'1.8 s burst, 5.2 s cycle; no infinite stream.' },
+        'w-plasma': { status:'balanced', role:'manual primary blast', note:'Manual trigger and splash.' },
+        'w-gravityfield': { status:'rebalanced', role:'control power', note:'Damage value corrected from duration-like outlier.' },
+        'w-rotarycannon': { status:'new', role:'ramping kinetic', note:'Cadence ramps; dispersion also rises.' },
+        'w-pistonshotgun': { status:'new', role:'close kinetic burst', note:'Heavy spread with self recoil.' }
+      });
+
+      function getWeaponRuntimeV302(id) {
+        state.weaponRuntime = state.weaponRuntime || {};
+        return state.weaponRuntime[id] || (state.weaponRuntime[id] = {});
+      }
+
+      function updateRotarySpinV302(dt, hasTarget) {
+        const runtime = getWeaponRuntimeV302('w-rotarycannon');
+        const delta = Math.max(0, Number(dt) || 0);
+        runtime.spin = Math.max(0, Math.min(1, (runtime.spin || 0) + (hasTarget ? delta / 2200 : -delta / 900)));
+        return runtime.spin;
+      }
+
+      function getPrimaryShotModifiersV302(weaponId) {
+        const isPrimary = weaponId === getPrimaryWeaponIdV301();
+        const result = { damageMult: 1, bonusPierceHits: 0, lastMagazine: false, firstImpact: false };
+        if (!isPrimary) return result;
+        if (state.passives.includes('p-last-magazine') && state.mecha.ammo <= 3) {
+          const level = state.passiveLevels['p-last-magazine'] || 1;
+          result.damageMult *= 1.25 + level * 0.10;
+          result.lastMagazine = true;
+        }
+        if (state.passives.includes('p-first-impact') && state.mecha.primaryFirstShotReady) {
+          const level = state.passiveLevels['p-first-impact'] || 1;
+          result.damageMult *= 1.35 + level * 0.10;
+          result.bonusPierceHits += 1 + level;
+          result.firstImpact = true;
+          state.mecha.primaryFirstShotReady = false;
+        }
+        return result;
+      }
+
+      function startFlamethrowerBurstV302(timestamp) {
+        const runtime = getWeaponRuntimeV302('w-flamethrower');
+        runtime.activeUntil = timestamp + FLAMETHROWER_BURST_DURATION_V302;
+        runtime.nextPulseAt = timestamp;
+        runtime.pulses = 0;
+      }
+
+      function updateFlamethrowerBurstV302(timestamp, nearestEnemy) {
+        const runtime = getWeaponRuntimeV302('w-flamethrower');
+        if (!runtime.activeUntil || timestamp >= runtime.activeUntil || !nearestEnemy) return false;
+        if (timestamp < (runtime.nextPulseAt || 0)) return true;
+        runtime.nextPulseAt = timestamp + FLAMETHROWER_PULSE_MS_V302;
+        runtime.pulses = (runtime.pulses || 0) + 1;
+        const level = state.weaponLevels['w-flamethrower'] || 1;
+        const base = getWeaponStats('w-flamethrower', level).damage;
+        const aimAngle = Math.atan2(nearestEnemy.y - state.mecha.y, nearestEnemy.x - state.mecha.x);
+        for (let f = 0; f < 2; f++) {
+          const angle = aimAngle + (Math.random() - 0.5) * 0.34;
+          state.bullets.push({
+            x: state.mecha.x + Math.cos(angle) * 20,
+            y: state.mecha.y + Math.sin(angle) * 20,
+            vx: Math.cos(angle) * (5.2 + Math.random() * 2.3),
+            vy: Math.sin(angle) * (5.2 + Math.random() * 2.3),
+            damage: Math.round(base * state.stats.dpsMult),
+            type: 'flame', radius: 6 + Math.random() * 5,
+            color: `rgba(249,115,22,${0.72 + Math.random() * 0.25})`,
+            life: 22 + Math.random() * 10, bounces: 0, pierces: 0,
+            bonusPierceHits: 1, hitEnemies: []
+          });
+        }
+        return true;
+      }
+
+      function awardEvolutionCoreV302(source = 'milestone') {
+        state.runEvolutionCores = Math.max(0, Number(state.runEvolutionCores) || 0) + 1;
+        progressionV3.evolutionCores = Math.max(0, Number(progressionV3.evolutionCores) || 0) + 1;
+        progressionV3.lastEvolutionCoreSource = source;
+        saveProgressionV3();
+        return state.runEvolutionCores;
+      }
+
+      function getEligibleEvolutionCardsV302() {
+        const result = [];
+        const rotaryLevel = state.weaponLevels['w-rotarycannon'] || 0;
+        if (state.runEvolutionCores > 0 && rotaryLevel >= 5 && state.activeWeapons.includes('w-rotarycannon') && state.passives.includes('p-bounce') && !state.activeWeapons.includes('syn-cyclonic')) {
+          const evolution = SYNERGY_BY_ID.get('syn-cyclonic');
+          if (evolution) result.push({ ...evolution, title: evolution.name, type: 'evolution', rarity: 'rare' });
+        }
+        return result;
+      }
+
+      function applyEvolutionV302(evolutionId) {
+        if (evolutionId !== 'syn-cyclonic' || state.runEvolutionCores <= 0) return false;
+        const rotaryLevel = state.weaponLevels['w-rotarycannon'] || 0;
+        if (rotaryLevel < 5 || !state.activeWeapons.includes('w-rotarycannon') || !state.passives.includes('p-bounce')) return false;
+        const index = state.activeWeapons.indexOf('w-rotarycannon');
+        if (index >= 0) state.activeWeapons.splice(index, 1, 'syn-cyclonic');
+        delete state.weaponLevels['w-rotarycannon'];
+        state.weaponLevels['syn-cyclonic'] = Math.max(5, rotaryLevel);
+        state.activatedSynergies = Array.from(new Set([...(state.activatedSynergies || []), 'syn-cyclonic']));
+        state.runEvolutionCores -= 1;
+        progressionV3.evolutionCores = Math.max(0, (progressionV3.evolutionCores || 0) - 1);
+        progressionV3.discoveredEvolutions = Array.from(new Set([...(progressionV3.discoveredEvolutions || []), 'syn-cyclonic']));
+        progressionV3.blueprints['syn-cyclonic'] = 'unlocked';
+        saveProgressionV3();
+        calculateMechaStats();
+        return true;
+      }
+      //#endregion arsenal_v302
 
       function damageEnemy(e, damage, timestamp) {
         const safeDamage = Math.max(0, Math.round(damage || 0));
@@ -3151,6 +3299,7 @@ stats.recentRuns = stats.recentRuns || [];
         while (formedNewSynergy) {
           formedNewSynergy = false;
           for (const syn of SYNERGIES) {
+            if (syn.id === 'syn-cyclonic') continue;
             if (state.activatedSynergies.includes(syn.id)) {
               if (!state.activeWeapons.includes(syn.id) && state.activeWeapons.length < 6) {
                 state.activeWeapons.push(syn.id);
@@ -3261,7 +3410,8 @@ stats.recentRuns = stats.recentRuns || [];
         dom.hudActiveSlots.querySelectorAll('.hud-slot.weapon[data-weapon-id]').forEach(slot => {
           const weaponId = slot.dataset.weaponId;
           const cooldown = getEffectiveWeaponCooldown(weaponId, timestamp);
-          const lastFire = lastTimes[weaponId] || 0;
+          const storedLastFire = lastTimes[weaponId];
+          const lastFire = Number.isFinite(storedLastFire) ? storedLastFire : (timestamp - cooldown);
           const progress = cooldown <= 0 ? 1 : Math.max(0, Math.min(1, (timestamp - lastFire) / cooldown));
           const degrees = Math.round(progress * 360);
           slot.classList.toggle('cooling', progress < 0.995);
@@ -3722,6 +3872,8 @@ stats.recentRuns = stats.recentRuns || [];
 
         // Update only the primary weapon magazine. Secondary weapons and powers keep running while it reloads.
         updatePrimaryReloadV301(timestamp);
+        updateRotarySpinV302(dt, !!nearestEnemy);
+        updateFlamethrowerBurstV302(timestamp, nearestEnemy);
 
          // Automated weapon firing
           if (nearestEnemy) {
@@ -3753,15 +3905,36 @@ stats.recentRuns = stats.recentRuns || [];
                  cooldown /= state.stats.fireRateMult;
                }
              }
+             if (weaponId === 'w-rotarycannon') {
+               const spin = getWeaponRuntimeV302('w-rotarycannon').spin || 0;
+               cooldown = Math.max(105, cooldown * (1 - spin * 0.72));
+             }
 
-             const lastFire = state.lastWeaponFireTimes[weaponId] || 0;
+             const storedLastFire = state.lastWeaponFireTimes[weaponId];
+             const lastFire = Number.isFinite(storedLastFire) ? storedLastFire : (timestamp - cooldown);
              if (timestamp - lastFire >= cooldown) {
                // Synergy weapons firing
                if (weaponId.startsWith('syn-')) {
                  state.lastWeaponFireTimes[weaponId] = timestamp;
                  const aimAngle = nearestEnemy ? Math.atan2(nearestEnemy.y - state.mecha.y, nearestEnemy.x - state.mecha.x) : state.mecha.angle;
 
-                 if (weaponId === 'syn-napalm') {
+                 if (weaponId === 'syn-cyclonic') {
+                   const runtime = getWeaponRuntimeV302('syn-cyclonic');
+                   runtime.shots = (runtime.shots || 0) + 1;
+                   const angle = aimAngle + (Math.random() - 0.5) * 0.12;
+                   state.bullets.push({
+                     x: state.mecha.x + Math.cos(angle) * 20,
+                     y: state.mecha.y + Math.sin(angle) * 20,
+                     vx: Math.cos(angle) * 17,
+                     vy: Math.sin(angle) * 17,
+                     damage: Math.round(damage * state.stats.dpsMult),
+                     type: 'machinegun', radius: 4, color: '#8be9e3',
+                     bonusPierceHits: 3, forcedBounces: 2, bounces: 0, pierces: 0, hitEnemies: []
+                   });
+                   if (runtime.shots % 8 === 0) {
+                     state.shockwaves.push({ x:state.mecha.x, y:state.mecha.y, radius:10, maxRadius:115, damage:Math.round(damage*1.6), life:16, maxLife:16, color:'#8be9e3', pushBack:true, hitEnemies:[] });
+                   }
+                 } else if (weaponId === 'syn-napalm') {
                    state.bullets.push({
                      x: state.mecha.x,
                      y: state.mecha.y,
@@ -4070,6 +4243,7 @@ stats.recentRuns = stats.recentRuns || [];
                  } else if (weaponId === 'syn-nova') {
                    state.mecha.highBeamActiveUntil = timestamp + 3000;
                    state.mecha.highBeamDamage = damage * 2;
+                   state.mecha.highBeamNextTickAt = timestamp;
                  } else if (weaponId === 'syn-dragon') {
                    state.summons.push({
                      x: state.mecha.x,
@@ -4276,7 +4450,8 @@ stats.recentRuns = stats.recentRuns || [];
                    radius: 150,
                    life: 240,
                    maxLife: 240,
-                   color: 'rgba(168, 85, 247, 0.15)'
+                   color: 'rgba(168, 85, 247, 0.15)',
+                   nextDamageTickAt: timestamp
                  });
                  playSound('equip');
                  return;
@@ -4342,6 +4517,16 @@ stats.recentRuns = stats.recentRuns || [];
                  state.lastWeaponFireTimes[weaponId] = timestamp;
                  state.mecha.highBeamActiveUntil = timestamp + 2000;
                  state.mecha.highBeamDamage = damage;
+                 state.mecha.highBeamNextTickAt = timestamp;
+                 playSound('laser');
+                 return;
+               }
+
+               if (weaponId === 'w-flamethrower') {
+                 const isPrimaryFlame = weaponId === getPrimaryWeaponIdV301();
+                 if (isPrimaryFlame && !consumePrimaryAmmoV301(timestamp)) return;
+                 state.lastWeaponFireTimes[weaponId] = timestamp;
+                 startFlamethrowerBurstV302(timestamp);
                  playSound('laser');
                  return;
                }
@@ -4352,6 +4537,8 @@ stats.recentRuns = stats.recentRuns || [];
                  if (PROJECTILE_WEAPONS.has(weaponId) && isPrimaryWeaponV301) {
                    if (!consumePrimaryAmmoV301(timestamp)) return;
                  }
+                 const primaryShotModsV302 = getPrimaryShotModifiersV302(weaponId);
+                 damage = Math.round(damage * primaryShotModsV302.damageMult);
 
                  state.lastWeaponFireTimes[weaponId] = timestamp;
 
@@ -4361,7 +4548,8 @@ stats.recentRuns = stats.recentRuns || [];
                  const isMainWeapon = weaponId === state.activeWeapons[0];
                  const count = (isMainWeapon && state.passives.includes('p-extra-projectile')) ? (1 + extraProjLvl) : 1;
 
-                 if (['w-machinegun', 'w-energycannon', 'w-laser', 'w-shotgun', 'w-missile', 'w-grenadelauncher', 'w-railgun', 'w-sniper', 'w-flamethrower', 'w-plasma'].includes(weaponId)) {
+                 if (['w-machinegun', 'w-energycannon', 'w-laser', 'w-shotgun', 'w-missile', 'w-grenadelauncher', 'w-railgun', 'w-sniper', 'w-flamethrower', 'w-plasma',
+        'w-rotarycannon', 'w-pistonshotgun'].includes(weaponId)) {
                    if (state.passives.includes('p-extra-missile')) {
                      state.shotCount = (state.shotCount || 0) + 1;
                      if (state.shotCount >= 5) {
@@ -4379,6 +4567,7 @@ stats.recentRuns = stats.recentRuns || [];
                          color: '#ef4444',
                          bounces: 0,
                          pierces: 0,
+                         bonusPierceHits: primaryShotModsV302.bonusPierceHits,
                          hitEnemies: []
                        });
                      }
@@ -4392,7 +4581,39 @@ stats.recentRuns = stats.recentRuns || [];
                      spreadAngle = aimAngle - (totalSpread / 2) + (pIdx / (count - 1)) * totalSpread;
                    }
 
-                   if (weaponId === 'w-machinegun') {
+                   if (weaponId === 'w-rotarycannon') {
+                     const spin = getWeaponRuntimeV302('w-rotarycannon').spin || 0;
+                     const angle = spreadAngle + (Math.random() - 0.5) * (0.035 + spin * 0.22);
+                     state.bullets.push({
+                       x: state.mecha.x + Math.cos(angle) * 20,
+                       y: state.mecha.y + Math.sin(angle) * 20,
+                       vx: Math.cos(angle) * 15,
+                       vy: Math.sin(angle) * 15,
+                       damage: Math.round(damage * state.stats.dpsMult),
+                       type: 'machinegun', radius: 4, color: '#d6eef1',
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                       bounces: 0, pierces: 0, bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
+                     });
+                   } else if (weaponId === 'w-pistonshotgun') {
+                     for (let pellet = -3; pellet <= 3; pellet++) {
+                       const angle = spreadAngle + pellet * 0.105;
+                       state.bullets.push({
+                         x: state.mecha.x + Math.cos(angle) * 20,
+                         y: state.mecha.y + Math.sin(angle) * 20,
+                         vx: Math.cos(angle) * 13,
+                         vy: Math.sin(angle) * 13,
+                         damage: Math.round(damage * state.stats.dpsMult),
+                         type: 'pistonshot', radius: 5, color: '#f2d39b', life: 34,
+                         bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         bounces: 0, pierces: 0, bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
+                       });
+                     }
+                     state.mecha.x = Math.max(50, Math.min(getCurrentWorldSize()-50, state.mecha.x - Math.cos(spreadAngle) * 12));
+                     state.mecha.y = Math.max(50, Math.min(getCurrentWorldSize()-50, state.mecha.y - Math.sin(spreadAngle) * 12));
+                     vibrate(35);
+                   } else if (weaponId === 'w-machinegun') {
                      const isEvolved = state.evolvedWeapons && state.evolvedWeapons.includes('w-machinegun');
                      const mCount = isEvolved ? 8 : 1;
                      for (let mIdx = 0; mIdx < mCount; mIdx++) {
@@ -4408,6 +4629,7 @@ stats.recentRuns = stats.recentRuns || [];
                          color: isEvolved ? '#facc15' : '#00ffcc',
                          bounces: 0,
                          pierces: 0,
+                         bonusPierceHits: primaryShotModsV302.bonusPierceHits,
                          hitEnemies: []
                        });
                      }
@@ -4423,7 +4645,8 @@ stats.recentRuns = stats.recentRuns || [];
                        color: '#38bdf8',
                        bounces: 0,
                        pierces: 0,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    } else if (weaponId === 'w-laser') {
                      const isEvolved = state.evolvedWeapons && state.evolvedWeapons.includes('w-laser');
@@ -4438,7 +4661,8 @@ stats.recentRuns = stats.recentRuns || [];
                        color: isEvolved ? '#f43f5e' : '#ff3366',
                        bounces: 0,
                        pierces: isEvolved ? 99 : 0,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    } else if (weaponId === 'w-shotgun') {
                      const spread = 0.25;
@@ -4455,6 +4679,7 @@ stats.recentRuns = stats.recentRuns || [];
                          color: '#ffaa00',
                          bounces: 0,
                          pierces: 0,
+                         bonusPierceHits: primaryShotModsV302.bonusPierceHits,
                          hitEnemies: []
                        });
                      }
@@ -4471,7 +4696,8 @@ stats.recentRuns = stats.recentRuns || [];
                        targetId: nearestEnemy.id,
                        bounces: 0,
                        pierces: 0,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    } else if (weaponId === 'w-grenadelauncher') {
                      state.bullets.push({
@@ -4486,7 +4712,8 @@ stats.recentRuns = stats.recentRuns || [];
                        life: 90,
                        bounces: 0,
                        pierces: 0,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    } else if (weaponId === 'w-railgun') {
                      state.bullets.push({
@@ -4500,7 +4727,8 @@ stats.recentRuns = stats.recentRuns || [];
                        color: '#a855f7',
                        bounces: 0,
                        pierces: 99,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    } else if (weaponId === 'w-sniper') {
                      state.bullets.push({
@@ -4514,9 +4742,10 @@ stats.recentRuns = stats.recentRuns || [];
                        color: '#e11d48',
                        bounces: 0,
                        pierces: 1,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
-                   } else if (weaponId === 'w-flamethrower') {
+                   } else if (weaponId === 'w-flamethrower-legacy-disabled') {
                      for (let f = 0; f < 3; f++) {
                        const angle = spreadAngle + (Math.random() - 0.5) * 0.4;
                        state.bullets.push({
@@ -4531,6 +4760,7 @@ stats.recentRuns = stats.recentRuns || [];
                          life: 20 + Math.random() * 15,
                          bounces: 0,
                          pierces: 99,
+                         bonusPierceHits: primaryShotModsV302.bonusPierceHits,
                          hitEnemies: []
                        });
                      }
@@ -4546,7 +4776,8 @@ stats.recentRuns = stats.recentRuns || [];
                        color: '#00ffcc',
                        bounces: 0,
                        pierces: 0,
-                       hitEnemies: []
+                       bonusPierceHits: primaryShotModsV302.bonusPierceHits,
+                         hitEnemies: []
                      });
                    }
                  }
@@ -4840,6 +5071,14 @@ stats.recentRuns = stats.recentRuns || [];
             }
           }
 
+          if (b.type === 'pistonshot') {
+            b.life = Number.isFinite(b.life) ? b.life - 1 : 33;
+            if (b.life <= 0) {
+              state.bullets.splice(i, 1);
+              continue;
+            }
+          }
+
           // Flame particle logic
           if (b.type === 'flame') {
             b.life--;
@@ -4868,7 +5107,7 @@ stats.recentRuns = stats.recentRuns || [];
           } else if (b.type === 'plasma') {
             ctx.arc(b.x, b.y, b.radius || 8, 0, Math.PI * 2);
             ctx.fill();
-          } else if (b.type === 'shotgun') {
+          } else if (b.type === 'shotgun' || b.type === 'pistonshot') {
             ctx.arc(b.x, b.y, b.radius || 5, 0, Math.PI * 2);
             ctx.fill();
           } else if (b.type === 'missile') {
@@ -5304,8 +5543,9 @@ stats.recentRuns = stats.recentRuns || [];
               e.x += Math.cos(pullAngle) * 0.8;
               e.y += Math.sin(pullAngle) * 0.8;
 
-              if (timestamp % 15 === 0) {
-                 damageEnemy(e, gf.damage, timestamp);
+              if (timestamp >= (gf.nextDamageTickAt || 0)) {
+                gf.nextDamageTickAt = timestamp + 250;
+                damageEnemy(e, gf.damage, timestamp);
                 state.damageNumbers.push({
                   x: e.x,
                   y: e.y - 10,
@@ -5501,9 +5741,10 @@ stats.recentRuns = stats.recentRuns || [];
             const dist = Math.hypot(e.x - projX, e.y - projY);
 
             if (dist < e.radius + beamWidth / 2) {
-              if (timestamp % 10 === 0) {
-                const dmg = Math.round(state.mecha.highBeamDamage * 0.2);
-                 damageEnemy(e, dmg, timestamp);
+              if (timestamp >= (state.mecha.highBeamNextTickAt || 0)) {
+                state.mecha.highBeamNextTickAt = timestamp + 100;
+                const dmg = Math.max(1, Math.round(state.mecha.highBeamDamage * 0.2));
+                damageEnemy(e, dmg, timestamp);
                 state.damageNumbers.push({
                   x: e.x,
                   y: e.y - 10,
@@ -5907,20 +6148,20 @@ stats.recentRuns = stats.recentRuns || [];
               }
 
               let shouldDestroy = true;
-              if (state.passives.includes('p-pierce')) {
-                const pierceLvl = state.passiveLevels['p-pierce'] || 1;
+              const passivePierceHits = state.passives.includes('p-pierce') ? (2 + (state.passiveLevels['p-pierce'] || 1)) : 0;
+              const maxPierceHits = passivePierceHits + Math.max(0, b.bonusPierceHits || 0);
+              if (maxPierceHits > 0) {
                 b.hitEnemies = b.hitEnemies || [];
                 b.hitEnemies.push(e.id);
                 b.pierces = (b.pierces || 0) + 1;
-                if (b.pierces < 2 + pierceLvl) {
-                  shouldDestroy = false;
-                }
+                if (b.pierces < maxPierceHits) shouldDestroy = false;
               }
 
-              if (shouldDestroy && state.passives.includes('p-bounce')) {
-                const bounceLvl = state.passiveLevels['p-bounce'] || 1;
+              const passiveBounceHits = state.passives.includes('p-bounce') ? (1 + (state.passiveLevels['p-bounce'] || 1)) : 0;
+              const maxBounceHits = passiveBounceHits + Math.max(0, b.forcedBounces || 0);
+              if (shouldDestroy && maxBounceHits > 0) {
                 b.bounces = (b.bounces || 0) + 1;
-                if (b.bounces < 1 + bounceLvl) {
+                if (b.bounces < maxBounceHits) {
                   let nearestOther = null;
                   let minOtherDist = Infinity;
                   state.enemies.forEach(other => {
@@ -6384,6 +6625,10 @@ stats.recentRuns = stats.recentRuns || [];
          state.xp = Math.max(0, state.xp - state.xpNeeded);
          state.xpNeeded = Math.round(state.xpNeeded * 1.5);
          state.credits += 25;
+         if (state.level >= 5 && !(state.awardedEvolutionMilestones || []).includes(5)) {
+           state.awardedEvolutionMilestones = [...(state.awardedEvolutionMilestones || []), 5];
+           awardEvolutionCoreV302('level-5-prototype');
+         }
 
          const modal = document.getElementById('roguelike-draft-modal');
          const contentPanel = document.getElementById('draft-content-panel');
@@ -6399,7 +6644,7 @@ stats.recentRuns = stats.recentRuns || [];
 
          const weaponSlotsFull = state.activeWeapons.length >= 6;
          const passiveSlotsFull = state.passives.length >= 6;
-         const eligible = UPGRADE_POOL.filter(upgrade => {
+         let eligible = UPGRADE_POOL.filter(upgrade => {
            if (upgrade.type === 'weapon') {
              return !weaponSlotsFull || state.activeWeapons.includes(upgrade.id);
            }
@@ -6408,8 +6653,14 @@ stats.recentRuns = stats.recentRuns || [];
            }
            return false;
          });
+         eligible = eligible.concat(getEligibleEvolutionCardsV302());
 
          state.draftCards = selectDraftCardsV3(eligible, Math.min(3, eligible.length), state);
+         const mandatoryEvolutionV302 = getEligibleEvolutionCardsV302()[0];
+         if (mandatoryEvolutionV302 && !state.draftCards.some(card => card.id === mandatoryEvolutionV302.id)) {
+           if (state.draftCards.length >= 3) state.draftCards[state.draftCards.length - 1] = mandatoryEvolutionV302;
+           else state.draftCards.push(mandatoryEvolutionV302);
+         }
          prepareDraftDiscoveriesV301(state.draftCards);
          state.draftSelection = 0;
 
@@ -6706,9 +6957,10 @@ stats.recentRuns = stats.recentRuns || [];
         if (now < state.draftArmReadyAt) return;
 
         const upg = cards[state.draftSelection];
-        const isWeapon = upg.type === 'weapon';
+        const isEvolution = upg.type === 'evolution';
+        const isWeapon = upg.type === 'weapon' || isEvolution;
         const alreadyOwned = isWeapon ? state.activeWeapons.includes(upg.id) : state.passives.includes(upg.id);
-        const categoryFull = isWeapon ? state.activeWeapons.length >= 6 : state.passives.length >= 6;
+        const categoryFull = isEvolution ? false : (isWeapon ? state.activeWeapons.length >= 6 : state.passives.length >= 6);
 
         // Defensa final: jamás reemplazar un slot completo.
         if (!alreadyOwned && categoryFull) {
@@ -6732,9 +6984,16 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         setTimeout(() => {
-          if (isWeapon) {
+          if (isEvolution) {
+            if (!applyEvolutionV302(upg.id)) {
+              state.draftConfirming = false;
+              state.draftConfirmArmed = false;
+              return;
+            }
+          } else if (isWeapon) {
             if (alreadyOwned) {
-              state.weaponLevels[upg.id] = (state.weaponLevels[upg.id] || 1) + 1;
+              const maxLevel = WEAPON_MAX_LEVEL_V302[upg.id] || 99;
+              state.weaponLevels[upg.id] = Math.min(maxLevel, (state.weaponLevels[upg.id] || 1) + 1);
             } else {
               state.activeWeapons.push(upg.id);
               state.weaponLevels[upg.id] = 1;
@@ -6792,12 +7051,13 @@ stats.recentRuns = stats.recentRuns || [];
         container.innerHTML = '';
 
         state.draftCards.forEach((upg, idx) => {
-          const isWeapon = upg.type === 'weapon';
+          const isEvolution = upg.type === 'evolution';
+          const isWeapon = upg.type === 'weapon' || isEvolution;
           const currentLvl = isWeapon ? (state.weaponLevels[upg.id] || 0) : (state.passiveLevels[upg.id] || 0);
           const isSelected = state.draftSelection === idx;
           const metaV3 = getContentMetaV3(upg.id);
           const rarityV3 = metaV3?.rarity || 'common';
-          const kindLabelV3 = metaV3?.kind === 'power' ? 'PODER' : metaV3?.kind === 'module' ? 'MÓDULO' : 'ARMA';
+          const kindLabelV3 = isEvolution ? 'EVOLUCIÓN' : (metaV3?.kind === 'power' ? 'PODER' : metaV3?.kind === 'module' ? 'MÓDULO' : 'ARMA');
           const discovery = (state.draftDiscoveryFlags && state.draftDiscoveryFlags[upg.id]) || {};
 
           const wrapper = document.createElement('div');
@@ -6822,7 +7082,7 @@ stats.recentRuns = stats.recentRuns || [];
             <div class="draft-card-icon">${upg.icon}</div>
             <div class="draft-card-title">${upg.title}</div>
             <div class="draft-card-desc">${upg.desc}</div>
-            <div class="draft-card-level">${currentLvl > 0 ? `NIVEL ${currentLvl} → ${currentLvl + 1}` : 'NIVEL 1'}</div>
+            <div class="draft-card-level">${isEvolution ? 'CONSUME 1 NÚCLEO' : (currentLvl > 0 ? `NIVEL ${currentLvl} → ${Math.min(WEAPON_MAX_LEVEL_V302[upg.id] || 99, currentLvl + 1)}` : 'NIVEL 1')}</div>
           `;
           wrapper.appendChild(card);
           container.appendChild(wrapper);
@@ -8249,7 +8509,22 @@ const btnControlPause = document.getElementById('btn-control-pause');
         equipSecondaryForTest(id = 'w-machinegun') { const before=this.ammoState(); if(!state.activeWeapons.includes(id)) state.activeWeapons.push(id); state.weaponLevels[id]=state.weaponLevels[id]||1; calculateMechaStats(); updatePrimaryAmmoHudV301(); return {before,after:this.ammoState(),loadout:[...state.activeWeapons]}; },
         setMagazineBonusForTest(bonus = 0) { state.mecha.maxAmmoBonus=Math.max(0,bonus|0); normalizePrimaryMagazineV301(); updatePrimaryAmmoHudV301(); return this.ammoState(); },
         showDraftForTest(ids = ['w-machinegun','w-laser','w-highbeam']) { const cards=ids.map(id=>UPGRADE_BY_ID.get(id)).filter(Boolean); state.phase='draft'; state.draftCards=cards; state.draftSelection=0; state.draftConfirmArmed=false; state.draftInputLocked=false; prepareDraftDiscoveriesV301(cards); document.getElementById('roguelike-draft-modal')?.classList.remove('hidden'); updateDraftMenuUI(); render(); return {cards:cards.map(c=>c.id),flags:state.draftDiscoveryFlags}; },
-        testDamage(amount = 7, attackers = 1) { const hpBefore = state.mecha.hp; applyMechaDamage(amount, state.mecha.x, state.mecha.y, performance.now(), attackers); const latest = state.damageNumbers[state.damageNumbers.length - 1]; return {hpBefore,hpAfter:state.mecha.hp,flashUntil:state.mecha.damageFlashUntil,attackers:state.mecha.damageFlashAttackers,number:latest ? {text:latest.text,color:latest.color,size:latest.size} : null}; }
+        testDamage(amount = 7, attackers = 1) { const hpBefore = state.mecha.hp; applyMechaDamage(amount, state.mecha.x, state.mecha.y, performance.now(), attackers); const latest = state.damageNumbers[state.damageNumbers.length - 1]; return {hpBefore,hpAfter:state.mecha.hp,flashUntil:state.mecha.damageFlashUntil,attackers:state.mecha.damageFlashAttackers,number:latest ? {text:latest.text,color:latest.color,size:latest.size} : null}; },
+        balance(id) { return WEAPON_BALANCE_V302[id] ? {...WEAPON_BALANCE_V302[id], damage:WEAPON_BASE_DAMAGE[id], cooldown:WEAPON_BASE_COOLDOWN[id]} : null; },
+        equipLoadoutForTest(ids = ['w-plasma']) { state.activeWeapons=[...ids]; state.weaponLevels={}; ids.forEach(id=>state.weaponLevels[id]=1); state.lastWeaponFireTimes={}; state.weaponRuntime={}; state.bullets.length=0; state.shockwaves.length=0; normalizePrimaryMagazineV301(); state.mecha.ammo=getPrimaryMagazineCapacityV301(); state.mecha.isReloading=false; state.mecha.primaryFirstShotReady=true; updatePrimaryAmmoHudV301(); calculateMechaStats(); return this.loadoutStateV302(); },
+        loadoutStateV302() { return {weapons:[...state.activeWeapons], levels:{...state.weaponLevels}, passives:[...state.passives], ammo:this.ammoState(), runEvolutionCores:state.runEvolutionCores}; },
+        setPassivesForTest(ids = []) { state.passives=[...ids]; state.passiveLevels={}; ids.forEach(id=>state.passiveLevels[id]=1); calculateMechaStats(); return this.loadoutStateV302(); },
+        setWeaponLevelForTest(id, level=1) { state.weaponLevels[id]=Math.max(1,level|0); calculateMechaStats(); return this.loadoutStateV302(); },
+        grantEvolutionCoreForTest(count=1) { for(let i=0;i<Math.max(0,count|0);i++) awardEvolutionCoreV302('debug'); return this.loadoutStateV302(); },
+        eligibleEvolutionsForTest() { return getEligibleEvolutionCardsV302().map(item=>item.id); },
+        applyEvolutionForTest(id='syn-cyclonic') { return {applied:applyEvolutionV302(id), state:this.loadoutStateV302()}; },
+        flamethrowerRuntimeForTest() { const r=getWeaponRuntimeV302('w-flamethrower'); return {...r, bulletCount:state.bullets.filter(b=>b.type==='flame').length, lastFire:state.lastWeaponFireTimes?.['w-flamethrower']||0}; },
+        rotaryRuntimeForTest() { const r=getWeaponRuntimeV302('w-rotarycannon'); return {...r, bulletCount:state.bullets.filter(b=>b.type==='machinegun').length}; },
+        combatSnapshotV302() { return {phase:state.phase, mecha:{x:state.mecha.x,y:state.mecha.y,hp:state.mecha.hp,ammo:state.mecha.ammo,reloading:state.mecha.isReloading,firstShotReady:state.mecha.primaryFirstShotReady}, bullets:state.bullets.slice(-20).map(b=>({type:b.type,damage:b.damage,life:b.life,bonusPierceHits:b.bonusPierceHits||0,forcedBounces:b.forcedBounces||0,x:b.x,y:b.y})), runtime:JSON.parse(JSON.stringify(state.weaponRuntime||{}))}; },
+        showEvolutionDraftForTest() { const cards=getEligibleEvolutionCardsV302(); state.phase='draft'; state.draftCards=cards; state.draftSelection=0; state.draftConfirmArmed=false; state.draftInputLocked=false; prepareDraftDiscoveriesV301(cards); document.getElementById('roguelike-draft-modal')?.classList.remove('hidden'); updateDraftMenuUI(); render(); return cards.map(c=>c.id); },
+        primaryModifiersForTest(ammo=3, passiveIds=[], firstReady=false) { state.passives=[...passiveIds]; state.passiveLevels={}; passiveIds.forEach(id=>state.passiveLevels[id]=1); state.mecha.ammo=Math.max(0,ammo|0); state.mecha.primaryFirstShotReady=!!firstReady; return getPrimaryShotModifiersV302(getPrimaryWeaponIdV301()); },
+        resetDummyStatsForTest() { resetDummyStats(); return {...state.dummyStats}; },
+        dummyStatsForTest() { return {...state.dummyStats}; }
       });
 //#endregion debug_api
     </script>
