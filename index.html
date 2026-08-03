@@ -1,13 +1,23 @@
 <html lang="es" style="height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; --mekora-bg: #526176; --mekora-text: #f4f1ea; --mekora-cyan: #79aaa6; --mekora-pink: #b96b78; --mekora-amber: #c79a61; --mekora-panel: #202a36;"><head>
 <script>
 
-/* ==== MEKORA v2.9.1.1 helpers ==== */
+/* ==== MEKORA v2.9.2 ammo HUD bridge ==== */
 const __mekoraAmmoHud = { root:null, count:null, icon:null };
-function __mekoraBindAmmoHud(){ __mekoraAmmoHud.root=document.getElementById('ammo-hud'); if(__mekoraAmmoHud.root){ __mekoraAmmoHud.count=__mekoraAmmoHud.root.querySelector('.ammo-count'); __mekoraAmmoHud.icon=__mekoraAmmoHud.root.querySelector('.ammo-icon'); } }
-function __mekoraSetAmmoHud(value,reloading){ if(!__mekoraAmmoHud.root) __mekoraBindAmmoHud(); if(!__mekoraAmmoHud.root) return; __mekoraAmmoHud.root.classList.toggle('reloading',!!reloading); if(__mekoraAmmoHud.count){ __mekoraAmmoHud.count.textContent=reloading ? 'RECARGANDO' : String(value); } }
-function __mekoraDamageTint(entity){ if(!entity) return null; const now=(performance.now?performance.now():Date.now()); const until=entity.damageFlashUntil||0; if(now>=until) return null; const attackers=Math.max(1,entity.damageFlashAttackers||1); const speed=attackers>1?80:150; return (Math.floor((until-now)/speed)%2===0)?'#ff5c66':null; }
-function __mekoraCanEnemyHit(enemy){ if(!enemy) return false; const now=(performance.now?performance.now():Date.now()); const nextAt=enemy.__meleeNextHitAt||0; if(now>=nextAt){ enemy.__meleeNextHitAt=now+(enemy.meleeCooldown||650); return true; } return false; }
-function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) return; const now=(performance.now?performance.now():Date.now()); target.damageFlashUntil=now+380; target.damageFlashAttackers=Math.max(1, attackers||1); }
+function __mekoraBindAmmoHud(){
+  __mekoraAmmoHud.root = document.getElementById('ammo-hud');
+  if (__mekoraAmmoHud.root) {
+    __mekoraAmmoHud.count = __mekoraAmmoHud.root.querySelector('.ammo-count');
+    __mekoraAmmoHud.icon = __mekoraAmmoHud.root.querySelector('.ammo-icon');
+  }
+}
+function __mekoraSetAmmoHud(value, reloading){
+  if (!__mekoraAmmoHud.root) __mekoraBindAmmoHud();
+  if (!__mekoraAmmoHud.root) return;
+  __mekoraAmmoHud.root.classList.toggle('reloading', !!reloading);
+  if (__mekoraAmmoHud.count) {
+    __mekoraAmmoHud.count.textContent = reloading ? 'RECARGANDO' : String(Math.max(0, Math.round(value || 0)));
+  }
+}
 
 
 (function() {
@@ -66,7 +76,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
 
 
 <style>html,body{overscroll-behavior:contain!important;height:100%!important;-webkit-user-select:none!important;user-select:none!important;touch-action:none!important;}
-/* ==== MEKORA v2.9.1 HUD / combat ==== */
+/* ==== MEKORA v2.9.2 HUD / combat ==== */
 #ammo-hud{position:absolute;left:18px;bottom:16px;z-index:45;display:flex;align-items:center;gap:6px;pointer-events:none;user-select:none;font-weight:800;letter-spacing:.02em;text-shadow:0 2px 8px rgba(0,0,0,.7);}
 #ammo-hud .ammo-count{color:#ffe27a;font-size:clamp(24px,3.2vw,36px);line-height:1;}
 #ammo-hud .ammo-icon{color:#f6f6f6;font-size:clamp(14px,1.9vw,20px);line-height:1;opacity:.95;}
@@ -83,7 +93,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
 }
 
 
-/* ==== MEKORA v2.9.1.1 layout pass ==== */
+/* ==== MEKORA v2.9.2 layout pass ==== */
 @media (orientation: landscape) and (min-width: 620px) {
   /* Give more room to the display and remove dead space under it */
   .screen {
@@ -1484,6 +1494,281 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
   }
 </style>
 
+
+<style id="mekora-v292-authoritative-layout">
+  /* This style is intentionally last: it is the single source of truth for v2.9.2 layout. */
+  #ammo-hud {
+    left: 18px !important;
+    bottom: 16px !important;
+    gap: 8px !important;
+  }
+  #ammo-hud .ammo-count {
+    min-width: 1.4ch;
+    color: #ffe37c !important;
+    font-size: clamp(24px, 3.2vw, 38px) !important;
+    font-weight: 900 !important;
+  }
+  #ammo-hud.reloading .ammo-count {
+    font-size: clamp(12px, 1.55vw, 18px) !important;
+    letter-spacing: .06em;
+  }
+  #ammo-hud .ammo-icon {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 22px;
+  }
+  #ammo-hud .ammo-icon i {
+    display: block;
+    width: 5px;
+    height: 14px;
+    border-radius: 3px 3px 1px 1px;
+    background: #f5f7fa;
+    box-shadow: inset 0 -3px 0 #b9c1ca, 0 1px 2px rgba(0,0,0,.65);
+    transform: rotate(-12deg);
+  }
+  #ammo-hud .ammo-icon i:nth-child(2) { height: 17px; }
+  #ammo-hud .ammo-icon i:nth-child(3) { height: 12px; }
+
+  @media (orientation: portrait) {
+    .screen > :first-child {
+      height: 57% !important;
+    }
+    .screen > :nth-child(2), .console-controls {
+      height: 43% !important;
+    }
+
+    /* Six weapons = 3 columns x 2 rows; six passives = another 3 x 2 block. */
+    #hud-active-slots,
+    #hud-passives-list {
+      display: grid !important;
+      grid-template-columns: repeat(3, 22px) !important;
+      grid-template-rows: repeat(2, 22px) !important;
+      grid-auto-flow: row !important;
+      width: 72px !important;
+      gap: 3px !important;
+      justify-content: end !important;
+    }
+    #hud-passives-list { margin-top: 3px !important; }
+    .hud-slot {
+      width: 22px !important;
+      height: 22px !important;
+      border-radius: 5px !important;
+      font-size: 9px !important;
+    }
+    #hud-active-slots .slot-level,
+    #hud-passives-list .slot-level { font-size: 6px !important; }
+
+    #hud-time-block {
+      left: 44% !important;
+      transform: translateX(-50%) !important;
+      top: 8px !important;
+    }
+    #hud-main-stats { left: 10px !important; top: 8px !important; }
+    #ammo-hud { left: 15px !important; bottom: 15px !important; }
+    #persistent-console-controls { top: 78% !important; }
+  }
+
+  @media (orientation: landscape) and (min-width: 620px) {
+    :root { --v292-side: clamp(128px, 18vw, 220px); }
+    .screen {
+      display: none !important;
+      grid-template-columns: var(--v292-side) minmax(0, 1fr) var(--v292-side) !important;
+      grid-template-rows: minmax(0, 1fr) 28px !important;
+      column-gap: clamp(8px, 1.6vw, 20px) !important;
+      row-gap: 2px !important;
+      padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left) !important;
+    }
+    body[data-phase="playing"] .screen[data-show-on="playing"],
+    body[data-phase="draft"] .screen[data-show-on="playing"],
+    body[data-phase="gameover"] .screen[data-show-on="gameover"],
+    body[data-phase="assembly"] .screen[data-show-on="assembly"],
+    body[data-phase="shop"] .screen[data-show-on="shop"],
+    body[data-phase="menu"] .screen[data-show-on="menu"],
+    body[data-phase="settings"] .screen[data-show-on="settings"],
+    body[data-phase="global_network"] .screen[data-show-on="global_network"],
+    body[data-phase="dev"] .screen[data-show-on="dev"] {
+      display: grid !important;
+    }
+
+    .screen > :first-child {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      align-self: stretch !important;
+      justify-self: stretch !important;
+    }
+    .screen > :first-child > .relative.aspect-\[16\/9\] {
+      width: 100% !important;
+      height: 100% !important;
+      max-height: none !important;
+      aspect-ratio: auto !important;
+    }
+    .screen > :nth-child(2), .console-controls { display: contents !important; }
+
+    .screen > :nth-child(2) > [id$="joystick-move-zone"],
+    .console-controls > [id$="joystick-move-zone"] {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      place-self: center end !important;
+      margin-right: 8px !important;
+      transform: translateY(16px) !important;
+      width: clamp(112px, 13.5vw, 170px) !important;
+      height: clamp(112px, 13.5vw, 170px) !important;
+    }
+    .screen > :nth-child(2) > button[id$="tap-fire"],
+    .console-controls > button[id$="tap-fire"] {
+      grid-column: 3 !important;
+      grid-row: 1 !important;
+      place-self: center start !important;
+      margin-left: 8px !important;
+      transform: translateY(16px) !important;
+      width: clamp(100px, 12vw, 148px) !important;
+      height: clamp(100px, 12vw, 148px) !important;
+    }
+
+    /* Label occupies only the slim row below the display. */
+    .screen > :nth-child(2) > .absolute.top-2,
+    .console-controls > .absolute.top-2 {
+      display: block !important;
+      position: fixed !important;
+      left: 50% !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: max(2px, var(--safe-bottom)) !important;
+      transform: translateX(-50%) !important;
+      color: #f2f4f7 !important;
+      opacity: .92 !important;
+      font-size: 10px !important;
+      letter-spacing: .14em !important;
+      z-index: 92 !important;
+    }
+
+    #persistent-console-controls {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 0 !important;
+      height: 0 !important;
+      transform: none !important;
+      pointer-events: none !important;
+      z-index: 95 !important;
+    }
+    #persistent-console-controls .persistent-small-row { display: contents !important; }
+    #btn-mute, #btn-fullscreen, #btn-control-pause {
+      position: fixed !important;
+      top: auto !important;
+      transform: none !important;
+      pointer-events: auto !important;
+      z-index: 96 !important;
+    }
+    #btn-mute {
+      left: calc(var(--safe-left) + var(--v292-side) - 34px) !important;
+      bottom: calc(var(--safe-bottom) + 42px) !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+    #btn-fullscreen {
+      left: calc(var(--safe-left) + var(--v292-side) - 34px) !important;
+      bottom: calc(var(--safe-bottom) + 91px) !important;
+      width: 36px !important;
+      height: 36px !important;
+    }
+    #btn-control-pause {
+      right: calc(var(--safe-right) + var(--v292-side) - 54px) !important;
+      bottom: calc(var(--safe-bottom) + 38px) !important;
+      width: 58px !important;
+      height: 58px !important;
+    }
+
+    #hud-active-slots,
+    #hud-passives-list {
+      display: grid !important;
+      grid-template-columns: repeat(6, 25px) !important;
+      grid-template-rows: 25px !important;
+      gap: 3px !important;
+    }
+    .hud-slot { width: 25px !important; height: 25px !important; }
+    #ammo-hud { left: 18px !important; bottom: 14px !important; }
+  }
+
+  .mekora-shell-brand {
+    height: auto !important;
+    line-height: 1 !important;
+  }
+
+  @media (orientation: landscape) and (min-width: 620px) {
+    .mekora-shell-brand {
+      display: block !important;
+      position: fixed !important;
+      left: 50% !important;
+      right: auto !important;
+      top: auto !important;
+      bottom: max(3px, var(--safe-bottom)) !important;
+      transform: translateX(-50%) !important;
+      width: auto !important;
+      height: 12px !important;
+      color: #f2f4f7 !important;
+      opacity: .92 !important;
+      font-size: 10px !important;
+      letter-spacing: .14em !important;
+      z-index: 92 !important;
+    }
+  }
+
+  @media (orientation: landscape) and (max-height: 470px) {
+    :root { --v292-side: clamp(98px, 16vw, 150px); }
+    .screen {
+      grid-template-rows: minmax(0, 1fr) 22px !important;
+      column-gap: 7px !important;
+    }
+    .screen > :nth-child(2) > [id$="joystick-move-zone"],
+    .console-controls > [id$="joystick-move-zone"] {
+      width: clamp(94px, 14vw, 128px) !important;
+      height: clamp(94px, 14vw, 128px) !important;
+      transform: translateY(10px) !important;
+    }
+    .screen > :nth-child(2) > button[id$="tap-fire"],
+    .console-controls > button[id$="tap-fire"] {
+      width: clamp(86px, 12vw, 116px) !important;
+      height: clamp(86px, 12vw, 116px) !important;
+      transform: translateY(10px) !important;
+    }
+    #btn-mute {
+      left: calc(var(--safe-left) + var(--v292-side) - 29px) !important;
+      bottom: calc(var(--safe-bottom) + 28px) !important;
+      width: 31px !important; height: 31px !important;
+    }
+    #btn-fullscreen {
+      left: calc(var(--safe-left) + var(--v292-side) - 29px) !important;
+      bottom: calc(var(--safe-bottom) + 67px) !important;
+      width: 31px !important; height: 31px !important;
+    }
+    #btn-control-pause {
+      right: calc(var(--safe-right) + var(--v292-side) - 44px) !important;
+      bottom: calc(var(--safe-bottom) + 27px) !important;
+      width: 48px !important; height: 48px !important;
+    }
+    #hud-active-slots, #hud-passives-list {
+      grid-template-columns: repeat(6, 22px) !important;
+      grid-template-rows: 22px !important;
+    }
+    .hud-slot { width: 22px !important; height: 22px !important; font-size: 9px !important; }
+  }
+
+  @media (orientation: landscape) and (min-width: 620px) {
+    .screen .mekora-shell-brand.font-title.text-sm.tracking-widest.font-bold {
+      top: auto !important;
+      bottom: max(3px, var(--safe-bottom)) !important;
+      height: 12px !important;
+      line-height: 12px !important;
+    }
+  }
+
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -1505,7 +1790,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
         <div class="relative w-full aspect-[16/9] max-h-full bg-[#0c0f12] overflow-hidden">
           <!-- CANVAS BACKDROP FOR COMBAT WORLD -->
           <canvas id="game-canvas" class="absolute inset-0 w-full h-full z-0 block cursor-crosshair"></canvas>
-<div id="ammo-hud"><span class="ammo-count">10</span><span class="ammo-icon">◈</span></div>
+<div id="ammo-hud" aria-live="polite"><span class="ammo-count">10</span><span class="ammo-icon" aria-hidden="true"><i></i><i></i><i></i></span></div>
 
           <!-- EXPERIENCE BAR -->
           <div class="absolute top-0 left-0 right-0 h-2 bg-gray-900/80 z-40 pointer-events-none">
@@ -1595,7 +1880,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
 
        <!-- BOTTOM HALF: BLACK CONTROL AREA -->
        <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+         <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
          <!-- LEFT DYNAMIC MOVE ZONE -->
          <div id="joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
@@ -1661,7 +1946,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
        </div>
        <!-- BOTTOM HALF: BLACK CONTROL AREA -->
        <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+         <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
          <div id="menu-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="menu-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75" style="transform: translate(0px, 0px);"></div>
            <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -1735,7 +2020,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
       <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="global-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="global-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -1814,12 +2099,12 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.9.1</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.9.2</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
       <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="settings-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="settings-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -1863,7 +2148,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
       </div>
 
       <div class="console-controls">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="dev-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="dev-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="navigate">NAVEGAR</span>
@@ -1895,7 +2180,7 @@ function __mekoraFlagPlayerDamaged(target, amount, attackers){ if(!target) retur
         </div>
       </div>
       <div class="console-controls">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div class="mekora-shell-brand absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="gameover-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-pink-500/30 bg-pink-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="gameover-joystick-move-knob" class="w-12 h-12 rounded-full bg-pink-500/60 border-2 border-pink-500 shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span data-i18n="navigate" class="absolute text-[9px] text-pink-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
@@ -2675,10 +2960,12 @@ stats.recentRuns = stats.recentRuns || [];
         state.passives = Array.from(new Set(state.passives)).slice(0, 6);
 
         state.mecha.maxHp = 100 + (state.passives.length * 10);
-        state.mecha.maxShield = 50 + (state.activeWeapons.includes('w-shield') ? 50 : 0);
+        state.mecha.maxShield = state.activeWeapons.includes('w-shield') ? 100 : 0;
         state.mecha.baseDps = 40 + (state.activeWeapons.length * 10);
         state.mecha.hp = Math.min(state.mecha.hp || 100, state.mecha.maxHp);
-        state.mecha.shield = Math.min(state.mecha.shield || 50, state.mecha.maxShield);
+        state.mecha.shield = state.mecha.maxShield > 0
+          ? Math.min(Math.max(0, state.mecha.shield || 0), state.mecha.maxShield)
+          : 0;
 
         state.evolvedWeapons = [];
         if (state.passives.includes('p-evolve')) {
@@ -2811,6 +3098,93 @@ stats.recentRuns = stats.recentRuns || [];
             ? 'var(--weapon-ready)'
             : `conic-gradient(var(--weapon-ready) ${degrees}deg, var(--slot-cooling) ${degrees}deg 360deg)`;
         });
+      }
+
+
+      function pushCombatDamageNumber(x, y, amount, options = {}) {
+        const numeric = Math.max(0, Math.round(Number(amount) || 0));
+        const critical = options.critical === true;
+        state.damageNumbers.push({
+          x,
+          y,
+          text: options.text ?? numeric.toString(),
+          life: options.life ?? 36,
+          maxLife: options.life ?? 36,
+          vx: options.vx ?? ((Math.random() - 0.5) * 1.4),
+          vy: options.vy ?? (-1.4 - Math.random() * 0.45),
+          color: options.color ?? (critical ? '#ff334f' : '#ffffff'),
+          size: options.size ?? (critical ? 28 : 23),
+          critical,
+          kind: options.kind ?? 'outgoing'
+        });
+      }
+
+      function registerRecentDamageSource(sourceId, timestamp) {
+        const sources = state.mecha.recentDamageSources || (state.mecha.recentDamageSources = {});
+        const cutoff = timestamp - 720;
+        Object.keys(sources).forEach(key => {
+          if (sources[key] < cutoff) delete sources[key];
+        });
+        sources[String(sourceId || 'unknown')] = timestamp;
+        state.mecha.damageFlashAttackers = Math.max(1, Object.keys(sources).length);
+        state.mecha.damageFlashUntil = timestamp + 460;
+      }
+
+      function shouldFlashMecha(timestamp) {
+        if (!state.mecha.damageFlashUntil || timestamp >= state.mecha.damageFlashUntil) return false;
+        const attackers = Math.max(1, state.mecha.damageFlashAttackers || 1);
+        const interval = attackers > 1 ? 92 : 155;
+        return Math.floor((state.mecha.damageFlashUntil - timestamp) / interval) % 2 === 0;
+      }
+
+      function applyDamageToMecha(rawDamage, timestamp, sourceId = 'unknown') {
+        const amount = Math.max(0, Math.round(Number(rawDamage) || 0));
+        if (!amount || state.devInvulnerable) return 0;
+        const bubbleActive = state.mecha.shieldActiveUntil && timestamp < state.mecha.shieldActiveUntil;
+        if (bubbleActive) return 0;
+
+        let remaining = amount;
+        let applied = 0;
+
+        if (state.devInfShield && state.mecha.maxShield > 0) {
+          applied = amount;
+          remaining = 0;
+        } else if (state.mecha.shield > 0) {
+          const absorbed = Math.min(state.mecha.shield, remaining);
+          state.mecha.shield -= absorbed;
+          remaining -= absorbed;
+          applied += absorbed;
+        }
+
+        if (remaining > 0 && !state.devInfHp) {
+          const hpDamage = Math.min(state.mecha.hp, remaining);
+          state.mecha.hp -= hpDamage;
+          applied += hpDamage;
+        }
+
+        if (applied > 0) {
+          registerRecentDamageSource(sourceId, timestamp);
+          pushCombatDamageNumber(
+            state.mecha.x + (Math.random() - 0.5) * 18,
+            state.mecha.y - 44,
+            applied,
+            { text: `-${applied}`, color: '#ffffff', size: 25, life: 40, kind: 'incoming', vx: (Math.random() - 0.5) * 0.45, vy: -1.25 }
+          );
+          vibrate(55);
+          updateStatsUI();
+        }
+
+        if (state.mecha.hp <= 0) {
+          endRun();
+        }
+        return applied;
+      }
+
+      function canEnemyMeleeHit(enemy, timestamp) {
+        const next = enemy.nextMeleeHitAt || 0;
+        if (timestamp < next) return false;
+        enemy.nextMeleeHitAt = timestamp + (enemy.meleeCooldown || 720);
+        return true;
       }
 
       //#endregion mecha_calculation
@@ -2979,13 +3353,7 @@ stats.recentRuns = stats.recentRuns || [];
             const isShieldBubbleActive = state.mecha.shieldActiveUntil && performance.now() < state.mecha.shieldActiveUntil;
             if (!isShieldBubbleActive && !state.devInvulnerable) {
               const dmg = Math.round(40 * (1 - pDist / explosionRadius));
-              if (state.mecha.shield > 0 && !state.devInfShield) {
-                state.mecha.shield = Math.max(0, state.mecha.shield - dmg);
-              } else if (!state.devInfHp) {
-                state.mecha.hp -= dmg;
-              }
-              vibrate(80);
-              updateStatsUI();
+              applyDamageToMecha(dmg, performance.now(), e.id || 'heavy-explosion');
             }
          }
 
@@ -3086,6 +3454,9 @@ stats.recentRuns = stats.recentRuns || [];
           speed: speed,
           type: type,
           color: color,
+          contactDamage: type === 'heavy' ? 14 : (type === 'purple_arrow' ? 11 : 8),
+          meleeCooldown: type === 'heavy' ? 900 : 720,
+          nextMeleeHitAt: 0,
           explodeTimer: null,
           hasEnteredVision: false,
           nextShotTime: null
@@ -3237,10 +3608,11 @@ stats.recentRuns = stats.recentRuns || [];
           state.mecha.reloadProgress = Math.min(1.0, elapsed / reloadDuration);
           if (elapsed >= reloadDuration) {
             state.mecha.isReloading = false;
-            state.mecha.ammo = 10 + (state.mecha.maxAmmoBonus || 0);
+            state.mecha.ammo = state.mecha.maxAmmo + (state.mecha.maxAmmoBonus || 0);
             state.mecha.reloadProgress = 1.0;
           }
         }
+        __mekoraSetAmmoHud(state.mecha.ammo, state.mecha.isReloading);
 
          // Automated weapon firing
           if (!state.mecha.isReloading && nearestEnemy) {
@@ -3877,7 +4249,7 @@ stats.recentRuns = stats.recentRuns || [];
                     if (!state.devInfAmmo) {
                       state.mecha.ammo--;
                     } else {
-                      state.mecha.ammo = 10 + (state.mecha.maxAmmoBonus || 0);
+                      state.mecha.ammo = state.mecha.maxAmmo + (state.mecha.maxAmmoBonus || 0);
                     }
                  }
 
@@ -5239,6 +5611,7 @@ stats.recentRuns = stats.recentRuns || [];
 
               const pAngle = Math.atan2(state.mecha.y - e.y, state.mecha.x - e.x);
               state.enemyBullets.push({
+                sourceId: e.id,
                 x: e.x,
                 y: e.y,
                 vx: Math.cos(pAngle) * bulletSpeed,
@@ -5277,14 +5650,10 @@ stats.recentRuns = stats.recentRuns || [];
                 damageEnemy(e, finalDamage, timestamp);
                 applyElementalStatus(e);
 
-                state.damageNumbers.push({
-                  x: e.x,
-                  y: e.y - 10,
-                  text: isCrit ? `CRIT! ${finalDamage}` : finalDamage.toString(),
-                  life: 30,
-                  vx: (Math.random() - 0.5) * 2,
-                  vy: -1.5 - Math.random(),
-                  color: isCrit ? '#facc15' : null
+                pushCombatDamageNumber(e.x, e.y - 10, finalDamage, {
+                  critical: isCrit,
+                  color: isCrit ? '#ff334f' : '#ffffff',
+                  size: isCrit ? 28 : 23
                 });
 
                for (let p = 0; p < 4; p++) {
@@ -5501,23 +5870,10 @@ stats.recentRuns = stats.recentRuns || [];
               state.mecha.y -= Math.sin(pushAngle) * (overlap * 0.2);
             }
 
-            // Yellow enemy doesn't deal contact damage while self-destructing
-            if (e.type !== 'heavy' || e.explodeTimer === null) {
-              const isShieldBubbleActive = state.mecha.shieldActiveUntil && timestamp < state.mecha.shieldActiveUntil;
-              if (!isShieldBubbleActive && !state.devInvulnerable) {
-                if (state.mecha.shield > 0 && !state.devInfShield) {
-                  state.mecha.shield = Math.max(0, state.mecha.shield - 1.5);
-                } else if (!state.devInfHp) {
-                  state.mecha.hp -= 1.0;
-                }
-                vibrate(50);
-                updateStatsUI();
-
-                if (state.mecha.hp <= 0) {
-                  endRun();
-                  return;
-                }
-              }
+            // First melee hit is immediate; subsequent hits respect the enemy cooldown.
+            if ((e.type !== 'heavy' || e.explodeTimer === null) && canEnemyMeleeHit(e, timestamp)) {
+              applyDamageToMecha(e.contactDamage || 8, timestamp, e.id || `melee-${i}`);
+              if (state.phase !== 'playing') return;
             }
           }
 
@@ -5670,18 +6026,9 @@ stats.recentRuns = stats.recentRuns || [];
              }
 
              if (!isShieldBubbleActive && !state.devInvulnerable) {
-               if (state.mecha.shield > 0 && !state.devInfShield) {
-                 state.mecha.shield = Math.max(0, state.mecha.shield - eb.damage);
-               } else if (!state.devInfHp) {
-                 state.mecha.hp -= eb.damage;
-               }
-               vibrate(60);
-               updateStatsUI();
-               if (state.mecha.hp <= 0) {
-                 endRun();
-                 return;
-               }
-            }
+               applyDamageToMecha(eb.damage, timestamp, eb.sourceId || `enemy-bullet-${i}`);
+               if (state.phase !== 'playing') return;
+             }
              state.enemyBullets.splice(i, 1);
              continue;
            }
@@ -5814,8 +6161,10 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.translate(state.mecha.x, state.mecha.y);
         ctx.rotate(state.mecha.angle);
 
-        // Core Chassis Graphic
-        ctx.fillStyle = state.mecha.mismatchedPenalty ? '#ff3366' : '#00ffcc';
+        // Core Chassis Graphic with incoming-damage flash.
+        const mechaFlashingRed = shouldFlashMecha(timestamp);
+        const mechaBaseColor = state.mecha.mismatchedPenalty ? '#ff3366' : '#00ffcc';
+        ctx.fillStyle = mechaFlashingRed ? '#ff334f' : mechaBaseColor;
         ctx.shadowColor = ctx.fillStyle;
         ctx.shadowBlur = 10;
 
@@ -5828,17 +6177,17 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.lineTo(-10, 18);
         ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = '#ffffff';
+        ctx.strokeStyle = mechaFlashingRed ? '#ffd6dc' : '#ffffff';
         ctx.lineWidth = 2;
         ctx.stroke();
 
         // Left & Right Weapon Mounts
-        ctx.fillStyle = '#1c2430';
+        ctx.fillStyle = mechaFlashingRed ? '#7d1828' : '#1c2430';
         ctx.fillRect(-5, -24, 18, 6);
         ctx.fillRect(-5, 18, 18, 6);
 
         // Cockpit Reticle Field
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = mechaFlashingRed ? '#ffe5e9' : '#ffffff';
         ctx.beginPath(); ctx.arc(4, 0, 4, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
 
@@ -5858,54 +6207,48 @@ stats.recentRuns = stats.recentRuns || [];
           ctx.restore();
         }
 
-        // Draw mini health, shield, and ammo/reload bars above the mecha (horizontal, not rotated)
+        // Health is always visible. Shield appears only when a shield power actually grants it.
         ctx.save();
         ctx.translate(state.mecha.x, state.mecha.y);
 
-        const barW = 58;
-        const hpH = 6;
+        const barW = 64;
+        const hpH = 7;
         const shieldH = 5;
-        const startY = -49;
+        const startY = -48;
 
-        ctx.fillStyle = 'rgba(5, 8, 13, 0.86)';
+        ctx.fillStyle = 'rgba(5, 8, 13, 0.9)';
         ctx.fillRect(-barW / 2 - 1, startY - 1, barW + 2, hpH + 2);
         const hpRatio = Math.max(0, state.mecha.hp / state.mecha.maxHp);
-        ctx.fillStyle = '#22c98d';
+        ctx.fillStyle = hpRatio < 0.3 ? '#ff4b5f' : '#22c98d';
         ctx.fillRect(-barW / 2, startY, barW * hpRatio, hpH);
 
-        ctx.fillStyle = 'rgba(5, 8, 13, 0.86)';
-        ctx.fillRect(-barW / 2 - 1, startY + 8, barW + 2, shieldH + 2);
-        const shieldRatio = state.mecha.maxShield > 0 ? Math.max(0, state.mecha.shield / state.mecha.maxShield) : 0;
-        ctx.fillStyle = '#37bde5';
-        ctx.fillRect(-barW / 2, startY + 9, barW * shieldRatio, shieldH);
-
-        ctx.font = 'bold 14px ui-monospace, SFMono-Regular, Menlo, monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'rgba(0,0,0,.9)';
-        ctx.fillStyle = '#f4c542';
-        const ammoText = String(Math.max(0, Math.round(state.mecha.ammo || 0)));
-        ctx.strokeText(ammoText, 0, startY + 17);
-        ctx.fillText(ammoText, 0, startY + 17);
+        if (state.mecha.maxShield > 0 && state.mecha.shield > 0) {
+          ctx.fillStyle = 'rgba(5, 8, 13, 0.9)';
+          ctx.fillRect(-barW / 2 - 1, startY + 9, barW + 2, shieldH + 2);
+          const shieldRatio = Math.max(0, state.mecha.shield / state.mecha.maxShield);
+          ctx.fillStyle = '#37bde5';
+          ctx.fillRect(-barW / 2, startY + 10, barW * shieldRatio, shieldH);
+        }
 
         ctx.restore();
 
-        // Update and Render Damage Numbers
+        // Update and render outgoing and incoming damage numbers.
         ctx.save();
-        ctx.font = 'bold 21px ui-sans-serif, system-ui, sans-serif';
         ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         for (let i = state.damageNumbers.length - 1; i >= 0; i--) {
           const dn = state.damageNumbers[i];
           dn.x += dn.vx;
           dn.y += dn.vy;
           dn.life--;
 
-          const alpha = Math.max(0, dn.life / 30);
+          const maxLife = dn.maxLife || 30;
+          const alpha = Math.max(0, dn.life / maxLife);
           ctx.globalAlpha = alpha;
-          ctx.fillStyle = dn.color || '#ff3366';
-          ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 4;
+          ctx.font = `900 ${dn.size || 23}px ui-sans-serif, system-ui, sans-serif`;
+          ctx.fillStyle = dn.color || '#ffffff';
+          ctx.strokeStyle = 'rgba(0,0,0,.94)';
+          ctx.lineWidth = Math.max(3, Math.round((dn.size || 23) * 0.16));
           ctx.strokeText(dn.text, dn.x, dn.y);
           ctx.fillText(dn.text, dn.x, dn.y);
 
@@ -7283,15 +7626,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function render() {
-  try {
-    const p = (typeof state !== 'undefined' && state.player) ? state.player : (typeof player !== 'undefined' ? player : null);
-    if (p) {
-      const ammoValue = (typeof p.currentAmmo === 'number' ? p.currentAmmo : (typeof p.ammo === 'number' ? p.ammo : 10));
-      const isReloading = !!(p.reloading || p.isReloading || p.reloadTimerActive || ((p.reloadUntil || 0) > (performance.now ? performance.now() : Date.now())));
-      __mekoraSetAmmoHud(ammoValue, isReloading);
-    }
-  } catch(e) {}
-
+        __mekoraSetAmmoHud(state.mecha.ammo, state.mecha.isReloading);
         document.body.dataset.phase = state.phase;
         document.body.dataset.testMode = state.testMode ? 'true' : 'false';
         updatePersistentConsoleControls();
@@ -7802,6 +8137,125 @@ const btnControlPause = document.getElementById('btn-control-pause');
             selected: state.draftSelection,
             locked: state.draftInputLocked,
             armed: state.draftConfirmArmed
+          };
+        },
+        start() {
+          startRun(false, false);
+          return this.combatState();
+        },
+        combatState() {
+          return {
+            phase: state.phase,
+            hp: state.mecha.hp,
+            maxHp: state.mecha.maxHp,
+            shield: state.mecha.shield,
+            maxShield: state.mecha.maxShield,
+            ammo: state.mecha.ammo,
+            maxAmmo: state.mecha.maxAmmo,
+            reloading: state.mecha.isReloading,
+            damageFlashUntil: state.mecha.damageFlashUntil || 0,
+            damageFlashAttackers: state.mecha.damageFlashAttackers || 0,
+            damageNumbers: state.damageNumbers.slice(-8).map(d => ({text:d.text,color:d.color,size:d.size,kind:d.kind,critical:!!d.critical}))
+          };
+        },
+        setAmmo(value, reloading = false) {
+          state.mecha.ammo = Math.max(0, Math.round(value));
+          state.mecha.isReloading = !!reloading;
+          if (reloading) state.mecha.reloadStartTime = performance.now();
+          __mekoraSetAmmoHud(state.mecha.ammo, state.mecha.isReloading);
+          return this.combatState();
+        },
+        hitPlayer(amount = 7, sourceId = 'debug-hit') {
+          applyDamageToMecha(amount, performance.now(), sourceId);
+          return this.combatState();
+        },
+        previewDamageNumbers() {
+          pushCombatDamageNumber(state.mecha.x - 30, state.mecha.y - 70, 17, {critical:false});
+          pushCombatDamageNumber(state.mecha.x + 30, state.mecha.y - 70, 34, {critical:true});
+          return this.combatState();
+        },
+        setupMeleeTest() {
+          state.activeWeapons = [];
+          state.passives = [];
+          state.mecha.hp = 100;
+          state.mecha.maxHp = 100;
+          state.mecha.shield = 0;
+          state.mecha.maxShield = 0;
+          state.mecha.recentDamageSources = {};
+          state.mecha.damageFlashAttackers = 0;
+          state.damageNumbers.length = 0;
+          state.enemies = [{
+            id:'debug-melee', type:'scout', x:state.mecha.x, y:state.mecha.y,
+            vx:0, vy:0, hp:9999, maxHp:9999, radius:12, speed:2.4,
+            color:'#ff3366', contactDamage:8, meleeCooldown:720,
+            nextMeleeHitAt:0, explodeTimer:null, hasEnteredVision:false, nextShotTime:null
+          }];
+          return this.combatState();
+        },
+        setupDamageColorFireTest(forceCritical = false) {
+          state.activeWeapons = ['w-plasma'];
+          state.weaponLevels = {'w-plasma': 1};
+          state.passives = forceCritical ? ['p-crit-effect'] : [];
+          state.passiveLevels = forceCritical ? {'p-crit-effect': 100} : {};
+          state.devNoCooldown = false;
+          state.mecha.ammo = 1;
+          state.mecha.maxAmmo = 10;
+          state.mecha.isReloading = false;
+          state.isFiring = true;
+          state.lastWeaponFireTimes = {'w-plasma': -999999};
+          state.damageNumbers.length = 0;
+          state.enemies = [{
+            id: forceCritical ? 'debug-critical-target' : 'debug-normal-target',
+            type:'dummy', isDummy:true,
+            x:state.mecha.x + 100, y:state.mecha.y,
+            vx:0, vy:0, hp:999999, maxHp:999999, radius:28, speed:0,
+            color:'#ffaa00', explodeTimer:null, hasEnteredVision:false, nextShotTime:null
+          }];
+          return this.combatState();
+        },
+        setupAmmoFireTest() {
+          state.activeWeapons = ['w-plasma'];
+          state.weaponLevels = {'w-plasma': 1};
+          state.passives = [];
+          state.devNoCooldown = true;
+          state.mecha.ammo = 3;
+          state.mecha.maxAmmo = 10;
+          state.mecha.isReloading = false;
+          state.mecha.reloadProgress = 1;
+          state.isFiring = true;
+          state.enemies = [{
+            id:'debug-ammo-target', type:'dummy', isDummy:true,
+            x:state.mecha.x + 160, y:state.mecha.y,
+            vx:0, vy:0, hp:999999, maxHp:999999, radius:28, speed:0,
+            color:'#ffaa00', explodeTimer:null, hasEnteredVision:false, nextShotTime:null
+          }];
+          __mekoraSetAmmoHud(state.mecha.ammo, false);
+          return this.combatState();
+        },
+        stopAmmoFireTest() {
+          state.isFiring = false;
+          state.devNoCooldown = false;
+          return this.combatState();
+        },
+        layoutRects() {
+          const rect = id => {
+            const el = document.getElementById(id);
+            if (!el) return null;
+            const r = el.getBoundingClientRect();
+            return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};
+          };
+          const activeScreen = document.querySelector('.screen:not([style*="display: none"])') || document.querySelector(`.screen[data-show-on="${state.phase}"]`);
+          const display = activeScreen?.firstElementChild?.getBoundingClientRect();
+          return {
+            viewport:{width:innerWidth,height:innerHeight},
+            display:display ? {x:display.x,y:display.y,width:display.width,height:display.height,right:display.right,bottom:display.bottom} : null,
+            joystick:rect('joystick-move-zone'), fire:rect('btn-tap-fire'),
+            mute:rect('btn-mute'), fullscreen:rect('btn-fullscreen'), system:rect('btn-control-pause'),
+            ammo:rect('ammo-hud'),
+            slots:{
+              weapons:getComputedStyle(document.getElementById('hud-active-slots')).gridTemplateColumns,
+              passives:getComputedStyle(document.getElementById('hud-passives-list')).gridTemplateColumns
+            }
           };
         }
       };
