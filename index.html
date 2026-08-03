@@ -1664,13 +1664,266 @@
 
 
 
+
+<style id="mekora-enemies-v310-style">
+  #boss-hud-v31 {
+    position:absolute; z-index:44; top:38px; left:50%; transform:translateX(-50%);
+    width:min(62%,420px); pointer-events:none; font-family:ui-monospace,monospace;
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,.8));
+  }
+  #boss-hud-v31.hidden { display:none !important; }
+  #boss-hud-v31 .boss-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:3px; }
+  #boss-name-v31 { color:#f7e7d0; font-size:10px; font-weight:900; letter-spacing:.11em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #boss-phase-v31 { color:#f2aa52; font-size:8px; font-weight:800; white-space:nowrap; }
+  #boss-bar-v31 { height:8px; border:1px solid rgba(255,213,160,.72); background:rgba(6,7,9,.86); overflow:hidden; clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%); }
+  #boss-hp-fill-v31 { width:100%; height:100%; background:linear-gradient(90deg,#c44835,#e27a3f,#f3b25c); transition:width 90ms linear; }
+  #encounter-notice-v31 { position:absolute; z-index:45; top:58px; left:50%; transform:translateX(-50%); color:#fff3df; font-size:10px; font-weight:900; letter-spacing:.12em; text-shadow:0 2px 5px #000; pointer-events:none; opacity:0; transition:opacity .18s; }
+  #encounter-notice-v31.show { opacity:1; }
+  @media (orientation:portrait) {
+    #boss-hud-v31 { top:35px; width:min(58%,300px); }
+    #boss-name-v31 { font-size:8px; }
+    #boss-phase-v31 { font-size:7px; }
+    #boss-bar-v31 { height:6px; }
+  }
+</style>
+
+
+<style id="mekora-v310-immersive-and-draft-fix">
+  /* v3.1.0 · Prevent rarity glows and portrait draft cards from being clipped. */
+  #roguelike-draft-modal {
+    box-sizing: border-box !important;
+    padding: 9px !important;
+    overflow: hidden !important;
+  }
+  #draft-content-panel {
+    box-sizing: border-box !important;
+    width: min(100%, 530px) !important;
+    max-height: calc(100% - 4px) !important;
+    padding: 7px 7px 12px !important;
+    overflow: visible !important;
+  }
+  #upgrade-cards-container {
+    box-sizing: border-box !important;
+    width: min(100%, 510px) !important;
+    max-width: calc(100% - 4px) !important;
+    padding: 7px 6px 11px !important;
+    overflow: visible !important;
+  }
+  .mekora-draft-wrapper {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+  }
+  .mekora-draft-wrapper.is-selected .mekora-draft-card {
+    outline-offset: 1px !important;
+  }
+
+  @keyframes mekoraDraftPopPortraitV310 {
+    0% { opacity: 0; transform: scale(.94); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @media (orientation: portrait) {
+    #roguelike-draft-modal {
+      padding: 8px 7px 10px !important;
+    }
+    #draft-content-panel {
+      width: min(96%, 370px) !important;
+      padding: 3px 3px 8px !important;
+      gap: 1px !important;
+    }
+    #draft-content-panel.draft-pop-in {
+      animation: mekoraDraftPopPortraitV310 190ms ease-out both !important;
+    }
+    #upgrade-cards-container {
+      width: calc(100% - 8px) !important;
+      height: clamp(102px, 18.5dvh, 128px) !important;
+      max-height: calc(100% - 28px) !important;
+      padding: 5px 3px 8px !important;
+      gap: 3px !important;
+    }
+    .mekora-draft-card {
+      grid-template-rows: 11px 18px minmax(14px, auto) minmax(0, 1fr) 9px !important;
+      padding: 3px 2px 2px !important;
+      border-width: 1.5px !important;
+      border-radius: 5px !important;
+    }
+    .draft-card-topline { font-size: 4.5px !important; gap: 2px !important; }
+    .draft-new-badge { font-size: 3.8px !important; padding: 1px 2px !important; }
+    .draft-card-icon { font-size: 14px !important; }
+    .draft-card-title { font-size: 6.3px !important; line-height: 1.04 !important; }
+    .draft-card-desc { font-size: 5.2px !important; line-height: 1.08 !important; -webkit-line-clamp: 2 !important; }
+    .draft-card-level { font-size: 4.5px !important; letter-spacing: .04em !important; }
+    .mekora-draft-wrapper[data-rarity="epic"] .mekora-draft-card,
+    .mekora-draft-wrapper[data-rarity="legendary"] .mekora-draft-card {
+      --portrait-glow-limit: 8px;
+    }
+    @keyframes rarityEpic {
+      0%,100% { box-shadow: 0 0 3px rgba(194,124,255,.22), inset 0 0 0 1px rgba(255,255,255,.04); }
+      50% { box-shadow: 0 0 8px rgba(194,124,255,.44), inset 0 0 7px rgba(194,124,255,.1); }
+    }
+    @keyframes rarityLegendary {
+      0%,100% { box-shadow: 0 0 4px rgba(244,189,82,.3), inset 0 0 5px rgba(244,189,82,.06); }
+      50% { box-shadow: 0 0 9px rgba(244,189,82,.58), inset 0 0 8px rgba(244,189,82,.13); }
+    }
+  }
+
+  /* Immersive mode: full combat display, translucent touch controls, only MekoraBox system control. */
+  html.mekora-immersive,
+  body.mekora-immersive {
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #030405 !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"] {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #030405 !important;
+    overflow: hidden !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"]::after {
+    display: none !important;
+    content: none !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"] > :first-child {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #030405 !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"] > :first-child::after {
+    display: none !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"] > :first-child > .relative.aspect-\[16\/9\] {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+  }
+  body.mekora-immersive .screen[data-show-on="playing"] > :nth-child(2),
+  body.mekora-immersive .screen[data-show-on="playing"] .console-controls {
+    display: contents !important;
+  }
+  body.mekora-immersive #joystick-move-zone,
+  body.mekora-immersive #btn-tap-fire {
+    position: fixed !important;
+    top: auto !important;
+    bottom: calc(max(16px, env(safe-area-inset-bottom)) + 10px) !important;
+    width: clamp(94px, 15vw, 126px) !important;
+    height: clamp(94px, 15vw, 126px) !important;
+    margin: 0 !important;
+    transform: none !important;
+    opacity: .27 !important;
+    z-index: 92 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: opacity 100ms ease, transform 90ms ease !important;
+  }
+  body.mekora-immersive #joystick-move-zone {
+    left: calc(max(14px, env(safe-area-inset-left)) + 8px) !important;
+    right: auto !important;
+    background: rgba(39,139,146,.22) !important;
+    border-color: rgba(138,199,194,.5) !important;
+  }
+  body.mekora-immersive #btn-tap-fire {
+    right: calc(max(14px, env(safe-area-inset-right)) + 8px) !important;
+    left: auto !important;
+    background: rgba(196,91,118,.22) !important;
+    border-color: rgba(255,241,244,.45) !important;
+  }
+  body.mekora-immersive #joystick-move-zone:active,
+  body.mekora-immersive #btn-tap-fire:active {
+    opacity: .52 !important;
+    transform: scale(.97) !important;
+  }
+  body.mekora-immersive #joystick-move-knob {
+    opacity: .58 !important;
+    background: rgba(138,199,194,.72) !important;
+  }
+  body.mekora-immersive #persistent-console-controls {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    pointer-events: none !important;
+    z-index: 100 !important;
+  }
+  body.mekora-immersive #persistent-console-controls .persistent-small-row,
+  body.mekora-immersive #btn-mute,
+  body.mekora-immersive #btn-fullscreen {
+    display: none !important;
+  }
+  body.mekora-immersive #btn-control-pause {
+    display: flex !important;
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: calc(max(10px, env(safe-area-inset-bottom)) + 6px) !important;
+    width: 50px !important;
+    height: 50px !important;
+    transform: translateX(-50%) !important;
+    opacity: .72 !important;
+    pointer-events: auto !important;
+    z-index: 100003 !important;
+  }
+  body.mekora-immersive #white-out-overlay {
+    inset: 0 !important;
+    border-radius: 0 !important;
+  }
+  body.mekora-immersive #ammo-hud {
+    left: calc(max(12px, env(safe-area-inset-left)) + 4px) !important;
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + 5px) !important;
+  }
+  body.mekora-immersive #roguelike-draft-modal {
+    padding: clamp(10px, 2.2vh, 20px) !important;
+  }
+  body.mekora-immersive #upgrade-cards-container {
+    width: min(78vw, 620px) !important;
+    height: clamp(150px, 45vh, 230px) !important;
+  }
+  body.mekora-immersive #orientation-warning {
+    background: rgba(3,4,5,.985) !important;
+  }
+  @media (orientation: portrait) {
+    body.mekora-immersive #orientation-warning {
+      display: flex !important;
+    }
+  }
+  @media (orientation: landscape) {
+    body.mekora-immersive #orientation-warning {
+      display: none !important;
+    }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
      <!-- ORIENTATION WARNING OVERLAY -->
      <div id="orientation-warning" style="display: none;">
        <svg class="w-16 h-16 text-[#00ffcc] animate-bounce mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-       <h2 class="font-title text-xl text-white font-bold mb-2">GIRA TU DISPOSITIVO EN HORIZONTAL</h2>
+       <h2 class="font-title text-xl text-white font-bold mb-2">MODO INMERSIVO: GIRA TU DISPOSITIVO EN HORIZONTAL</h2>
        
      </div>
 
@@ -1721,6 +1974,12 @@
              <span class="text-gray-600"> · HIT</span> <span id="dummy-hits" class="text-amber-300 font-bold">0</span>
              <span class="text-gray-600"> · TOTAL</span> <span id="dummy-total-dmg" class="text-white font-bold">0</span>
            </div>
+           <div id="boss-hud-v31" class="hidden">
+             <div class="boss-meta"><span id="boss-name-v31">AMENAZA</span><span id="boss-phase-v31">FASE 1</span></div>
+             <div id="boss-bar-v31"><div id="boss-hp-fill-v31"></div></div>
+           </div>
+           <div id="encounter-notice-v31"></div>
+
 
            <!-- RIGHT: ACTIVE WEAPONS & PASSIVES MINI DISPLAY -->
            <div class="absolute top-3 right-3 z-40 flex flex-col gap-0.5 items-end pointer-events-none">
@@ -1994,7 +2253,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.0.2</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.1.0</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2485,6 +2744,15 @@ stats.recentRuns = stats.recentRuns || [];
           runEvolutionCores: 0,
           awardedEvolutionMilestones: [],
 
+          // v3.1.0 · threat director and Chatarrero encounters
+          threatDirectorV31: { budget: 0, lastTick: 0, lastSpawnAt: 0 },
+          encounterMilestonesV31: { miniboss: false, boss: false },
+          bossEncounterV31: { active: false, id: null, type: null, name: '', phase: 0 },
+          eliteKillsV31: 0,
+          minibossKillsV31: 0,
+          bossKillsV31: 0,
+          pendingRewardTierV31: null,
+
           // Developer/test flags
           devInfHp: false,
           devInfShield: false,
@@ -2560,6 +2828,7 @@ stats.recentRuns = stats.recentRuns || [];
           // World entities
           bullets: [],
           enemyBullets: [],
+          enemyMinesV31: [],
           enemies: [],
           particles: [],
           damageNumbers: [],
@@ -2605,6 +2874,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       let state = createState();
       let rafId = null;
+      let rewardDraftTokenV31 = 0;
       let canvas, ctx;
 
       const dom = {};
@@ -2631,6 +2901,11 @@ stats.recentRuns = stats.recentRuns || [];
         dom.dummyLastDamage = document.getElementById('dummy-last-dmg');
         dom.dummyHits = document.getElementById('dummy-hits');
         dom.dummyTotalDamage = document.getElementById('dummy-total-dmg');
+        dom.bossHudV31 = document.getElementById('boss-hud-v31');
+        dom.bossNameV31 = document.getElementById('boss-name-v31');
+        dom.bossPhaseV31 = document.getElementById('boss-phase-v31');
+        dom.bossHpFillV31 = document.getElementById('boss-hp-fill-v31');
+        dom.encounterNoticeV31 = document.getElementById('encounter-notice-v31');
       }
 
       function trimOldest(array, maxItems) {
@@ -2782,7 +3057,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.0.2';
+      const MEKORA_VERSION = '3.1.0';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -3183,7 +3458,10 @@ stats.recentRuns = stats.recentRuns || [];
       //#endregion arsenal_v302
 
       function damageEnemy(e, damage, timestamp) {
-        const safeDamage = Math.max(0, Math.round(damage || 0));
+        let adjustedDamage = Math.max(0, Number(damage) || 0);
+        if (e && e.eliteModifierV31 === 'armored') adjustedDamage *= 0.8;
+        if (e && (e.type === 'drill_bastion' || e.type === 'forge_titan') && timestamp < (e.vulnerableUntil || 0)) adjustedDamage *= 1.35;
+        const safeDamage = Math.max(0, Math.round(adjustedDamage));
         if (e.isDummy) {
           const stats = state.dummyStats || (state.dummyStats = { totalDamage: 0, hits: 0, firstHitTime: 0, lastDamage: 0 });
           stats.hits += 1;
@@ -3463,29 +3741,331 @@ stats.recentRuns = stats.recentRuns || [];
         return Math.floor((state.mecha.damageFlashUntil - timestamp) / interval) % 2 === 0 ? '#ff354f' : null;
       }
       // COMBAT SIMULATION ENGINE
+      //#region enemies_v310 · Chatarreros faction, elite, miniboss, boss and threat director
+      const ENEMY_DEFS_V31 = Object.freeze({
+        scrap_hound: { name:'Sabueso de Chatarra', role:'perseguidor', hp:30, speed:2.45, radius:12, color:'#d9633c', contactDamage:6, xp:14, score:90, scrap:3, threat:1 },
+        saw_raider: { name:'Saqueador Sierra', role:'asedio', hp:52, speed:1.55, radius:16, color:'#e48a43', contactDamage:8, xp:20, score:130, scrap:5, threat:2 },
+        scrap_gunner: { name:'Tirador Remachado', role:'tirador', hp:42, speed:1.25, radius:15, color:'#c9a45b', contactDamage:5, xp:22, score:145, scrap:5, threat:2 },
+        mine_junker: { name:'Minador Improvisado', role:'controlador', hp:58, speed:1.05, radius:17, color:'#b9753f', contactDamage:6, xp:26, score:170, scrap:7, threat:3 },
+        drill_bastion: { name:'Taladro Bastión', role:'mini_jefe', hp:760, speed:.95, radius:34, color:'#dd753c', contactDamage:15, xp:120, score:1500, scrap:65, threat:15, miniboss:true },
+        forge_titan: { name:'Titán de la Forja', role:'jefe', hp:2800, speed:.62, radius:52, color:'#d25535', contactDamage:22, xp:300, score:6000, scrap:220, threat:40, boss:true }
+      });
+      const CHATARRERO_BASIC_TYPES_V31 = Object.freeze(['scrap_hound','saw_raider','scrap_gunner','mine_junker']);
+
+      function getEnemyDefV31(type) { return ENEMY_DEFS_V31[type] || ENEMY_DEFS_V31.scrap_hound; }
       function getEnemyTypeForSector(sector) {
         const r = Math.random();
-        if (sector === 1) {
-           return r < 0.9 ? 'scout' : 'heavy';
-         } else if (sector === 2) {
-           if (r < 0.8) return 'scout';
-           if (r < 0.95) return 'heavy';
-           return 'purple_arrow';
-         } else if (sector === 3) {
-           if (r < 0.7) return 'scout';
-           if (r < 0.9) return 'heavy';
-           return 'square';
-         } else if (sector === 4) {
-           if (r < 0.5) return 'scout';
-           if (r < 0.9) return 'heavy';
-           return 'purple_arrow';
-         } else {
-           if (r < 0.5) return 'scout';
-           if (r < 0.85) return 'heavy';
-           if (r < 0.925) return 'square';
-           return 'purple_arrow';
-         }
-       }
+        if (sector <= 1) return r < .62 ? 'scrap_hound' : (r < .84 ? 'saw_raider' : 'scrap_gunner');
+        if (sector === 2) return r < .42 ? 'scrap_hound' : (r < .67 ? 'saw_raider' : (r < .88 ? 'scrap_gunner' : 'mine_junker'));
+        return r < .3 ? 'scrap_hound' : (r < .56 ? 'saw_raider' : (r < .78 ? 'scrap_gunner' : 'mine_junker'));
+      }
+
+      function createEnemyV31(type, ex, ey, worldSize, options = {}) {
+        const def = getEnemyDefV31(type);
+        const sectorScale = 1 + Math.max(0, state.sector - 1) * .12;
+        const enemy = {
+          id: `${def.boss ? 'boss' : def.miniboss ? 'mini' : 'scrap'}_${Math.random().toString(36).slice(2,10)}`,
+          faction: 'scrappers', type, roleV31: def.role, displayNameV31: def.name,
+          x: Math.max(100, Math.min(worldSize - 100, ex)), y: Math.max(100, Math.min(worldSize - 100, ey)),
+          vx:0, vy:0, hp:Math.round(def.hp * sectorScale), maxHp:Math.round(def.hp * sectorScale),
+          radius:def.radius, speed:def.speed, color:def.color, contactDamage:def.contactDamage,
+          xpRewardV31:def.xp, scoreRewardV31:def.score, scrapRewardV31:def.scrap, threatCostV31:def.threat,
+          explodeTimer:null, hasEnteredVision:false, nextShotTime:null, nextActionAt:performance.now()+700+Math.random()*700,
+          attackWarningUntil:0, pendingAttackAt:0, vulnerableUntil:0, chargeUntil:0, windupUntil:0,
+          chargeAngle:0, nextMeleeHitAt:0, isMinibossV31:!!def.miniboss, isBossV31:!!def.boss,
+          phaseV31:1, suppressContactDamageV31:false
+        };
+        if (options.elite) applyEliteModifierV31(enemy, options.modifier || 'armored');
+        return enemy;
+      }
+
+      function applyEliteModifierV31(enemy, modifier = 'armored') {
+        enemy.isEliteV31 = true;
+        enemy.eliteModifierV31 = modifier;
+        enemy.displayNameV31 = `ÉLITE · ${enemy.displayNameV31}`;
+        enemy.maxHp = Math.round(enemy.maxHp * 1.75);
+        enemy.hp = enemy.maxHp;
+        enemy.radius = Math.round(enemy.radius * 1.14);
+        enemy.contactDamage = Math.round(enemy.contactDamage * 1.25);
+        enemy.scoreRewardV31 = Math.round(enemy.scoreRewardV31 * 2.5);
+        enemy.scrapRewardV31 += 22;
+        enemy.xpRewardV31 = Math.round(enemy.xpRewardV31 * 2);
+        return enemy;
+      }
+
+      function spawnEnemyAt(ex, ey, worldSize, forcedType, options = {}) {
+        const type = forcedType || getEnemyTypeForSector(state.sector);
+        const enemy = createEnemyV31(type, ex, ey, worldSize, options);
+        state.enemies.push(enemy);
+        return enemy;
+      }
+
+      function safeSpawnAroundPlayerV31(type, distance = 650, options = {}) {
+        const worldSize = getCurrentWorldSize();
+        const angle = Math.random() * Math.PI * 2;
+        const ex = state.mecha.x + Math.cos(angle) * distance;
+        const ey = state.mecha.y + Math.sin(angle) * distance;
+        return spawnEnemyAt(ex, ey, worldSize, type, options);
+      }
+
+      function showEncounterNoticeV31(text, duration = 1700) {
+        const el = dom.encounterNoticeV31 || document.getElementById('encounter-notice-v31');
+        if (!el) return;
+        el.textContent = text;
+        el.classList.add('show');
+        clearTimeout(el._hideTimerV31);
+        el._hideTimerV31 = setTimeout(() => el.classList.remove('show'), duration);
+      }
+
+      function spawnMinibossV31() {
+        const existing = state.enemies.find(e => e.isMinibossV31);
+        if (existing) return existing;
+        const enemy = safeSpawnAroundPlayerV31('drill_bastion', 720);
+        state.bossEncounterV31 = {active:true,id:enemy.id,type:enemy.type,name:enemy.displayNameV31,phase:1};
+        showEncounterNoticeV31('⚠ MINI JEFE: TALADRO BASTIÓN', 2300);
+        return enemy;
+      }
+
+      function spawnBossV31() {
+        const existing = state.enemies.find(e => e.isBossV31);
+        if (existing) return existing;
+        state.enemies = state.enemies.filter(e => e.isDummy || e.isMinibossV31);
+        state.enemyMinesV31.length = 0;
+        state.enemyBullets.length = 0;
+        const enemy = safeSpawnAroundPlayerV31('forge_titan', 780);
+        state.bossEncounterV31 = {active:true,id:enemy.id,type:enemy.type,name:enemy.displayNameV31,phase:1};
+        showEncounterNoticeV31('⚠ JEFE: TITÁN DE LA FORJA', 2600);
+        return enemy;
+      }
+
+      function spawnEnemyWave() {
+        const count = Math.min(7, 3 + Math.floor(state.sector * .75));
+        const eliteChance = state.playTime > 70000 ? Math.min(.16, .045 + state.sector * .015) : 0;
+        for (let i = 0; i < count; i++) {
+          const type = getEnemyTypeForSector(state.sector);
+          safeSpawnAroundPlayerV31(type, 520 + Math.random() * 360, {elite:Math.random() < eliteChance});
+        }
+      }
+
+      function updateThreatDirectorV31(timestamp, timeFactor) {
+        if (state.testMode && (!state.testSpawnEnemies || state.devContinuousSpawn === false)) return;
+        if (!state.encounterMilestonesV31.miniboss && state.playTime >= 90000) {
+          state.encounterMilestonesV31.miniboss = true;
+          spawnMinibossV31();
+          return;
+        }
+        if (!state.encounterMilestonesV31.boss && state.playTime >= 240000 && !state.enemies.some(e => e.isMinibossV31)) {
+          state.encounterMilestonesV31.boss = true;
+          spawnBossV31();
+          return;
+        }
+        if (state.enemies.some(e => e.isBossV31)) return;
+        const regularCount = state.enemies.filter(e => !e.isDummy && !e.isMinibossV31 && !e.isBossV31).length;
+        const cap = state.enemies.some(e => e.isMinibossV31) ? 5 : Math.min(22, 9 + state.sector * 2);
+        if (regularCount === 0) { spawnEnemyWave(); state.threatDirectorV31.lastSpawnAt = timestamp; return; }
+        const interval = Math.max(680, 1800 / Math.max(.45,timeFactor));
+        if (regularCount < cap && timestamp - (state.threatDirectorV31.lastSpawnAt || 0) >= interval) {
+          state.threatDirectorV31.lastSpawnAt = timestamp;
+          const amount = regularCount < cap * .45 ? 2 : 1;
+          for (let i=0;i<amount;i++) {
+            const eliteChance = state.playTime > 70000 ? Math.min(.18,.04+state.sector*.018) : 0;
+            safeSpawnAroundPlayerV31(getEnemyTypeForSector(state.sector), 500+Math.random()*420, {elite:Math.random()<eliteChance});
+          }
+        }
+      }
+
+      function fireEnemyBulletV31(e, angle, speed, damage, color='#ff9b53', radius=5, life=220) {
+        state.enemyBullets.push({x:e.x,y:e.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,damage,color,radius,lifeV31:life});
+      }
+      function fireRadialBurstV31(e, count, speed, damage, color='#ff7a45') {
+        for (let i=0;i<count;i++) fireEnemyBulletV31(e,(Math.PI*2*i/count)+(e.phaseV31||0)*.13,speed,damage,color,5,260);
+      }
+      function fireFanV31(e, centerAngle, count, spread, speed, damage, color='#f5a04f') {
+        for(let i=0;i<count;i++) {
+          const t=count===1?0:i/(count-1)-.5;
+          fireEnemyBulletV31(e,centerAngle+t*spread,speed,damage,color,5,240);
+        }
+      }
+
+      function moveEnemyTowardV31(e, angle, speed, simulationSpeed) {
+        e.x += Math.cos(angle) * speed * simulationSpeed;
+        e.y += Math.sin(angle) * speed * simulationSpeed;
+      }
+
+      function executeBossAttackV31(e, timestamp, angle) {
+        if (e.type === 'drill_bastion') {
+          e.chargeAngle = angle; e.chargeUntil = timestamp + 760; e.suppressContactDamageV31 = true;
+          return;
+        }
+        if (e.phaseV31 === 1) {
+          fireRadialBurstV31(e,8,3.5,10,'#ef8742');
+          state.enemyMinesV31.push({x:e.x+Math.cos(angle)*110,y:e.y+Math.sin(angle)*110,radius:55,damage:16,armedAt:timestamp+700,expiresAt:timestamp+8000,color:'#e65b37'});
+        } else if (e.phaseV31 === 2) {
+          fireFanV31(e,angle,7,1.25,4.4,12,'#f0a24e');
+          for(let i=0;i<2;i++) safeSpawnAroundPlayerV31(i?'saw_raider':'scrap_hound',420+Math.random()*100);
+        } else {
+          fireRadialBurstV31(e,14,4.4,14,'#ff5a3c');
+          fireFanV31(e,angle,5,.72,5.2,16,'#ffd064');
+        }
+        e.vulnerableUntil = timestamp + 1250;
+      }
+
+      function updateScrapperEnemyV31(e, timestamp, distToPlayer, angle, isStunned, simulationSpeed, visibleRange) {
+        e.suppressContactDamageV31 = false;
+        if (isStunned) return;
+        if (e.type === 'scrap_hound') {
+          moveEnemyTowardV31(e,angle+Math.sin(timestamp*.004+(e.x%17))*.13,e.speed,simulationSpeed);
+        } else if (e.type === 'saw_raider') {
+          if (timestamp < (e.windupUntil||0)) {
+            e.attackWarningUntil=e.windupUntil; return;
+          }
+          if (timestamp < (e.chargeUntil||0)) {
+            e.suppressContactDamageV31=true;
+            moveEnemyTowardV31(e,e.chargeAngle,e.speed*5.2,simulationSpeed);
+            if (distToPlayer < e.radius+25 && timestamp >= (e.nextChargeHitAt||0)) {
+              e.nextChargeHitAt=timestamp+900;
+              applyMechaDamage(14,e.x,e.y,timestamp,1);
+            }
+            return;
+          }
+          if (e.chargeUntil && timestamp >= e.chargeUntil) { e.chargeUntil=0; e.vulnerableUntil=timestamp+900; }
+          if (timestamp >= (e.nextActionAt||0) && distToPlayer<520) {
+            e.chargeAngle=angle; e.windupUntil=timestamp+620; e.chargeUntil=timestamp+1220; e.nextActionAt=timestamp+3600; e.attackWarningUntil=e.windupUntil; return;
+          }
+          moveEnemyTowardV31(e,angle,e.speed,simulationSpeed);
+        } else if (e.type === 'scrap_gunner') {
+          let moveAngle=angle;
+          if (distToPlayer<260) moveAngle=angle+Math.PI;
+          else if (distToPlayer<430) moveAngle=angle+(e.id.charCodeAt(e.id.length-1)%2?1:-1)*Math.PI/2;
+          moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
+          if (e.pendingAttackAt && timestamp>=e.pendingAttackAt) {
+            fireFanV31(e,Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x),3,.18,5.2,9,'#f1bd6a');
+            e.pendingAttackAt=0; e.nextActionAt=timestamp+2100+Math.random()*500;
+          } else if (!e.pendingAttackAt && timestamp>=(e.nextActionAt||0) && distToPlayer<visibleRange) {
+            e.pendingAttackAt=timestamp+520; e.attackWarningUntil=e.pendingAttackAt;
+          }
+        } else if (e.type === 'mine_junker') {
+          let moveAngle=angle;
+          if(distToPlayer<230) moveAngle=angle+Math.PI;
+          else if(distToPlayer<390) moveAngle=angle+Math.PI/2;
+          moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
+          if(timestamp>=(e.nextActionAt||0)) {
+            state.enemyMinesV31.push({x:e.x,y:e.y,radius:48,damage:13,armedAt:timestamp+650,expiresAt:timestamp+11000,color:'#d27b38'});
+            e.nextActionAt=timestamp+3100+Math.random()*700;
+          }
+        } else if (e.type === 'drill_bastion') {
+          if(timestamp<(e.windupUntil||0)) { e.attackWarningUntil=e.windupUntil; return; }
+          if(timestamp<(e.chargeUntil||0)) {
+            e.suppressContactDamageV31=true;
+            moveEnemyTowardV31(e,e.chargeAngle,e.speed*7.4,simulationSpeed);
+            if(distToPlayer<e.radius+28 && timestamp>=(e.nextChargeHitAt||0)) { e.nextChargeHitAt=timestamp+1100; applyMechaDamage(22,e.x,e.y,timestamp,1); }
+            return;
+          }
+          if(e.chargeUntil && timestamp>=e.chargeUntil) { e.chargeUntil=0; e.vulnerableUntil=timestamp+1600; }
+          if(timestamp>=(e.nextActionAt||0)) { e.chargeAngle=angle; e.windupUntil=timestamp+850; e.chargeUntil=timestamp+1850; e.nextActionAt=timestamp+4300; e.attackWarningUntil=e.windupUntil; return; }
+          moveEnemyTowardV31(e,angle,e.speed,simulationSpeed);
+        } else if (e.type === 'forge_titan') {
+          const hpRatio=Math.max(0,e.hp/e.maxHp);
+          e.phaseV31=hpRatio>.66?1:(hpRatio>.33?2:3);
+          state.bossEncounterV31.phase=e.phaseV31;
+          const preferred=e.phaseV31===1?260:340;
+          const moveAngle=distToPlayer<preferred*.75?angle+Math.PI:(distToPlayer>preferred?angle:angle+Math.PI/2);
+          moveEnemyTowardV31(e,moveAngle,e.speed*(e.phaseV31===3?1.25:1),simulationSpeed);
+          if(e.pendingAttackAt && timestamp>=e.pendingAttackAt) {
+            executeBossAttackV31(e,timestamp,angle); e.pendingAttackAt=0; e.nextActionAt=timestamp+(e.phaseV31===3?1550:e.phaseV31===2?2100:2600);
+          } else if(!e.pendingAttackAt && timestamp>=(e.nextActionAt||0)) {
+            e.pendingAttackAt=timestamp+720; e.attackWarningUntil=e.pendingAttackAt;
+          }
+        }
+      }
+
+      function updateEnemyMinesV31(timestamp) {
+        for(let i=state.enemyMinesV31.length-1;i>=0;i--) {
+          const mine=state.enemyMinesV31[i];
+          if(timestamp>=mine.expiresAt) { state.enemyMinesV31.splice(i,1); continue; }
+          const armed=timestamp>=mine.armedAt;
+          const d=Math.hypot(state.mecha.x-mine.x,state.mecha.y-mine.y);
+          if(armed && d<mine.radius) {
+            applyMechaDamage(mine.damage,mine.x,mine.y,timestamp,1);
+            for(let p=0;p<18;p++) state.particles.push({x:mine.x,y:mine.y,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*7,life:22,color:mine.color});
+            state.enemyMinesV31.splice(i,1);
+          }
+        }
+      }
+
+      function drawEnemyMinesV31(timestamp) {
+        for(const mine of state.enemyMinesV31) {
+          const armed=timestamp>=mine.armedAt;
+          ctx.save(); ctx.translate(mine.x,mine.y);
+          ctx.strokeStyle=armed?'#ff6b3d':'#d99b4e'; ctx.fillStyle=armed?'rgba(255,77,42,.18)':'rgba(217,155,78,.12)'; ctx.lineWidth=2;
+          ctx.beginPath(); ctx.arc(0,0,mine.radius*(armed?1:.38),0,Math.PI*2); ctx.fill(); ctx.stroke();
+          ctx.rotate(timestamp*.003); ctx.fillStyle=mine.color; ctx.fillRect(-7,-7,14,14); ctx.restore();
+        }
+      }
+
+      function drawScrapperEnemyV31(e, timestamp, angle) {
+        ctx.save();
+        if(e.attackWarningUntil>timestamp) {
+          const pulse=.45+.4*Math.sin(timestamp*.025);
+          ctx.strokeStyle=`rgba(255,86,48,${pulse})`; ctx.lineWidth=e.isBossV31?6:3;
+          ctx.beginPath(); ctx.arc(0,0,e.radius+9,0,Math.PI*2); ctx.stroke();
+          if(e.chargeAngle!==undefined && (e.type==='saw_raider'||e.type==='drill_bastion')) {
+            ctx.rotate(e.chargeAngle-angle); ctx.beginPath(); ctx.moveTo(e.radius,0); ctx.lineTo(e.radius+180,0); ctx.stroke(); ctx.rotate(-(e.chargeAngle-angle));
+          }
+        }
+        ctx.rotate(angle);
+        const vulnerable=timestamp<(e.vulnerableUntil||0);
+        ctx.fillStyle=vulnerable?'#ffe3b3':e.color; ctx.strokeStyle=e.isEliteV31?'#ffe38a':'#f4d4ad'; ctx.lineWidth=e.isBossV31?4:2;
+        ctx.beginPath();
+        if(e.type==='scrap_hound') { ctx.moveTo(17,0);ctx.lineTo(-8,-11);ctx.lineTo(-14,-3);ctx.lineTo(-7,0);ctx.lineTo(-14,5);ctx.lineTo(-8,11); }
+        else if(e.type==='saw_raider') { ctx.arc(0,0,e.radius,0,Math.PI*2); for(let k=0;k<8;k++){const a=k*Math.PI/4;ctx.moveTo(Math.cos(a)*e.radius,Math.sin(a)*e.radius);ctx.lineTo(Math.cos(a)*(e.radius+6),Math.sin(a)*(e.radius+6));} }
+        else if(e.type==='scrap_gunner') { ctx.rect(-14,-11,28,22);ctx.moveTo(6,-4);ctx.lineTo(25,-4);ctx.lineTo(25,4);ctx.lineTo(6,4); }
+        else if(e.type==='mine_junker') { for(let k=0;k<6;k++){const a=k*Math.PI/3;const x=Math.cos(a)*e.radius,y=Math.sin(a)*e.radius;k?ctx.lineTo(x,y):ctx.moveTo(x,y);} }
+        else if(e.type==='drill_bastion') { ctx.rect(-26,-22,44,44);ctx.moveTo(18,-14);ctx.lineTo(42,0);ctx.lineTo(18,14); }
+        else { ctx.arc(0,0,e.radius,0,Math.PI*2);ctx.moveTo(-e.radius*.8,-12);ctx.lineTo(-e.radius-25,-24);ctx.lineTo(-e.radius-15,0);ctx.lineTo(-e.radius-25,24);ctx.lineTo(-e.radius*.8,12);ctx.moveTo(e.radius*.8,-12);ctx.lineTo(e.radius+25,-24);ctx.lineTo(e.radius+15,0);ctx.lineTo(e.radius+25,24);ctx.lineTo(e.radius*.8,12); }
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle=e.phaseV31===3?'#fff1a8':'#ffdb74'; ctx.beginPath();ctx.arc(0,0,Math.max(4,e.radius*.22),0,Math.PI*2);ctx.fill();
+        if(e.isEliteV31) { ctx.strokeStyle='#ffe88e';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,e.radius+7,0,Math.PI*2);ctx.stroke(); }
+        ctx.restore();
+      }
+
+      function drawEnemyHealthV31(e) {
+        if(!e.isEliteV31&&!e.isMinibossV31&&!e.isBossV31) return;
+        const w=e.isBossV31?110:e.isMinibossV31?76:42, h=e.isBossV31?7:5, y=e.y-e.radius-15;
+        ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(e.x-w/2,y,w,h);
+        ctx.fillStyle=e.isBossV31?'#df593d':e.isMinibossV31?'#e98942':'#f0c75e';ctx.fillRect(e.x-w/2,y,w*Math.max(0,e.hp/e.maxHp),h);
+        if(e.isEliteV31){ctx.fillStyle='#ffe58a';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.fillText('◆',e.x,y-3);}
+      }
+
+      function updateBossHudV31() {
+        const encounter=state.enemies.find(e=>e.isBossV31||e.isMinibossV31);
+        const hud=dom.bossHudV31||document.getElementById('boss-hud-v31');
+        if(!hud) return;
+        if(!encounter){hud.classList.add('hidden');return;}
+        hud.classList.remove('hidden');
+        if(dom.bossNameV31) dom.bossNameV31.textContent=encounter.displayNameV31;
+        if(dom.bossPhaseV31) dom.bossPhaseV31.textContent=encounter.isBossV31?`FASE ${encounter.phaseV31||1}`:'MINI JEFE';
+        if(dom.bossHpFillV31) dom.bossHpFillV31.style.width=`${Math.max(0,Math.min(100,encounter.hp/encounter.maxHp*100))}%`;
+      }
+
+      function queueRewardDraftV31(tier='elite') {
+        const rewardToken = ++rewardDraftTokenV31;
+        state.pendingRewardTierV31=tier;
+        setTimeout(()=>{
+          if(rewardToken !== rewardDraftTokenV31 || state.pendingRewardTierV31 !== tier || state.phase!=='playing') return;
+          const minRank=tier==='boss'?3:(tier==='miniboss'?2:1);
+          let pool=UPGRADE_POOL.filter(item=>isContentUnlockedV3(item.id)&&(RARITY_DEFS_V3[getContentMetaV3(item.id)?.rarity||'common']?.rank||0)>=minRank);
+          if(pool.length<3) pool=UPGRADE_POOL.filter(item=>isContentUnlockedV3(item.id));
+          const cards=selectDraftCardsV3(pool,3,state);
+          if(!cards.length) return;
+          state.phase='draft'; state.draftCards=cards; state.draftSelection=0; state.draftConfirmArmed=false; state.draftInputLocked=false;
+          prepareDraftDiscoveriesV301(cards); document.getElementById('roguelike-draft-modal')?.classList.remove('hidden'); updateDraftMenuUI(); render();
+          state.pendingRewardTierV31=null;
+        },180);
+      }
+      //#endregion enemies_v310
+
+
 
        function triggerSplashExplosion(x, y, radius, damage) {
          for (let p = 0; p < 15; p++) {
@@ -3535,72 +4115,48 @@ stats.recentRuns = stats.recentRuns || [];
        }
 
        function getXpForEnemyType(type) {
-         if (type === 'scout') return 15;
-         if (type === 'heavy') return 25;
-         if (type === 'square') return 20;
-         if (type === 'purple_arrow') return 30;
-         return 15;
+         return ENEMY_DEFS_V31[type]?.xp || ({scout:15,heavy:25,square:20,purple_arrow:30}[type] || 15);
        }
        function updateXpUI() {
          const pct = Math.min(100, (state.xp / state.xpNeeded) * 100);
-         if (dom.xpProgressBar && pct !== hudCache.xpPct) {
-           hudCache.xpPct = pct;
-           dom.xpProgressBar.style.width = `${pct}%`;
-         }
-         if (dom.hudLevel && state.level !== hudCache.level) {
-           hudCache.level = state.level;
-           dom.hudLevel.textContent = state.level;
-         }
+         if (dom.xpProgressBar && pct !== hudCache.xpPct) { hudCache.xpPct = pct; dom.xpProgressBar.style.width = `${pct}%`; }
+         if (dom.hudLevel && state.level !== hudCache.level) { hudCache.level = state.level; dom.hudLevel.textContent = state.level; }
          const xpText = `${state.xp}/${state.xpNeeded}`;
-         if (dom.hudXpText && xpText !== hudCache.xpText) {
-           hudCache.xpText = xpText;
-           dom.hudXpText.textContent = xpText;
-         }
+         if (dom.hudXpText && xpText !== hudCache.xpText) { hudCache.xpText = xpText; dom.hudXpText.textContent = xpText; }
        }
 
        function killEnemy(e, index) {
-         state.score += 100;
+         const scoreReward=e.scoreRewardV31||100;
+         state.score += scoreReward;
+         state.scrap = (state.scrap||0) + (e.scrapRewardV31||2);
          state.sectorEnemiesDefeated++;
          state.totalEnemiesDefeated = (state.totalEnemiesDefeated || 0) + 1;
-
-         const xpGained = getXpForEnemyType(e.type);
-         state.orbs.push({
-           x: e.x,
-           y: e.y,
-           xpValue: xpGained,
-           radius: 6,
-           color: '#00ffcc'
-         });
-
-         const hudScore = document.getElementById('hud-score');
-         if (hudScore) hudScore.textContent = state.score;
+         const xpGained = e.xpRewardV31 || getXpForEnemyType(e.type);
+         state.orbs.push({x:e.x,y:e.y,xpValue:xpGained,radius:e.isBossV31?11:e.isMinibossV31?9:6,color:e.isBossV31?'#ffb24d':'#00ffcc'});
+         const hudScore=document.getElementById('hud-score'); if(hudScore) hudScore.textContent=state.score;
 
          if (state.passives.includes('p-kill-cooldown')) {
-           const lvl = state.passiveLevels['p-kill-cooldown'] || 1;
-           const reduction = lvl * 300;
-           if (state.lastWeaponFireTimes) {
-             for (let k in state.lastWeaponFireTimes) {
-               state.lastWeaponFireTimes[k] = Math.max(0, state.lastWeaponFireTimes[k] - reduction);
-             }
-           }
+           const reduction=(state.passiveLevels['p-kill-cooldown']||1)*300;
+           if(state.lastWeaponFireTimes) for(const k in state.lastWeaponFireTimes) state.lastWeaponFireTimes[k]=Math.max(0,state.lastWeaponFireTimes[k]-reduction);
          }
+         if(state.passives.includes('p-explode')) triggerSplashExplosion(e.x,e.y,80,40);
 
-         if (state.passives.includes('p-explode')) {
-           triggerSplashExplosion(e.x, e.y, 80, 40);
-         }
+         let rewardTier=null;
+         if(e.isEliteV31){state.eliteKillsV31++; progressionV3.cores=(progressionV3.cores||0)+4; rewardTier='elite';}
+         if(e.isMinibossV31){state.minibossKillsV31++; awardEvolutionCoreV302('drill_bastion'); progressionV3.cores=(progressionV3.cores||0)+30; rewardTier='miniboss'; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0};}
+         if(e.isBossV31){state.bossKillsV31++; awardEvolutionCoreV302('forge_titan'); progressionV3.cores=(progressionV3.cores||0)+150; rewardTier='boss'; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0}; progressionV3.missions=progressionV3.missions||{}; progressionV3.missions['boss-forge-titan']={completed:true,completedAt:Date.now()};}
+         if(rewardTier) saveProgressionV3();
 
-         if (e.type === 'heavy') {
+         if (e.type === 'heavy' && e.faction !== 'scrappers') {
            explodeHeavyEnemy(e, index);
-         } else {
-           for (let p = 0; p < 12; p++) {
-             state.particles.push({
-               x: e.x, y: e.y,
-               vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8,
-               life: 25, color: '#ffaa00'
-             });
-           }
-           state.enemies.splice(index, 1);
+           if(rewardTier) queueRewardDraftV31(rewardTier);
+           return;
          }
+         const particleCount=e.isBossV31?70:e.isMinibossV31?40:e.isEliteV31?24:12;
+         for(let p=0;p<particleCount;p++) state.particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*(e.isBossV31?13:8),vy:(Math.random()-.5)*(e.isBossV31?13:8),life:e.isBossV31?42:25,color:e.color||'#ffaa00'});
+         state.enemies.splice(index,1);
+         updateBossHudV31();
+         if(rewardTier) queueRewardDraftV31(rewardTier);
        }
 
        function applyElementalStatus(enemy) {
@@ -3685,65 +4241,9 @@ stats.recentRuns = stats.recentRuns || [];
          }
        }
 
-       function spawnEnemyAt(ex, ey, worldSize, forcedType) {
-        const type = forcedType || getEnemyTypeForSector(state.sector);
-        let speed = 1.8;
-        let hp = 30 + state.sector * 8;
-        let radius = 14;
-        let color = '#ff3366';
 
-        if (type === 'scout') {
-           speed = 2.0;
-           hp = 22 + state.sector * 5;
-           radius = 12;
-           color = '#ff3366';
-         } else if (type === 'heavy') {
-           speed = 1.0;
-           hp = 70 + state.sector * 20;
-           radius = 22;
-           color = '#ffaa00';
-        } else if (type === 'square') {
-          speed = 1.8;
-          hp = 45 + state.sector * 10;
-          radius = 16;
-          color = '#ef4444';
-        } else if (type === 'purple_arrow') {
-          speed = 1.2;
-          hp = 35 + state.sector * 8;
-          radius = 15;
-          color = '#a855f7';
-        }
 
-        state.enemies.push({
-          id: 'e_' + Math.random().toString(36).substr(2, 9),
-          x: Math.max(100, Math.min(worldSize - 100, ex)),
-          y: Math.max(100, Math.min(worldSize - 100, ey)),
-          vx: 0,
-          vy: 0,
-          hp: hp,
-          maxHp: hp,
-          radius: radius,
-          speed: speed,
-          type: type,
-          color: color,
-          explodeTimer: null,
-          hasEnteredVision: false,
-          nextShotTime: null
-        });
-      }
 
-      function spawnEnemyWave() {
-        const timeFactor = Math.min(3.0, 0.3 + ((state.playTime || 0) / 60000) * 0.7);
-        const count = Math.max(3, Math.round((6 + state.sector * 3) * timeFactor));
-        const worldSize = getCurrentWorldSize();
-        for (let i = 0; i < count; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 400 + Math.random() * 800;
-          const ex = state.mecha.x + Math.cos(angle) * dist;
-          const ey = state.mecha.y + Math.sin(angle) * dist;
-          spawnEnemyAt(ex, ey, worldSize);
-        }
-      }
 
       function loop(timestamp) {
          if (state.phase !== 'playing' || state.paused || (dom.orientationWarning && dom.orientationWarning.style.display === 'flex')) {
@@ -3794,7 +4294,7 @@ stats.recentRuns = stats.recentRuns || [];
 
         // Camera Follow with cached settings.
         ctx.save();
-        const cameraZoom = SETTINGS_STATE.cameraZoom;
+        const cameraZoom = getActiveCameraZoom();
         ctx.scale(cameraZoom, cameraZoom);
         const halfW = (canvas.width / cameraZoom) / 2;
         const halfH = (canvas.height / cameraZoom) / 2;
@@ -5777,26 +6277,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         // Spawn enemy wave if field empty
-        if ((!state.testMode || state.testSpawnEnemies) && state.enemies.filter(enemy => !enemy.isDummy).length === 0) {
-          spawnEnemyWave();
-        }
-
-        // Constant spawning of enemies
-        if (state.devContinuousSpawn !== false && (!state.testMode || state.testSpawnEnemies)) {
-          if (!state.lastSpawnTime) state.lastSpawnTime = timestamp;
-          const spawnInterval = 1500 / timeFactor;
-          if (timestamp - state.lastSpawnTime > spawnInterval) {
-            state.lastSpawnTime = timestamp;
-            const worldSize = getCurrentWorldSize();
-            for (let i = 0; i < 2; i++) {
-              const angle = Math.random() * Math.PI * 2;
-              const dist = 500 + Math.random() * 500;
-              const ex = state.mecha.x + Math.cos(angle) * dist;
-              const ey = state.mecha.y + Math.sin(angle) * dist;
-              spawnEnemyAt(ex, ey, worldSize);
-            }
-          }
-        }
+        updateThreatDirectorV31(timestamp, timeFactor);
 
         // Update Active Targets array for Mekora contract/harness
         state.activeTargets.length = 0;
@@ -5838,6 +6319,9 @@ stats.recentRuns = stats.recentRuns || [];
              });
            }
 
+           if (e.faction === 'scrappers') {
+             updateScrapperEnemyV31(e, timestamp, distToPlayer, angle, isStunned, simulationSpeed, visibleRange);
+           } else {
            // Initialize/reset vision entry for projectile enemies
            if (e.type === 'square' || e.type === 'purple_arrow') {
             if (distToPlayer <= visibleRange) {
@@ -5886,7 +6370,7 @@ stats.recentRuns = stats.recentRuns || [];
              e.y += Math.sin(moveAngle) * currentSpeed * enemySpeedFactor;
            }
 
-          if (e.type !== 'heavy') {
+          if (e.type !== 'heavy' && !e.isBossV31 && !e.isMinibossV31) {
              let sepX = 0;
              let sepY = 0;
              let sepCount = 0;
@@ -5963,6 +6447,8 @@ stats.recentRuns = stats.recentRuns || [];
               playSound('laser');
             }
           }
+
+           }
 
           // Register for harness interactivity state reader
           state.activeTargets.push({ id: e.id, x: e.x - e.radius, y: e.y - e.radius, w: e.radius * 2, h: e.radius * 2 });
@@ -6216,7 +6702,7 @@ stats.recentRuns = stats.recentRuns || [];
             }
 
             // Yellow enemy doesn't deal contact damage while self-destructing
-            if (e.type !== 'heavy' || e.explodeTimer === null) {
+            if (!e.suppressContactDamageV31 && (e.type !== 'heavy' || e.explodeTimer === null)) {
               const isShieldBubbleActive = state.mecha.shieldActiveUntil && timestamp < state.mecha.shieldActiveUntil;
               if (!isShieldBubbleActive && !state.devInvulnerable) {
                 if (timestamp >= (e.nextMeleeHitAt || 0)) {
@@ -6226,7 +6712,7 @@ stats.recentRuns = stats.recentRuns || [];
                     const d = Math.hypot(state.mecha.x - other.x, state.mecha.y - other.y);
                     return count + (d < other.radius + 24 ? 1 : 0);
                   }, 0);
-                  applyMechaDamage(7, e.x, e.y, timestamp, Math.max(1, nearbyAttackers));
+                  applyMechaDamage(e.contactDamage || 7, e.x, e.y, timestamp, Math.max(1, nearbyAttackers));
                   if (state.phase !== 'playing') return;
                 }
               }
@@ -6265,28 +6751,19 @@ stats.recentRuns = stats.recentRuns || [];
               ctx.font = '9px Share Tech Mono, monospace';
               ctx.fillText('HP ∞', 0, e.radius + 21);
             }
+          } else if (e.faction === 'scrappers') {
+            drawScrapperEnemyV31(e, timestamp, angle);
           } else {
             ctx.rotate(angle);
             let drawColor = e.color;
-            if (e.type === 'heavy' && e.explodeTimer !== null && Math.floor(e.explodeTimer / 5) % 2 === 0) {
-              drawColor = '#ffffff';
-            }
-            ctx.fillStyle = drawColor;
-            ctx.beginPath();
-            if (e.type === 'square') {
-              ctx.rect(-14, -14, 28, 28);
-            } else {
-              ctx.moveTo(16, 0);
-              ctx.lineTo(-12, -12);
-              ctx.lineTo(-6, 0);
-              ctx.lineTo(-12, 12);
-            }
-            ctx.closePath();
-            ctx.fill();
-            ctx.strokeStyle = '#ffffff';
-            ctx.stroke();
+            if (e.type === 'heavy' && e.explodeTimer !== null && Math.floor(e.explodeTimer / 5) % 2 === 0) drawColor = '#ffffff';
+            ctx.fillStyle = drawColor; ctx.beginPath();
+            if (e.type === 'square') ctx.rect(-14, -14, 28, 28);
+            else { ctx.moveTo(16, 0); ctx.lineTo(-12, -12); ctx.lineTo(-6, 0); ctx.lineTo(-12, 12); }
+            ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#ffffff'; ctx.stroke();
           }
           ctx.restore();
+          if (e.faction === 'scrappers') drawEnemyHealthV31(e);
 
           // Draw visual timer for self-destructing yellow enemy (not rotated)
           if (e.type === 'heavy' && e.explodeTimer !== null) {
@@ -6305,12 +6782,17 @@ stats.recentRuns = stats.recentRuns || [];
           }
         }
 
+        updateEnemyMinesV31(timestamp);
+        drawEnemyMinesV31(timestamp);
+        updateBossHudV31();
+
         // Update Enemy Projectiles
         for (let i = state.enemyBullets.length - 1; i >= 0; i--) {
           const eb = state.enemyBullets[i];
           const enemyBulletSpeedFactor = simulationSpeed;
           eb.x += eb.vx * enemyBulletSpeedFactor;
           eb.y += eb.vy * enemyBulletSpeedFactor;
+          if (eb.lifeV31 !== undefined) { eb.lifeV31--; if (eb.lifeV31 <= 0) { state.enemyBullets.splice(i,1); continue; } }
 
            // Check if out of player's vision range
            const enemyBulletDx = state.mecha.x - eb.x;
@@ -6708,7 +7190,7 @@ stats.recentRuns = stats.recentRuns || [];
           music:'VOLUMEN DE MÚSICA', sfx:'VOLUMEN EFECTOS DE SONIDO (SFX)', language:'IDIOMA', back_menu:'VOLVER AL MENÚ',
           global_title:'RED GLOBAL DE MECHAS', failed:'MISIÓN FALLIDA', destroyed:'MECHA DESTRUIDO', level:'NIVEL', points:'PUNTOS', cores:'NÚCLEOS', retry:'JUGAR DE NUEVO',
           move:'MOVER', navigate:'NAVEGAR', pause:'PAUSA', fire:'DISPARAR', hud_time:'TIEMPO', hud_enemies:'ENEMIGOS:', hud_level:'NIVEL:', hud_points:'PUNTOS:',
-          fullscreen_install:'En iPhone: Compartir → Añadir a pantalla de inicio. Ábrelo desde el icono para ocultar Safari.'
+          fullscreen_install:'En iPhone: Compartir → Añadir a pantalla de inicio. Ábrelo desde el icono para ocultar Safari.', immersive_exit:'SALIR DEL MODO INMERSIVO', immersive_enter:'ACTIVAR MODO INMERSIVO'
         },
         en: {
           play:'PLAY', global:'GLOBAL MECHA NETWORK', settings:'SETTINGS', developer:'DEVELOPER MODE',
@@ -6717,7 +7199,7 @@ stats.recentRuns = stats.recentRuns || [];
           music:'MUSIC VOLUME', sfx:'SOUND EFFECTS VOLUME (SFX)', language:'LANGUAGE', back_menu:'BACK TO MENU',
           global_title:'GLOBAL MECHA NETWORK', failed:'MISSION FAILED', destroyed:'MECHA DESTROYED', level:'LEVEL', points:'SCORE', cores:'CORES', retry:'PLAY AGAIN',
           move:'MOVE', navigate:'NAVIGATE', pause:'PAUSE', fire:'FIRE', hud_time:'TIME', hud_enemies:'ENEMIES:', hud_level:'LEVEL:', hud_points:'SCORE:',
-          fullscreen_install:'On iPhone: Share → Add to Home Screen. Open from the icon to hide Safari.'
+          fullscreen_install:'On iPhone: Share → Add to Home Screen. Open from the icon to hide Safari.', immersive_exit:'EXIT IMMERSIVE MODE', immersive_enter:'ENTER IMMERSIVE MODE'
         },
         pt: {
           play:'JOGAR', global:'REDE GLOBAL DE MECHAS', settings:'CONFIGURAÇÕES', developer:'MODO DESENVOLVEDOR',
@@ -6726,7 +7208,7 @@ stats.recentRuns = stats.recentRuns || [];
           music:'VOLUME DA MÚSICA', sfx:'VOLUME DOS EFEITOS (SFX)', language:'IDIOMA', back_menu:'VOLTAR AO MENU',
           global_title:'REDE GLOBAL DE MECHAS', failed:'MISSÃO FRACASSADA', destroyed:'MECHA DESTRUÍDO', level:'NÍVEL', points:'PONTOS', cores:'NÚCLEOS', retry:'JOGAR NOVAMENTE',
           move:'MOVER', navigate:'NAVEGAR', pause:'PAUSA', fire:'DISPARAR', hud_time:'TEMPO', hud_enemies:'INIMIGOS:', hud_level:'NÍVEL:', hud_points:'PONTOS:',
-          fullscreen_install:'No iPhone: Compartilhar → Adicionar à Tela de Início. Abra pelo ícone para ocultar o Safari.'
+          fullscreen_install:'No iPhone: Compartilhar → Adicionar à Tela de Início. Abra pelo ícone para ocultar o Safari.', immersive_exit:'SAIR DO MODO IMERSIVO', immersive_enter:'ATIVAR MODO IMERSIVO'
         }
       };
 
@@ -6846,9 +7328,17 @@ stats.recentRuns = stats.recentRuns || [];
             document.getElementById('pause-modal')?.classList.add('hidden');
             vibrate(50);
           } else if (state.pauseSelection === 'exit') {
-            state.pauseConfirmState = true;
-            state.pauseSelection = 'cancel';
-            updatePauseMenuUI(); vibrate(50);
+            if (isImmersiveMode()) {
+              exitImmersiveMode();
+              state.paused = false;
+              state.pauseConfirmState = false;
+              document.getElementById('pause-modal')?.classList.add('hidden');
+              vibrate(50);
+            } else {
+              state.pauseConfirmState = true;
+              state.pauseSelection = 'cancel';
+              updatePauseMenuUI(); vibrate(50);
+            }
           }
         } else if (state.pauseSelection === 'confirm') {
           triggerExitTransition(state.testMode || state.isDevPlay ? 'dev' : 'menu');
@@ -6907,6 +7397,7 @@ stats.recentRuns = stats.recentRuns || [];
         const btnConfirm = document.getElementById('btn-confirm-exit');
         const btnCancel = document.getElementById('btn-cancel-exit');
         if (!btnResume || !btnExit || !btnConfirm || !btnCancel) return;
+        btnExit.textContent = isImmersiveMode() ? tr('immersive_exit') : tr('abandon');
 
         const selectedCyan = "w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-xs py-1.5 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
         const selectedRed = "w-full bg-gradient-to-r from-pink-600 to-rose-700 text-white font-title text-xs py-1.5 rounded-lg border-2 border-pink-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
@@ -7755,6 +8246,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       function startRun(isDev = false, isTest = false) {
         stopRun();
+        rewardDraftTokenV31++;
         const devSettings = isDev ? {
           devInfHp: state.devInfHp,
           devInfShield: state.devInfShield,
@@ -7781,6 +8273,12 @@ stats.recentRuns = stats.recentRuns || [];
         } : null;
 
         state = createState();
+        document.getElementById('roguelike-draft-modal')?.classList.add('hidden');
+        const resetScoreHudV31 = document.getElementById('hud-score');
+        if (resetScoreHudV31) resetScoreHudV31.textContent = '0';
+        const noticeV31 = document.getElementById('encounter-notice-v31');
+        if (noticeV31) { clearTimeout(noticeV31._hideTimerV31); noticeV31.classList.remove('show'); noticeV31.textContent = ''; }
+        document.getElementById('boss-hud-v31')?.classList.add('hidden');
         hudCache.timerSecond = -1;
         hudCache.loadoutSignature = '';
         hudCache.enemyCount = -1;
@@ -7833,6 +8331,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         calculateMechaStats();
+        updateBossHudV31();
         const testHud = document.getElementById('test-mode-hud');
         if (testHud) testHud.classList.toggle('hidden', !state.testMode);
         updateDummyStatsUI();
@@ -7849,14 +8348,70 @@ stats.recentRuns = stats.recentRuns || [];
         return document.body.classList.contains('mekora-pseudo-fullscreen');
       }
 
+
+      function isStandaloneDisplayMode() {
+        return window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
+      }
+
+      function isBrowserFullscreenActive() {
+        return Boolean(getNativeFullscreenElement()) || isPseudoFullscreen() || isStandaloneDisplayMode();
+      }
+
+      function isImmersiveMode() {
+        return document.body.classList.contains('mekora-immersive');
+      }
+
+      function getActiveCameraZoom() {
+        const base = Math.max(.42, Number(SETTINGS_STATE.cameraZoom) || .7);
+        return isImmersiveMode() ? Math.max(.46, base * .78) : base;
+      }
+
+      function syncImmersiveOrientation() {
+        const warning = dom.orientationWarning || document.getElementById('orientation-warning');
+        if (!warning) return;
+        const portraitBlocked = isImmersiveMode() && window.innerHeight > window.innerWidth;
+        warning.style.display = portraitBlocked ? 'flex' : 'none';
+        document.body.dataset.immersiveOrientationBlocked = portraitBlocked ? 'true' : 'false';
+      }
+
+      async function enterImmersiveMode() {
+        if (state.phase !== 'playing' && state.phase !== 'draft') return false;
+        document.documentElement.classList.add('mekora-immersive');
+        document.body.classList.add('mekora-immersive');
+        document.body.dataset.immersive = 'true';
+        try { await screen.orientation?.lock?.('landscape'); } catch (error) {}
+        syncImmersiveOrientation();
+        updateFullscreenButton();
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+        return true;
+      }
+
+      function exitImmersiveMode() {
+        document.documentElement.classList.remove('mekora-immersive');
+        document.body.classList.remove('mekora-immersive');
+        document.body.dataset.immersive = 'false';
+        try { screen.orientation?.unlock?.(); } catch (error) {}
+        const warning = dom.orientationWarning || document.getElementById('orientation-warning');
+        if (warning) warning.style.display = 'none';
+        document.body.dataset.immersiveOrientationBlocked = 'false';
+        updateFullscreenButton();
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+        return true;
+      }
+
       function updateFullscreenButton() {
         const button = document.getElementById('btn-fullscreen');
         const path = document.getElementById('fullscreen-icon-path');
         if (!button || !path) return;
-        const active = Boolean(getNativeFullscreenElement()) || isPseudoFullscreen() || window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
-        button.dataset.active = active ? 'true' : 'false';
-        button.setAttribute('aria-label', active ? 'Salir de pantalla completa' : 'Entrar en pantalla completa');
-        path.setAttribute('d', active ? 'M9 9H3.75V3.75M15 9h5.25V3.75M15 15h5.25v5.25M9 15H3.75v5.25' : 'M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5');
+        const browserActive = isBrowserFullscreenActive();
+        const immersive = isImmersiveMode();
+        button.dataset.active = browserActive ? 'true' : 'false';
+        button.dataset.immersive = immersive ? 'true' : 'false';
+        const canEnterImmersive = browserActive && (state.phase === 'playing' || state.phase === 'draft') && !immersive;
+        button.setAttribute('aria-label', immersive ? tr('immersive_exit') : (canEnterImmersive ? tr('immersive_enter') : (browserActive ? 'Salir de pantalla completa' : 'Entrar en pantalla completa')));
+        path.setAttribute('d', immersive
+          ? 'M7 7h10v10H7zM3.75 8.25v-4.5h4.5m7.5 0h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5'
+          : (browserActive ? 'M9 9H3.75V3.75M15 9h5.25V3.75M15 15h5.25v5.25M9 15H3.75v5.25' : 'M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5'));
       }
 
       function setPseudoFullscreen(active) {
@@ -7872,25 +8427,37 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       async function toggleFullscreenMode() {
-        const nativeElement = getNativeFullscreenElement();
-        if (nativeElement) {
-          try { await (document.exitFullscreen || document.webkitExitFullscreen)?.call(document); } catch (error) {}
-          setPseudoFullscreen(false); updateFullscreenButton(); return;
+        if (isImmersiveMode()) {
+          exitImmersiveMode();
+          return;
         }
-        if (isPseudoFullscreen()) { setPseudoFullscreen(false); return; }
+
+        if (isBrowserFullscreenActive()) {
+          if (state.phase === 'playing' || state.phase === 'draft') {
+            await enterImmersiveMode();
+            return;
+          }
+          const nativeElement = getNativeFullscreenElement();
+          if (nativeElement) {
+            try { await (document.exitFullscreen || document.webkitExitFullscreen)?.call(document); } catch (error) {}
+          }
+          setPseudoFullscreen(false);
+          updateFullscreenButton();
+          return;
+        }
+
         const root = document.documentElement;
         const request = root.requestFullscreen || root.webkitRequestFullscreen;
         if (request) {
           try {
             await request.call(root, { navigationUI: 'hide' });
-            try { await screen.orientation?.lock?.('landscape'); } catch (error) {}
-            updateFullscreenButton(); return;
+            updateFullscreenButton();
+            return;
           } catch (error) {}
         }
         setPseudoFullscreen(true);
         const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        const standalone = navigator.standalone === true || window.matchMedia?.('(display-mode: standalone)').matches;
-        if (isiOS && !standalone) {
+        if (isiOS && !isStandaloneDisplayMode()) {
           const hint = document.getElementById('fullscreen-install-hint');
           if (hint) {
             hint.textContent = tr('fullscreen_install'); hint.classList.remove('hidden');
@@ -7917,6 +8484,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       function startMainMenu() {
         stopRun();
+        rewardDraftTokenV31++;
         state.phase = 'menu';
         state.menuSelectionIndex = 0;
         joystickUsed = true;
@@ -7924,6 +8492,7 @@ stats.recentRuns = stats.recentRuns || [];
         lastJoystickXDir = 0; lastJoystickYDir = 0;
         document.getElementById('test-mode-hud')?.classList.add('hidden');
         document.body.dataset.testMode = 'false';
+        dom.bossHudV31?.classList.add('hidden');
         syncDeveloperButtonVisibility();
         render(); updateGlobalStatsUI(); updateMainMenuUI();
         lockConfirmInput(580);
@@ -7973,6 +8542,8 @@ stats.recentRuns = stats.recentRuns || [];
 
       function render() {
   try { updatePrimaryAmmoHudV301(); } catch(e) {}
+        if (isImmersiveMode() && state.phase !== 'playing' && state.phase !== 'draft') exitImmersiveMode();
+        if (isImmersiveMode()) syncImmersiveOrientation();
 
         document.body.dataset.phase = state.phase;
         document.body.dataset.testMode = state.testMode ? 'true' : 'false';
@@ -8032,8 +8603,14 @@ const btnControlPause = document.getElementById('btn-control-pause');
             toggleFullscreenMode();
           };
         }
-        document.addEventListener('fullscreenchange', updateFullscreenButton);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        const syncFullscreenUi = () => {
+          if (isImmersiveMode() && !isBrowserFullscreenActive()) exitImmersiveMode();
+          updateFullscreenButton();
+        };
+        document.addEventListener('fullscreenchange', syncFullscreenUi);
+        document.addEventListener('webkitfullscreenchange', syncFullscreenUi);
+        window.addEventListener('resize', syncImmersiveOrientation, { passive:true });
+        window.addEventListener('orientationchange', () => setTimeout(syncImmersiveOrientation, 80), { passive:true });
         updateFullscreenButton();
 
         ['settings-version-text'].forEach(id => {
@@ -8439,6 +9016,13 @@ const btnControlPause = document.getElementById('btn-control-pause');
       }
       //#endregion lifecycle
 
+
+      const FACTION_PACKAGE_V31 = Object.freeze({
+        id:'scrappers', name:'Chatarreros', version:'3.1.0',
+        basicEnemies:['scrap_hound','saw_raider','scrap_gunner','mine_junker'],
+        eliteModifiers:['armored'], minibosses:['drill_bastion'], bosses:['forge_titan']
+      });
+
       //#region debug_api · Standalone debug helpers
       window.mekoraDebug = {
         state() {
@@ -8453,8 +9037,10 @@ const btnControlPause = document.getElementById('btn-control-pause');
               bullets: state.bullets.length,
               enemyBullets: state.enemyBullets.length,
               particles: state.particles.length,
-              damageNumbers: state.damageNumbers.length
-            }
+              damageNumbers: state.damageNumbers.length,
+              enemyMines: state.enemyMinesV31.length
+            },
+            encounterV31: {...state.bossEncounterV31}
           };
         },
         reset() {
@@ -8471,6 +9057,9 @@ const btnControlPause = document.getElementById('btn-control-pause');
         },
         toggleFullscreen() {
           return toggleFullscreenMode();
+        },
+        immersive() {
+          return {active:isImmersiveMode(), browserFullscreen:isBrowserFullscreenActive(), cameraZoom:getActiveCameraZoom(), blockedPortrait:document.body.dataset.immersiveOrientationBlocked === 'true'};
         },
         loadout() {
           return {
@@ -8491,6 +9080,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
       };
       window.mekoraV3 = Object.freeze({
         version: MEKORA_VERSION,
+        factionPackageV31: FACTION_PACKAGE_V31,
         schemaVersion: CONTENT_SCHEMA_VERSION,
         catalog() { return Array.from(CONTENT_CATALOG_V3.values()).map(item => ({...item})); },
         content(id) { const item = getContentMetaV3(id); return item ? {...item} : null; },
@@ -8523,8 +9113,33 @@ const btnControlPause = document.getElementById('btn-control-pause');
         combatSnapshotV302() { return {phase:state.phase, mecha:{x:state.mecha.x,y:state.mecha.y,hp:state.mecha.hp,ammo:state.mecha.ammo,reloading:state.mecha.isReloading,firstShotReady:state.mecha.primaryFirstShotReady}, bullets:state.bullets.slice(-20).map(b=>({type:b.type,damage:b.damage,life:b.life,bonusPierceHits:b.bonusPierceHits||0,forcedBounces:b.forcedBounces||0,x:b.x,y:b.y})), runtime:JSON.parse(JSON.stringify(state.weaponRuntime||{}))}; },
         showEvolutionDraftForTest() { const cards=getEligibleEvolutionCardsV302(); state.phase='draft'; state.draftCards=cards; state.draftSelection=0; state.draftConfirmArmed=false; state.draftInputLocked=false; prepareDraftDiscoveriesV301(cards); document.getElementById('roguelike-draft-modal')?.classList.remove('hidden'); updateDraftMenuUI(); render(); return cards.map(c=>c.id); },
         primaryModifiersForTest(ammo=3, passiveIds=[], firstReady=false) { state.passives=[...passiveIds]; state.passiveLevels={}; passiveIds.forEach(id=>state.passiveLevels[id]=1); state.mecha.ammo=Math.max(0,ammo|0); state.mecha.primaryFirstShotReady=!!firstReady; return getPrimaryShotModifiersV302(getPrimaryWeaponIdV301()); },
+        spawnEnemyV31ForTest(type='scrap_hound', options={}) { if(state.testMode){state.testSpawnEnemies=true;state.devContinuousSpawn=false;} return safeSpawnAroundPlayerV31(type, Number(options.distance)||240, options); },
+        spawnEliteV31ForTest(type='saw_raider') { if(state.testMode){state.testSpawnEnemies=true;state.devContinuousSpawn=false;} return safeSpawnAroundPlayerV31(type,260,{elite:true}); },
+        spawnMinibossV31ForTest() { if(state.testMode){state.testSpawnEnemies=true;state.devContinuousSpawn=false;} return spawnMinibossV31(); },
+        spawnBossV31ForTest() { if(state.testMode){state.testSpawnEnemies=true;state.devContinuousSpawn=false;} return spawnBossV31(); },
+        enemySnapshotV31() { return state.enemies.map(e=>({id:e.id,type:e.type,faction:e.faction,role:e.roleV31,hp:e.hp,maxHp:e.maxHp,elite:!!e.isEliteV31,miniboss:!!e.isMinibossV31,boss:!!e.isBossV31,phase:e.phaseV31||1,nextActionAt:e.nextActionAt||0})); },
+        mineSnapshotV31() { return state.enemyMinesV31.map(m=>({...m})); },
+        setPlayTimeV31(ms=0) { state.playTime=Math.max(0,Number(ms)||0); state.sector=Math.floor(state.playTime/60000)+1; return {playTime:state.playTime,sector:state.sector}; },
+        damageEnemyV31ForTest(id, amount=100) { const e=state.enemies.find(x=>x.id===id); if(!e)return null; damageEnemy(e,amount,performance.now()); return {id:e.id,hp:e.hp,maxHp:e.maxHp,vulnerableUntil:e.vulnerableUntil||0}; },
+        updateEnemyV31ForTest(id, timestamp=performance.now()) { const e=state.enemies.find(x=>x.id===id); if(!e)return null; const angle=Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x); const dist=Math.hypot(state.mecha.x-e.x,state.mecha.y-e.y); updateScrapperEnemyV31(e,timestamp,dist,angle,false,1,900); updateEnemyMinesV31(timestamp); updateBossHudV31(); return {id:e.id,type:e.type,x:e.x,y:e.y,hp:e.hp,phase:e.phaseV31,warning:e.attackWarningUntil,pending:e.pendingAttackAt,charge:e.chargeUntil,mines:state.enemyMinesV31.length,bullets:state.enemyBullets.length}; },
+        defeatEnemyV31ForTest(id) { const i=state.enemies.findIndex(x=>x.id===id); if(i<0)return null; const e=state.enemies[i]; e.hp=0; killEnemy(e,i); return {eliteKills:state.eliteKillsV31,minibossKills:state.minibossKillsV31,bossKills:state.bossKillsV31,cores:progressionV3.cores,evolutionCores:state.runEvolutionCores}; },
+        encounterStateV31() { return {boss:{...state.bossEncounterV31},milestones:{...state.encounterMilestonesV31},enemyCount:state.enemies.length,mines:state.enemyMinesV31.length,eliteKills:state.eliteKillsV31,minibossKills:state.minibossKillsV31,bossKills:state.bossKillsV31}; },
         resetDummyStatsForTest() { resetDummyStats(); return {...state.dummyStats}; },
-        dummyStatsForTest() { return {...state.dummyStats}; }
+        dummyStatsForTest() { return {...state.dummyStats}; },
+        enterImmersiveForTest() { return enterImmersiveMode().then(() => this.immersiveStateForTest()); },
+        exitImmersiveForTest() { exitImmersiveMode(); return this.immersiveStateForTest(); },
+        immersiveStateForTest() {
+          const activeScreen = document.querySelector('.screen[data-show-on="playing"]');
+          const display = activeScreen?.firstElementChild;
+          const joy = document.getElementById('joystick-move-zone');
+          const fire = document.getElementById('btn-tap-fire');
+          const pause = document.getElementById('btn-control-pause');
+          const mute = document.getElementById('btn-mute');
+          const full = document.getElementById('btn-fullscreen');
+          const rect = el => el ? ({x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,display:getComputedStyle(el).display,opacity:getComputedStyle(el).opacity}) : null;
+          return {active:isImmersiveMode(),cameraZoom:getActiveCameraZoom(),screen:rect(activeScreen),display:rect(display),joystick:rect(joy),fire:rect(fire),pause:rect(pause),mute:rect(mute),fullscreen:rect(full),blockedPortrait:document.body.dataset.immersiveOrientationBlocked === 'true'};
+        },
+        pauseExitImmersiveForTest() { state.phase='playing'; state.paused=true; state.pauseConfirmState=false; state.pauseSelection='exit'; document.getElementById('pause-modal')?.classList.remove('hidden'); updatePauseMenuUI(); const label=document.getElementById('btn-exit')?.textContent || ''; confirmInputLockedUntil=0; confirmPauseAction(); return {active:isImmersiveMode(),paused:state.paused,phase:state.phase,label}; }
       });
 //#endregion debug_api
     </script>
