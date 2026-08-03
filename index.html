@@ -31,7 +31,7 @@
     // initial-scale=1.0: Initial zoom level
     // maximum-scale=1.0: Prevent zooming beyond 1.0
     // user-scalable=no: Disable user scaling (prevents pinch zoom and auto-zoom on input focus)
-    viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+    viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
   }
 
   // Run immediately if DOM is already ready
@@ -59,13 +59,17 @@
 
 <style id="mekora-viewport-style"></style>
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MEKORA - Mecha Roguelike</title>
+<meta name="theme-color" content="#0c0f12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no,address=no,email=no">
+
 
      
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
-
       :root {
         --color-bg: var(--mekora-bg, #0c0f12);
         --color-text: var(--mekora-text, #f0f4f8);
@@ -81,8 +85,8 @@
       body[data-phase="menu"] .screen[data-show-on="menu"],
       body[data-phase="settings"] .screen[data-show-on="settings"],
       body[data-phase="global_network"] .screen[data-show-on="global_network"],
-      html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--color-bg); color: var(--color-text); font-family: 'Share Tech Mono', monospace; overflow: hidden; }
-      h1, h2, h3, .font-title { font-family: 'Orbitron', sans-serif; }
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--color-bg); color: var(--color-text); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; overflow: hidden; }
+      h1, h2, h3, .font-title { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
 
       .screen { display: none !important; }
       body[data-phase="playing"] .screen[data-show-on="playing"],
@@ -375,7 +379,7 @@
     color: #94a3b8;
     border-radius: .35rem;
     padding: .3rem .15rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 7px;
     line-height: 1.1;
     text-align: center;
@@ -519,6 +523,83 @@
   }
 </style>
 
+
+<style id="mekora-ux-v25">
+  html, body {
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
+  body { position: fixed; inset: 0; width: 100%; height: 100dvh; }
+  img, svg, canvas, button { -webkit-user-drag: none !important; user-drag: none !important; }
+  button, input { touch-action: none !important; }
+
+  /* Every screen keeps the console's central hardware visible. */
+  .screen > div:last-child > div:nth-child(3) { visibility: hidden !important; pointer-events: none !important; }
+  #persistent-console-controls {
+    position: fixed;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -50%);
+    z-index: 85;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .28rem;
+    pointer-events: none;
+  }
+  #persistent-console-controls button { pointer-events: auto; }
+  #persistent-console-controls .persistent-small-row { display:flex; align-items:center; justify-content:center; gap:.5rem; }
+  #btn-control-pause.console-control-disabled { opacity: .38; filter: grayscale(.55); }
+  .persistent-control-spacer { width: 80px; height: 112px; visibility: hidden; }
+
+  .virtual-screen { overflow: hidden; }
+  .virtual-screen.screen-shake { animation: screen-shake-anim .15s infinite; }
+  #white-out-overlay { max-height: 50dvh; }
+
+  .gameover-panel {
+    width: min(92%, 320px);
+    height: min(88%, 280px);
+    min-height: 0;
+    max-height: 92%;
+    padding: .5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    text-align: center;
+    background: rgba(28,36,48,.94);
+  }
+  .gameover-stats-grid { width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:.45rem; }
+  .gameover-stat { min-width:0; padding:.28rem .18rem; border:1px solid rgba(255,51,102,.25); border-radius:.55rem; background:rgba(0,0,0,.4); }
+  .gameover-stat span { display:block; font-size:8px; color:#94a3b8; }
+  .gameover-stat strong { display:block; margin-top:.1rem; font-size:11px; color:#fff; overflow:hidden; text-overflow:ellipsis; }
+  .gameover-stat:nth-child(2) strong { color:#00ffcc; }
+  .gameover-stat:nth-child(3) strong { color:#ffaa00; }
+  .gameover-actions { width:min(100%,230px); display:flex; flex-direction:column; gap:.25rem; }
+  .gameover-action { width:100%; padding:.3rem .55rem; border-radius:.5rem; border:1px solid #334155; background:rgba(15,23,42,.72); color:#94a3b8; font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,sans-serif; font-size:9px; transition:transform .16s, border-color .16s, background .16s; }
+  .gameover-action.is-selected { color:#fff; border:2px solid #00ffcc; background:linear-gradient(90deg,#0891b2,#0f766e); transform:scale(1.035); box-shadow:0 0 14px rgba(0,255,204,.25); }
+
+  .settings-focus { outline:2px solid rgba(0,255,204,.8) !important; outline-offset:2px !important; border-radius:8px !important; }
+  .settings-edit-focus { outline:4px solid rgba(255,170,0,.9) !important; outline-offset:2px !important; border-radius:8px !important; }
+  .lang-btn.language-active { border-color:#334155 !important; background:#1c2430 !important; color:#00ffcc !important; }
+
+  html.mekora-pseudo-fullscreen, body.mekora-pseudo-fullscreen {
+    width:100vw !important; height:100dvh !important; min-height:100dvh !important;
+    margin:0 !important; padding:0 !important; overflow:hidden !important;
+  }
+  body.mekora-pseudo-fullscreen { position:fixed !important; inset:0 !important; }
+  @media (display-mode: standalone) {
+    html, body { height:100dvh !important; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#0c0f12] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -526,7 +607,7 @@
      <div id="orientation-warning" style="display: none;">
        <svg class="w-16 h-16 text-[#00ffcc] animate-bounce mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
        <h2 class="font-title text-xl text-white font-bold mb-2">GIRA TU DISPOSITIVO EN HORIZONTAL</h2>
-       <p class="text-xs text-gray-400 max-w-xs">Este juego táctico de mechas requiere orientación horizontal para la mejor experiencia de combate.</p>
+       
      </div>
 
     <!-- Decorative Scanline Atmosphere Overlay -->
@@ -550,23 +631,23 @@
            <!-- LEFT: POINTS & STATS -->
            <div class="absolute top-3 left-3 z-40 flex flex-col items-start text-white font-title text-xs tracking-wider pointer-events-none">
              <div class="flex items-baseline gap-1">
-               <span class="text-[9px] text-gray-400 uppercase">PUNTOS:</span>
+               <span data-i18n="hud_points" class="text-[9px] text-gray-400 uppercase">PUNTOS:</span>
                <span id="hud-score" class="font-bold text-sm text-amber-400">0</span>
              </div>
              <div class="flex items-baseline gap-1 text-[9px]">
-               <span class="text-gray-400">NIVEL:</span>
+               <span data-i18n="hud_level" class="text-gray-400">NIVEL:</span>
                <span id="hud-level" class="font-bold text-cyan-400">1</span>
                <span class="text-gray-500">|</span>
                <span id="hud-xp-text" class="text-teal-400">0/100</span>
                <span class="text-gray-500">|</span>
-               <span class="text-gray-400">ENEMIGOS:</span>
+               <span data-i18n="hud_enemies" class="text-gray-400">ENEMIGOS:</span>
                <span id="hud-enemy-count" class="text-pink-400">0</span>
              </div>
            </div>
 
            <!-- CENTER: TIME COUNTER -->
            <div class="absolute top-3 left-1/2 transform -translate-x-1/2 z-40 flex flex-col items-center text-white font-title pointer-events-none">
-             <span class="text-[8px] text-gray-400 uppercase tracking-widest">TIEMPO</span>
+             <span data-i18n="hud_time" class="text-[8px] text-gray-400 uppercase tracking-widest">TIEMPO</span>
              <span id="hud-timer" class="font-bold text-sm text-[#00ffcc] tracking-wider">00:00</span>
            </div>
            <div id="test-mode-hud" class="hidden absolute top-10 left-1/2 transform -translate-x-1/2 z-40 bg-black/70 border border-amber-500/40 rounded px-2 py-1 text-[7px] text-center pointer-events-none">
@@ -585,7 +666,7 @@
            <!-- PAUSE MODAL -->
            <div id="pause-modal" class="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-2 hidden">
              <div class="hud-border p-4 rounded-2xl max-w-xs w-full flex flex-col items-center text-center shadow-2xl bg-[#1c2430]/90">
-               <h2 class="font-title text-lg text-[#00ffcc] font-black mb-2 tracking-wider">JUEGO PAUSADO</h2>
+               <h2 id="pause-title" class="font-title text-lg text-[#00ffcc] font-black mb-2 tracking-wider">JUEGO PAUSADO</h2>
 
                <!-- Normal Pause Buttons -->
                <div id="pause-normal-buttons" class="flex flex-col gap-1.5 w-full max-w-[180px]">
@@ -607,24 +688,19 @@
                  </button>
                </div>
 
-               <div class="mt-2 text-[9px] text-gray-400 text-center max-w-[220px]">
-                 Usa la palanca (arriba/abajo) para seleccionar y presiona el botón rojo para confirmar.
-               </div>
+               
              </div>
            </div>
-
-           <!-- White-out overlay for exit transition -->
-           <div id="white-out-overlay" class="fixed inset-0 bg-white z-[99999] opacity-0 pointer-events-none transition-opacity duration-500"></div>
 
            <!-- ROGUELIKE DRAFT MODAL -->
            <div id="roguelike-draft-modal" class="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-2 hidden">
              <div id="draft-content-panel">
-               <div class="text-amber-400 font-title text-[10px] tracking-widest mb-0.5">¡NUEVO NIVEL!</div>
-               <h2 class="font-title text-sm text-white font-black mb-2 text-center tracking-wider">ELIGE UNA MEJORA TÁCTICA</h2>
+               <div id="draft-level-title" class="text-amber-400 font-title text-[10px] tracking-widest mb-0.5">¡NUEVO NIVEL!</div>
+               <h2 id="draft-choose-title" class="font-title text-sm text-white font-black mb-2 text-center tracking-wider">ELIGE UNA MEJORA TÁCTICA</h2>
                <div id="upgrade-cards-container" class="flex flex-row gap-2 w-full max-w-[420px] justify-center items-stretch">
                  <!-- Dynamically populated cards -->
                </div>
-               <div id="draft-input-hint" class="mt-2 text-[9px] text-gray-400 text-center max-w-[340px] min-h-[14px]">
+               <div id="draft-input-hint" class="hidden">
                  Espera a que termine la entrada. Luego pulsa rojo una vez para preparar y otra para confirmar.
                </div>
              </div>
@@ -638,14 +714,14 @@
          <!-- LEFT DYNAMIC MOVE ZONE -->
          <div id="joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">MOVER</span>
+           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
          </div>
 
          <!-- CENTER COLUMN: PAUSE ABOVE; VOLUME + FULLSCREEN CENTERED BELOW -->
          <div class="flex flex-col items-center gap-2">
            <button id="btn-control-pause" class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm z-40">
              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-             <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
+             <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5" data-i18n="pause">PAUSA</span>
            </button>
            <div class="flex items-center justify-center gap-2">
              <button id="btn-mute" data-spec-id="btn-mute" aria-label="Activar o desactivar sonido" class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg active:scale-95 transition-all backdrop-blur-sm z-40">
@@ -664,7 +740,7 @@
          <!-- RIGHT AUTO-FIRE TAP BUTTON -->
          <button id="btn-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
            <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-           <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">DISPARAR</span>
+           <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1" data-i18n="fire">DISPARAR</span>
          </button>
        </div>
 
@@ -676,9 +752,9 @@
        <!-- TOP HALF: MENU AREA -->
        <div class="w-full h-1/2 bg-black flex flex-col items-center justify-center border-b border-cyan-500/30 relative p-2">
          <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
-         <div id="menu-version-text" class="absolute text-[#00ffcc] font-title text-[9px] tracking-widest cursor-pointer" style="top:4px;left:50%;transform:translateX(-50%);z-index:20">MEKORA TACTICAL OS v2.4</div>
+         <div id="menu-version-text" class="absolute text-[#00ffcc] font-title text-[9px] tracking-widest cursor-pointer" style="top:4px;left:50%;transform:translateX(-50%);z-index:20">MEKORA TACTICAL OS v2.5</div>
          <h1 class="font-title text-2xl text-white font-black tracking-wider mb-0.5">MEKORA</h1>
-         <p class="text-[9px] text-gray-400 max-w-md leading-tight text-center mb-2">Sistema de combate mecha avanzado. Prepárate para repeler amenazas cibernéticas.</p>
+         
          <div class="flex flex-col gap-1.5 w-full items-center" style="max-width:260px">
            <button id="btn-main-play" data-spec-id="btn-main-play" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              JUGAR
@@ -693,21 +769,19 @@
              MODO DEVELOPER
            </button>
          </div>
-         <div class="mt-1.5 text-[8px] text-gray-400 text-center max-w-[260px]">
-           Usa la palanca (arriba/abajo) para seleccionar y presiona el botón rojo para confirmar.
-         </div>
+         
        </div>
        <!-- BOTTOM HALF: BLACK CONTROL AREA -->
        <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
          <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
          <div id="menu-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="menu-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75" style="transform: translate(0px, 0px);"></div>
-           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">MOVER</span>
+           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
          </div>
          <div class="flex flex-col items-center gap-2 opacity-50">
            <div class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-             <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
+             <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5" data-i18n="pause">PAUSA</span>
            </div>
            <div class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg backdrop-blur-sm">
              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -717,7 +791,7 @@
          </div>
          <button id="btn-menu-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
            <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-           <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">DISPARAR</span>
+           <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1" data-i18n="fire">DISPARAR</span>
          </button>
        </div>
      </section>
@@ -730,7 +804,7 @@
         <div class="relative w-full h-full flex items-center justify-center p-4 z-10 overflow-hidden">
           <div class="hud-border p-4 rounded-xl max-w-[320px] w-full h-[90%] flex flex-col shadow-2xl relative overflow-hidden bg-[#1c2430]/80 justify-between">
             <div class="absolute inset-0 scanlines opacity-30 pointer-events-none"></div>
-            <h2 class="font-title text-xs text-[#00ffcc] font-bold tracking-wider border-b border-cyan-500/30 pb-1 text-center">RED GLOBAL DE MECHAS</h2>
+            <h2 id="global-title" class="font-title text-xs text-[#00ffcc] font-bold tracking-wider border-b border-cyan-500/30 pb-1 text-center">RED GLOBAL DE MECHAS</h2>
             <div class="flex-1 flex flex-col justify-between text-[10px] space-y-2 overflow-y-auto pr-1 mt-2">
               <div>
                 <div class="text-gray-400 uppercase text-[8px]">Bajas Globales de la Comunidad</div>
@@ -776,12 +850,12 @@
         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="global-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="global-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">MOVER</span>
+          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
         </div>
         <div class="flex flex-col items-center gap-2 opacity-50">
           <div class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
             <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
+            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5" data-i18n="pause">PAUSA</span>
           </div>
           <div class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg backdrop-blur-sm">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -791,7 +865,7 @@
         </div>
         <button id="btn-global-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
           <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">DISPARAR</span>
+          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1" data-i18n="fire">DISPARAR</span>
         </button>
       </div>
     </section>
@@ -803,13 +877,13 @@
         <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
         <div class="hud-border p-4 rounded-2xl max-w-md w-full flex flex-col items-center shadow-2xl relative overflow-hidden bg-[#1c2430]/80">
           <div class="absolute inset-0 scanlines opacity-50 pointer-events-none"></div>
-          <h2 class="font-title text-lg text-[#00ffcc] font-black mb-3">CONFIGURACIÓN DE SISTEMA</h2>
+          <h2 id="settings-title" class="font-title text-lg text-[#00ffcc] font-black mb-3">CONFIGURACIÓN DE SISTEMA</h2>
 
           <div class="w-full space-y-3 text-xs mb-3">
             <!-- BGM VOLUME -->
             <div class="flex flex-col gap-1.5" data-settings-idx="0">
               <div class="flex justify-between text-gray-300 font-title">
-                <span>VOLUMEN DE MÚSICA</span>
+                <span id="settings-bgm-label">VOLUMEN DE MÚSICA</span>
                 <span id="val-bgm-text" class="text-[#00ffcc]">60%</span>
               </div>
               <input id="slider-bgm" type="range" min="0" max="100" value="80" class="w-full accent-[#00ffcc] cursor-pointer">
@@ -818,7 +892,7 @@
             <!-- SFX VOLUME -->
             <div class="flex flex-col gap-1.5" data-settings-idx="1">
               <div class="flex justify-between text-gray-300 font-title">
-                <span>VOLUMEN EFECTOS DE SONIDO (SFX)</span>
+                <span id="settings-sfx-label">VOLUMEN EFECTOS DE SONIDO (SFX)</span>
                 <span id="val-sfx-text" class="text-[#00ffcc]">60%</span>
               </div>
               <input id="slider-sfx" type="range" min="0" max="100" value="90" class="w-full accent-[#00ffcc] cursor-pointer">
@@ -827,7 +901,7 @@
             <!-- LANGUAGE -->
             <div class="flex flex-col gap-1.5" data-settings-idx="2">
               <div class="flex justify-between text-gray-300 font-title">
-                <span>IDIOMA / LANGUAGE</span>
+                <span id="settings-language-label">IDIOMA / LANGUAGE</span>
               </div>
               <div class="flex flex-wrap gap-1.5" id="language-buttons-container">
                 <button data-lang="es" class="lang-btn flex-1 flex items-center justify-center gap-1.5 bg-[#1c2430] text-white p-2 rounded-lg font-title text-xs border border-cyan-400 active:scale-95 transition-all">
@@ -852,7 +926,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.4</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.5</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -860,12 +934,12 @@
         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="settings-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="settings-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">MOVER</span>
+          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
         </div>
         <div class="flex flex-col items-center gap-2 opacity-50">
           <div class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
             <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
+            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5" data-i18n="pause">PAUSA</span>
           </div>
           <div class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg backdrop-blur-sm">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -875,7 +949,7 @@
         </div>
         <button id="settings-btn-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
           <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">DISPARAR</span>
+          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1" data-i18n="fire">DISPARAR</span>
         </button>
       </div>
     </section>
@@ -887,7 +961,7 @@
           <div class="flex justify-between items-center gap-2">
             <div class="min-w-0">
               <h2 class="font-title text-sm text-cyan-300 font-black tracking-wider">MODO DEVELOPER</h2>
-              <p class="text-[7px] text-gray-400 truncate">Sube hasta las pestañas, elige sección y confirma con el botón rojo.</p>
+              
             </div>
             <div class="text-right text-[7px] text-gray-500">
               <div>ARMAS <span id="dev-weapon-slots" class="text-cyan-300">1/6</span></div>
@@ -904,12 +978,9 @@
         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="dev-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="dev-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
+          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="navigate">NAVEGAR</span>
         </div>
-        <div class="flex flex-col items-center gap-1 text-center">
-          <span class="text-[8px] text-gray-500">ARRIBA EN PRIMER ÍTEM</span>
-          <span class="font-title text-[8px] text-amber-300">VOLVER A PESTAÑAS</span>
-        </div>
+        
         <button id="btn-dev-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
           <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">CONFIRMAR</span>
@@ -919,42 +990,38 @@
 
     <!-- GAMEOVER SCREEN -->
     <section class="screen w-full h-full relative flex flex-col" data-show-on="gameover">
-      <div class="console-display">
+      <div class="console-display virtual-screen">
         <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image:linear-gradient(rgba(255,51,102,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,51,102,.12) 1px,transparent 1px);background-size:30px 30px"></div>
-        <div class="compact-console-panel hud-border hud-border-danger flex flex-col items-center text-center shadow-2xl pulse-danger relative z-10" data-spec-id="gameover-card">
-          <div class="text-pink-500 font-title text-[8px] tracking-widest">MISIÓN FALLIDA</div>
-          <h1 class="font-title gameover-compact-title text-white font-black mb-1">MECHA DESTRUIDO</h1>
-          <p class="text-[8px] text-gray-400 mb-1">Datos de combate recuperados.</p>
-          <div class="w-full bg-black/40 rounded p-1.5 mb-1 grid grid-cols-3 gap-1 text-[7px] border border-pink-500/20">
-            <div><span class="block text-gray-500">NIVEL</span><span id="final-wave-text" class="text-white font-bold">1</span></div>
-            <div><span class="block text-gray-500">PUNTOS</span><span id="text-final" class="text-[#00ffcc] font-bold">0</span></div>
-            <div><span class="block text-gray-500">NÚCLEOS</span><span id="reward-credits-text" class="text-amber-400 font-bold">+50</span></div>
+        <div class="gameover-panel hud-border hud-border-danger shadow-2xl pulse-danger relative z-10" data-spec-id="gameover-card">
+          <div id="gameover-failed-label" class="text-pink-500 font-title text-[9px] tracking-widest">MISIÓN FALLIDA</div>
+          <h1 id="gameover-title" class="font-title text-lg text-white font-black tracking-wider">MECHA DESTRUIDO</h1>
+          <div class="gameover-stats-grid">
+            <div class="gameover-stat"><span id="gameover-level-label">NIVEL</span><strong id="final-wave-text">1</strong></div>
+            <div class="gameover-stat"><span id="gameover-score-label">PUNTOS</span><strong id="text-final">0</strong></div>
+            <div class="gameover-stat"><span id="gameover-cores-label">NÚCLEOS</span><strong id="reward-credits-text">+50</strong></div>
           </div>
-          <button id="btn-restart" data-spec-id="btn-restart" class="w-full max-w-[220px] bg-slate-900/60 text-gray-400 font-title text-[9px] py-1.5 rounded border border-slate-800 transition-all duration-200" style="pointer-events:none">
-            VOLVER AL MENÚ
-          </button>
-          <div class="mt-1 text-[7px] text-gray-500">Pulsa el botón rojo para confirmar.</div>
+          <div class="gameover-actions">
+            <button id="btn-gameover-retry" class="gameover-action">JUGAR DE NUEVO</button>
+            <button id="btn-gameover-menu" class="gameover-action">VOLVER AL MENÚ</button>
+          </div>
         </div>
       </div>
-
       <div class="console-controls">
         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
         <div id="gameover-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-pink-500/30 bg-pink-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="gameover-joystick-move-knob" class="w-12 h-12 rounded-full bg-pink-500/60 border-2 border-pink-500 shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-          <span class="absolute text-[9px] text-pink-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
+          <span data-i18n="navigate" class="absolute text-[9px] text-pink-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
         </div>
-        <div class="flex flex-col items-center gap-2 opacity-50">
-          <div class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
-            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
-          </div>
-        </div>
+        <div class="persistent-control-spacer"></div>
         <button id="btn-gameover-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
           <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">CONFIRMAR</span>
+          <span data-i18n="confirm" class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">CONFIRMAR</span>
         </button>
       </div>
     </section>
+
+    <div id="white-out-overlay" class="fixed top-0 left-0 w-full h-1/2 bg-white z-[99999] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="fullscreen-install-hint" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[100000] max-w-[88vw] rounded border border-cyan-400/60 bg-black/95 px-3 py-2 text-center text-[9px] text-cyan-100 font-title"></div>
 
     <!-- MAIN GAME ENGINE & HYBRID MECHA LOGIC -->
      <!-- #region imports · Standalone local setup -->
@@ -1107,7 +1174,7 @@ stats.recentRuns = stats.recentRuns || [];
         bgmVolume: getConfig('tune', 'bgm-volume', 0.8),
         sfxVolume: getConfig('tune', 'sfx-volume', 0.9),
         cameraZoom: getConfig('tune', 'camera-zoom', 0.7),
-        language: 'es'
+        language: getConfig('ui', 'language', 'es')
       };
 
       function saveRuntimeSettings() {
@@ -1119,6 +1186,7 @@ stats.recentRuns = stats.recentRuns || [];
           'sfx-volume': SETTINGS_STATE.sfxVolume,
           'camera-zoom': SETTINGS_STATE.cameraZoom
         };
+        config.ui = { ...(config.ui && typeof config.ui === 'object' ? config.ui : {}), language: SETTINGS_STATE.language };
         writeJson('mekora_config', config);
       }
 
@@ -1356,7 +1424,7 @@ stats.recentRuns = stats.recentRuns || [];
           devActiveSection: 'weapons',
           devFocus: 'tabs',
           devItemIndex: 0,
-          devStatus: 'Selecciona una sección y confirma.',
+          devStatus: 'LISTO',
 
           // Active weapons (max 6) and passives lists
           activeWeapons: ['w-plasma'],
@@ -1435,6 +1503,7 @@ stats.recentRuns = stats.recentRuns || [];
           settingsEditTarget: null,
           settingsJoystickInUse: false,
           gameoverSelectionIndex: 0,
+          gameoverSelection: 'retry',
           gameoverJoystickInUse: false,
           gameoverMovePointerId: null,
           gameoverCenterClientX: 0,
@@ -5009,61 +5078,166 @@ stats.recentRuns = stats.recentRuns || [];
       let lastJoystickXDir = 0;
       let joystickUsed = false;
       let developerUnlocked = false;
+      let confirmInputLockedUntil = 0;
 
-      function triggerExitTransition() {
-        vibrate(200);
+      function lockConfirmInput(duration = 520) {
+        confirmInputLockedUntil = Math.max(confirmInputLockedUntil, performance.now() + duration);
+        if (state) state.isFiring = false;
+      }
+
+      function canAcceptConfirmInput() {
+        return performance.now() >= confirmInputLockedUntil;
+      }
+
+      const UI_I18N = {
+        es: {
+          play:'JUGAR', global:'RED GLOBAL DE MECHAS', settings:'CONFIGURACIÓN', developer:'MODO DEVELOPER',
+          pause_title:'JUEGO PAUSADO', resume:'REANUDAR', abandon:'ABANDONAR', confirm:'CONFIRMAR', cancel:'CANCELAR',
+          level_up:'¡NUEVO NIVEL!', choose_upgrade:'ELIGE UNA MEJORA TÁCTICA', settings_title:'CONFIGURACIÓN DE SISTEMA',
+          music:'VOLUMEN DE MÚSICA', sfx:'VOLUMEN EFECTOS DE SONIDO (SFX)', language:'IDIOMA', back_menu:'VOLVER AL MENÚ',
+          global_title:'RED GLOBAL DE MECHAS', failed:'MISIÓN FALLIDA', destroyed:'MECHA DESTRUIDO', level:'NIVEL', points:'PUNTOS', cores:'NÚCLEOS', retry:'JUGAR DE NUEVO',
+          move:'MOVER', navigate:'NAVEGAR', pause:'PAUSA', fire:'DISPARAR', hud_time:'TIEMPO', hud_enemies:'ENEMIGOS:', hud_level:'NIVEL:', hud_points:'PUNTOS:',
+          fullscreen_install:'En iPhone: Compartir → Añadir a pantalla de inicio. Ábrelo desde el icono para ocultar Safari.'
+        },
+        en: {
+          play:'PLAY', global:'GLOBAL MECHA NETWORK', settings:'SETTINGS', developer:'DEVELOPER MODE',
+          pause_title:'GAME PAUSED', resume:'RESUME', abandon:'QUIT RUN', confirm:'CONFIRM', cancel:'CANCEL',
+          level_up:'LEVEL UP!', choose_upgrade:'CHOOSE A TACTICAL UPGRADE', settings_title:'SYSTEM SETTINGS',
+          music:'MUSIC VOLUME', sfx:'SOUND EFFECTS VOLUME (SFX)', language:'LANGUAGE', back_menu:'BACK TO MENU',
+          global_title:'GLOBAL MECHA NETWORK', failed:'MISSION FAILED', destroyed:'MECHA DESTROYED', level:'LEVEL', points:'SCORE', cores:'CORES', retry:'PLAY AGAIN',
+          move:'MOVE', navigate:'NAVIGATE', pause:'PAUSE', fire:'FIRE', hud_time:'TIME', hud_enemies:'ENEMIES:', hud_level:'LEVEL:', hud_points:'SCORE:',
+          fullscreen_install:'On iPhone: Share → Add to Home Screen. Open from the icon to hide Safari.'
+        },
+        pt: {
+          play:'JOGAR', global:'REDE GLOBAL DE MECHAS', settings:'CONFIGURAÇÕES', developer:'MODO DESENVOLVEDOR',
+          pause_title:'JOGO PAUSADO', resume:'CONTINUAR', abandon:'ABANDONAR', confirm:'CONFIRMAR', cancel:'CANCELAR',
+          level_up:'NOVO NÍVEL!', choose_upgrade:'ESCOLHA UMA MELHORIA TÁTICA', settings_title:'CONFIGURAÇÕES DO SISTEMA',
+          music:'VOLUME DA MÚSICA', sfx:'VOLUME DOS EFEITOS (SFX)', language:'IDIOMA', back_menu:'VOLTAR AO MENU',
+          global_title:'REDE GLOBAL DE MECHAS', failed:'MISSÃO FRACASSADA', destroyed:'MECHA DESTRUÍDO', level:'NÍVEL', points:'PONTOS', cores:'NÚCLEOS', retry:'JOGAR NOVAMENTE',
+          move:'MOVER', navigate:'NAVEGAR', pause:'PAUSA', fire:'DISPARAR', hud_time:'TEMPO', hud_enemies:'INIMIGOS:', hud_level:'NÍVEL:', hud_points:'PONTOS:',
+          fullscreen_install:'No iPhone: Compartilhar → Adicionar à Tela de Início. Abra pelo ícone para ocultar o Safari.'
+        }
+      };
+
+      function tr(key) {
+        const lang = UI_I18N[SETTINGS_STATE.language] ? SETTINGS_STATE.language : 'es';
+        return UI_I18N[lang][key] || UI_I18N.es[key] || key;
+      }
+
+      function setUiText(id, key) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = tr(key);
+      }
+
+      function applyLanguage(lang, persist = true) {
+        SETTINGS_STATE.language = UI_I18N[lang] ? lang : 'es';
+        document.documentElement.lang = SETTINGS_STATE.language;
+        const pairs = {
+          'btn-main-play':'play','btn-main-global':'global','btn-main-settings':'settings','btn-main-dev':'developer',
+          'pause-title':'pause_title','btn-resume':'resume','btn-exit':'abandon','btn-confirm-exit':'confirm','btn-cancel-exit':'cancel',
+          'draft-level-title':'level_up','draft-choose-title':'choose_upgrade','settings-title':'settings_title',
+          'settings-bgm-label':'music','settings-sfx-label':'sfx','settings-language-label':'language','btn-close-settings':'back_menu',
+          'global-title':'global_title','btn-close-global':'back_menu','gameover-failed-label':'failed','gameover-title':'destroyed',
+          'gameover-level-label':'level','gameover-score-label':'points','gameover-cores-label':'cores',
+          'btn-gameover-retry':'retry','btn-gameover-menu':'back_menu'
+        };
+        Object.entries(pairs).forEach(([id,key]) => setUiText(id,key));
+        document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = tr(el.dataset.i18n); });
+        document.querySelectorAll('#language-buttons-container .lang-btn').forEach(btn => {
+          btn.classList.toggle('language-active', btn.dataset.lang === SETTINGS_STATE.language);
+        });
+        if (persist) saveRuntimeSettings();
+      }
+
+      function installPersistentConsoleControls() {
+        if (document.getElementById('persistent-console-controls')) return;
+        const pause = document.getElementById('btn-control-pause');
+        const mute = document.getElementById('btn-mute');
+        const fullscreen = document.getElementById('btn-fullscreen');
+        if (!pause || !mute || !fullscreen) return;
+        const cluster = document.createElement('div');
+        cluster.id = 'persistent-console-controls';
+        const smallRow = document.createElement('div');
+        smallRow.className = 'persistent-small-row';
+        smallRow.append(mute, fullscreen);
+        cluster.append(pause, smallRow);
+        document.body.appendChild(cluster);
+      }
+
+      function updatePersistentConsoleControls() {
+        const pause = document.getElementById('btn-control-pause');
+        if (!pause) return;
+        const enabled = state.phase === 'playing';
+        pause.disabled = !enabled;
+        pause.classList.toggle('console-control-disabled', !enabled);
+      }
+
+      function installBrowserGestureLock() {
+        const stop = event => {
+          if (event.cancelable) event.preventDefault();
+        };
+        ['gesturestart','gesturechange','gestureend','dblclick','contextmenu','dragstart','selectstart'].forEach(type => {
+          document.addEventListener(type, stop, { passive:false });
+        });
+        document.addEventListener('touchmove', stop, { passive:false });
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', event => {
+          const now = Date.now();
+          if (now - lastTouchEnd < 420 && event.cancelable) event.preventDefault();
+          lastTouchEnd = now;
+        }, { passive:false });
+        document.addEventListener('keydown', event => {
+          if ((event.ctrlKey || event.metaKey) && ['+','-','=','0'].includes(event.key)) event.preventDefault();
+        });
+      }
+
+      function triggerExitTransition(destination = 'menu') {
+        lockConfirmInput(1100);
+        vibrate(160);
         playSound('hit');
 
-        // Add screen shake
-        document.body.classList.add('screen-shake');
+        const activeScreen = document.querySelector(`.screen[data-show-on="${state.phase === 'draft' ? 'playing' : state.phase}"]`);
+        const virtualScreen = activeScreen?.firstElementChild;
+        virtualScreen?.classList.add('screen-shake');
 
-        // Fade in white overlay
         const overlay = document.getElementById('white-out-overlay');
-        if (overlay) {
-          overlay.classList.remove('opacity-0', 'pointer-events-none');
-          overlay.classList.add('opacity-100');
-        }
+        overlay?.classList.remove('opacity-0', 'pointer-events-none');
+        overlay?.classList.add('opacity-100');
 
         setTimeout(() => {
-          // Clean up shake and overlay
-          document.body.classList.remove('screen-shake');
+          virtualScreen?.classList.remove('screen-shake');
           state.paused = false;
           state.pauseConfirmState = false;
-          document.getElementById('pause-modal').classList.add('hidden');
+          document.getElementById('pause-modal')?.classList.add('hidden');
 
-          if (state.testMode || state.isDevPlay) openDeveloperMenu();
+          if (destination === 'dev' || ((state.testMode || state.isDevPlay) && destination !== 'menu')) openDeveloperMenu();
           else startMainMenu();
 
           setTimeout(() => {
-            if (overlay) {
-              overlay.classList.remove('opacity-100');
-              overlay.classList.add('opacity-0', 'pointer-events-none');
-            }
-          }, 500);
-        }, 1000);
+            overlay?.classList.remove('opacity-100');
+            overlay?.classList.add('opacity-0', 'pointer-events-none');
+          }, 280);
+        }, 620);
       }
 
       function confirmPauseAction() {
+        if (!canAcceptConfirmInput()) return;
+        lockConfirmInput(280);
         if (!state.pauseConfirmState) {
           if (state.pauseSelection === 'resume') {
             state.paused = false;
-            document.getElementById('pause-modal').classList.add('hidden');
+            document.getElementById('pause-modal')?.classList.add('hidden');
             vibrate(50);
           } else if (state.pauseSelection === 'exit') {
             state.pauseConfirmState = true;
-            state.pauseSelection = 'cancel'; // Default selection in confirm state
-            updatePauseMenuUI();
-            vibrate(50);
+            state.pauseSelection = 'cancel';
+            updatePauseMenuUI(); vibrate(50);
           }
+        } else if (state.pauseSelection === 'confirm') {
+          triggerExitTransition(state.testMode || state.isDevPlay ? 'dev' : 'menu');
         } else {
-          if (state.pauseSelection === 'confirm') {
-            triggerExitTransition();
-          } else if (state.pauseSelection === 'cancel') {
-            state.paused = false;
-            state.pauseConfirmState = false;
-            document.getElementById('pause-modal').classList.add('hidden');
-            vibrate(50);
-          }
+          state.paused = false; state.pauseConfirmState = false;
+          document.getElementById('pause-modal')?.classList.add('hidden'); vibrate(50);
         }
       }
 
@@ -5313,159 +5487,73 @@ stats.recentRuns = stats.recentRuns || [];
           }
           container.appendChild(wrapper);
         });
-
-        const hint = document.getElementById('draft-input-hint');
-        if (hint) {
-          if (state.draftInputLocked || performance.now() < state.draftReadyAt) {
-            hint.textContent = 'ESPERA… La selección se habilita al terminar la animación.';
-          } else if (state.draftConfirmArmed) {
-            hint.textContent = 'ELECCIÓN PREPARADA · Pulsa rojo otra vez para confirmar. Mover la palanca cancela.';
-          } else {
-            hint.textContent = 'Palanca: elegir · Rojo: preparar · Rojo otra vez: confirmar.';
-          }
-        }
       }
 
       function updateMainMenuUI() {
-        if (!joystickUsed) {
-          const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
-          const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
-          ['btn-main-play','btn-main-global','btn-main-settings','btn-main-dev'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el && !el.classList.contains('hidden')) {
-              el.className = unselectedStyle;
-              el.style.pointerEvents = isAutomated ? 'auto' : 'none';
-            }
-          });
-          return;
-        }
         const btnPlay = document.getElementById('btn-main-play');
         const btnGlobal = document.getElementById('btn-main-global');
         const btnSettings = document.getElementById('btn-main-settings');
         const btnDev = document.getElementById('btn-main-dev');
         if (!btnPlay || !btnGlobal || !btnSettings || !btnDev) return;
-
         const buttons = [btnPlay, btnGlobal, btnSettings, btnDev].filter(btn => !btn.classList.contains('hidden'));
-
-        if (state.menuSelectionIndex === undefined) {
-          state.menuSelectionIndex = 0;
-        }
+        state.menuSelectionIndex = Number.isFinite(state.menuSelectionIndex) ? state.menuSelectionIndex : 0;
         state.menuSelectionIndex = (state.menuSelectionIndex + buttons.length) % buttons.length;
-
         const selectedStyle = "w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
         const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
-
-        const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
-
         buttons.forEach((btn, idx) => {
-          if (idx === state.menuSelectionIndex) {
-            btn.className = selectedStyle;
-          } else {
-            btn.className = unselectedStyle;
-          }
-
-          if (!isAutomated) {
-            btn.style.pointerEvents = 'none';
-          } else {
-            btn.style.pointerEvents = 'auto';
-          }
+          btn.className = idx === state.menuSelectionIndex ? selectedStyle : unselectedStyle;
+          btn.style.pointerEvents = 'none';
         });
       }
 
       function confirmMenuAction() {
+        if (!canAcceptConfirmInput() || state.phase !== 'menu') return;
         const btnPlay = document.getElementById('btn-main-play');
         const btnGlobal = document.getElementById('btn-main-global');
         const btnSettings = document.getElementById('btn-main-settings');
         const btnDev = document.getElementById('btn-main-dev');
         if (!btnPlay || !btnGlobal || !btnSettings || !btnDev) return;
-
         const buttons = [btnPlay, btnGlobal, btnSettings, btnDev].filter(btn => !btn.classList.contains('hidden'));
         const selectedBtn = buttons[state.menuSelectionIndex];
         if (!selectedBtn) return;
-
+        lockConfirmInput(560);
         vibrate(50);
         playSound('equip');
-
-        if (selectedBtn === btnPlay) {
-          startRun();
-        } else if (selectedBtn === btnGlobal) {
-          stopRun();
-          state.phase = 'global_network';
-          render();
-          updateGlobalStatsUI();
-          updateGlobalNetworkUI();
-        } else if (selectedBtn === btnSettings) {
-          startSettingsMenu();
-        } else if (selectedBtn === btnDev) {
-          openDeveloperMenu();
-        }
+        if (selectedBtn === btnPlay) startRun();
+        else if (selectedBtn === btnGlobal) {
+          stopRun(); state.phase = 'global_network'; joystickUsed = true; render(); updateGlobalStatsUI(); updateGlobalNetworkUI();
+        } else if (selectedBtn === btnSettings) startSettingsMenu();
+        else if (selectedBtn === btnDev) openDeveloperMenu();
       }
 
       function handleMenuJoystickInput(jx, jy) {
-        if (!joystickUsed && (Math.abs(jx) > 0.3 || Math.abs(jy) > 0.3)) {
-          joystickUsed = true;
-          updateMainMenuUI();
-        }
-        const btnPlay = document.getElementById('btn-main-play');
-        const btnGlobal = document.getElementById('btn-main-global');
-        const btnSettings = document.getElementById('btn-main-settings');
-        const btnDev = document.getElementById('btn-main-dev');
-        if (!btnPlay || !btnGlobal || !btnSettings || !btnDev) return;
-
-        const buttons = [btnPlay, btnGlobal, btnSettings, btnDev].filter(btn => !btn.classList.contains('hidden'));
+        joystickUsed = true;
+        const buttons = ['btn-main-play','btn-main-global','btn-main-settings','btn-main-dev']
+          .map(id => document.getElementById(id)).filter(btn => btn && !btn.classList.contains('hidden'));
         const len = buttons.length;
-
-        if (jy < -0.5) {
-          if (lastJoystickYDir !== -1) {
-            lastJoystickYDir = -1;
-            state.menuSelectionIndex = (state.menuSelectionIndex - 1 + len) % len;
-            updateMainMenuUI();
-            vibrate(30);
-          }
-        } else if (jy > 0.5) {
-          if (lastJoystickYDir !== 1) {
-            lastJoystickYDir = 1;
-            state.menuSelectionIndex = (state.menuSelectionIndex + 1) % len;
-            updateMainMenuUI();
-            vibrate(30);
-          }
-        } else {
-          lastJoystickYDir = 0;
-        }
-
-        // La palanca solo navega. El botón rojo confirma la selección.
+        if (!len) return;
+        if (jy < -0.5 && lastJoystickYDir !== -1) {
+          lastJoystickYDir = -1;
+          state.menuSelectionIndex = (state.menuSelectionIndex - 1 + len) % len;
+          updateMainMenuUI(); vibrate(30);
+        } else if (jy > 0.5 && lastJoystickYDir !== 1) {
+          lastJoystickYDir = 1;
+          state.menuSelectionIndex = (state.menuSelectionIndex + 1) % len;
+          updateMainMenuUI(); vibrate(30);
+        } else if (Math.abs(jy) <= 0.5) lastJoystickYDir = 0;
         lastJoystickXDir = 0;
       }
 
       function updateGlobalNetworkUI() {
-        if (!joystickUsed) {
-          const el = document.getElementById('btn-close-global');
-          if (el) {
-            el.className = "mt-2 w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 rounded border border-slate-800 transition-all duration-200";
-            el.style.pointerEvents = 'none';
-          }
-          return;
-        }
-        const btnCloseGlobal = document.getElementById('btn-close-global');
-        if (!btnCloseGlobal) return;
-
-        const selectedStyle = "mt-2 w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 rounded border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
-        const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
-
-        btnCloseGlobal.className = selectedStyle;
-        if (!isAutomated) {
-          btnCloseGlobal.style.pointerEvents = 'none';
-        } else {
-          btnCloseGlobal.style.pointerEvents = 'auto';
-        }
+        const btn = document.getElementById('btn-close-global');
+        if (!btn) return;
+        btn.className = "mt-2 w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 rounded border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
+        btn.style.pointerEvents = 'none';
       }
 
       function confirmGlobalAction() {
-        if (state.phase === 'global_network') {
-          vibrate(50);
-          playSound('equip');
-          startMainMenu();
-        }
+        if (state.phase !== 'global_network' || !canAcceptConfirmInput()) return;
+        lockConfirmInput(560); vibrate(50); playSound('equip'); startMainMenu();
       }
 
       function handleGlobalJoystickInput(jx, jy) {
@@ -5478,63 +5566,25 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function updateSettingsMenuUI() {
-        if (!joystickUsed) {
-          document.querySelectorAll('[data-settings-idx]').forEach(el => {
-            el.style.outline = 'none';
-            el.style.background = 'transparent';
-          });
-          return;
-        }
-        // Clear all previous highlights
-        document.querySelectorAll('[data-settings-idx]').forEach(el => {
-          el.style.outline = 'none';
-          el.style.background = 'transparent';
+        document.querySelectorAll('[data-settings-idx], #slider-bgm, #slider-sfx, .lang-btn, #btn-close-settings').forEach(el => {
+          el.classList.remove('settings-focus', 'settings-edit-focus');
+          el.style.outline = '';
+          el.style.outlineOffset = '';
+          if (!el.classList.contains('language-active')) el.style.background = '';
         });
-        const idx = state.settingsSelectionIndex;
+        document.querySelectorAll('#language-buttons-container .lang-btn').forEach(btn => {
+          btn.classList.toggle('language-active', btn.dataset.lang === SETTINGS_STATE.language);
+        });
+        const idx = Number.isFinite(state.settingsSelectionIndex) ? state.settingsSelectionIndex : 0;
         const container = document.querySelector(`[data-settings-idx="${idx}"]`);
         if (!container) return;
-
-        const isCtrl = idx === 3;
-        const isEdit = state.settingsEditMode && !isCtrl;
-        const hiColor = isEdit ? '4px solid rgba(255, 170, 0, 0.9)' : '2px solid rgba(0, 255, 204, 0.7)';
-        const hiBg = isEdit ? 'rgba(255, 170, 0, 0.15)' : 'rgba(0, 255, 204, 0.08)';
-
-        if (idx === 0) {
-          const slider = container.querySelector('#slider-bgm');
-          if (slider) {
-            slider.style.outline = hiColor;
-            slider.style.outlineOffset = '2px';
-            slider.style.borderRadius = '8px';
-          }
-        } else if (idx === 1) {
-          const slider = container.querySelector('#slider-sfx');
-          if (slider) {
-            slider.style.outline = hiColor;
-            slider.style.outlineOffset = '2px';
-            slider.style.borderRadius = '8px';
-          }
-        } else if (idx === 2) {
-          const langBtns = container.querySelectorAll('.lang-btn');
-          langBtns.forEach((btn, i) => {
-            if (i === state.langSelectionIndex) {
-              btn.style.outline = hiColor;
-              btn.style.outlineOffset = '2px';
-              btn.style.borderRadius = '8px';
-              btn.style.background = hiBg;
-            } else {
-              btn.style.outline = 'none';
-              btn.style.background = 'transparent';
-            }
-          });
-        } else if (idx === 3) {
-          const btn = container.querySelector('#btn-close-settings');
-          if (btn) {
-            btn.style.outline = '2px solid rgba(0, 255, 204, 0.7)';
-            btn.style.outlineOffset = '2px';
-            btn.style.borderRadius = '8px';
-            btn.style.background = 'rgba(0, 255, 204, 0.08)';
-          }
-        }
+        const focusClass = state.settingsEditMode && idx !== 3 ? 'settings-edit-focus' : 'settings-focus';
+        if (idx === 0) document.getElementById('slider-bgm')?.classList.add(focusClass);
+        else if (idx === 1) document.getElementById('slider-sfx')?.classList.add(focusClass);
+        else if (idx === 2) {
+          const buttons = container.querySelectorAll('.lang-btn');
+          buttons[state.langSelectionIndex]?.classList.add(focusClass);
+        } else document.getElementById('btn-close-settings')?.classList.add('settings-focus');
       }
 
       function handleSettingsJoystickInput(jx, jy) {
@@ -5607,79 +5657,55 @@ stats.recentRuns = stats.recentRuns || [];
      }
 
       function confirmSettingsAction() {
-         // If in edit mode, exit edit mode (apply language if needed)
-         if (state.settingsEditMode) {
-           if (state.settingsEditTarget === 'language') {
-             const langBtns = document.querySelectorAll('#language-buttons-container .lang-btn');
-             const selectedBtn = langBtns[state.langSelectionIndex];
-             if (selectedBtn) {
-               const lang = selectedBtn.dataset.lang;
-               SETTINGS_STATE.language = lang;
-               langBtns.forEach(btn => {
-                 btn.className = btn.className.replace(/border-cyan-400/g, 'border-slate-700');
-               });
-               selectedBtn.className = selectedBtn.className.replace(/border-slate-700/g, 'border-cyan-400');
-             }
-           }
-           state.settingsEditMode = false;
-           state.settingsEditTarget = null;
-           updateSettingsMenuUI();
-           vibrate(50);
-           playSound('equip');
-           return;
-         }
-
-         // Not in edit mode: enter edit mode for sliders and language, close for close button
-         if (state.settingsSelectionIndex === 0) {
-           state.settingsEditMode = true;
-           state.settingsEditTarget = 'slider-bgm';
-           updateSettingsMenuUI();
-           vibrate(50);
-           playSound('equip');
-         } else if (state.settingsSelectionIndex === 1) {
-           state.settingsEditMode = true;
-           state.settingsEditTarget = 'slider-sfx';
-           updateSettingsMenuUI();
-           vibrate(50);
-           playSound('equip');
-         } else if (state.settingsSelectionIndex === 2) {
-           state.settingsEditMode = true;
-           state.settingsEditTarget = 'language';
-           updateSettingsMenuUI();
-           vibrate(50);
-           playSound('equip');
-         } else if (state.settingsSelectionIndex === 3) {
-           vibrate(50);
-           playSound('equip');
-           startMainMenu();
-         }
-     }
+        if (state.phase !== 'settings' || !canAcceptConfirmInput()) return;
+        if (state.settingsEditMode) {
+          if (state.settingsEditTarget === 'language') {
+            const selectedBtn = document.querySelectorAll('#language-buttons-container .lang-btn')[state.langSelectionIndex];
+            if (selectedBtn) applyLanguage(selectedBtn.dataset.lang, true);
+          } else {
+            saveRuntimeSettings();
+          }
+          state.settingsEditMode = false;
+          state.settingsEditTarget = null;
+          lockConfirmInput(240);
+          updateSettingsMenuUI(); vibrate(50); playSound('equip');
+          return;
+        }
+        if (state.settingsSelectionIndex === 0) { state.settingsEditMode = true; state.settingsEditTarget = 'slider-bgm'; }
+        else if (state.settingsSelectionIndex === 1) { state.settingsEditMode = true; state.settingsEditTarget = 'slider-sfx'; }
+        else if (state.settingsSelectionIndex === 2) { state.settingsEditMode = true; state.settingsEditTarget = 'language'; }
+        else if (state.settingsSelectionIndex === 3) {
+          lockConfirmInput(600); vibrate(50); playSound('equip'); startMainMenu(); return;
+        }
+        lockConfirmInput(220); updateSettingsMenuUI(); vibrate(50); playSound('equip');
+      }
 
        function updateGameoverUI() {
-         const btn = document.getElementById('btn-restart');
-         if (!btn) return;
-         const unselected = "w-full max-w-[220px] bg-slate-900/60 text-gray-400 font-title text-[9px] py-1.5 rounded border border-slate-800 transition-all duration-200";
-         const selected = "w-full max-w-[220px] bg-gradient-to-r from-pink-600 to-rose-700 text-white font-title text-[9px] py-1.5 rounded border-2 border-pink-400 shadow-lg heartbeat-card transition-all duration-200";
-         btn.className = joystickUsed ? selected : unselected;
-         btn.style.pointerEvents = 'none';
-       }
+        const retry = document.getElementById('btn-gameover-retry');
+        const menu = document.getElementById('btn-gameover-menu');
+        if (!retry || !menu) return;
+        const selection = state.gameoverSelection || 'retry';
+        retry.classList.toggle('is-selected', selection === 'retry');
+        menu.classList.toggle('is-selected', selection === 'menu');
+        retry.style.pointerEvents = 'none'; menu.style.pointerEvents = 'none';
+      }
 
        function confirmGameoverAction() {
-         if (state.phase === 'gameover') {
-           vibrate(50);
-           playSound('equip');
-           startMainMenu();
-         }
-       }
+        if (state.phase !== 'gameover' || !canAcceptConfirmInput()) return;
+        lockConfirmInput(650); vibrate(50); playSound('equip');
+        if ((state.gameoverSelection || 'retry') === 'retry') startRun();
+        else triggerExitTransition('menu');
+      }
 
        function handleGameoverJoystickInput(jx, jy) {
-         if (!joystickUsed && (Math.abs(jx) > 0.3 || Math.abs(jy) > 0.3)) {
-           joystickUsed = true;
-           updateGameoverUI();
-         }
-         // La palanca no confirma acciones. El botón rojo vuelve al menú.
-         lastJoystickXDir = 0;
-       }
+        joystickUsed = true;
+        if (jy < -0.5 && lastJoystickYDir !== -1) {
+          lastJoystickYDir = -1; state.gameoverSelection = 'retry'; updateGameoverUI(); vibrate(30);
+        } else if (jy > 0.5 && lastJoystickYDir !== 1) {
+          lastJoystickYDir = 1; state.gameoverSelection = 'menu'; updateGameoverUI(); vibrate(30);
+        } else if (Math.abs(jy) <= 0.5) lastJoystickYDir = 0;
+        lastJoystickXDir = 0;
+      }
 
       function capturePointerSafely(element, pointerId) {
         if (!element || typeof element.setPointerCapture !== 'function') return;
@@ -5777,6 +5803,7 @@ stats.recentRuns = stats.recentRuns || [];
           menuFireBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             initAudio();
+            if (!canAcceptConfirmInput()) return;
             confirmMenuAction();
           });
         }
@@ -5829,6 +5856,7 @@ stats.recentRuns = stats.recentRuns || [];
           globalFireBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             initAudio();
+            if (!canAcceptConfirmInput()) return;
             confirmGlobalAction();
           });
         }
@@ -5880,6 +5908,7 @@ stats.recentRuns = stats.recentRuns || [];
              e.preventDefault();
              if (state.settingsJoystickInUse) return;
              initAudio();
+             if (!canAcceptConfirmInput()) return;
              confirmSettingsAction();
            });
          }
@@ -5932,6 +5961,7 @@ stats.recentRuns = stats.recentRuns || [];
             e.preventDefault();
             if (state.gameoverJoystickInUse) return;
             initAudio();
+            if (!canAcceptConfirmInput()) return;
             confirmGameoverAction();
           });
         }
@@ -5995,6 +6025,7 @@ stats.recentRuns = stats.recentRuns || [];
           fireBtn.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             initAudio();
+            if (!canAcceptConfirmInput()) return;
             if (state.paused) {
               confirmPauseAction();
               vibrate(50);
@@ -6093,6 +6124,7 @@ stats.recentRuns = stats.recentRuns || [];
 
         state.phase = 'playing';
         state.started = true;
+        lockConfirmInput(520);
         canvas = dom.gameCanvas || document.getElementById('game-canvas');
         ctx = canvas.getContext('2d');
         canvas.width = canvas.clientWidth;
@@ -6127,52 +6159,50 @@ stats.recentRuns = stats.recentRuns || [];
         const button = document.getElementById('btn-fullscreen');
         const path = document.getElementById('fullscreen-icon-path');
         if (!button || !path) return;
-        const active = Boolean(getNativeFullscreenElement()) || isPseudoFullscreen();
+        const active = Boolean(getNativeFullscreenElement()) || isPseudoFullscreen() || window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
         button.dataset.active = active ? 'true' : 'false';
         button.setAttribute('aria-label', active ? 'Salir de pantalla completa' : 'Entrar en pantalla completa');
-        path.setAttribute('d', active
-          ? 'M9 9H3.75V3.75M15 9h5.25V3.75M15 15h5.25v5.25M9 15H3.75v5.25'
-          : 'M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5');
+        path.setAttribute('d', active ? 'M9 9H3.75V3.75M15 9h5.25V3.75M15 15h5.25v5.25M9 15H3.75v5.25' : 'M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5');
       }
 
       function setPseudoFullscreen(active) {
         document.documentElement.classList.toggle('mekora-pseudo-fullscreen', active);
         document.body.classList.toggle('mekora-pseudo-fullscreen', active);
-        if (active) setTimeout(() => window.scrollTo(0, 1), 50);
+        document.documentElement.style.height = active ? `${window.innerHeight}px` : '';
+        document.body.style.height = active ? `${window.innerHeight}px` : '';
+        if (active) {
+          window.scrollTo(0, 1);
+          setTimeout(() => window.scrollTo(0, 1), 120);
+        }
         updateFullscreenButton();
       }
 
       async function toggleFullscreenMode() {
         const nativeElement = getNativeFullscreenElement();
         if (nativeElement) {
-          try {
-            const exit = document.exitFullscreen || document.webkitExitFullscreen;
-            if (exit) await exit.call(document);
-          } catch (error) {
-            console.warn('No se pudo salir de pantalla completa nativa.', error);
-          }
-          setPseudoFullscreen(false);
-          updateFullscreenButton();
-          return;
+          try { await (document.exitFullscreen || document.webkitExitFullscreen)?.call(document); } catch (error) {}
+          setPseudoFullscreen(false); updateFullscreenButton(); return;
         }
-
-        if (isPseudoFullscreen()) {
-          setPseudoFullscreen(false);
-          return;
-        }
-
+        if (isPseudoFullscreen()) { setPseudoFullscreen(false); return; }
         const root = document.documentElement;
         const request = root.requestFullscreen || root.webkitRequestFullscreen;
         if (request) {
           try {
-            await request.call(root);
-            updateFullscreenButton();
-            return;
-          } catch (error) {
-            console.warn('Pantalla completa nativa no disponible; se usa el modo expandido.', error);
-          }
+            await request.call(root, { navigationUI: 'hide' });
+            try { await screen.orientation?.lock?.('landscape'); } catch (error) {}
+            updateFullscreenButton(); return;
+          } catch (error) {}
         }
         setPseudoFullscreen(true);
+        const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const standalone = navigator.standalone === true || window.matchMedia?.('(display-mode: standalone)').matches;
+        if (isiOS && !standalone) {
+          const hint = document.getElementById('fullscreen-install-hint');
+          if (hint) {
+            hint.textContent = tr('fullscreen_install'); hint.classList.remove('hidden');
+            clearTimeout(hint._hideTimer); hint._hideTimer = setTimeout(() => hint.classList.add('hidden'), 4200);
+          }
+        }
       }
 
       function unlockDeveloperMode() {
@@ -6183,6 +6213,7 @@ stats.recentRuns = stats.recentRuns || [];
         state.menuSelectionIndex = 0;
         joystickUsed = false;
         updateMainMenuUI();
+        applyLanguage(SETTINGS_STATE.language, false);
         vibrate(35);
       }
 
@@ -6193,26 +6224,24 @@ stats.recentRuns = stats.recentRuns || [];
 
       function startMainMenu() {
         stopRun();
-        joystickUsed = false;
         state.phase = 'menu';
-        document.getElementById('test-mode-hud')?.classList.add('hidden');
         state.menuSelectionIndex = 0;
+        joystickUsed = true;
+        lastJoystickXDir = 0; lastJoystickYDir = 0;
+        document.getElementById('test-mode-hud')?.classList.add('hidden');
         syncDeveloperButtonVisibility();
-        render();
-        updateGlobalStatsUI();
-        updateMainMenuUI();
+        render(); updateGlobalStatsUI(); updateMainMenuUI();
+        lockConfirmInput(580);
       }
 
       function startSettingsMenu() {
         stopRun();
-        joystickUsed = false;
         state.phase = 'settings';
         state.settingsSelectionIndex = 0;
-         state.langSelectionIndex = 0;
-         state.settingsEditMode = false;
-         state.settingsEditTarget = null;
-        render();
-        updateSettingsMenuUI();
+        state.langSelectionIndex = Math.max(0, ['es','en','pt'].indexOf(SETTINGS_STATE.language));
+        state.settingsEditMode = false; state.settingsEditTarget = null;
+        joystickUsed = true; lastJoystickXDir = 0; lastJoystickYDir = 0;
+        render(); updateSettingsMenuUI(); lockConfirmInput(560);
       }
 
       function endRun() {
@@ -6228,7 +6257,11 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         state.phase = 'gameover';
-        joystickUsed = false;
+        joystickUsed = true;
+        state.gameoverSelection = 'retry';
+        lastJoystickXDir = 0;
+        lastJoystickYDir = 0;
+        lockConfirmInput(700);
         saveLastRunResult({
           score: state.score,
           public: true,
@@ -6245,24 +6278,30 @@ stats.recentRuns = stats.recentRuns || [];
 
       function render() {
         document.body.dataset.phase = state.phase;
+        updatePersistentConsoleControls();
       }
 
       function initApp() {
         document.body.dataset.phase = 'menu';
         state.phase = 'menu';
         cacheDomRefs();
+        document.querySelectorAll('.screen').forEach(screen => screen.firstElementChild?.classList.add('virtual-screen'));
+        installPersistentConsoleControls();
+        installBrowserGestureLock();
+        applyLanguage(SETTINGS_STATE.language, false);
 const btnControlPause = document.getElementById('btn-control-pause');
         if (btnControlPause) {
           btnControlPause.onclick = () => {
             if (state.phase === 'playing') {
-              if (!state.paused) {
+              if (!state.paused && canAcceptConfirmInput()) {
+                lockConfirmInput(420);
                 state.paused = true;
                 state.pauseSelection = 'resume';
                 state.pauseConfirmState = false;
                 document.getElementById('pause-modal').classList.remove('hidden');
                 document.getElementById('pause-normal-buttons').classList.remove('hidden');
                 document.getElementById('pause-confirm-buttons').classList.add('hidden');
-                joystickUsed = false;
+                joystickUsed = true;
                 updatePauseMenuUI();
                 vibrate(30);
               }
@@ -6333,7 +6372,9 @@ const btnControlPause = document.getElementById('btn-control-pause');
           };
         }
 
-        // Language buttons: set initial active state (es selected by default)
+        // Language buttons and active locale.
+        state.langSelectionIndex = Math.max(0, ['es','en','pt'].indexOf(SETTINGS_STATE.language));
+        applyLanguage(SETTINGS_STATE.language, false);
         setupJoystickEvents();
         setupDeveloperControls();
         startMainMenu();
@@ -6373,7 +6414,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
           return equipped ? `ACTIVA · NIV ${state.passiveLevels[item.id] || 1}` : 'NO ACTIVA';
         }
         if (sectionId === 'synergies') {
-          return state.activatedSynergies.includes(item.id) ? 'FORMADA' : 'EQUIPAR REQUISITOS';
+          return state.activatedSynergies.includes(item.id) ? 'EQUIPADA · ROJO: RETIRAR' : 'ROJO: EQUIPAR';
         }
         const testValues = {
           'dummy': state.testDummyEnabled ? 'ACTIVO' : 'DESACTIVADO',
@@ -6396,15 +6437,11 @@ const btnControlPause = document.getElementById('btn-control-pause');
       }
 
       function openDeveloperMenu() {
-        stopRun();
-        state.phase = 'dev';
-        state.testMode = false;
+        stopRun(); state.phase = 'dev'; state.testMode = false;
         document.getElementById('test-mode-hud')?.classList.add('hidden');
         state.devFocus = 'tabs';
         state.devSectionIndex = Math.max(0, DEV_SECTIONS.findIndex(section => section.id === (state.devActiveSection || 'weapons')));
-        state.devItemIndex = 0;
-        render();
-        updateDevMenuUI();
+        state.devItemIndex = 0; render(); updateDevMenuUI(); lockConfirmInput(560);
       }
 
       function updateDevMenuUI() {
@@ -6429,12 +6466,8 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
         if (!list) return;
         if (state.devFocus === 'tabs') {
-          list.innerHTML = `
-            <div class="dev-row selected"><span>SECCIÓN: ${section.label}</span><span class="dev-value">${section.id === 'exit' ? 'VOLVER AL MENÚ' : 'ROJO PARA ABRIR'}</span></div>
-            <div class="dev-row"><span>Izquierda / derecha</span><span class="dev-value">CAMBIAR PESTAÑA</span></div>
-            <div class="dev-row"><span>Botón rojo</span><span class="dev-value">CONFIRMAR</span></div>
-          `;
-          setDevStatus(state.devStatus || 'Selecciona una sección y confirma.');
+          list.innerHTML = `<div class="dev-row selected"><span>${section.label}</span><span class="dev-value">${section.id === 'exit' ? 'VOLVER' : 'ABRIR'}</span></div>`;
+          setDevStatus(state.devStatus || 'LISTO');
           return;
         }
 
@@ -6461,7 +6494,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         }).join('');
 
         const pageText = `${state.devItemIndex + 1}/${items.length}`;
-        setDevStatus(`${pageText} · ARRIBA en el primer ítem: pestañas · ROJO: activar · IZQ/DER: nivel`);
+        setDevStatus(pageText);
       }
 
       function modifyDevLevel(sectionId, direction) {
@@ -6527,35 +6560,23 @@ const btnControlPause = document.getElementById('btn-control-pause');
         const synergy = SYNERGY_BY_ID.get(id);
         if (!synergy) return;
         if (state.activatedSynergies.includes(id)) {
-          setDevStatus('La sinergia ya está formada.');
+          state.activatedSynergies = state.activatedSynergies.filter(synId => synId !== id);
+          state.activeWeapons = state.activeWeapons.filter(weaponId => weaponId !== id);
+          delete state.weaponLevels[id];
+          calculateMechaStats();
+          setDevStatus('Sinergia desequipada. Sus componentes pueden equiparse otra vez.');
           return;
         }
-
         const missingWeapons = synergy.reqs.filter(req => req.startsWith('w-') && !state.activeWeapons.includes(req));
         const missingPassives = synergy.reqs.filter(req => req.startsWith('p-') && !state.passives.includes(req));
         const weaponReqs = synergy.reqs.filter(req => req.startsWith('w-'));
         const projectedWeaponCount = state.activeWeapons.length + missingWeapons.length - weaponReqs.length + 1;
-        if (projectedWeaponCount > 6) {
-          setDevStatus('No hay suficientes slots de armas para formar la sinergia.');
-          vibrate(80);
-          return;
-        }
-        if (state.passives.length + missingPassives.length > 6) {
-          setDevStatus('No hay suficientes slots de pasivas para sus requisitos.');
-          vibrate(80);
-          return;
-        }
-
-        missingWeapons.forEach(req => {
-          state.activeWeapons.push(req);
-          state.weaponLevels[req] = 1;
-        });
-        missingPassives.forEach(req => {
-          state.passives.push(req);
-          state.passiveLevels[req] = 1;
-        });
+        if (projectedWeaponCount > 6) { setDevStatus('No hay suficientes slots de armas.'); vibrate(80); return; }
+        if (state.passives.length + missingPassives.length > 6) { setDevStatus('No hay suficientes slots de pasivas.'); vibrate(80); return; }
+        missingWeapons.forEach(req => { state.activeWeapons.push(req); state.weaponLevels[req] = 1; });
+        missingPassives.forEach(req => { state.passives.push(req); state.passiveLevels[req] = 1; });
         calculateMechaStats();
-        setDevStatus('Sinergia formada. Las armas componentes fueron consumidas.');
+        setDevStatus('Sinergia equipada. Las armas componentes fueron consumidas.');
       }
 
       function executeDevTestOption(id) {
@@ -6577,21 +6598,16 @@ const btnControlPause = document.getElementById('btn-control-pause');
       }
 
       function confirmDevAction() {
-        if (state.phase !== 'dev') return;
+        if (state.phase !== 'dev' || !canAcceptConfirmInput()) return;
+        lockConfirmInput(260);
         const section = DEV_SECTIONS[state.devSectionIndex] || DEV_SECTIONS[0];
         if (state.devFocus === 'tabs') {
-          if (section.id === 'exit') {
-            startMainMenu();
-            return;
-          }
+          if (section.id === 'exit') { startMainMenu(); return; }
           state.devActiveSection = section.id;
           state.devFocus = 'list';
           state.devItemIndex = 0;
-          updateDevMenuUI();
-          vibrate(35);
-          return;
+          updateDevMenuUI(); vibrate(35); return;
         }
-
         const items = getDevSectionItems(state.devActiveSection);
         const item = items[state.devItemIndex];
         if (!item) return;
@@ -6599,8 +6615,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         else if (state.devActiveSection === 'passives') toggleDevPassive(item.id);
         else if (state.devActiveSection === 'synergies') equipDevSynergy(item.id);
         else if (state.devActiveSection === 'test') executeDevTestOption(item.id);
-        updateDevMenuUI();
-        vibrate(35);
+        updateDevMenuUI(); vibrate(35);
       }
 
       function handleDevJoystickInput(jx, jy) {
@@ -6698,6 +6713,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         fire.addEventListener('pointerdown', event => {
           event.preventDefault();
           initAudio();
+          if (!canAcceptConfirmInput()) return;
           confirmDevAction();
         });
       }
