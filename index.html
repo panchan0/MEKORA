@@ -1148,6 +1148,192 @@
   }
 </style>
 
+
+<style id="mekora-hud-layout-v32">
+  :root {
+    --shell: #3f3d61;
+    --shell-light: #514e78;
+    --shell-shadow: #2d2b46;
+    --control-move: #278b92;
+    --control-move-knob: #8ac7c2;
+    --control-action: #c45b76;
+    --control-action-icon: #fff1f4;
+    --control-system: #d08a36;
+    --control-utility: #4b6e9c;
+    --weapon-ready: #2aa7ae;
+    --passive-ready: #a36ac4;
+    --slot-empty: rgba(113, 128, 150, .27);
+    --slot-cooling: #77818d;
+  }
+
+  html, body, .screen {
+    background: var(--shell) !important;
+  }
+  .screen {
+    background: linear-gradient(145deg, var(--shell-light), var(--shell) 55%, var(--shell-shadow)) !important;
+  }
+
+  [id$="joystick-move-zone"] {
+    background: var(--control-move) !important;
+    border-color: #176970 !important;
+  }
+  [id$="joystick-move-knob"] {
+    background: var(--control-move-knob) !important;
+    border-color: #d4efeb !important;
+  }
+  [id$="tap-fire"] {
+    background: var(--control-action) !important;
+    border-color: #8f3d55 !important;
+  }
+  #btn-control-pause {
+    background: var(--control-system) !important;
+    border-color: #a96825 !important;
+  }
+  #btn-mute {
+    background: var(--control-utility) !important;
+    border-color: #345178 !important;
+  }
+  #btn-fullscreen {
+    background: #4c9b82 !important;
+    border-color: #337861 !important;
+  }
+
+  /* The combat viewport fills the complete black display in portrait and landscape. */
+  body[data-phase="playing"] .screen[data-show-on="playing"] > :first-child > .relative.aspect-\[16\/9\],
+  body[data-phase="draft"] .screen[data-show-on="playing"] > :first-child > .relative.aspect-\[16\/9\] {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+  }
+
+  #hud-secondary-stats { display: none !important; }
+  #hud-main-stats { top: 10px !important; left: 12px !important; }
+  #hud-main-stats > div:first-child { gap: 6px !important; }
+  #hud-main-stats [data-i18n="hud_points"] { font-size: 9px !important; }
+  #hud-score { font-size: 16px !important; }
+  #hud-time-block { top: 9px !important; }
+  #hud-timer { font-size: 15px !important; }
+
+  body[data-test-mode="true"] #hud-main-stats,
+  body[data-test-mode="true"] #hud-time-block,
+  body[data-test-mode="true"] #xp-progress-bar,
+  body[data-test-mode="true"] #hud-passives-list { display: none !important; }
+  body[data-test-mode="true"] #xp-progress-bar { width: 0 !important; }
+  body[data-test-mode="true"] #test-mode-hud {
+    display: flex !important;
+    top: 9px !important;
+    left: 11px !important;
+    right: auto !important;
+    transform: none !important;
+    max-width: min(58%, 360px);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 2px 5px;
+    padding: 5px 7px !important;
+    font-size: 8px !important;
+    text-align: left !important;
+    background: rgba(5, 8, 13, .78) !important;
+    border-color: rgba(245, 158, 11, .55) !important;
+  }
+
+  #hud-active-slots, #hud-passives-list { gap: 3px !important; }
+  .hud-slot {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    border: 1px solid rgba(225, 232, 240, .48);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+  }
+  .hud-slot.empty {
+    color: rgba(226,232,240,.28);
+    background: var(--slot-empty);
+    border-color: rgba(203,213,225,.25);
+  }
+  .hud-slot.weapon { background: var(--weapon-ready); border-color: #7fdde1; }
+  .hud-slot.passive { background: var(--passive-ready); border-color: #d3a4e8; }
+  .hud-slot .slot-icon { position:relative; z-index:2; filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+  .hud-slot .slot-level {
+    position:absolute; z-index:3; right:2px; bottom:1px;
+    font-size:7px; line-height:1; color:#fff; text-shadow:0 1px 2px #000;
+  }
+  .hud-slot.weapon.cooling { color: rgba(255,255,255,.88); }
+
+  /* White transition belongs to the virtual display, never to the browser viewport. */
+  #white-out-overlay {
+    position: absolute !important;
+    inset: 4px !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    border-radius: 7px;
+    transition: opacity .28s ease !important;
+    z-index: 99999 !important;
+  }
+
+  @media (orientation: landscape) and (min-width: 620px) {
+    .screen {
+      grid-template-rows: minmax(0, 1fr) clamp(66px, 13vh, 86px) !important;
+    }
+    .screen > :nth-child(2) > [id$="joystick-move-zone"],
+    .console-controls > [id$="joystick-move-zone"],
+    .screen > :nth-child(2) > button[id$="tap-fire"],
+    .console-controls > button[id$="tap-fire"] {
+      align-self: center !important;
+      transform: translateY(clamp(12px, 3vh, 22px)) !important;
+    }
+    #persistent-console-controls {
+      bottom: max(1px, var(--safe-bottom)) !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+    }
+    #persistent-console-controls .persistent-small-row { display: contents !important; }
+    #btn-mute { order: 1; }
+    #btn-control-pause { order: 2; width: 58px !important; height: 58px !important; }
+    #btn-fullscreen { order: 3; }
+    #btn-mute, #btn-fullscreen { width: 38px !important; height: 38px !important; }
+    #hud-main-stats { left: 14px !important; }
+    #hud-active-slots, #hud-passives-list { gap: 4px !important; }
+    .hud-slot { width: 27px; height: 27px; }
+  }
+
+  @media (orientation: landscape) and (max-height: 470px) {
+    .screen > :nth-child(2) > [id$="joystick-move-zone"],
+    .console-controls > [id$="joystick-move-zone"],
+    .screen > :nth-child(2) > button[id$="tap-fire"],
+    .console-controls > button[id$="tap-fire"] {
+      transform: translateY(10px) !important;
+    }
+    #persistent-console-controls { bottom: max(0px, var(--safe-bottom)) !important; }
+    #btn-control-pause { width: 50px !important; height: 50px !important; }
+    #btn-mute, #btn-fullscreen { width: 33px !important; height: 33px !important; }
+  }
+
+  @media (orientation: portrait) {
+    body[data-phase="playing"] .screen[data-show-on="playing"] > :first-child,
+    body[data-phase="draft"] .screen[data-show-on="playing"] > :first-child {
+      height: 58% !important;
+    }
+    body[data-phase="playing"] .screen[data-show-on="playing"] > :nth-child(2),
+    body[data-phase="draft"] .screen[data-show-on="playing"] > :nth-child(2) {
+      height: 42% !important;
+    }
+    .hud-slot { width: 23px; height: 23px; font-size: 10px; }
+    #hud-main-stats { top: 9px !important; }
+    #hud-time-block { top: 8px !important; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -1177,12 +1363,12 @@
 
            <!-- TOP HUD OVERLAY - SEPARATE ELEMENTS WITHOUT BACKGROUND BOX -->
            <!-- LEFT: POINTS & STATS -->
-           <div class="absolute top-3 left-3 z-40 flex flex-col items-start text-white font-title text-xs tracking-wider pointer-events-none">
+           <div id="hud-main-stats" class="absolute top-3 left-3 z-40 flex flex-col items-start text-white font-title text-xs tracking-wider pointer-events-none">
              <div class="flex items-baseline gap-1">
                <span data-i18n="hud_points" class="text-[9px] text-gray-400 uppercase">PUNTOS:</span>
                <span id="hud-score" class="font-bold text-sm text-amber-400">0</span>
              </div>
-             <div class="flex items-baseline gap-1 text-[9px]">
+             <div id="hud-secondary-stats" class="flex items-baseline gap-1 text-[9px]">
                <span data-i18n="hud_level" class="text-gray-400">NIVEL:</span>
                <span id="hud-level" class="font-bold text-cyan-400">1</span>
                <span class="text-gray-500">|</span>
@@ -1194,7 +1380,7 @@
            </div>
 
            <!-- CENTER: TIME COUNTER -->
-           <div class="absolute top-3 left-1/2 transform -translate-x-1/2 z-40 flex flex-col items-center text-white font-title pointer-events-none">
+           <div id="hud-time-block" class="absolute top-3 left-1/2 transform -translate-x-1/2 z-40 flex flex-col items-center text-white font-title pointer-events-none">
              <span data-i18n="hud_time" class="text-[8px] text-gray-400 uppercase tracking-widest">TIEMPO</span>
              <span id="hud-timer" class="font-bold text-sm text-[#00ffcc] tracking-wider">00:00</span>
            </div>
@@ -1477,7 +1663,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.6</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.7</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2409,12 +2595,12 @@ stats.recentRuns = stats.recentRuns || [];
                 const level = state.weaponLevels[weaponId] || 1;
                 const title = item ? (item.title || item.name) : '';
                 const icon = item ? item.icon : '⚔';
-                html += `<div class="w-5 h-5 rounded border border-cyan-400/40 text-cyan-300 flex items-center justify-center font-bold text-[9px] relative" title="${title} (Lvl ${level})">
-                  <span>${icon}</span>
-                  <span class="absolute bottom-0 right-0.5 text-[6px] leading-none text-cyan-400 font-black">${level}</span>
+                html += `<div class="hud-slot weapon" data-weapon-id="${weaponId}" title="${title} (Lvl ${level})">
+                  <span class="slot-icon">${icon}</span>
+                  <span class="slot-level">${level}</span>
                 </div>`;
               } else {
-                html += `<div class="w-5 h-5 rounded border border-slate-800/30 flex items-center justify-center text-slate-600 text-[8px] font-bold"><span class="opacity-30">·</span></div>`;
+                html += `<div class="hud-slot empty"><span>·</span></div>`;
               }
             }
             dom.hudActiveSlots.innerHTML = html;
@@ -2429,12 +2615,12 @@ stats.recentRuns = stats.recentRuns || [];
                 const level = state.passiveLevels[passiveId] || 1;
                 const title = item ? item.title : '';
                 const icon = item ? item.icon : '✦';
-                html += `<div class="w-5 h-5 rounded border border-pink-400/40 text-pink-300 flex items-center justify-center font-bold text-[9px] relative" title="${title} (Lvl ${level})">
-                  <span>${icon}</span>
-                  <span class="absolute bottom-0 right-0.5 text-[6px] leading-none text-pink-400 font-black">${level}</span>
+                html += `<div class="hud-slot passive" title="${title} (Lvl ${level})">
+                  <span class="slot-icon">${icon}</span>
+                  <span class="slot-level">${level}</span>
                 </div>`;
               } else {
-                html += `<div class="w-5 h-5 rounded border border-slate-800/30 flex items-center justify-center text-slate-600 text-[8px] font-bold"><span class="opacity-30">·</span></div>`;
+                html += `<div class="hud-slot empty"><span>·</span></div>`;
               }
             }
             dom.hudPassivesList.innerHTML = html;
@@ -2448,6 +2634,34 @@ stats.recentRuns = stats.recentRuns || [];
         }
         updateXpUI();
       }
+      function getEffectiveWeaponCooldown(weaponId, timestamp) {
+        if (state.devNoCooldown) return 0;
+        let cooldown = getWeaponStats(weaponId, state.weaponLevels[weaponId] || 1).cooldown;
+        if (state.passives.includes('p-cooldown')) {
+          const passiveLvl = state.passiveLevels['p-cooldown'] || 1;
+          cooldown *= Math.pow(0.8, passiveLvl);
+        }
+        if (state.mecha.reactorOverloadUntil && timestamp < state.mecha.reactorOverloadUntil) cooldown *= 0.5;
+        if (state.stats.fireRateMult) cooldown /= state.stats.fireRateMult;
+        return Math.max(1, cooldown);
+      }
+
+      function updateHudCooldowns(timestamp) {
+        if (!dom.hudActiveSlots) return;
+        const lastTimes = state.lastWeaponFireTimes || {};
+        dom.hudActiveSlots.querySelectorAll('.hud-slot.weapon[data-weapon-id]').forEach(slot => {
+          const weaponId = slot.dataset.weaponId;
+          const cooldown = getEffectiveWeaponCooldown(weaponId, timestamp);
+          const lastFire = lastTimes[weaponId] || 0;
+          const progress = cooldown <= 0 ? 1 : Math.max(0, Math.min(1, (timestamp - lastFire) / cooldown));
+          const degrees = Math.round(progress * 360);
+          slot.classList.toggle('cooling', progress < 0.995);
+          slot.style.background = progress >= 0.995
+            ? 'var(--weapon-ready)'
+            : `conic-gradient(var(--weapon-ready) ${degrees}deg, var(--slot-cooling) ${degrees}deg 360deg)`;
+        });
+      }
+
       //#endregion mecha_calculation
 
       //#region game_loop · Main combat simulation loop and rendering
@@ -2763,13 +2977,14 @@ stats.recentRuns = stats.recentRuns || [];
         if (dom.hudTimer && (totalSeconds !== hudCache.timerSecond || state.isDevPlay)) {
           hudCache.timerSecond = totalSeconds;
           if (state.isDevPlay) {
-            if (dom.hudTimer.textContent !== 'ÁREA PRUEBAS') dom.hudTimer.textContent = 'ÁREA PRUEBAS';
+            if (dom.hudTimer.textContent) dom.hudTimer.textContent = '';
           } else {
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
             dom.hudTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
           }
         }
+        updateHudCooldowns(timestamp);
 
         const timeFactor = Math.min(3.0, 0.3 + (state.playTime / 60000) * 0.7);
         const simulationSpeed = state.devSpeedUp ? 2.0 : (state.devSlowMo ? 0.3 : 1.0);
@@ -2798,11 +3013,6 @@ stats.recentRuns = stats.recentRuns || [];
 
         const worldSize = getCurrentWorldSize();
         ensureTestEnvironment(timestamp);
-        if (state.testMode) {
-          ctx.fillStyle = 'rgba(0,255,204,.22)';
-          ctx.font = 'bold 18px Orbitron, sans-serif';
-          ctx.fillText('CAMPO DE PRUEBAS', 24, 36);
-        }
         const viewLeft = Math.max(0, state.mecha.x - halfW - GRID_SIZE);
         const viewRight = Math.min(worldSize, state.mecha.x + halfW + GRID_SIZE);
         const viewTop = Math.max(0, state.mecha.y - halfH - GRID_SIZE);
@@ -5501,45 +5711,38 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.save();
         ctx.translate(state.mecha.x, state.mecha.y);
 
-        const barW = 40;
-        const barH = 4;
-        const startY = -38; // above the mecha
+        const barW = 58;
+        const hpH = 6;
+        const shieldH = 5;
+        const startY = -49;
 
-        // Background for health bar
-        ctx.fillStyle = 'rgba(31, 41, 55, 0.7)';
-        ctx.fillRect(-barW / 2, startY, barW, barH);
-        // Foreground health bar
+        ctx.fillStyle = 'rgba(5, 8, 13, 0.86)';
+        ctx.fillRect(-barW / 2 - 1, startY - 1, barW + 2, hpH + 2);
         const hpRatio = Math.max(0, state.mecha.hp / state.mecha.maxHp);
-        ctx.fillStyle = '#10b981';
-        ctx.fillRect(-barW / 2, startY, barW * hpRatio, barH);
+        ctx.fillStyle = '#22c98d';
+        ctx.fillRect(-barW / 2, startY, barW * hpRatio, hpH);
 
-        // Background for shield bar
-        ctx.fillStyle = 'rgba(31, 41, 55, 0.7)';
-        ctx.fillRect(-barW / 2, startY + 6, barW, barH - 1);
-        // Foreground shield bar
+        ctx.fillStyle = 'rgba(5, 8, 13, 0.86)';
+        ctx.fillRect(-barW / 2 - 1, startY + 8, barW + 2, shieldH + 2);
         const shieldRatio = state.mecha.maxShield > 0 ? Math.max(0, state.mecha.shield / state.mecha.maxShield) : 0;
-        ctx.fillStyle = '#06b6d4';
-        ctx.fillRect(-barW / 2, startY + 6, barW * shieldRatio, barH - 1);
+        ctx.fillStyle = '#37bde5';
+        ctx.fillRect(-barW / 2, startY + 9, barW * shieldRatio, shieldH);
 
-        // Background for ammo/reload bar
-        ctx.fillStyle = 'rgba(31, 41, 55, 0.7)';
-        ctx.fillRect(-barW / 2, startY + 11, barW, barH - 1);
-        // Foreground ammo/reload bar
-        if (state.mecha.isReloading) {
-          ctx.fillStyle = '#f59e0b'; // Amber for reloading
-          ctx.fillRect(-barW / 2, startY + 11, barW * state.mecha.reloadProgress, barH - 1);
-        } else {
-          const maxAmmo = 10 + (state.mecha.maxAmmoBonus || 0);
-          const ammoRatio = Math.max(0, state.mecha.ammo / maxAmmo);
-          ctx.fillStyle = '#ec4899'; // Pink for ammo
-          ctx.fillRect(-barW / 2, startY + 11, barW * ammoRatio, barH - 1);
-        }
+        ctx.font = 'bold 14px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(0,0,0,.9)';
+        ctx.fillStyle = '#f4c542';
+        const ammoText = String(Math.max(0, Math.round(state.mecha.ammo || 0)));
+        ctx.strokeText(ammoText, 0, startY + 17);
+        ctx.fillText(ammoText, 0, startY + 17);
 
         ctx.restore();
 
         // Update and Render Damage Numbers
         ctx.save();
-        ctx.font = 'bold 16px Orbitron';
+        ctx.font = 'bold 21px ui-sans-serif, system-ui, sans-serif';
         ctx.textAlign = 'center';
         for (let i = state.damageNumbers.length - 1; i >= 0; i--) {
           const dn = state.damageNumbers[i];
@@ -5551,7 +5754,7 @@ stats.recentRuns = stats.recentRuns || [];
           ctx.globalAlpha = alpha;
           ctx.fillStyle = dn.color || '#ff3366';
           ctx.strokeStyle = '#000000';
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 4;
           ctx.strokeText(dn.text, dn.x, dn.y);
           ctx.fillText(dn.text, dn.x, dn.y);
 
@@ -5752,8 +5955,12 @@ stats.recentRuns = stats.recentRuns || [];
         virtualScreen?.classList.add('screen-shake');
 
         const overlay = document.getElementById('white-out-overlay');
-        overlay?.classList.remove('opacity-0', 'pointer-events-none');
-        overlay?.classList.add('opacity-100');
+        if (overlay && virtualScreen && overlay.parentElement !== virtualScreen) virtualScreen.appendChild(overlay);
+        if (overlay) {
+          overlay.classList.remove('opacity-0', 'opacity-100');
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'none';
+        }
 
         setTimeout(() => {
           virtualScreen?.classList.remove('screen-shake');
@@ -5765,9 +5972,11 @@ stats.recentRuns = stats.recentRuns || [];
           else startMainMenu();
 
           setTimeout(() => {
-            overlay?.classList.remove('opacity-100');
-            overlay?.classList.add('opacity-0', 'pointer-events-none');
-          }, 280);
+            if (overlay) {
+              overlay.style.opacity = '0';
+              overlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+          }, 80);
         }, 620);
       }
 
@@ -6850,11 +7059,10 @@ stats.recentRuns = stats.recentRuns || [];
         }
       }
 
-      function unlockDeveloperMode() {
-        if (developerUnlocked) return;
-        developerUnlocked = true;
+      function unlockDeveloperMode(forceState = null) {
+        developerUnlocked = forceState === null ? !developerUnlocked : Boolean(forceState);
         const button = document.getElementById('btn-main-dev');
-        if (button) button.classList.remove('hidden');
+        if (button) button.classList.toggle('hidden', !developerUnlocked);
         state.menuSelectionIndex = 0;
         joystickUsed = false;
         updateMainMenuUI();
@@ -6875,6 +7083,7 @@ stats.recentRuns = stats.recentRuns || [];
         joystickUsed = true;
         lastJoystickXDir = 0; lastJoystickYDir = 0;
         document.getElementById('test-mode-hud')?.classList.add('hidden');
+        document.body.dataset.testMode = 'false';
         syncDeveloperButtonVisibility();
         render(); updateGlobalStatsUI(); updateMainMenuUI();
         lockConfirmInput(580);
@@ -6924,6 +7133,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       function render() {
         document.body.dataset.phase = state.phase;
+        document.body.dataset.testMode = state.testMode ? 'true' : 'false';
         updatePersistentConsoleControls();
       }
 
@@ -6984,8 +7194,12 @@ const btnControlPause = document.getElementById('btn-control-pause');
         ['settings-version-text'].forEach(id => {
           const version = document.getElementById(id);
           if (!version) return;
+          let lastVersionToggleAt = 0;
           const unlockFromVersion = event => {
             event.preventDefault();
+            const now = performance.now();
+            if (now - lastVersionToggleAt < 420) return;
+            lastVersionToggleAt = now;
             unlockDeveloperMode();
           };
           version.addEventListener('pointerup', unlockFromVersion);
@@ -7291,6 +7505,8 @@ const btnControlPause = document.getElementById('btn-control-pause');
           if (vertical < 0 && state.devItemIndex === 0) {
             state.devFocus = 'tabs';
             state.devSectionIndex = Math.max(0, DEV_SECTIONS.findIndex(section => section.id === state.devActiveSection));
+          } else if (vertical > 0 && state.devItemIndex === items.length - 1) {
+            state.devItemIndex = 0;
           } else {
             state.devItemIndex = Math.max(0, Math.min(items.length - 1, state.devItemIndex + vertical));
           }
