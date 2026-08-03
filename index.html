@@ -1,4 +1,4 @@
-<html lang="es" style="height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; --mekora-bg: #0c0f12; --mekora-text: #f0f4f8; --mekora-cyan: #001345; --mekora-pink: #ff3366; --mekora-amber: #ffaa00; --mekora-panel: #1c2430;"><head>
+<html lang="es" style="height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; --mekora-bg: #526176; --mekora-text: #f4f1ea; --mekora-cyan: #79aaa6; --mekora-pink: #b96b78; --mekora-amber: #c79a61; --mekora-panel: #202a36;"><head>
 <script>
 (function() {
   if (typeof CustomEvent === 'function') return;
@@ -61,7 +61,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MEKORA - Mecha Roguelike</title>
-<meta name="theme-color" content="#0c0f12">
+<meta name="theme-color" content="#526176">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -600,8 +600,556 @@
   }
 </style>
 
+
+<style id="mekora-modern-adaptive-v30">
+  :root {
+    --shell: #526176;
+    --shell-light: #66758a;
+    --shell-shadow: #344153;
+    --screen-bezel: #050608;
+    --screen-surface: #10151c;
+    --control-move: #356f75;
+    --control-move-knob: #82aaa7;
+    --control-action: #9b5866;
+    --control-action-icon: #f2d9de;
+    --control-system: #b17b45;
+    --control-utility: #3b4b60;
+    --modern-border: #718096;
+    --modern-focus: #91bbb7;
+    --safe-top: max(8px, env(safe-area-inset-top));
+    --safe-right: max(8px, env(safe-area-inset-right));
+    --safe-bottom: max(8px, env(safe-area-inset-bottom));
+    --safe-left: max(8px, env(safe-area-inset-left));
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 100dvh;
+    background: var(--shell) !important;
+  }
+
+  body {
+    position: fixed !important;
+    inset: 0;
+    color: #f4f1ea;
+    overflow: hidden !important;
+  }
+
+  /* Clean display: no scanlines, grid wallpaper, glow haze, or retro flicker. */
+  .scanlines,
+  body > .scanlines,
+  .screen > :first-child > .absolute.inset-0.opacity-20,
+  .screen > :first-child .scanlines {
+    display: none !important;
+  }
+  .animate-pulse, .pulse-node, .pulse-danger, .heartbeat-card {
+    animation: none !important;
+  }
+  .hud-border,
+  .hud-border-danger {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none;
+  }
+
+  /* Universal console shell and thin black display bezel. */
+  .screen {
+    width: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+    background: linear-gradient(145deg, var(--shell-light), var(--shell) 52%, var(--shell-shadow));
+    overflow: hidden;
+  }
+
+  .screen > :first-child {
+    position: relative !important;
+    width: 100% !important;
+    height: 55% !important;
+    min-height: 0 !important;
+    padding: 5px !important;
+    border: 2px solid #000 !important;
+    border-radius: 14px !important;
+    background: var(--screen-bezel) !important;
+    box-shadow: 0 5px 14px rgba(18, 25, 34, .28) !important;
+    overflow: hidden !important;
+  }
+
+  .screen > :first-child::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 9px;
+    pointer-events: none;
+    z-index: 70;
+  }
+
+  .screen > :first-child > .relative,
+  .screen > :first-child > canvas,
+  .screen > :first-child > .compact-console-panel,
+  .screen > :first-child > .gameover-panel {
+    max-height: 100%;
+  }
+
+  .screen > :nth-child(2),
+  .console-controls {
+    width: 100% !important;
+    height: 45% !important;
+    min-height: 0 !important;
+    padding: clamp(12px, 2.4vh, 22px) clamp(15px, 4vw, 34px) !important;
+    background: transparent !important;
+  }
+
+  /* The title on the shell stays quiet and modern. */
+  .screen > :nth-child(2) > .absolute.top-2,
+  .console-controls > .absolute.top-2 {
+    color: #d8dde4 !important;
+    opacity: .72;
+    font-size: 11px !important;
+    letter-spacing: .14em !important;
+  }
+
+  /* Solid hardware, no transparency and no neon. */
+  [id$="joystick-move-zone"] {
+    width: clamp(104px, 27vw, 142px) !important;
+    height: clamp(104px, 27vw, 142px) !important;
+    border: 3px solid #28545b !important;
+    background: var(--control-move) !important;
+    box-shadow: inset 0 0 0 5px rgba(255,255,255,.055), 0 8px 16px rgba(26,34,45,.28) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  [id$="joystick-move-knob"] {
+    width: clamp(44px, 11vw, 58px) !important;
+    height: clamp(44px, 11vw, 58px) !important;
+    border: 3px solid #b4ccc9 !important;
+    background: var(--control-move-knob) !important;
+    box-shadow: 0 4px 9px rgba(20,30,38,.34), inset 0 2px 2px rgba(255,255,255,.24) !important;
+  }
+
+  [id$="tap-fire"] {
+    width: clamp(94px, 24vw, 128px) !important;
+    height: clamp(94px, 24vw, 128px) !important;
+    border: 3px solid #74404b !important;
+    background: var(--control-action) !important;
+    color: var(--control-action-icon) !important;
+    box-shadow: inset 0 0 0 5px rgba(255,255,255,.055), 0 8px 16px rgba(26,34,45,.28) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  [id$="tap-fire"] svg {
+    color: var(--control-action-icon) !important;
+    width: clamp(32px, 8vw, 43px) !important;
+    height: clamp(32px, 8vw, 43px) !important;
+  }
+
+  [id$="joystick-move-zone"] > span,
+  [id$="tap-fire"] > span,
+  #btn-control-pause > span {
+    display: none !important;
+  }
+
+  #persistent-console-controls {
+    top: auto !important;
+    bottom: calc(var(--safe-bottom) + 12px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    gap: 6px !important;
+    z-index: 90;
+  }
+
+  #btn-control-pause {
+    width: 58px !important;
+    height: 58px !important;
+    border: 3px solid #805a32 !important;
+    background: var(--control-system) !important;
+    color: #f6e5cf !important;
+    box-shadow: 0 6px 13px rgba(24,31,42,.3), inset 0 0 0 3px rgba(255,255,255,.06) !important;
+    opacity: 1 !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #btn-mute, #btn-fullscreen {
+    width: 42px !important;
+    height: 42px !important;
+    border: 2px solid #2a3748 !important;
+    background: var(--control-utility) !important;
+    color: #e4e9ef !important;
+    box-shadow: 0 4px 10px rgba(24,31,42,.28) !important;
+    backdrop-filter: none !important;
+  }
+  #btn-mute svg, #btn-fullscreen svg { color: #e4e9ef !important; }
+  #btn-fullscreen[data-active="true"] {
+    background: #607f7c !important;
+    border-color: #476764 !important;
+  }
+
+  /* Hide the menu version. Developer unlock is only in settings. */
+  #menu-version-text { display: none !important; }
+  #settings-version-text {
+    display: block !important;
+    position: relative;
+    z-index: 80;
+    color: #aeb9c6 !important;
+    padding: 7px 10px;
+    margin-top: 2px;
+    min-height: 30px;
+    cursor: pointer;
+    touch-action: manipulation !important;
+  }
+
+  #settings-version-text { pointer-events: auto !important; }
+
+  /* Modern panels and menu buttons. */
+  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev,
+  #btn-close-settings, #btn-close-global,
+  .gameover-action, .dev-row, .dev-tab,
+  #btn-resume, #btn-exit, #btn-confirm-exit, #btn-cancel-exit {
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev {
+    background: #263342 !important;
+    border-color: #3b4b60 !important;
+    color: #bac3cd !important;
+    transform: none !important;
+  }
+  #btn-main-play.scale-105, #btn-main-global.scale-105,
+  #btn-main-settings.scale-105, #btn-main-dev.scale-105 {
+    background: #6c918e !important;
+    border-color: #a5c4c1 !important;
+    color: #fff !important;
+    transform: scale(1.025) !important;
+  }
+  .settings-focus {
+    outline: 2px solid var(--modern-focus) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+  }
+  .settings-edit-focus {
+    outline: 3px solid #d4aa76 !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+  }
+  .lang-btn.language-active {
+    background: #334457 !important;
+    border-color: #5f748c !important;
+    color: #f4f1ea !important;
+  }
+  .compact-console-panel, .gameover-panel,
+  [data-show-on="settings"] .hud-border,
+  [data-show-on="global_network"] .hud-border,
+  #pause-modal .hud-border {
+    background: #202a36 !important;
+    border-color: #49586b !important;
+  }
+
+  /* Compact black bezel on every virtual display. */
+  .virtual-screen, .console-display {
+    background: var(--screen-bezel) !important;
+    border-bottom: 0 !important;
+  }
+
+  /* Landscape layout based on the supplied console reference. */
+  @media (orientation: landscape) and (min-width: 620px) {
+    .screen {
+      display: grid !important;
+      grid-template-columns: clamp(108px, 17vw, 190px) minmax(340px, 1fr) clamp(108px, 17vw, 190px);
+      grid-template-rows: minmax(0, 1fr) clamp(62px, 13vh, 94px);
+      column-gap: clamp(10px, 2.4vw, 34px);
+      row-gap: 6px;
+      align-items: center;
+      padding-top: var(--safe-top);
+      padding-right: calc(var(--safe-right) + 4px);
+      padding-bottom: var(--safe-bottom);
+      padding-left: calc(var(--safe-left) + 4px);
+    }
+
+    .screen > :first-child {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: stretch;
+      justify-self: stretch;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: min(72vw, 900px);
+      margin: 0 auto;
+      padding: 5px !important;
+      border-width: 2px !important;
+      border-radius: 12px !important;
+    }
+
+    .screen > :first-child > .relative.aspect-\[16\/9\] {
+      width: 100% !important;
+      height: 100% !important;
+      aspect-ratio: auto !important;
+    }
+
+    .screen > :nth-child(2), .console-controls {
+      display: contents !important;
+    }
+
+    .screen > :nth-child(2) > [id$="joystick-move-zone"],
+    .console-controls > [id$="joystick-move-zone"] {
+      grid-column: 1;
+      grid-row: 1;
+      place-self: center;
+      width: clamp(104px, 14vw, 160px) !important;
+      height: clamp(104px, 14vw, 160px) !important;
+    }
+
+    .screen > :nth-child(2) > button[id$="tap-fire"],
+    .console-controls > button[id$="tap-fire"] {
+      grid-column: 3;
+      grid-row: 1;
+      place-self: center;
+      width: clamp(94px, 12vw, 144px) !important;
+      height: clamp(94px, 12vw, 144px) !important;
+    }
+
+    .screen > :nth-child(2) > .absolute.top-2,
+    .console-controls > .absolute.top-2,
+    .persistent-control-spacer {
+      display: none !important;
+    }
+
+    #persistent-console-controls {
+      position: fixed !important;
+      top: auto !important;
+      bottom: calc(var(--safe-bottom) + 3px) !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      gap: 4px !important;
+    }
+
+    #btn-control-pause { width: 52px !important; height: 52px !important; }
+    #btn-mute, #btn-fullscreen { width: 34px !important; height: 34px !important; }
+    #persistent-console-controls .persistent-small-row { gap: 7px !important; }
+
+    /* Give the screen content more room in landscape. */
+    [data-show-on="menu"] > :first-child { padding: 8px 18px !important; }
+    [data-show-on="menu"] h1 { font-size: clamp(20px, 3.2vw, 34px) !important; }
+    [data-show-on="menu"] #btn-main-play,
+    [data-show-on="menu"] #btn-main-global,
+    [data-show-on="menu"] #btn-main-settings,
+    [data-show-on="menu"] #btn-main-dev {
+      min-height: clamp(34px, 7vh, 50px);
+      font-size: clamp(9px, 1.25vw, 13px) !important;
+    }
+    .compact-console-panel { width: min(96%, 720px) !important; }
+    .dev-list { height: min(30vh, 170px) !important; }
+  }
+
+  /* Short landscape phones: protect Dynamic Island/notch and keep controls usable. */
+  @media (orientation: landscape) and (max-height: 470px) {
+    .screen {
+      grid-template-columns: clamp(92px, 16vw, 142px) minmax(310px, 1fr) clamp(92px, 16vw, 142px);
+      grid-template-rows: minmax(0, 1fr) 58px;
+      column-gap: 8px;
+    }
+    .screen > :first-child { max-width: 760px; border-radius: 10px !important; }
+    [id$="joystick-move-zone"] { width: clamp(92px, 14vw, 126px) !important; height: clamp(92px, 14vw, 126px) !important; }
+    [id$="tap-fire"] { width: clamp(84px, 12vw, 114px) !important; height: clamp(84px, 12vw, 114px) !important; }
+    #persistent-console-controls { bottom: calc(var(--safe-bottom) + 1px) !important; }
+    #btn-control-pause { width: 44px !important; height: 44px !important; }
+    #btn-mute, #btn-fullscreen { width: 29px !important; height: 29px !important; }
+    .gameover-panel { max-height: 96% !important; }
+  }
+
+  /* Portrait remains fully usable and respects camera/home-indicator safe areas. */
+  @media (orientation: portrait) {
+    .screen > :first-child { height: 57% !important; }
+    .screen > :nth-child(2), .console-controls { height: 43% !important; }
+    #persistent-console-controls { bottom: calc(var(--safe-bottom) + 9px) !important; }
+    [data-show-on="menu"] > :first-child { padding-top: 12px !important; }
+  }
+</style>
+
+
+<style id="mekora-modern-adaptive-v31">
+  :root {
+    --menu-button: #263342;
+    --menu-button-border: #3f5064;
+    --menu-focus: #b4cbc7;
+    --menu-focus-soft: rgba(180, 203, 199, .18);
+  }
+
+  html, body {
+    width: var(--visual-width, 100vw) !important;
+    height: var(--visual-height, 100dvh) !important;
+    min-height: var(--visual-height, 100dvh) !important;
+    background: var(--shell) !important;
+  }
+
+  .screen {
+    width: var(--visual-width, 100vw) !important;
+    height: var(--visual-height, 100dvh) !important;
+    min-height: var(--visual-height, 100dvh) !important;
+  }
+
+  /* Only the current virtual screen may be visible in landscape. */
+  @media (orientation: landscape) and (min-width: 620px) {
+    .screen { display: none !important; }
+    body[data-phase="playing"] .screen[data-show-on="playing"],
+    body[data-phase="draft"] .screen[data-show-on="playing"],
+    body[data-phase="gameover"] .screen[data-show-on="gameover"],
+    body[data-phase="assembly"] .screen[data-show-on="assembly"],
+    body[data-phase="shop"] .screen[data-show-on="shop"],
+    body[data-phase="menu"] .screen[data-show-on="menu"],
+    body[data-phase="settings"] .screen[data-show-on="settings"],
+    body[data-phase="global_network"] .screen[data-show-on="global_network"],
+    body[data-phase="dev"] .screen[data-show-on="dev"] {
+      display: grid !important;
+    }
+  }
+
+  /* The persistent hardware replaces the decorative center copies. */
+  .screen > :nth-child(2) > .flex.flex-col.items-center.gap-2,
+  .console-controls > .flex.flex-col.items-center.gap-2,
+  .persistent-control-spacer {
+    display: none !important;
+  }
+
+  /* Remove remaining retro overlays and glass effects. */
+  .screen .scanlines,
+  .screen .absolute.inset-0.opacity-20,
+  .screen .backdrop-blur-sm,
+  .screen .backdrop-blur-md {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .screen .absolute.inset-0.opacity-20 { display: none !important; }
+
+  /* Solid general menu surfaces. */
+  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev,
+  #btn-close-settings, #btn-close-global,
+  #btn-resume, #btn-exit, #btn-confirm-exit, #btn-cancel-exit,
+  .gameover-action, .dev-row, .dev-tab {
+    background: var(--menu-button) !important;
+    background-image: none !important;
+    border-color: var(--menu-button-border) !important;
+    color: #c3ccd5 !important;
+    opacity: 1 !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  @keyframes mekoraMenuBorderPulse {
+    0%, 100% {
+      border-color: #93aaa7;
+      outline-color: rgba(180, 203, 199, .12);
+      box-shadow: 0 0 0 0 rgba(180, 203, 199, 0);
+    }
+    50% {
+      border-color: #d4e0dd;
+      outline-color: rgba(180, 203, 199, .34);
+      box-shadow: 0 0 0 3px var(--menu-focus-soft);
+    }
+  }
+
+  /* Focus is a slow border pulse, never a full-color fill. */
+  #btn-main-play.heartbeat-card,
+  #btn-main-global.heartbeat-card,
+  #btn-main-settings.heartbeat-card,
+  #btn-main-dev.heartbeat-card,
+  #btn-close-global.heartbeat-card,
+  #pause-modal .heartbeat-card,
+  .gameover-action.is-selected,
+  .dev-row.selected,
+  .dev-tab.selected,
+  .settings-focus {
+    background: var(--menu-button) !important;
+    color: #fff !important;
+    border: 2px solid var(--menu-focus) !important;
+    outline: 1px solid rgba(180, 203, 199, .15) !important;
+    outline-offset: 2px !important;
+    transform: none !important;
+    animation: mekoraMenuBorderPulse 3.1s ease-in-out infinite !important;
+  }
+
+  .settings-edit-focus {
+    background: var(--menu-button) !important;
+    border-color: #c9a777 !important;
+    outline: 2px solid #c9a777 !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+    animation: mekoraMenuBorderPulse 3.1s ease-in-out infinite !important;
+  }
+
+  /* Keep in-game upgrade-card motion unchanged. */
+  body[data-phase="draft"] .heartbeat-card {
+    animation: heartbeat 1.2s infinite ease-in-out !important;
+  }
+
+  /* Hardware icons are steady and text-free. */
+  [id$="joystick-move-zone"] > span,
+  [id$="tap-fire"] > span,
+  #btn-control-pause > span {
+    display: none !important;
+  }
+  [id$="tap-fire"] .animate-pulse { animation: none !important; }
+
+  /* Cleaner black frame with maximum display area. */
+  .screen > :first-child {
+    padding: 4px !important;
+    border: 2px solid #000 !important;
+    border-radius: 11px !important;
+    background: #030405 !important;
+  }
+  .screen > :first-child::after {
+    inset: 3px !important;
+    border-radius: 7px !important;
+  }
+
+  @media (orientation: landscape) and (min-width: 620px) {
+    .screen {
+      grid-template-columns: clamp(102px, 16.5vw, 184px) minmax(330px, 1fr) clamp(102px, 16.5vw, 184px) !important;
+      grid-template-rows: minmax(0, 1fr) clamp(74px, 15vh, 92px) !important;
+      column-gap: clamp(8px, 2vw, 28px) !important;
+      padding-left: calc(var(--safe-left) + 6px) !important;
+      padding-right: calc(var(--safe-right) + 6px) !important;
+    }
+    .screen > :first-child {
+      max-width: min(73vw, 920px) !important;
+      border-radius: 10px !important;
+    }
+    #persistent-console-controls {
+      bottom: calc(var(--safe-bottom) + 3px) !important;
+    }
+  }
+
+  @media (orientation: landscape) and (max-height: 470px) {
+    .screen {
+      grid-template-columns: clamp(90px, 15.5vw, 136px) minmax(300px, 1fr) clamp(90px, 15.5vw, 136px) !important;
+      grid-template-rows: minmax(0, 1fr) 74px !important;
+      column-gap: 7px !important;
+    }
+    #btn-control-pause { width: 42px !important; height: 42px !important; }
+    #btn-mute, #btn-fullscreen { width: 28px !important; height: 28px !important; }
+  }
+
+  @media (orientation: portrait) {
+    .screen {
+      padding-top: var(--safe-top) !important;
+      padding-right: var(--safe-right) !important;
+      padding-bottom: var(--safe-bottom) !important;
+      padding-left: var(--safe-left) !important;
+    }
+    #settings-version-text {
+      margin-bottom: calc(var(--safe-bottom) + 2px) !important;
+      pointer-events: auto !important;
+    }
+  }
+</style>
+
 </head>
-  <body data-phase="menu" class="relative w-full h-full bg-[#0c0f12] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
+  <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
      <!-- ORIENTATION WARNING OVERLAY -->
      <div id="orientation-warning" style="display: none;">
@@ -719,9 +1267,12 @@
 
          <!-- CENTER COLUMN: PAUSE ABOVE; VOLUME + FULLSCREEN CENTERED BELOW -->
          <div class="flex flex-col items-center gap-2">
-           <button id="btn-control-pause" class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm z-40">
-             <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-             <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5" data-i18n="pause">PAUSA</span>
+           <button id="btn-control-pause" class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm z-40" aria-label="Control del sistema">
+             <svg class="mekorabox-emblem" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+               <path d="M12 2.8 20 7.2v9.6L12 21.2 4 16.8V7.2L12 2.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+               <path d="m12 7 4 2.2v5.6L12 17l-4-2.2V9.2L12 7Z" fill="currentColor" opacity=".34"/>
+               <path d="M12 9.2v5.6M9.6 10.6l4.8 2.8m0-2.8-4.8 2.8" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/>
+             </svg>
            </button>
            <div class="flex items-center justify-center gap-2">
              <button id="btn-mute" data-spec-id="btn-mute" aria-label="Activar o desactivar sonido" class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg active:scale-95 transition-all backdrop-blur-sm z-40">
@@ -752,7 +1303,7 @@
        <!-- TOP HALF: MENU AREA -->
        <div class="w-full h-1/2 bg-black flex flex-col items-center justify-center border-b border-cyan-500/30 relative p-2">
          <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
-         <div id="menu-version-text" class="absolute text-[#00ffcc] font-title text-[9px] tracking-widest cursor-pointer" style="top:4px;left:50%;transform:translateX(-50%);z-index:20">MEKORA TACTICAL OS v2.5</div>
+         
          <h1 class="font-title text-2xl text-white font-black tracking-wider mb-0.5">MEKORA</h1>
          
          <div class="flex flex-col gap-1.5 w-full items-center" style="max-width:260px">
@@ -926,7 +1477,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.5</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v2.6</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -5714,6 +6265,79 @@ stats.recentRuns = stats.recentRuns || [];
         } catch (e) {}
       }
 
+
+      function installDeviceProfile() {
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isStandalone = window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone === true;
+        document.documentElement.classList.toggle('device-ios', isIOS);
+        document.documentElement.classList.toggle('display-standalone', isStandalone);
+        const syncViewport = () => {
+          const viewport = window.visualViewport;
+          document.documentElement.style.setProperty('--visual-width', `${viewport?.width || window.innerWidth}px`);
+          document.documentElement.style.setProperty('--visual-height', `${viewport?.height || window.innerHeight}px`);
+          document.documentElement.classList.toggle('orientation-landscape', window.innerWidth > window.innerHeight);
+        };
+        syncViewport();
+        window.visualViewport?.addEventListener('resize', syncViewport, { passive: true });
+        window.visualViewport?.addEventListener('scroll', syncViewport, { passive: true });
+        window.addEventListener('orientationchange', () => setTimeout(syncViewport, 80), { passive: true });
+        window.addEventListener('resize', syncViewport, { passive: true });
+      }
+
+      function createNavigationRepeater(callback, activeCheck = () => true) {
+        let active = false;
+        let x = 0;
+        let y = 0;
+        let startedAt = 0;
+        let lastRepeatAt = 0;
+        let frame = 0;
+        let lastVectorKey = '';
+
+        const directionKey = (jx, jy) => {
+          const dx = jx < -0.5 ? -1 : jx > 0.5 ? 1 : 0;
+          const dy = jy < -0.5 ? -1 : jy > 0.5 ? 1 : 0;
+          return `${dx}:${dy}`;
+        };
+
+        const tick = now => {
+          if (!active) return;
+          const key = directionKey(x, y);
+          if (key !== '0:0' && activeCheck() && now - startedAt >= 290 && now - lastRepeatAt >= 95) {
+            lastRepeatAt = now;
+            lastJoystickXDir = 0;
+            lastJoystickYDir = 0;
+            callback(x, y);
+          }
+          frame = requestAnimationFrame(tick);
+        };
+
+        return {
+          begin() {
+            active = true;
+            startedAt = performance.now();
+            lastRepeatAt = startedAt;
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(tick);
+          },
+          set(jx, jy) {
+            x = jx; y = jy;
+            const key = directionKey(x, y);
+            if (key !== lastVectorKey) {
+              lastVectorKey = key;
+              startedAt = performance.now();
+              lastRepeatAt = startedAt;
+            }
+          },
+          end() {
+            active = false;
+            x = 0; y = 0;
+            lastVectorKey = '';
+            cancelAnimationFrame(frame);
+          }
+        };
+      }
+
       function setupJoystickEvents() {
         const moveZone = document.getElementById('joystick-move-zone');
         const moveKnob = document.getElementById('joystick-move-knob');
@@ -5755,6 +6379,15 @@ stats.recentRuns = stats.recentRuns || [];
         let gameoverCenterClientX = 0;
         let gameoverCenterClientY = 0;
 
+        const menuNavRepeater = createNavigationRepeater(handleMenuJoystickInput, () => state.phase === 'menu');
+        const settingsNavRepeater = createNavigationRepeater(handleSettingsJoystickInput, () => state.phase === 'settings');
+        const gameoverNavRepeater = createNavigationRepeater(handleGameoverJoystickInput, () => state.phase === 'gameover');
+        const playOverlayRepeater = createNavigationRepeater((jx, jy) => {
+          if (state.paused) handlePauseJoystickInput(jx, jy);
+          else if (state.phase === 'draft') handleDraftJoystickInput(jx, jy);
+          else if (state.phase === 'gameover') handleGameoverJoystickInput(jx, jy);
+        }, () => state.paused || state.phase === 'draft' || state.phase === 'gameover');
+
         if (menuMoveZone) {
           menuMoveZone.addEventListener('pointerdown', (e) => {
             e.preventDefault();
@@ -5764,6 +6397,7 @@ stats.recentRuns = stats.recentRuns || [];
 
             menuCenterClientX = e.clientX;
             menuCenterClientY = e.clientY;
+            menuNavRepeater.begin();
             updateMenuMoveKnob(e);
           });
 
@@ -5775,6 +6409,7 @@ stats.recentRuns = stats.recentRuns || [];
             if (e.pointerId === menuMovePointerId) {
               menuMovePointerId = null;
               menuMoveKnob.style.transform = `translate(0px, 0px)`;
+              menuNavRepeater.end();
               lastJoystickYDir = 0;
               lastJoystickXDir = 0;
             }
@@ -5796,6 +6431,7 @@ stats.recentRuns = stats.recentRuns || [];
 
           const jx = dx / maxR;
           const jy = dy / maxR;
+          menuNavRepeater.set(jx, jy);
           handleMenuJoystickInput(jx, jy);
         }
 
@@ -5870,6 +6506,7 @@ stats.recentRuns = stats.recentRuns || [];
              capturePointerSafely(settingsMoveZone, e.pointerId);
              settingsCenterClientX = e.clientX;
              settingsCenterClientY = e.clientY;
+             settingsNavRepeater.begin();
              updateSettingsMoveKnob(e);
            });
            settingsMoveZone.addEventListener('pointermove', (e) => {
@@ -5880,6 +6517,7 @@ stats.recentRuns = stats.recentRuns || [];
                settingsMovePointerId = null;
                state.settingsJoystickInUse = false;
                settingsMoveKnob.style.transform = `translate(0px, 0px)`;
+               settingsNavRepeater.end();
                lastJoystickYDir = 0;
                lastJoystickXDir = 0;
              }
@@ -5900,6 +6538,7 @@ stats.recentRuns = stats.recentRuns || [];
            settingsMoveKnob.style.transform = `translate(${dx}px, ${dy}px)`;
            const jx = dx / maxR;
            const jy = dy / maxR;
+           settingsNavRepeater.set(jx, jy);
            handleSettingsJoystickInput(jx, jy);
          }
 
@@ -5923,6 +6562,7 @@ stats.recentRuns = stats.recentRuns || [];
             capturePointerSafely(gameoverMoveZone, e.pointerId);
             gameoverCenterClientX = e.clientX;
             gameoverCenterClientY = e.clientY;
+            gameoverNavRepeater.begin();
             updateGameoverMoveKnob(e);
           });
           gameoverMoveZone.addEventListener('pointermove', (e) => {
@@ -5933,6 +6573,7 @@ stats.recentRuns = stats.recentRuns || [];
               gameoverMovePointerId = null;
               state.gameoverJoystickInUse = false;
               gameoverMoveKnob.style.transform = `translate(0px, 0px)`;
+              gameoverNavRepeater.end();
               lastJoystickYDir = 0;
               lastJoystickXDir = 0;
             }
@@ -5953,6 +6594,7 @@ stats.recentRuns = stats.recentRuns || [];
           gameoverMoveKnob.style.transform = `translate(${dx}px, ${dy}px)`;
           const jx = dx / maxR;
           const jy = dy / maxR;
+          gameoverNavRepeater.set(jx, jy);
           handleGameoverJoystickInput(jx, jy);
         }
 
@@ -5977,6 +6619,7 @@ stats.recentRuns = stats.recentRuns || [];
             const rect = moveZone.getBoundingClientRect();
             centerClientX = e.clientX;
             centerClientY = e.clientY;
+            playOverlayRepeater.begin();
             updateMoveKnob(e);
           });
 
@@ -5990,6 +6633,7 @@ stats.recentRuns = stats.recentRuns || [];
               state.moveJoystick.active = false;
               state.moveJoystick.x = 0; state.moveJoystick.y = 0;
               moveKnob.style.transform = `translate(0px, 0px)`;
+              playOverlayRepeater.end();
               lastJoystickYDir = 0;
               lastJoystickXDir = 0;
             }
@@ -6011,6 +6655,7 @@ stats.recentRuns = stats.recentRuns || [];
           state.moveJoystick.active = true;
           state.moveJoystick.x = dx / maxR;
           state.moveJoystick.y = dy / maxR;
+          playOverlayRepeater.set(state.moveJoystick.x, state.moveJoystick.y);
 
           if (state.paused) {
             handlePauseJoystickInput(state.moveJoystick.x, state.moveJoystick.y);
@@ -6227,6 +6872,7 @@ stats.recentRuns = stats.recentRuns || [];
         state.phase = 'menu';
         state.menuSelectionIndex = 0;
         joystickUsed = true;
+        joystickUsed = true;
         lastJoystickXDir = 0; lastJoystickYDir = 0;
         document.getElementById('test-mode-hud')?.classList.add('hidden');
         syncDeveloperButtonVisibility();
@@ -6282,6 +6928,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function initApp() {
+        installDeviceProfile();
         document.body.dataset.phase = 'menu';
         state.phase = 'menu';
         cacheDomRefs();
@@ -6334,7 +6981,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
         updateFullscreenButton();
 
-        ['menu-version-text', 'settings-version-text'].forEach(id => {
+        ['settings-version-text'].forEach(id => {
           const version = document.getElementById(id);
           if (!version) return;
           const unlockFromVersion = event => {
@@ -6674,6 +7321,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         let pointerId = null;
         let centerX = 0;
         let centerY = 0;
+        const devNavRepeater = createNavigationRepeater(handleDevJoystickInput, () => state.phase === 'dev');
 
         const update = event => {
           let dx = event.clientX - centerX;
@@ -6685,7 +7333,10 @@ const btnControlPause = document.getElementById('btn-control-pause');
             dy = dy / dist * maxR;
           }
           knob.style.transform = `translate(${dx}px, ${dy}px)`;
-          handleDevJoystickInput(dx / maxR, dy / maxR);
+          const jx = dx / maxR;
+          const jy = dy / maxR;
+          devNavRepeater.set(jx, jy);
+          handleDevJoystickInput(jx, jy);
         };
 
         zone.addEventListener('pointerdown', event => {
@@ -6694,6 +7345,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
           pointerId = event.pointerId;
           centerX = event.clientX;
           centerY = event.clientY;
+          devNavRepeater.begin();
           capturePointerSafely(zone, event.pointerId);
           update(event);
         });
@@ -6704,6 +7356,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
           if (event.pointerId !== pointerId) return;
           pointerId = null;
           knob.style.transform = 'translate(0px, 0px)';
+          devNavRepeater.end();
           lastJoystickXDir = 0;
           lastJoystickYDir = 0;
         };
