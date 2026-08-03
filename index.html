@@ -331,6 +331,194 @@
 })();
 </script>
 
+
+<style id="mekora-phase5-style">
+  .console-display {
+    width: 100%;
+    height: 50%;
+    background: #000;
+    border-bottom: 1px solid rgba(0,255,204,.3);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: .45rem;
+  }
+  .console-controls {
+    width: 100%;
+    height: 50%;
+    background: #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  .compact-console-panel {
+    width: min(96%, 620px);
+    max-height: 96%;
+    overflow: hidden;
+    border-radius: .75rem;
+    padding: .55rem;
+  }
+  .dev-tab-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    gap: .25rem;
+    margin: .35rem 0;
+  }
+  .dev-tab {
+    min-width: 0;
+    border: 1px solid rgba(100,116,139,.45);
+    background: rgba(15,23,42,.75);
+    color: #94a3b8;
+    border-radius: .35rem;
+    padding: .3rem .15rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 7px;
+    line-height: 1.1;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dev-tab.cursor {
+    color: white;
+    border-color: #00ffcc;
+    background: linear-gradient(90deg,rgba(8,145,178,.8),rgba(13,148,136,.8));
+    box-shadow: 0 0 9px rgba(0,255,204,.32);
+  }
+  .dev-tab.active::after {
+    content: ' •';
+    color: #ffaa00;
+  }
+  .dev-list {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    height: 116px;
+    overflow: hidden;
+  }
+  .dev-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .35rem;
+    align-items: center;
+    min-height: 20px;
+    border: 1px solid rgba(71,85,105,.42);
+    background: rgba(15,23,42,.72);
+    border-radius: .35rem;
+    padding: .22rem .38rem;
+    font-size: 8px;
+    color: #94a3b8;
+  }
+  .dev-row.selected {
+    color: white;
+    border-color: #00ffcc;
+    background: rgba(8,145,178,.28);
+    box-shadow: inset 0 0 10px rgba(0,255,204,.1);
+  }
+  .dev-row .dev-value {
+    color: #ffaa00;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .dev-status {
+    height: 14px;
+    margin-top: .2rem;
+    font-size: 7px;
+    color: #94a3b8;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .gameover-compact-title {
+    font-size: clamp(16px, 4vw, 27px);
+    line-height: 1;
+  }
+  #dev-joystick-move-zone, #btn-dev-tap-fire {
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+</style>
+
+
+<style id="mekora-fase5-ux-fixes">
+  #btn-fullscreen,
+  #draft-content-panel,
+  #draft-input-hint,
+  #menu-version-text,
+  #settings-version-text {
+    touch-action: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
+  #draft-content-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: center center;
+    will-change: transform, opacity;
+  }
+
+  #draft-content-panel.draft-pop-in {
+    animation: mekoraDraftPop 720ms cubic-bezier(.18,.92,.22,1.18) both;
+  }
+
+  @keyframes mekoraDraftPop {
+    0%   { opacity: 0; transform: scale(.72); }
+    58%  { opacity: 1; transform: scale(1.065); }
+    78%  { transform: scale(.975); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  #roguelike-draft-modal.draft-locked #upgrade-cards-container {
+    filter: saturate(.65) brightness(.78);
+  }
+
+  #roguelike-draft-modal.draft-locked #draft-input-hint {
+    color: #ffaa00;
+  }
+
+  .draft-confirm-armed {
+    animation: none !important;
+    filter: drop-shadow(0 0 10px rgba(255,170,0,.8));
+  }
+
+  .draft-confirm-armed > div:last-child {
+    border-color: #ffaa00 !important;
+    box-shadow: 0 0 0 1px rgba(255,170,0,.75), 0 0 16px rgba(255,170,0,.35) !important;
+  }
+
+  html.mekora-pseudo-fullscreen,
+  body.mekora-pseudo-fullscreen {
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    overflow: hidden !important;
+    background: #0c0f12 !important;
+  }
+
+  body.mekora-pseudo-fullscreen {
+    position: fixed !important;
+    inset: 0 !important;
+  }
+
+  #btn-fullscreen[data-active="true"] {
+    border-color: rgba(0,255,204,.65) !important;
+    background: rgba(0,255,204,.18) !important;
+  }
+
+  #btn-fullscreen[data-active="true"] svg {
+    color: #00ffcc !important;
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#0c0f12] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -381,6 +569,12 @@
              <span class="text-[8px] text-gray-400 uppercase tracking-widest">TIEMPO</span>
              <span id="hud-timer" class="font-bold text-sm text-[#00ffcc] tracking-wider">00:00</span>
            </div>
+           <div id="test-mode-hud" class="hidden absolute top-10 left-1/2 transform -translate-x-1/2 z-40 bg-black/70 border border-amber-500/40 rounded px-2 py-1 text-[7px] text-center pointer-events-none">
+             <span class="text-gray-500">DPS</span> <span id="dummy-dps" class="text-cyan-300 font-bold">0</span>
+             <span class="text-gray-600"> · ÚLT</span> <span id="dummy-last-dmg" class="text-pink-300 font-bold">0</span>
+             <span class="text-gray-600"> · HIT</span> <span id="dummy-hits" class="text-amber-300 font-bold">0</span>
+             <span class="text-gray-600"> · TOTAL</span> <span id="dummy-total-dmg" class="text-white font-bold">0</span>
+           </div>
 
            <!-- RIGHT: ACTIVE WEAPONS & PASSIVES MINI DISPLAY -->
            <div class="absolute top-3 right-3 z-40 flex flex-col gap-0.5 items-end pointer-events-none">
@@ -424,13 +618,15 @@
 
            <!-- ROGUELIKE DRAFT MODAL -->
            <div id="roguelike-draft-modal" class="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center p-2 hidden">
-             <div class="text-amber-400 font-title text-[10px] tracking-widest mb-0.5">¡NUEVO NIVEL!</div>
-             <h2 class="font-title text-sm text-white font-black mb-2 text-center tracking-wider">ELIGE UNA MEJORA TÁCTICA</h2>
-             <div id="upgrade-cards-container" class="flex flex-row gap-2 w-full max-w-[420px] justify-center items-stretch">
-               <!-- Dynamically populated cards -->
-             </div>
-             <div class="mt-2 text-[9px] text-gray-400 text-center max-w-[300px]">
-               Usa la palanca (izquierda/derecha) para seleccionar y presiona el botón rojo para confirmar.
+             <div id="draft-content-panel">
+               <div class="text-amber-400 font-title text-[10px] tracking-widest mb-0.5">¡NUEVO NIVEL!</div>
+               <h2 class="font-title text-sm text-white font-black mb-2 text-center tracking-wider">ELIGE UNA MEJORA TÁCTICA</h2>
+               <div id="upgrade-cards-container" class="flex flex-row gap-2 w-full max-w-[420px] justify-center items-stretch">
+                 <!-- Dynamically populated cards -->
+               </div>
+               <div id="draft-input-hint" class="mt-2 text-[9px] text-gray-400 text-center max-w-[340px] min-h-[14px]">
+                 Espera a que termine la entrada. Luego pulsa rojo una vez para preparar y otra para confirmar.
+               </div>
              </div>
            </div>
          </div>
@@ -445,17 +641,24 @@
            <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">MOVER</span>
          </div>
 
-         <!-- CENTER COLUMN: PAUSE BUTTON ABOVE, MUTE BELOW -->
+         <!-- CENTER COLUMN: PAUSE ABOVE; VOLUME + FULLSCREEN CENTERED BELOW -->
          <div class="flex flex-col items-center gap-2">
            <button id="btn-control-pause" class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm z-40">
              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
              <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
            </button>
-           <button id="btn-mute" data-spec-id="btn-mute" class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg active:scale-95 transition-all backdrop-blur-sm z-40">
-             <svg id="mute-icon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-muted-path="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" data-unmuted-path="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704.507-1.938 1.354A9.009 9.009 0 012.25 12c0 .83.112 1.633.322 2.396C2.806 14.767 3.633 15.25 4.51 15.25H6.75">
-               <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704.507-1.938 1.354A9.009 9.009 0 012.25 12c0 .83.112 1.633.322 2.396C2.806 14.767 3.633 15.25 4.51 15.25H6.75"></path>
-             </svg>
-           </button>
+           <div class="flex items-center justify-center gap-2">
+             <button id="btn-mute" data-spec-id="btn-mute" aria-label="Activar o desactivar sonido" class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg active:scale-95 transition-all backdrop-blur-sm z-40">
+               <svg id="mute-icon" class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-muted-path="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" data-unmuted-path="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 012.25 12c0 .83.112 1.633.322 2.396C2.806 14.767 3.633 15.25 4.51 15.25H6.75">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 012.25 12c0 .83.112 1.633.322 2.396C2.806 14.767 3.633 15.25 4.51 15.25H6.75"></path>
+               </svg>
+             </button>
+             <button id="btn-fullscreen" data-active="false" aria-label="Entrar en pantalla completa" class="w-10 h-10 rounded-full border-2 border-gray-500/40 bg-gray-500/15 flex items-center justify-center shadow-lg active:scale-95 transition-all backdrop-blur-sm z-40">
+               <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                 <path id="fullscreen-icon-path" stroke-linecap="round" stroke-linejoin="round" d="M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5"></path>
+               </svg>
+             </button>
+           </div>
          </div>
 
          <!-- RIGHT AUTO-FIRE TAP BUTTON -->
@@ -471,26 +674,26 @@
      <!-- MAIN MENU SCREEN -->
      <section class="screen w-full h-full relative flex flex-col" data-show-on="menu">
        <!-- TOP HALF: MENU AREA -->
-       <div class="w-full h-1/2 bg-black flex flex-col items-center justify-center border-b border-cyan-500/30 relative p-4">
+       <div class="w-full h-1/2 bg-black flex flex-col items-center justify-center border-b border-cyan-500/30 relative p-2">
          <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px); background-size: 40px 40px;"></div>
-         <div id="menu-version-text" class="text-[#00ffcc] font-title text-[10px] tracking-widest cursor-pointer mb-1">MEKORA TACTICAL OS v2.4</div>
-         <h1 class="font-title text-3xl text-white font-black tracking-wider mb-1">MEKORA</h1>
-         <p class="text-xs text-gray-400 max-w-md leading-tight text-center mb-4">Sistema de combate mecha avanzado. Prepárate para repeler amenazas cibernéticas.</p>
-         <div class="flex flex-col gap-2.5 w-full max-w-[280px] items-center">
-           <button id="btn-main-play" data-spec-id="btn-main-play" class="w-full bg-slate-900/60 text-gray-400 font-title text-xs py-2.5 px-6 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
+         <div id="menu-version-text" class="absolute text-[#00ffcc] font-title text-[9px] tracking-widest cursor-pointer" style="top:4px;left:50%;transform:translateX(-50%);z-index:20">MEKORA TACTICAL OS v2.4</div>
+         <h1 class="font-title text-2xl text-white font-black tracking-wider mb-0.5">MEKORA</h1>
+         <p class="text-[9px] text-gray-400 max-w-md leading-tight text-center mb-2">Sistema de combate mecha avanzado. Prepárate para repeler amenazas cibernéticas.</p>
+         <div class="flex flex-col gap-1.5 w-full items-center" style="max-width:260px">
+           <button id="btn-main-play" data-spec-id="btn-main-play" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              JUGAR
            </button>
-           <button id="btn-main-global" class="w-full bg-slate-900/60 text-gray-400 font-title text-xs py-2.5 px-6 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
+           <button id="btn-main-global" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              RED GLOBAL DE MECHAS
            </button>
-           <button id="btn-main-settings" data-spec-id="btn-main-settings" class="w-full bg-slate-900/60 text-gray-400 font-title text-xs py-2.5 px-6 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
+           <button id="btn-main-settings" data-spec-id="btn-main-settings" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              CONFIGURACIÓN
            </button>
-           <button id="btn-main-dev" class="w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-xs py-2.5 px-6 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200" style="pointer-events: none;">
-             CODIGO FUENTE
+           <button id="btn-main-dev" class="hidden w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200" style="pointer-events: none;">
+             MODO DEVELOPER
            </button>
          </div>
-         <div class="mt-3 text-[9px] text-gray-400 text-center max-w-[220px]">
+         <div class="mt-1.5 text-[8px] text-gray-400 text-center max-w-[260px]">
            Usa la palanca (arriba/abajo) para seleccionar y presiona el botón rojo para confirmar.
          </div>
        </div>
@@ -676,91 +879,81 @@
         </button>
       </div>
     </section>
-    <!-- DEVELOPER / SOURCE SCREEN -->
-    <section class="screen absolute inset-0 flex-col items-center p-4 bg-black/90 backdrop-blur-md z-50 overflow-y-auto" data-show-on="dev">
-      <div class="hud-border p-4 rounded-2xl max-w-4xl w-full flex flex-col shadow-2xl relative bg-[#1c2430]/95 gap-3">
-        <div class="flex justify-between items-center border-b border-cyan-500/30 pb-2">
-          <div>
-            <h2 class="font-title text-xl text-cyan-400 font-black">MODO DEVELOPER</h2>
-            <p class="text-[9px] text-gray-400">Carga armas, pasivas y requisitos de sinergias para pruebas rápidas.</p>
+    <!-- DEVELOPER SCREEN -->
+    <section class="screen w-full h-full relative flex flex-col" data-show-on="dev">
+      <div class="console-display">
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image:linear-gradient(rgba(0,255,204,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,204,.1) 1px,transparent 1px);background-size:28px 28px"></div>
+        <div class="compact-console-panel hud-border bg-[#1c2430]/95 relative z-10">
+          <div class="flex justify-between items-center gap-2">
+            <div class="min-w-0">
+              <h2 class="font-title text-sm text-cyan-300 font-black tracking-wider">MODO DEVELOPER</h2>
+              <p class="text-[7px] text-gray-400 truncate">Sube hasta las pestañas, elige sección y confirma con el botón rojo.</p>
+            </div>
+            <div class="text-right text-[7px] text-gray-500">
+              <div>ARMAS <span id="dev-weapon-slots" class="text-cyan-300">1/6</span></div>
+              <div>PASIVAS <span id="dev-passive-slots" class="text-pink-300">0/6</span></div>
+            </div>
           </div>
-          <button id="btn-close-code" class="bg-gray-800 hover:bg-gray-700 text-white font-title text-xs py-1 px-3 rounded border border-gray-600 active:scale-95 transition-all">VOLVER</button>
+          <div id="dev-section-tabs" class="dev-tab-grid"></div>
+          <div id="dev-compact-list" class="dev-list"></div>
+          <div id="dev-status-line" class="dev-status">PALANCA: navegar · ROJO: confirmar · IZQ/DER: nivel</div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-[9px]">
-          <div class="bg-black/40 border border-cyan-500/30 rounded p-2 min-h-[120px]">
-            <h3 class="font-title text-cyan-300 font-bold mb-1">ARMAS Y PODERES</h3>
-            <div id="dev-weapons-list" class="space-y-1 max-h-48 overflow-y-auto"></div>
-          </div>
-          <div class="bg-black/40 border border-pink-500/30 rounded p-2 min-h-[120px]">
-            <h3 class="font-title text-pink-300 font-bold mb-1">HABILIDADES PASIVAS</h3>
-            <div id="dev-passives-list" class="space-y-1 max-h-48 overflow-y-auto"></div>
-          </div>
-          <div class="bg-black/40 border border-amber-500/30 rounded p-2 min-h-[120px]">
-            <h3 class="font-title text-amber-300 font-bold mb-1">SINERGIAS</h3>
-            <div id="dev-synergies-list" class="space-y-1 max-h-48 overflow-y-auto"></div>
-          </div>
+      <div class="console-controls">
+        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div id="dev-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
+          <div id="dev-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
+          <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
         </div>
-
-        <div class="bg-black/40 border border-gray-700 rounded p-2">
-          <h3 class="font-title text-sm text-white font-bold mb-1">DUMMY DE PRUEBAS</h3>
-          <div class="grid grid-cols-4 gap-2 text-[9px] text-center">
-            <div><span class="block text-gray-500">DPS</span><span id="dummy-dps" class="text-cyan-400 font-bold">0</span></div>
-            <div><span class="block text-gray-500">ÚLTIMO DAÑO</span><span id="dummy-last-dmg" class="text-pink-400 font-bold">0</span></div>
-            <div><span class="block text-gray-500">IMPACTOS</span><span id="dummy-hits" class="text-amber-400 font-bold">0</span></div>
-            <div><span class="block text-gray-500">DAÑO TOTAL</span><span id="dummy-total-dmg" class="text-white font-bold">0</span></div>
-          </div>
+        <div class="flex flex-col items-center gap-1 text-center">
+          <span class="text-[8px] text-gray-500">ARRIBA EN PRIMER ÍTEM</span>
+          <span class="font-title text-[8px] text-amber-300">VOLVER A PESTAÑAS</span>
         </div>
-
-        <details class="bg-black/40 border border-gray-700 rounded p-2">
-          <summary class="font-title text-[10px] text-cyan-300 cursor-pointer">CÓDIGO FUENTE ACTUAL</summary>
-          <div class="flex justify-end mt-2 mb-1">
-            <button id="btn-copy-source" data-spec-id="btn-copy-source" class="bg-cyan-600 hover:bg-cyan-500 text-white font-title text-[10px] py-1.5 px-3 rounded border border-cyan-400 active:scale-95 transition-all">COPIAR CÓDIGO</button>
-          </div>
-          <pre id="code-viewer-source" class="w-full h-64 overflow-auto bg-black/60 border border-gray-700 rounded p-3 text-[9px] font-mono text-green-300 leading-relaxed whitespace-pre-wrap break-all select-auto"></pre>
-        </details>
+        <button id="btn-dev-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
+          <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">CONFIRMAR</span>
+        </button>
       </div>
     </section>
 
     <!-- GAMEOVER SCREEN -->
-    <section class="screen w-full h-full relative flex-col items-center justify-center p-6 bg-black/90 z-50" data-show-on="gameover">
-      <div class="hud-border hud-border-danger p-6 rounded-2xl max-w-md w-full flex flex-col items-center text-center shadow-2xl pulse-danger" data-spec-id="gameover-card">
-        <div class="text-pink-500 font-title text-sm tracking-widest mb-1">MISION FALLIDA</div>
-        <h1 class="font-title text-3xl text-white font-black mb-2">MECHA DESTRUIDO</h1>
-        <p class="text-xs text-gray-400 mb-4">Tu unidad ha caído en combate. Se han recuperado los datos del sector y los núcleos de investigación.</p>
-
-        <div class="w-full bg-black/40 rounded-lg p-3 mb-4 space-y-2 text-xs border border-pink-500/20">
-          <div class="flex justify-between"><span class="text-gray-400">NIVEL ALCANZADO:</span><span id="final-wave-text" class="text-white font-bold">1</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">AMENAZAS ELIMINADAS:</span><span id="text-final" class="text-[#00ffcc] font-bold">0</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">NÚCLEOS RECOMPENSADOS:</span><span id="reward-credits-text" class="text-amber-400 font-bold">+50</span></div>
-        </div>
-
-        <div class="flex gap-3 w-full">
-          <button id="btn-restart" data-spec-id="btn-restart" class="flex-1 bg-gradient-to-r from-pink-600 to-rose-700 hover:from-pink-500 hover:to-rose-600 text-white font-title text-sm py-3 rounded-lg border border-pink-400 shadow-lg active:scale-95 transition-all">
-            REPARAR Y VOLVER
+    <section class="screen w-full h-full relative flex flex-col" data-show-on="gameover">
+      <div class="console-display">
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image:linear-gradient(rgba(255,51,102,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,51,102,.12) 1px,transparent 1px);background-size:30px 30px"></div>
+        <div class="compact-console-panel hud-border hud-border-danger flex flex-col items-center text-center shadow-2xl pulse-danger relative z-10" data-spec-id="gameover-card">
+          <div class="text-pink-500 font-title text-[8px] tracking-widest">MISIÓN FALLIDA</div>
+          <h1 class="font-title gameover-compact-title text-white font-black mb-1">MECHA DESTRUIDO</h1>
+          <p class="text-[8px] text-gray-400 mb-1">Datos de combate recuperados.</p>
+          <div class="w-full bg-black/40 rounded p-1.5 mb-1 grid grid-cols-3 gap-1 text-[7px] border border-pink-500/20">
+            <div><span class="block text-gray-500">NIVEL</span><span id="final-wave-text" class="text-white font-bold">1</span></div>
+            <div><span class="block text-gray-500">PUNTOS</span><span id="text-final" class="text-[#00ffcc] font-bold">0</span></div>
+            <div><span class="block text-gray-500">NÚCLEOS</span><span id="reward-credits-text" class="text-amber-400 font-bold">+50</span></div>
+          </div>
+          <button id="btn-restart" data-spec-id="btn-restart" class="w-full max-w-[220px] bg-slate-900/60 text-gray-400 font-title text-[9px] py-1.5 rounded border border-slate-800 transition-all duration-200" style="pointer-events:none">
+            VOLVER AL MENÚ
           </button>
+          <div class="mt-1 text-[7px] text-gray-500">Pulsa el botón rojo para confirmar.</div>
         </div>
-         <div class="mt-2 text-[9px] text-gray-400 text-center max-w-[220px]">
-           Usa la palanca (derecha) para confirmar y presiona el botón rojo.
-         </div>
       </div>
-       <!-- Gameover Joystick & Fire Controls -->
-       <div class="absolute bottom-0 left-0 right-0 h-1/3 bg-black/60 flex items-center justify-between p-4">
-         <div id="gameover-joystick-move-zone" class="w-28 h-28 rounded-full border-2 border-pink-500/30 bg-pink-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
-           <div id="gameover-joystick-move-knob" class="w-10 h-10 rounded-full bg-pink-500/60 border-2 border-pink-500 shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
-           <span class="absolute text-[8px] text-pink-400 font-bold bottom-1 tracking-widest">SELECCIONAR</span>
-         </div>
-         <div class="flex flex-col items-center gap-1">
-           <div class="w-14 h-14 rounded-full border-2 border-amber-500/40 bg-amber-500/15 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
-             <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
-             <span class="text-[7px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
-           </div>
-         </div>
-         <button id="btn-gameover-tap-fire" class="w-24 h-24 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
-           <svg class="w-8 h-8 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-           <span class="text-[9px] text-pink-300 font-bold font-title tracking-wider mt-0.5">CONFIRMAR</span>
-         </button>
-       </div>
+
+      <div class="console-controls">
+        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        <div id="gameover-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-pink-500/30 bg-pink-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
+          <div id="gameover-joystick-move-knob" class="w-12 h-12 rounded-full bg-pink-500/60 border-2 border-pink-500 shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
+          <span class="absolute text-[9px] text-pink-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 opacity-50">
+          <div class="w-16 h-16 rounded-full border-2 border-amber-500/50 bg-amber-500/20 flex flex-col items-center justify-center shadow-2xl backdrop-blur-sm">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path></svg>
+            <span class="text-[9px] text-amber-300 font-bold font-title tracking-wider mt-0.5">PAUSA</span>
+          </div>
+        </div>
+        <button id="btn-gameover-tap-fire" class="w-28 h-28 rounded-full border-2 border-pink-500/50 bg-pink-500/20 relative flex flex-col items-center justify-center shadow-2xl active:scale-95 transition-all backdrop-blur-sm">
+          <svg class="w-10 h-10 text-pink-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span class="text-[10px] text-pink-300 font-bold font-title tracking-wider mt-1">CONFIRMAR</span>
+        </button>
+      </div>
     </section>
 
     <!-- MAIN GAME ENGINE & HYBRID MECHA LOGIC -->
@@ -1097,6 +1290,16 @@ stats.recentRuns = stats.recentRuns || [];
       const CONTENT_BY_ID = new Map([...UPGRADE_BY_ID, ...SYNERGY_BY_ID]);
       const WEAPON_UPGRADES = UPGRADE_POOL.filter(item => item.type === 'weapon');
       const PASSIVE_UPGRADES = UPGRADE_POOL.filter(item => item.type === 'passive');
+
+      const DEV_SECTIONS = Object.freeze([
+        { id: 'weapons', label: 'ARMAS' },
+        { id: 'passives', label: 'PASIVAS' },
+        { id: 'synergies', label: 'SINERGIAS' },
+        { id: 'test', label: 'PRUEBAS' },
+        { id: 'exit', label: 'SALIR' }
+      ]);
+      const TEST_WORLD_SIZE = 1000;
+
       const PROJECTILE_WEAPONS = new Set([
         'w-machinegun', 'w-energycannon', 'w-laser', 'w-shotgun', 'w-missile',
         'w-grenadelauncher', 'w-railgun', 'w-sniper', 'w-flamethrower', 'w-plasma'
@@ -1124,6 +1327,11 @@ stats.recentRuns = stats.recentRuns || [];
           totalEnemiesDefeated: 0,
           credits: 50,
           draftConfirming: false,
+          draftInputLocked: false,
+          draftReadyAt: 0,
+          draftConfirmArmed: false,
+          draftArmReadyAt: 0,
+          draftOpenToken: 0,
 
           // Developer/test flags
           devInfHp: false,
@@ -1136,6 +1344,19 @@ stats.recentRuns = stats.recentRuns || [];
           devSpeedUp: false,
           devContinuousSpawn: true,
           isDevPlay: false,
+          testMode: false,
+          testDummyEnabled: true,
+          testDummyMortal: false,
+          testSpawnEnemies: false,
+          testDummyRespawnAt: 0,
+          dummyStats: { totalDamage: 0, hits: 0, firstHitTime: 0, lastDamage: 0 },
+
+          // Compact developer menu navigation
+          devSectionIndex: 0,
+          devActiveSection: 'weapons',
+          devFocus: 'tabs',
+          devItemIndex: 0,
+          devStatus: 'Selecciona una sección y confirma.',
 
           // Active weapons (max 6) and passives lists
           activeWeapons: ['w-plasma'],
@@ -1399,75 +1620,155 @@ stats.recentRuns = stats.recentRuns || [];
         return { damage, cooldown };
       }
       function damageEnemy(e, damage, timestamp) {
+        const safeDamage = Math.max(0, Math.round(damage || 0));
         if (e.isDummy) {
-          e.hitCount = (e.hitCount || 0) + 1;
-          e.damageReceived = (e.damageReceived || 0) + damage;
-          if (!e.firstHitTime) e.firstHitTime = timestamp;
-          e.lastHitTime = timestamp;
+          const stats = state.dummyStats || (state.dummyStats = { totalDamage: 0, hits: 0, firstHitTime: 0, lastDamage: 0 });
+          stats.hits += 1;
+          stats.totalDamage += safeDamage;
+          stats.lastDamage = safeDamage;
+          if (!stats.firstHitTime) stats.firstHitTime = timestamp;
 
-          const duration = (timestamp - e.firstHitTime) / 1000;
-          const dps = duration > 0.5 ? Math.round(e.damageReceived / duration) : damage;
-          if (dom.dummyDps) dom.dummyDps.textContent = dps;
-          if (dom.dummyLastDamage) dom.dummyLastDamage.textContent = damage;
-          if (dom.dummyHits) dom.dummyHits.textContent = e.hitCount;
-          if (dom.dummyTotalDamage) dom.dummyTotalDamage.textContent = e.damageReceived;
+          if (state.testDummyMortal) {
+            e.hp -= safeDamage;
+          } else {
+            e.hp = e.maxHp;
+          }
+          updateDummyStatsUI(timestamp);
         } else {
-          e.hp -= damage;
+          e.hp -= safeDamage;
         }
       }
 
+      function getCurrentWorldSize() {
+        return state.testMode ? TEST_WORLD_SIZE : WORLD_SIZE;
+      }
+
+      function updateDummyStatsUI(timestamp = performance.now()) {
+        const stats = state.dummyStats || { totalDamage: 0, hits: 0, firstHitTime: 0, lastDamage: 0 };
+        const elapsed = stats.firstHitTime ? Math.max(0.25, (timestamp - stats.firstHitTime) / 1000) : 0;
+        const dps = elapsed ? Math.round(stats.totalDamage / elapsed) : 0;
+        if (dom.dummyDps) dom.dummyDps.textContent = dps;
+        if (dom.dummyLastDamage) dom.dummyLastDamage.textContent = stats.lastDamage || 0;
+        if (dom.dummyHits) dom.dummyHits.textContent = stats.hits || 0;
+        if (dom.dummyTotalDamage) dom.dummyTotalDamage.textContent = stats.totalDamage || 0;
+      }
+
+      function resetDummyStats() {
+        state.dummyStats = { totalDamage: 0, hits: 0, firstHitTime: 0, lastDamage: 0 };
+        updateDummyStatsUI();
+      }
+
+      function spawnTestDummy() {
+        if (!state.testMode || !state.testDummyEnabled) return null;
+        const existing = state.enemies.find(enemy => enemy.isDummy);
+        if (existing) return existing;
+        const worldSize = getCurrentWorldSize();
+        const hp = state.testDummyMortal ? 3000 : 999999999;
+        const dummy = {
+          id: 'training_dummy',
+          isDummy: true,
+          type: 'dummy',
+          x: Math.round(worldSize * 0.72),
+          y: Math.round(worldSize * 0.5),
+          vx: 0,
+          vy: 0,
+          hp,
+          maxHp: hp,
+          radius: 30,
+          speed: 0,
+          color: '#ffaa00',
+          explodeTimer: null,
+          hasEnteredVision: false,
+          nextShotTime: null
+        };
+        state.enemies.push(dummy);
+        return dummy;
+      }
+
+      function ensureTestEnvironment(timestamp) {
+        if (!state.testMode) return;
+        if (!state.testSpawnEnemies) {
+          state.enemies = state.enemies.filter(enemy => enemy.isDummy);
+          state.enemyBullets.length = 0;
+        }
+        const dummy = state.enemies.find(enemy => enemy.isDummy);
+        if (!state.testDummyEnabled) {
+          if (dummy) state.enemies = state.enemies.filter(enemy => !enemy.isDummy);
+          return;
+        }
+        if (!dummy && timestamp >= (state.testDummyRespawnAt || 0)) {
+          spawnTestDummy();
+        }
+      }
+
+      function handleDummyDestroyed(enemyIndex, timestamp) {
+        state.enemies.splice(enemyIndex, 1);
+        state.testDummyRespawnAt = timestamp + 800;
+        state.particles.push({
+          x: Math.round(getCurrentWorldSize() * 0.72),
+          y: Math.round(getCurrentWorldSize() * 0.5),
+          vx: 0, vy: 0, life: 35, color: '#ffaa00'
+        });
+      }
+
+
       // Calculate hybrid mecha statistics and compatibility penalties
       function calculateMechaStats() {
-        // Base stats adjusted by active weapons and passives count
+        state.activeWeapons = Array.from(new Set(state.activeWeapons));
+        state.passives = Array.from(new Set(state.passives)).slice(0, 6);
+
         state.mecha.maxHp = 100 + (state.passives.length * 10);
         state.mecha.maxShield = 50 + (state.activeWeapons.includes('w-shield') ? 50 : 0);
         state.mecha.baseDps = 40 + (state.activeWeapons.length * 10);
         state.mecha.hp = Math.min(state.mecha.hp || 100, state.mecha.maxHp);
         state.mecha.shield = Math.min(state.mecha.shield || 50, state.mecha.maxShield);
 
-        // Check weapon evolutions
         state.evolvedWeapons = [];
         if (state.passives.includes('p-evolve')) {
-          if (state.activeWeapons.includes('w-plasma') && state.passives.includes('p-lightning')) {
-            state.evolvedWeapons.push('w-plasma');
-          }
-          if (state.activeWeapons.includes('w-missile') && state.passives.includes('p-bounce')) {
-            state.evolvedWeapons.push('w-missile');
-          }
-          if (state.activeWeapons.includes('w-laser') && state.passives.includes('p-pierce')) {
-            state.evolvedWeapons.push('w-laser');
-          }
-          if (state.activeWeapons.includes('w-machinegun') && state.passives.includes('p-extra-projectile')) {
-            state.evolvedWeapons.push('w-machinegun');
+          if (state.activeWeapons.includes('w-plasma') && state.passives.includes('p-lightning')) state.evolvedWeapons.push('w-plasma');
+          if (state.activeWeapons.includes('w-missile') && state.passives.includes('p-bounce')) state.evolvedWeapons.push('w-missile');
+          if (state.activeWeapons.includes('w-laser') && state.passives.includes('p-pierce')) state.evolvedWeapons.push('w-laser');
+          if (state.activeWeapons.includes('w-machinegun') && state.passives.includes('p-extra-projectile')) state.evolvedWeapons.push('w-machinegun');
+        }
+
+        state.activatedSynergies = Array.from(new Set(state.activatedSynergies || []));
+        let formedNewSynergy = true;
+        while (formedNewSynergy) {
+          formedNewSynergy = false;
+          for (const syn of SYNERGIES) {
+            if (state.activatedSynergies.includes(syn.id)) {
+              if (!state.activeWeapons.includes(syn.id) && state.activeWeapons.length < 6) {
+                state.activeWeapons.push(syn.id);
+              }
+              state.weaponLevels[syn.id] = Math.max(1, state.weaponLevels[syn.id] || 1);
+              continue;
+            }
+
+            const hasAllReqs = syn.reqs.every(reqId =>
+              reqId.startsWith('w-') ? state.activeWeapons.includes(reqId) :
+              reqId.startsWith('p-') ? state.passives.includes(reqId) : false
+            );
+            if (!hasAllReqs) continue;
+
+            const weaponReqs = syn.reqs.filter(reqId => reqId.startsWith('w-'));
+            const inheritedLevel = Math.max(1, ...weaponReqs.map(id => state.weaponLevels[id] || 1));
+
+            // La sinergia consume las armas componentes. Las pasivas requisito se conservan.
+            weaponReqs.forEach(reqId => {
+              const index = state.activeWeapons.indexOf(reqId);
+              if (index >= 0) state.activeWeapons.splice(index, 1);
+              delete state.weaponLevels[reqId];
+            });
+
+            if (!state.activeWeapons.includes(syn.id)) state.activeWeapons.push(syn.id);
+            state.weaponLevels[syn.id] = inheritedLevel;
+            state.activatedSynergies.push(syn.id);
+            formedNewSynergy = true;
+            break;
           }
         }
 
-        // Check synergies
-        state.activatedSynergies = [];
-        SYNERGIES.forEach(syn => {
-          const hasAllReqs = syn.reqs.every(reqId => {
-            if (reqId.startsWith('w-')) {
-              return state.activeWeapons.includes(reqId);
-            } else if (reqId.startsWith('p-')) {
-              return state.passives.includes(reqId);
-            }
-            return false;
-          });
-          if (hasAllReqs) {
-            state.activatedSynergies.push(syn.id);
-            if (!state.activeWeapons.includes(syn.id)) {
-              state.activeWeapons.push(syn.id);
-              state.weaponLevels[syn.id] = 5;
-            }
-          } else {
-            const idx = state.activeWeapons.indexOf(syn.id);
-            if (idx > -1) {
-              state.activeWeapons.splice(idx, 1);
-              delete state.weaponLevels[syn.id];
-            }
-          }
-        });
-
+        state.activeWeapons = Array.from(new Set(state.activeWeapons)).slice(0, 6);
         updateStatsUI();
       }
       function updateStatsUI() {
@@ -1809,7 +2110,7 @@ stats.recentRuns = stats.recentRuns || [];
       function spawnEnemyWave() {
         const timeFactor = Math.min(3.0, 0.3 + ((state.playTime || 0) / 60000) * 0.7);
         const count = Math.max(3, Math.round((6 + state.sector * 3) * timeFactor));
-        const worldSize = 3000;
+        const worldSize = getCurrentWorldSize();
         for (let i = 0; i < count; i++) {
           const angle = Math.random() * Math.PI * 2;
           const dist = 400 + Math.random() * 800;
@@ -1875,7 +2176,13 @@ stats.recentRuns = stats.recentRuns || [];
         const cameraY = halfH - state.mecha.y;
         ctx.translate(cameraX, cameraY);
 
-        const worldSize = WORLD_SIZE;
+        const worldSize = getCurrentWorldSize();
+        ensureTestEnvironment(timestamp);
+        if (state.testMode) {
+          ctx.fillStyle = 'rgba(0,255,204,.22)';
+          ctx.font = 'bold 18px Orbitron, sans-serif';
+          ctx.fillText('CAMPO DE PRUEBAS', 24, 36);
+        }
         const viewLeft = Math.max(0, state.mecha.x - halfW - GRID_SIZE);
         const viewRight = Math.min(worldSize, state.mecha.x + halfW + GRID_SIZE);
         const viewTop = Math.max(0, state.mecha.y - halfH - GRID_SIZE);
@@ -2252,8 +2559,8 @@ stats.recentRuns = stats.recentRuns || [];
                  } else if (weaponId === 'syn-dimensional') {
                    const moveDirX = Math.cos(aimAngle);
                    const moveDirY = Math.sin(aimAngle);
-                   state.mecha.x = Math.max(50, Math.min(3000 - 50, state.mecha.x + moveDirX * 200));
-                   state.mecha.y = Math.max(50, Math.min(3000 - 50, state.mecha.y + moveDirY * 200));
+                   state.mecha.x = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.x + moveDirX * 200));
+                   state.mecha.y = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.y + moveDirY * 200));
                    state.slashes.push({
                      type: 'sword',
                      angle: aimAngle,
@@ -2404,8 +2711,8 @@ stats.recentRuns = stats.recentRuns || [];
                    hitEnemies: []
                  });
 
-                 state.mecha.x = Math.max(50, Math.min(3000 - 50, state.mecha.x + dx));
-                 state.mecha.y = Math.max(50, Math.min(3000 - 50, state.mecha.y + dy));
+                 state.mecha.x = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.x + dx));
+                 state.mecha.y = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.y + dy));
 
                  for (let p = 0; p < 12; p++) {
                    state.particles.push({
@@ -2430,8 +2737,8 @@ stats.recentRuns = stats.recentRuns || [];
                  const dx = dist > 0 ? (moveDirX / dist) * 120 : 0;
                  const dy = dist > 0 ? (moveDirY / dist) * 120 : 0;
 
-                 state.mecha.x = Math.max(50, Math.min(3000 - 50, state.mecha.x + dx));
-                 state.mecha.y = Math.max(50, Math.min(3000 - 50, state.mecha.y + dy));
+                 state.mecha.x = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.x + dx));
+                 state.mecha.y = Math.max(50, Math.min(getCurrentWorldSize() - 50, state.mecha.y + dy));
 
                  const hasDashWave = state.passives.includes('p-dash-wave');
                  const dashWaveLvl = state.passiveLevels['p-dash-wave'] || 1;
@@ -3776,17 +4083,17 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         // Spawn enemy wave if field empty
-        if (state.enemies.length === 0) {
+        if ((!state.testMode || state.testSpawnEnemies) && state.enemies.filter(enemy => !enemy.isDummy).length === 0) {
           spawnEnemyWave();
         }
 
         // Constant spawning of enemies
-        if (state.devContinuousSpawn !== false) {
+        if (state.devContinuousSpawn !== false && (!state.testMode || state.testSpawnEnemies)) {
           if (!state.lastSpawnTime) state.lastSpawnTime = timestamp;
           const spawnInterval = 1500 / timeFactor;
           if (timestamp - state.lastSpawnTime > spawnInterval) {
             state.lastSpawnTime = timestamp;
-            const worldSize = WORLD_SIZE;
+            const worldSize = getCurrentWorldSize();
             for (let i = 0; i < 2; i++) {
               const angle = Math.random() * Math.PI * 2;
               const dist = 500 + Math.random() * 500;
@@ -3807,14 +4114,18 @@ stats.recentRuns = stats.recentRuns || [];
         for (let i = state.enemies.length - 1; i >= 0; i--) {
           const e = state.enemies[i];
            if (e.hp <= 0) {
-             killEnemy(e, i);
+             if (e.isDummy) {
+               handleDummyDestroyed(i, timestamp);
+             } else {
+               killEnemy(e, i);
+             }
              continue;
            }
            const angle = Math.atan2(state.mecha.y - e.y, state.mecha.x - e.x);
 
            let distToPlayer = Math.hypot(state.mecha.x - e.x, state.mecha.y - e.y);
 
-            const isStunned = (e.stunnedUntil && timestamp < e.stunnedUntil) || state.devPauseEnemies;
+            const isStunned = e.isDummy || (e.stunnedUntil && timestamp < e.stunnedUntil) || state.devPauseEnemies;
             const isSlowed = e.slowedUntil && timestamp < e.slowedUntil;
 
             if (e.burnTicks > 0 && timestamp >= (e.nextBurnTick || 0)) {
@@ -4186,14 +4497,18 @@ stats.recentRuns = stats.recentRuns || [];
 
           // Enemy Death
           if (e.hp <= 0) {
-            killEnemy(e, i);
+            if (e.isDummy) {
+              handleDummyDestroyed(i, timestamp);
+            } else {
+              killEnemy(e, i);
+            }
             continue;
           }
 
           // Enemy Collision & Separation with Player Mecha
           const playerDist = Math.hypot(state.mecha.x - e.x, state.mecha.y - e.y);
           const minCollideDist = e.radius + 18;
-          if (playerDist < minCollideDist) {
+          if (!e.isDummy && playerDist < minCollideDist) {
             const overlap = minCollideDist - playerDist;
             const pushAngle = Math.atan2(e.y - state.mecha.y, e.x - state.mecha.x);
 
@@ -4225,32 +4540,59 @@ stats.recentRuns = stats.recentRuns || [];
             }
           }
 
-          // Render Enemy Drone
+          // Render enemy or training dummy
           ctx.save();
           ctx.translate(e.x, e.y);
-          ctx.rotate(angle);
-
-          let drawColor = e.color;
-          if (e.type === 'heavy' && e.explodeTimer !== null) {
-            if (Math.floor(e.explodeTimer / 5) % 2 === 0) {
+          if (e.isDummy) {
+            ctx.strokeStyle = '#ffaa00';
+            ctx.fillStyle = 'rgba(255,170,0,.18)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(0, 0, e.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(-e.radius - 10, 0);
+            ctx.lineTo(e.radius + 10, 0);
+            ctx.moveTo(0, -e.radius - 10);
+            ctx.lineTo(0, e.radius + 10);
+            ctx.stroke();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px Orbitron, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('DUMMY', 0, -e.radius - 15);
+            if (state.testDummyMortal) {
+              const hpRatio = Math.max(0, e.hp / e.maxHp);
+              ctx.fillStyle = 'rgba(0,0,0,.65)';
+              ctx.fillRect(-35, e.radius + 10, 70, 6);
+              ctx.fillStyle = '#ff3366';
+              ctx.fillRect(-35, e.radius + 10, 70 * hpRatio, 6);
+            } else {
+              ctx.fillStyle = '#00ffcc';
+              ctx.font = '9px Share Tech Mono, monospace';
+              ctx.fillText('HP ∞', 0, e.radius + 21);
+            }
+          } else {
+            ctx.rotate(angle);
+            let drawColor = e.color;
+            if (e.type === 'heavy' && e.explodeTimer !== null && Math.floor(e.explodeTimer / 5) % 2 === 0) {
               drawColor = '#ffffff';
             }
+            ctx.fillStyle = drawColor;
+            ctx.beginPath();
+            if (e.type === 'square') {
+              ctx.rect(-14, -14, 28, 28);
+            } else {
+              ctx.moveTo(16, 0);
+              ctx.lineTo(-12, -12);
+              ctx.lineTo(-6, 0);
+              ctx.lineTo(-12, 12);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
           }
-
-          ctx.fillStyle = drawColor;
-          ctx.beginPath();
-          if (e.type === 'square') {
-            ctx.rect(-14, -14, 28, 28);
-          } else {
-            ctx.moveTo(16, 0);
-            ctx.lineTo(-12, -12);
-            ctx.lineTo(-6, 0);
-            ctx.lineTo(-12, 12);
-          }
-          ctx.closePath();
-          ctx.fill();
-          ctx.strokeStyle = '#ffffff';
-          ctx.stroke();
           ctx.restore();
 
           // Draw visual timer for self-destructing yellow enemy (not rotated)
@@ -4614,17 +4956,51 @@ stats.recentRuns = stats.recentRuns || [];
          state.xpNeeded = Math.round(state.xpNeeded * 1.5);
          state.credits += 25;
 
-         // Show Roguelite Upgrade Draft Modal
          const modal = document.getElementById('roguelike-draft-modal');
+         const contentPanel = document.getElementById('draft-content-panel');
          state.phase = 'draft';
+         render();
+         state.isFiring = false;
+         state.draftConfirming = false;
+         state.draftConfirmArmed = false;
+         state.draftInputLocked = true;
+         state.draftReadyAt = performance.now() + 900;
+         state.draftOpenToken = (state.draftOpenToken || 0) + 1;
+         const openToken = state.draftOpenToken;
 
-         // Pick 3 random upgrades
-         const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
-         state.draftCards = shuffled;
+         const weaponSlotsFull = state.activeWeapons.length >= 6;
+         const passiveSlotsFull = state.passives.length >= 6;
+         const eligible = UPGRADE_POOL.filter(upgrade => {
+           if (upgrade.type === 'weapon') {
+             return !weaponSlotsFull || state.activeWeapons.includes(upgrade.id);
+           }
+           if (upgrade.type === 'passive') {
+             return !passiveSlotsFull || state.passives.includes(upgrade.id);
+           }
+           return false;
+         });
+
+         const shuffled = [...eligible].sort(() => 0.5 - Math.random());
+         state.draftCards = shuffled.slice(0, Math.min(3, shuffled.length));
          state.draftSelection = 0;
 
          updateDraftMenuUI();
-         modal.classList.remove('hidden');
+         if (modal) {
+           modal.classList.remove('hidden');
+           modal.classList.add('draft-locked');
+         }
+         if (contentPanel) {
+           contentPanel.classList.remove('draft-pop-in');
+           void contentPanel.offsetWidth;
+           contentPanel.classList.add('draft-pop-in');
+         }
+
+         setTimeout(() => {
+           if (state.phase !== 'draft' || state.draftOpenToken !== openToken) return;
+           state.draftInputLocked = false;
+           modal?.classList.remove('draft-locked');
+           updateDraftMenuUI();
+         }, 900);
          updateXpUI();
        }
       //#endregion roguelite_draft
@@ -4632,6 +5008,7 @@ stats.recentRuns = stats.recentRuns || [];
       let lastJoystickYDir = 0;
       let lastJoystickXDir = 0;
       let joystickUsed = false;
+      let developerUnlocked = false;
 
       function triggerExitTransition() {
         vibrate(200);
@@ -4654,7 +5031,8 @@ stats.recentRuns = stats.recentRuns || [];
           state.pauseConfirmState = false;
           document.getElementById('pause-modal').classList.add('hidden');
 
-          startMainMenu();
+          if (state.testMode || state.isDevPlay) openDeveloperMenu();
+          else startMainMenu();
 
           setTimeout(() => {
             if (overlay) {
@@ -4768,44 +5146,60 @@ stats.recentRuns = stats.recentRuns || [];
 
       function confirmDraftAction() {
         if (state.draftConfirming) return;
+        const now = performance.now();
+        if (state.draftInputLocked || now < state.draftReadyAt) {
+          vibrate(20);
+          return;
+        }
+
         const cards = state.draftCards;
         if (!cards || !cards[state.draftSelection]) return;
 
-        state.draftConfirming = true;
-
-        const container = document.getElementById('upgrade-cards-container');
-        if (container) {
-          const cardElements = container.children;
-          const selectedCardElement = cardElements[state.draftSelection];
-          if (selectedCardElement) {
-            selectedCardElement.classList.remove('heartbeat-card');
-            selectedCardElement.classList.add('shake-confirm');
-            setTimeout(() => {
-              selectedCardElement.classList.add('white-out-card');
-            }, 200);
-          }
+        // Primera pulsación: arma la elección. La segunda la confirma.
+        if (!state.draftConfirmArmed) {
+          state.draftConfirmArmed = true;
+          state.draftArmReadyAt = now + 260;
+          updateDraftMenuUI();
+          vibrate(35);
+          return;
         }
+        if (now < state.draftArmReadyAt) return;
 
         const upg = cards[state.draftSelection];
         const isWeapon = upg.type === 'weapon';
+        const alreadyOwned = isWeapon ? state.activeWeapons.includes(upg.id) : state.passives.includes(upg.id);
+        const categoryFull = isWeapon ? state.activeWeapons.length >= 6 : state.passives.length >= 6;
+
+        // Defensa final: jamás reemplazar un slot completo.
+        if (!alreadyOwned && categoryFull) {
+          vibrate(80);
+          state.draftConfirming = false;
+          state.draftConfirmArmed = false;
+          updateDraftMenuUI();
+          return;
+        }
+
+        state.draftConfirming = true;
+        const container = document.getElementById('upgrade-cards-container');
+        if (container) {
+          const selectedCardElement = container.children[state.draftSelection];
+          if (selectedCardElement) {
+            selectedCardElement.classList.remove('heartbeat-card', 'draft-confirm-armed');
+            selectedCardElement.classList.add('shake-confirm');
+            setTimeout(() => selectedCardElement.classList.add('white-out-card'), 200);
+          }
+        }
 
         setTimeout(() => {
           if (isWeapon) {
-            if (state.activeWeapons.includes(upg.id)) {
+            if (alreadyOwned) {
               state.weaponLevels[upg.id] = (state.weaponLevels[upg.id] || 1) + 1;
             } else {
-              if (state.activeWeapons.length < 6) {
-                state.activeWeapons.push(upg.id);
-                state.weaponLevels[upg.id] = 1;
-              } else {
-                const removed = state.activeWeapons.shift();
-                delete state.weaponLevels[removed];
-                state.activeWeapons.push(upg.id);
-                state.weaponLevels[upg.id] = 1;
-              }
+              state.activeWeapons.push(upg.id);
+              state.weaponLevels[upg.id] = 1;
             }
           } else {
-            if (state.passives.includes(upg.id)) {
+            if (alreadyOwned) {
               state.passiveLevels[upg.id] = (state.passiveLevels[upg.id] || 1) + 1;
             } else {
               state.passives.push(upg.id);
@@ -4813,41 +5207,43 @@ stats.recentRuns = stats.recentRuns || [];
             }
           }
           calculateMechaStats();
-          document.getElementById('roguelike-draft-modal').classList.add('hidden');
+          const modal = document.getElementById('roguelike-draft-modal');
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('draft-locked');
+          }
           state.phase = 'playing';
+          render();
           state.draftConfirming = false;
+          state.draftConfirmArmed = false;
+          state.draftInputLocked = false;
           vibrate(50);
-        }, 800);
+        }, 500);
       }
 
       function handleDraftJoystickInput(jx, jy) {
-        if (state.draftConfirming) return;
+        if (state.draftConfirming || state.draftInputLocked) return;
         const tiltThreshold = 0.5;
         let dir = 0;
-       if (jx < -tiltThreshold) {
-         dir = -1;
-       } else if (jx > tiltThreshold) {
-         dir = 1;
-       }
+        if (jx < -tiltThreshold) dir = -1;
+        else if (jx > tiltThreshold) dir = 1;
 
-       if (dir !== 0) {
-         if (lastJoystickYDir !== dir) {
-           lastJoystickYDir = dir;
-           let nextSelection = state.draftSelection + dir;
-           const len = state.draftCards ? state.draftCards.length : 3;
-           if (nextSelection < 0) {
-             nextSelection = len - 1;
-           } else if (nextSelection > len - 1) {
-             nextSelection = 0;
-           }
-           state.draftSelection = nextSelection;
-           updateDraftMenuUI();
-           vibrate(30);
-         }
-       } else {
-         lastJoystickYDir = 0;
-       }
-     }
+        if (dir !== 0) {
+          if (lastJoystickXDir !== dir) {
+            lastJoystickXDir = dir;
+            let nextSelection = state.draftSelection + dir;
+            const len = state.draftCards ? state.draftCards.length : 3;
+            if (nextSelection < 0) nextSelection = len - 1;
+            else if (nextSelection > len - 1) nextSelection = 0;
+            state.draftSelection = nextSelection;
+            state.draftConfirmArmed = false;
+            updateDraftMenuUI();
+            vibrate(30);
+          }
+        } else {
+          lastJoystickXDir = 0;
+        }
+      }
 
       function updateDraftMenuUI() {
         const container = document.getElementById('upgrade-cards-container');
@@ -4862,7 +5258,7 @@ stats.recentRuns = stats.recentRuns || [];
 
           const wrapper = document.createElement('div');
           if (isSelected) {
-            wrapper.className = "relative flex-1 flex flex-col items-stretch transition-all duration-200 scale-105 heartbeat-card";
+            wrapper.className = `relative flex-1 flex flex-col items-stretch transition-all duration-200 scale-105 ${state.draftConfirmArmed ? 'draft-confirm-armed' : 'heartbeat-card'}`;
 
             const card = document.createElement('div');
             card.className = "hud-border border-[#00ffcc] p-2 rounded-lg flex flex-col items-center text-center flex-1 bg-gradient-to-b from-cyan-950/40 to-slate-900/90 shadow-lg pointer-events-none relative z-10";
@@ -4917,12 +5313,23 @@ stats.recentRuns = stats.recentRuns || [];
           }
           container.appendChild(wrapper);
         });
+
+        const hint = document.getElementById('draft-input-hint');
+        if (hint) {
+          if (state.draftInputLocked || performance.now() < state.draftReadyAt) {
+            hint.textContent = 'ESPERA… La selección se habilita al terminar la animación.';
+          } else if (state.draftConfirmArmed) {
+            hint.textContent = 'ELECCIÓN PREPARADA · Pulsa rojo otra vez para confirmar. Mover la palanca cancela.';
+          } else {
+            hint.textContent = 'Palanca: elegir · Rojo: preparar · Rojo otra vez: confirmar.';
+          }
+        }
       }
 
       function updateMainMenuUI() {
         if (!joystickUsed) {
           const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
-          const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-xs py-2.5 px-6 rounded-lg border border-slate-800 transition-all duration-200";
+          const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
           ['btn-main-play','btn-main-global','btn-main-settings','btn-main-dev'].forEach(id => {
             const el = document.getElementById(id);
             if (el && !el.classList.contains('hidden')) {
@@ -4945,8 +5352,8 @@ stats.recentRuns = stats.recentRuns || [];
         }
         state.menuSelectionIndex = (state.menuSelectionIndex + buttons.length) % buttons.length;
 
-        const selectedStyle = "w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-xs py-2.5 px-6 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
-        const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-xs py-2.5 px-6 rounded-lg border border-slate-800 transition-all duration-200";
+        const selectedStyle = "w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
+        const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
 
         const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
 
@@ -4990,11 +5397,7 @@ stats.recentRuns = stats.recentRuns || [];
         } else if (selectedBtn === btnSettings) {
           startSettingsMenu();
         } else if (selectedBtn === btnDev) {
-          stopRun();
-          state.phase = 'dev';
-          render();
-          updateDevMenuUI();
-          populateCodeViewer();
+          openDeveloperMenu();
         }
       }
 
@@ -5253,24 +5656,12 @@ stats.recentRuns = stats.recentRuns || [];
      }
 
        function updateGameoverUI() {
-         if (!joystickUsed) {
-           const el = document.getElementById('btn-restart');
-           if (el) {
-             el.className = "flex-1 bg-slate-900/60 text-gray-400 font-title text-sm py-3 rounded-lg border border-slate-800 transition-all duration-200";
-             el.style.pointerEvents = 'none';
-           }
-           return;
-         }
          const btn = document.getElementById('btn-restart');
          if (!btn) return;
-         const selectedStyle = "flex-1 bg-gradient-to-r from-pink-600 to-rose-700 text-white font-title text-sm py-3 rounded-lg border-2 border-pink-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
-         const isAutomated = navigator.webdriver || window.__cypress || window.Cypress || window.__selenium_evaluate || window.__playwright_evaluate;
-         btn.className = selectedStyle;
-         if (!isAutomated) {
-           btn.style.pointerEvents = 'none';
-         } else {
-           btn.style.pointerEvents = 'auto';
-         }
+         const unselected = "w-full max-w-[220px] bg-slate-900/60 text-gray-400 font-title text-[9px] py-1.5 rounded border border-slate-800 transition-all duration-200";
+         const selected = "w-full max-w-[220px] bg-gradient-to-r from-pink-600 to-rose-700 text-white font-title text-[9px] py-1.5 rounded border-2 border-pink-400 shadow-lg heartbeat-card transition-all duration-200";
+         btn.className = joystickUsed ? selected : unselected;
+         btn.style.pointerEvents = 'none';
        }
 
        function confirmGameoverAction() {
@@ -5637,7 +6028,7 @@ stats.recentRuns = stats.recentRuns || [];
         if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
       }
 
-      function startRun(isDev = false) {
+      function startRun(isDev = false, isTest = false) {
         stopRun();
         const devSettings = isDev ? {
           devInfHp: state.devInfHp,
@@ -5655,7 +6046,12 @@ stats.recentRuns = stats.recentRuns || [];
           weaponLevels: {...state.weaponLevels},
           passives: [...state.passives],
           passiveLevels: {...state.passiveLevels},
-          devContinuousSpawn: state.devContinuousSpawn,
+          activatedSynergies: [...(state.activatedSynergies || [])],
+          testDummyEnabled: state.testDummyEnabled,
+          testDummyMortal: state.testDummyMortal,
+          testSpawnEnemies: state.testSpawnEnemies,
+          dummyStats: {...(state.dummyStats || {})},
+          devContinuousSpawn: state.testSpawnEnemies,
           isDevPlay: true
         } : null;
 
@@ -5683,35 +6079,125 @@ stats.recentRuns = stats.recentRuns || [];
           state.weaponLevels = devSettings.weaponLevels;
           state.passives = devSettings.passives;
           state.passiveLevels = devSettings.passiveLevels;
+          state.activatedSynergies = devSettings.activatedSynergies;
+          state.testDummyEnabled = devSettings.testDummyEnabled;
+          state.testDummyMortal = devSettings.testDummyMortal;
+          state.testSpawnEnemies = devSettings.testSpawnEnemies;
+          state.dummyStats = devSettings.dummyStats;
           state.devContinuousSpawn = devSettings.devContinuousSpawn;
           state.isDevPlay = true;
+          state.testMode = Boolean(isTest);
         } else {
-          // Normal game starts with default continuous spawn ON
           state.devContinuousSpawn = true;
         }
 
         state.phase = 'playing';
         state.started = true;
-
         canvas = dom.gameCanvas || document.getElementById('game-canvas');
         ctx = canvas.getContext('2d');
-
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
-        state.mecha.x = 1500;
-        state.mecha.y = 1500;
+
+        const worldSize = getCurrentWorldSize();
+        state.mecha.x = Math.round(worldSize * 0.34);
+        state.mecha.y = Math.round(worldSize * 0.5);
+        if (state.testMode) {
+          state.devContinuousSpawn = state.testSpawnEnemies;
+          ensureTestEnvironment(0);
+        }
 
         calculateMechaStats();
+        const testHud = document.getElementById('test-mode-hud');
+        if (testHud) testHud.classList.toggle('hidden', !state.testMode);
+        updateDummyStatsUI();
         render();
         rafId = requestAnimationFrame(loop);
       }
 
 
+      function getNativeFullscreenElement() {
+        return document.fullscreenElement || document.webkitFullscreenElement || null;
+      }
+
+      function isPseudoFullscreen() {
+        return document.body.classList.contains('mekora-pseudo-fullscreen');
+      }
+
+      function updateFullscreenButton() {
+        const button = document.getElementById('btn-fullscreen');
+        const path = document.getElementById('fullscreen-icon-path');
+        if (!button || !path) return;
+        const active = Boolean(getNativeFullscreenElement()) || isPseudoFullscreen();
+        button.dataset.active = active ? 'true' : 'false';
+        button.setAttribute('aria-label', active ? 'Salir de pantalla completa' : 'Entrar en pantalla completa');
+        path.setAttribute('d', active
+          ? 'M9 9H3.75V3.75M15 9h5.25V3.75M15 15h5.25v5.25M9 15H3.75v5.25'
+          : 'M8.25 3.75h-4.5v4.5m12-4.5h4.5v4.5m0 7.5v4.5h-4.5m-7.5 0h-4.5v-4.5');
+      }
+
+      function setPseudoFullscreen(active) {
+        document.documentElement.classList.toggle('mekora-pseudo-fullscreen', active);
+        document.body.classList.toggle('mekora-pseudo-fullscreen', active);
+        if (active) setTimeout(() => window.scrollTo(0, 1), 50);
+        updateFullscreenButton();
+      }
+
+      async function toggleFullscreenMode() {
+        const nativeElement = getNativeFullscreenElement();
+        if (nativeElement) {
+          try {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) await exit.call(document);
+          } catch (error) {
+            console.warn('No se pudo salir de pantalla completa nativa.', error);
+          }
+          setPseudoFullscreen(false);
+          updateFullscreenButton();
+          return;
+        }
+
+        if (isPseudoFullscreen()) {
+          setPseudoFullscreen(false);
+          return;
+        }
+
+        const root = document.documentElement;
+        const request = root.requestFullscreen || root.webkitRequestFullscreen;
+        if (request) {
+          try {
+            await request.call(root);
+            updateFullscreenButton();
+            return;
+          } catch (error) {
+            console.warn('Pantalla completa nativa no disponible; se usa el modo expandido.', error);
+          }
+        }
+        setPseudoFullscreen(true);
+      }
+
+      function unlockDeveloperMode() {
+        if (developerUnlocked) return;
+        developerUnlocked = true;
+        const button = document.getElementById('btn-main-dev');
+        if (button) button.classList.remove('hidden');
+        state.menuSelectionIndex = 0;
+        joystickUsed = false;
+        updateMainMenuUI();
+        vibrate(35);
+      }
+
+      function syncDeveloperButtonVisibility() {
+        const button = document.getElementById('btn-main-dev');
+        if (button) button.classList.toggle('hidden', !developerUnlocked);
+      }
+
       function startMainMenu() {
         stopRun();
         joystickUsed = false;
         state.phase = 'menu';
+        document.getElementById('test-mode-hud')?.classList.add('hidden');
         state.menuSelectionIndex = 0;
+        syncDeveloperButtonVisibility();
         render();
         updateGlobalStatsUI();
         updateMainMenuUI();
@@ -5731,6 +6217,16 @@ stats.recentRuns = stats.recentRuns || [];
 
       function endRun() {
         stopRun();
+        if (state.testMode) {
+          state.phase = 'dev';
+          state.started = false;
+          state.testMode = false;
+          render();
+          state.devStatus = 'Prueba finalizada. Configuración conservada.';
+          updateDevMenuUI();
+          return;
+        }
+
         state.phase = 'gameover';
         joystickUsed = false;
         saveLastRunResult({
@@ -5744,7 +6240,7 @@ stats.recentRuns = stats.recentRuns || [];
         state.credits += 50 + state.sector * 20;
         updateGlobalStatsOnEnd(state.score, state.level, state.totalEnemiesDefeated);
         render();
-         updateGameoverUI();
+        updateGameoverUI();
       }
 
       function render() {
@@ -5788,6 +6284,29 @@ const btnControlPause = document.getElementById('btn-control-pause');
           };
         }
 
+        const btnFullscreen = document.getElementById('btn-fullscreen');
+        if (btnFullscreen) {
+          btnFullscreen.onclick = () => {
+            vibrate(30);
+            toggleFullscreenMode();
+          };
+        }
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+        updateFullscreenButton();
+
+        ['menu-version-text', 'settings-version-text'].forEach(id => {
+          const version = document.getElementById(id);
+          if (!version) return;
+          const unlockFromVersion = event => {
+            event.preventDefault();
+            unlockDeveloperMode();
+          };
+          version.addEventListener('pointerup', unlockFromVersion);
+          version.addEventListener('click', unlockFromVersion);
+        });
+        syncDeveloperButtonVisibility();
+
        const sliderBgm = document.getElementById('slider-bgm');
         const valBgmText = document.getElementById('val-bgm-text');
         if (sliderBgm) {
@@ -5816,172 +6335,372 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
         // Language buttons: set initial active state (es selected by default)
         setupJoystickEvents();
+        setupDeveloperControls();
         startMainMenu();
-
-
-         // Code source screen close button
-         const btnCloseCode = document.getElementById('btn-close-code');
-         if (btnCloseCode) {
-           btnCloseCode.addEventListener('click', () => {
-             startMainMenu();
-           });
-         }
 
         // Orientation warning removed so players can play in portrait mode freely
         const warningEl = dom.orientationWarning;
         if (warningEl) warningEl.style.display = 'none';
       }
 
+      function getDevSectionItems(sectionId) {
+        if (sectionId === 'weapons') return WEAPON_UPGRADES;
+        if (sectionId === 'passives') return PASSIVE_UPGRADES;
+        if (sectionId === 'synergies') return SYNERGIES;
+        if (sectionId === 'test') {
+          return [
+            { id: 'dummy', title: 'Dummy de prueba' },
+            { id: 'dummy-mode', title: 'Comportamiento del dummy' },
+            { id: 'enemies', title: 'Generar enemigos' },
+            { id: 'inf-hp', title: 'Vida infinita' },
+            { id: 'inf-shield', title: 'Escudo infinito' },
+            { id: 'no-cooldown', title: 'Sin enfriamiento' },
+            { id: 'inf-ammo', title: 'Munición infinita' },
+            { id: 'reset-metrics', title: 'Reiniciar métricas' },
+            { id: 'start-test', title: 'INICIAR CAMPO DE PRUEBAS' }
+          ];
+        }
+        return [];
+      }
+
+      function getDevItemValue(sectionId, item) {
+        if (sectionId === 'weapons') {
+          const equipped = state.activeWeapons.includes(item.id);
+          return equipped ? `EQUIPADA · NIV ${state.weaponLevels[item.id] || 1}` : 'NO EQUIPADA';
+        }
+        if (sectionId === 'passives') {
+          const equipped = state.passives.includes(item.id);
+          return equipped ? `ACTIVA · NIV ${state.passiveLevels[item.id] || 1}` : 'NO ACTIVA';
+        }
+        if (sectionId === 'synergies') {
+          return state.activatedSynergies.includes(item.id) ? 'FORMADA' : 'EQUIPAR REQUISITOS';
+        }
+        const testValues = {
+          'dummy': state.testDummyEnabled ? 'ACTIVO' : 'DESACTIVADO',
+          'dummy-mode': state.testDummyMortal ? 'MUERE Y REAPARECE' : 'DAÑO INFINITO',
+          'enemies': state.testSpawnEnemies ? 'ACTIVOS' : 'DESACTIVADOS',
+          'inf-hp': state.devInfHp ? 'SÍ' : 'NO',
+          'inf-shield': state.devInfShield ? 'SÍ' : 'NO',
+          'no-cooldown': state.devNoCooldown ? 'SÍ' : 'NO',
+          'inf-ammo': state.devInfAmmo ? 'SÍ' : 'NO',
+          'reset-metrics': 'EJECUTAR',
+          'start-test': 'CONFIRMAR'
+        };
+        return testValues[item.id] || '';
+      }
+
+      function setDevStatus(message) {
+        state.devStatus = message;
+        const line = document.getElementById('dev-status-line');
+        if (line) line.textContent = message;
+      }
+
+      function openDeveloperMenu() {
+        stopRun();
+        state.phase = 'dev';
+        state.testMode = false;
+        document.getElementById('test-mode-hud')?.classList.add('hidden');
+        state.devFocus = 'tabs';
+        state.devSectionIndex = Math.max(0, DEV_SECTIONS.findIndex(section => section.id === (state.devActiveSection || 'weapons')));
+        state.devItemIndex = 0;
+        render();
+        updateDevMenuUI();
+      }
+
       function updateDevMenuUI() {
-        if (typeof updateDevTogglesUI === 'function') updateDevTogglesUI();
-        const weaponsList = document.getElementById('dev-weapons-list');
-        const passivesList = document.getElementById('dev-passives-list');
-        const synergiesList = document.getElementById('dev-synergies-list');
+        const tabs = document.getElementById('dev-section-tabs');
+        const list = document.getElementById('dev-compact-list');
+        const section = DEV_SECTIONS[state.devSectionIndex] || DEV_SECTIONS[0];
+        const activeSectionId = state.devActiveSection || 'weapons';
 
-        if (weaponsList) {
-          weaponsList.innerHTML = WEAPON_UPGRADES.map(u => {
-            const hasIt = state.activeWeapons.includes(u.id);
-            const lvl = state.weaponLevels[u.id] || 0;
-            return `
-              <div class="flex justify-between items-center p-1 bg-gray-800 rounded">
-                <span>${u.icon} ${u.title} (Lvl ${lvl})</span>
-                <div class="flex gap-1">
-                  <button onclick="window.devModifyWeapon('${u.id}', 1)" class="bg-purple-600 px-1.5 py-0.5 rounded text-[10px]">+Lvl</button>
-                  <button onclick="window.devModifyWeapon('${u.id}', -1)" class="bg-red-600 px-1.5 py-0.5 rounded text-[10px]">-Lvl</button>
-                  <button onclick="window.devToggleWeapon('${u.id}')" class="bg-blue-600 px-1.5 py-0.5 rounded text-[10px]">${hasIt ? 'Quitar' : 'Poner'}</button>
-                </div>
-              </div>
-            `;
+        const weaponSlots = document.getElementById('dev-weapon-slots');
+        const passiveSlots = document.getElementById('dev-passive-slots');
+        if (weaponSlots) weaponSlots.textContent = `${state.activeWeapons.length}/6`;
+        if (passiveSlots) passiveSlots.textContent = `${state.passives.length}/6`;
+
+        if (tabs) {
+          tabs.innerHTML = DEV_SECTIONS.map((tab, index) => {
+            const classes = ['dev-tab'];
+            if (state.devFocus === 'tabs' && index === state.devSectionIndex) classes.push('cursor');
+            if (tab.id === activeSectionId && tab.id !== 'exit') classes.push('active');
+            return `<div class="${classes.join(' ')}">${tab.label}</div>`;
           }).join('');
         }
 
-        if (passivesList) {
-          passivesList.innerHTML = PASSIVE_UPGRADES.map(u => {
-            const hasIt = state.passives.includes(u.id);
-            const lvl = state.passiveLevels[u.id] || 0;
-            return `
-              <div class="flex justify-between items-center p-1 bg-gray-800 rounded">
-                <span>${u.icon} ${u.title} (Lvl ${lvl})</span>
-                <div class="flex gap-1">
-                  <button onclick="window.devModifyPassive('${u.id}', 1)" class="bg-purple-600 px-1.5 py-0.5 rounded text-[10px]">+Lvl</button>
-                  <button onclick="window.devModifyPassive('${u.id}', -1)" class="bg-red-600 px-1.5 py-0.5 rounded text-[10px]">-Lvl</button>
-                  <button onclick="window.devTogglePassive('${u.id}')" class="bg-blue-600 px-1.5 py-0.5 rounded text-[10px]">${hasIt ? 'Quitar' : 'Poner'}</button>
-                </div>
-              </div>
-            `;
-          }).join('');
+        if (!list) return;
+        if (state.devFocus === 'tabs') {
+          list.innerHTML = `
+            <div class="dev-row selected"><span>SECCIÓN: ${section.label}</span><span class="dev-value">${section.id === 'exit' ? 'VOLVER AL MENÚ' : 'ROJO PARA ABRIR'}</span></div>
+            <div class="dev-row"><span>Izquierda / derecha</span><span class="dev-value">CAMBIAR PESTAÑA</span></div>
+            <div class="dev-row"><span>Botón rojo</span><span class="dev-value">CONFIRMAR</span></div>
+          `;
+          setDevStatus(state.devStatus || 'Selecciona una sección y confirma.');
+          return;
         }
 
-        if (synergiesList) {
-          synergiesList.innerHTML = SYNERGIES.map(s => {
-            const hasIt = state.activatedSynergies.includes(s.id);
-            return `
-              <div class="flex justify-between items-center p-1 bg-gray-800 rounded">
-                <span>${s.icon} ${s.name}</span>
-                <button onclick="window.devToggleSynergy('${s.id}')" class="bg-purple-600 px-2 py-0.5 rounded text-[10px]">${hasIt ? 'Activa' : 'Equipar requisitos'}</button>
-              </div>
-            `;
-          }).join('');
+        const items = getDevSectionItems(activeSectionId);
+        if (!items.length) {
+          list.innerHTML = '<div class="dev-row selected"><span>Sin opciones disponibles</span><span class="dev-value">ARRIBA: PESTAÑAS</span></div>';
+          return;
         }
-      }
-      function populateCodeViewer() {
-         const viewer = document.getElementById('code-viewer-source');
-        if (!viewer) return;
-        const source = document.documentElement.outerHTML;
-        viewer.textContent = source;
+        state.devItemIndex = Math.max(0, Math.min(state.devItemIndex, items.length - 1));
+        const visibleCount = 5;
+        let startIndex = Math.max(0, state.devItemIndex - 2);
+        startIndex = Math.min(startIndex, Math.max(0, items.length - visibleCount));
+        const visibleItems = items.slice(startIndex, startIndex + visibleCount);
+
+        list.innerHTML = visibleItems.map((item, localIndex) => {
+          const absoluteIndex = startIndex + localIndex;
+          const selected = absoluteIndex === state.devItemIndex;
+          const icon = item.icon ? `${item.icon} ` : '';
+          const title = item.title || item.name || item.id;
+          return `<div class="dev-row ${selected ? 'selected' : ''}">
+            <span>${icon}${title}</span>
+            <span class="dev-value">${getDevItemValue(activeSectionId, item)}</span>
+          </div>`;
+        }).join('');
+
+        const pageText = `${state.devItemIndex + 1}/${items.length}`;
+        setDevStatus(`${pageText} · ARRIBA en el primer ítem: pestañas · ROJO: activar · IZQ/DER: nivel`);
       }
 
-       document.getElementById('btn-copy-source')?.addEventListener('click', () => {
-        const source = document.documentElement.outerHTML;
-        navigator.clipboard.writeText(source).then(() => {
-           const btn = document.getElementById('btn-copy-source');
-          if (btn) {
-            const orig = btn.textContent;
-            btn.textContent = 'COPIADO!';
-            setTimeout(() => { btn.textContent = orig; }, 2000);
+      function modifyDevLevel(sectionId, direction) {
+        const items = getDevSectionItems(sectionId);
+        const item = items[state.devItemIndex];
+        if (!item) return;
+        if (sectionId === 'weapons') {
+          if (!state.activeWeapons.includes(item.id)) {
+            setDevStatus('Equipa el arma con el botón rojo antes de cambiar su nivel.');
+            return;
           }
-        }).catch(() => {
-           const btn = document.getElementById('btn-copy-source');
-          if (btn) {
-            const orig = btn.textContent;
-            btn.textContent = 'ERROR';
-            setTimeout(() => { btn.textContent = orig; }, 2000);
+          state.weaponLevels[item.id] = Math.max(1, Math.min(20, (state.weaponLevels[item.id] || 1) + direction));
+        } else if (sectionId === 'passives') {
+          if (!state.passives.includes(item.id)) {
+            setDevStatus('Activa la pasiva con el botón rojo antes de cambiar su nivel.');
+            return;
           }
-        });
-      });
+          state.passiveLevels[item.id] = Math.max(1, Math.min(20, (state.passiveLevels[item.id] || 1) + direction));
+        } else {
+          return;
+        }
+        calculateMechaStats();
+        updateDevMenuUI();
+      }
 
-      window.devToggleWeapon = (id) => {
-        const idx = state.activeWeapons.indexOf(id);
-        if (idx > -1) {
-          state.activeWeapons.splice(idx, 1);
+      function toggleDevWeapon(id) {
+        const index = state.activeWeapons.indexOf(id);
+        if (index >= 0) {
+          state.activeWeapons.splice(index, 1);
           delete state.weaponLevels[id];
+          setDevStatus('Arma retirada.');
+        } else if (state.activeWeapons.length >= 6) {
+          setDevStatus('Slots de armas llenos. Retira una antes de equipar otra.');
+          vibrate(80);
+          return;
         } else {
           state.activeWeapons.push(id);
           state.weaponLevels[id] = 1;
+          setDevStatus('Arma equipada.');
         }
         calculateMechaStats();
-        updateDevMenuUI();
-      };
+      }
 
-      window.devModifyWeapon = (id, amount) => {
-        if (!state.activeWeapons.includes(id)) {
-          state.activeWeapons.push(id);
-          state.weaponLevels[id] = 0;
-        }
-        state.weaponLevels[id] = Math.max(1, (state.weaponLevels[id] || 1) + amount);
-        calculateMechaStats();
-        updateDevMenuUI();
-      };
-
-      window.devTogglePassive = (id) => {
-        const idx = state.passives.indexOf(id);
-        if (idx > -1) {
-          state.passives.splice(idx, 1);
+      function toggleDevPassive(id) {
+        const index = state.passives.indexOf(id);
+        if (index >= 0) {
+          state.passives.splice(index, 1);
           delete state.passiveLevels[id];
+          setDevStatus('Pasiva retirada.');
+        } else if (state.passives.length >= 6) {
+          setDevStatus('Slots de pasivas llenos. Retira una antes de activar otra.');
+          vibrate(80);
+          return;
         } else {
           state.passives.push(id);
           state.passiveLevels[id] = 1;
+          setDevStatus('Pasiva activada.');
         }
         calculateMechaStats();
-        updateDevMenuUI();
-      };
+      }
 
-      window.devModifyPassive = (id, amount) => {
-        if (!state.passives.includes(id)) {
-          state.passives.push(id);
-          state.passiveLevels[id] = 0;
+      function equipDevSynergy(id) {
+        const synergy = SYNERGY_BY_ID.get(id);
+        if (!synergy) return;
+        if (state.activatedSynergies.includes(id)) {
+          setDevStatus('La sinergia ya está formada.');
+          return;
         }
-        state.passiveLevels[id] = Math.max(1, (state.passiveLevels[id] || 1) + amount);
-        calculateMechaStats();
-        updateDevMenuUI();
-      };
 
-      window.devToggleSynergy = (id) => {
-        const syn = SYNERGY_BY_ID.get(id);
-        if (!syn) return;
+        const missingWeapons = synergy.reqs.filter(req => req.startsWith('w-') && !state.activeWeapons.includes(req));
+        const missingPassives = synergy.reqs.filter(req => req.startsWith('p-') && !state.passives.includes(req));
+        const weaponReqs = synergy.reqs.filter(req => req.startsWith('w-'));
+        const projectedWeaponCount = state.activeWeapons.length + missingWeapons.length - weaponReqs.length + 1;
+        if (projectedWeaponCount > 6) {
+          setDevStatus('No hay suficientes slots de armas para formar la sinergia.');
+          vibrate(80);
+          return;
+        }
+        if (state.passives.length + missingPassives.length > 6) {
+          setDevStatus('No hay suficientes slots de pasivas para sus requisitos.');
+          vibrate(80);
+          return;
+        }
 
-        // Equip all required weapons and passives for this synergy to function
-        syn.reqs.forEach(reqId => {
-          if (reqId.startsWith('w-')) {
-            if (!state.activeWeapons.includes(reqId)) {
-              if (state.activeWeapons.length < 6) {
-                state.activeWeapons.push(reqId);
-              } else {
-                state.activeWeapons[state.activeWeapons.length - 1] = reqId;
-              }
-            }
-            state.weaponLevels[reqId] = Math.max(state.weaponLevels[reqId] || 1, 1);
-          } else if (reqId.startsWith('p-')) {
-            if (!state.passives.includes(reqId)) {
-              state.passives.push(reqId);
-            }
-            state.passiveLevels[reqId] = Math.max(state.passiveLevels[reqId] || 1, 1);
-          }
+        missingWeapons.forEach(req => {
+          state.activeWeapons.push(req);
+          state.weaponLevels[req] = 1;
         });
-
+        missingPassives.forEach(req => {
+          state.passives.push(req);
+          state.passiveLevels[req] = 1;
+        });
         calculateMechaStats();
+        setDevStatus('Sinergia formada. Las armas componentes fueron consumidas.');
+      }
+
+      function executeDevTestOption(id) {
+        if (id === 'dummy') state.testDummyEnabled = !state.testDummyEnabled;
+        else if (id === 'dummy-mode') state.testDummyMortal = !state.testDummyMortal;
+        else if (id === 'enemies') state.testSpawnEnemies = !state.testSpawnEnemies;
+        else if (id === 'inf-hp') state.devInfHp = !state.devInfHp;
+        else if (id === 'inf-shield') state.devInfShield = !state.devInfShield;
+        else if (id === 'no-cooldown') state.devNoCooldown = !state.devNoCooldown;
+        else if (id === 'inf-ammo') state.devInfAmmo = !state.devInfAmmo;
+        else if (id === 'reset-metrics') {
+          resetDummyStats();
+          setDevStatus('Métricas del dummy reiniciadas.');
+        } else if (id === 'start-test') {
+          startRun(true, true);
+          return;
+        }
         updateDevMenuUI();
-      };
+      }
+
+      function confirmDevAction() {
+        if (state.phase !== 'dev') return;
+        const section = DEV_SECTIONS[state.devSectionIndex] || DEV_SECTIONS[0];
+        if (state.devFocus === 'tabs') {
+          if (section.id === 'exit') {
+            startMainMenu();
+            return;
+          }
+          state.devActiveSection = section.id;
+          state.devFocus = 'list';
+          state.devItemIndex = 0;
+          updateDevMenuUI();
+          vibrate(35);
+          return;
+        }
+
+        const items = getDevSectionItems(state.devActiveSection);
+        const item = items[state.devItemIndex];
+        if (!item) return;
+        if (state.devActiveSection === 'weapons') toggleDevWeapon(item.id);
+        else if (state.devActiveSection === 'passives') toggleDevPassive(item.id);
+        else if (state.devActiveSection === 'synergies') equipDevSynergy(item.id);
+        else if (state.devActiveSection === 'test') executeDevTestOption(item.id);
+        updateDevMenuUI();
+        vibrate(35);
+      }
+
+      function handleDevJoystickInput(jx, jy) {
+        const threshold = 0.55;
+        if (state.devFocus === 'tabs') {
+          let dir = 0;
+          if (jx < -threshold) dir = -1;
+          else if (jx > threshold) dir = 1;
+          if (dir !== 0 && lastJoystickXDir !== dir) {
+            lastJoystickXDir = dir;
+            state.devSectionIndex = (state.devSectionIndex + dir + DEV_SECTIONS.length) % DEV_SECTIONS.length;
+            updateDevMenuUI();
+            vibrate(20);
+          } else if (dir === 0) {
+            lastJoystickXDir = 0;
+          }
+          return;
+        }
+
+        const items = getDevSectionItems(state.devActiveSection);
+        let vertical = 0;
+        if (jy < -threshold) vertical = -1;
+        else if (jy > threshold) vertical = 1;
+        if (vertical !== 0 && lastJoystickYDir !== vertical) {
+          lastJoystickYDir = vertical;
+          if (vertical < 0 && state.devItemIndex === 0) {
+            state.devFocus = 'tabs';
+            state.devSectionIndex = Math.max(0, DEV_SECTIONS.findIndex(section => section.id === state.devActiveSection));
+          } else {
+            state.devItemIndex = Math.max(0, Math.min(items.length - 1, state.devItemIndex + vertical));
+          }
+          updateDevMenuUI();
+          vibrate(20);
+        } else if (vertical === 0) {
+          lastJoystickYDir = 0;
+        }
+
+        let horizontal = 0;
+        if (jx < -threshold) horizontal = -1;
+        else if (jx > threshold) horizontal = 1;
+        if (horizontal !== 0 && lastJoystickXDir !== horizontal) {
+          lastJoystickXDir = horizontal;
+          modifyDevLevel(state.devActiveSection, horizontal);
+          vibrate(20);
+        } else if (horizontal === 0) {
+          lastJoystickXDir = 0;
+        }
+      }
+
+      function setupDeveloperControls() {
+        const zone = document.getElementById('dev-joystick-move-zone');
+        const knob = document.getElementById('dev-joystick-move-knob');
+        const fire = document.getElementById('btn-dev-tap-fire');
+        if (!zone || !knob || !fire) return;
+
+        let pointerId = null;
+        let centerX = 0;
+        let centerY = 0;
+
+        const update = event => {
+          let dx = event.clientX - centerX;
+          let dy = event.clientY - centerY;
+          const maxR = 50;
+          const dist = Math.hypot(dx, dy);
+          if (dist > maxR) {
+            dx = dx / dist * maxR;
+            dy = dy / dist * maxR;
+          }
+          knob.style.transform = `translate(${dx}px, ${dy}px)`;
+          handleDevJoystickInput(dx / maxR, dy / maxR);
+        };
+
+        zone.addEventListener('pointerdown', event => {
+          event.preventDefault();
+          initAudio();
+          pointerId = event.pointerId;
+          centerX = event.clientX;
+          centerY = event.clientY;
+          capturePointerSafely(zone, event.pointerId);
+          update(event);
+        });
+        zone.addEventListener('pointermove', event => {
+          if (event.pointerId === pointerId) update(event);
+        });
+        const end = event => {
+          if (event.pointerId !== pointerId) return;
+          pointerId = null;
+          knob.style.transform = 'translate(0px, 0px)';
+          lastJoystickXDir = 0;
+          lastJoystickYDir = 0;
+        };
+        zone.addEventListener('pointerup', end);
+        zone.addEventListener('pointercancel', end);
+
+        fire.addEventListener('pointerdown', event => {
+          event.preventDefault();
+          initAudio();
+          confirmDevAction();
+        });
+      }
 
       if (document.readyState === 'loading') {
         window.addEventListener('DOMContentLoaded', initApp, { once: true });
@@ -6013,6 +6732,31 @@ const btnControlPause = document.getElementById('btn-control-pause');
         },
         end() {
           endRun();
+        },
+        levelUp() {
+          triggerLevelUp();
+        },
+        unlockDeveloper() {
+          unlockDeveloperMode();
+        },
+        toggleFullscreen() {
+          return toggleFullscreenMode();
+        },
+        loadout() {
+          return {
+            weapons: [...state.activeWeapons],
+            passives: [...state.passives],
+            weaponLevels: {...state.weaponLevels},
+            passiveLevels: {...state.passiveLevels}
+          };
+        },
+        draft() {
+          return {
+            cards: (state.draftCards || []).map(card => ({id: card.id, type: card.type, title: card.title})),
+            selected: state.draftSelection,
+            locked: state.draftInputLocked,
+            armed: state.draftConfirmArmed
+          };
         }
       };
 //#endregion debug_api
