@@ -1392,6 +1392,276 @@
   }
 </style>
 
+
+<style id="mekora-v301-draft-and-ammo">
+  /* v3.0.1: compact, equal-size upgrade cards and color-only rarity language. */
+  #roguelike-draft-modal {
+    overflow: hidden !important;
+    padding: 5px !important;
+  }
+  #draft-content-panel {
+    width: 100% !important;
+    max-width: 520px !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+  }
+  #draft-level-title { margin: 0 !important; font-size: 8px !important; line-height: 1.1 !important; }
+  #draft-choose-title { margin: 0 0 3px !important; font-size: 10px !important; line-height: 1.15 !important; }
+  #upgrade-cards-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    width: min(100%, 500px) !important;
+    height: clamp(132px, 29dvh, 188px) !important;
+    max-height: calc(100% - 34px) !important;
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+  .mekora-draft-wrapper {
+    --rarity-color: #aeb8c5;
+    --rarity-soft: rgba(174,184,197,.13);
+    position: relative !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: .68;
+    transform: none !important;
+    transition: opacity 130ms ease, filter 130ms ease !important;
+    isolation: isolate;
+  }
+  .mekora-draft-wrapper.is-selected {
+    opacity: 1;
+    z-index: 3;
+  }
+  .mekora-draft-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: 16px 26px minmax(22px, auto) minmax(0, 1fr) 12px;
+    align-items: center;
+    justify-items: center;
+    padding: 6px 5px 5px;
+    overflow: hidden;
+    border: 2px solid var(--rarity-color);
+    border-radius: 8px;
+    color: #f5f7fa;
+    background:
+      linear-gradient(180deg, var(--rarity-soft), rgba(12,17,24,.97) 42%),
+      #0c1118;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    pointer-events: none;
+  }
+  .mekora-draft-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: var(--rarity-color);
+    opacity: .95;
+  }
+  .mekora-draft-card::after {
+    content: '';
+    position: absolute;
+    inset: -45% -80%;
+    background: linear-gradient(110deg, transparent 42%, rgba(255,255,255,.26) 50%, transparent 58%);
+    transform: translateX(-45%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .mekora-draft-wrapper.is-selected .mekora-draft-card {
+    outline: 2px solid rgba(255,255,255,.92);
+    outline-offset: 2px;
+    filter: brightness(1.07);
+  }
+  .draft-card-topline {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3px;
+    color: #b7c0cb;
+    font-size: 6px;
+    font-weight: 800;
+    letter-spacing: .08em;
+  }
+  .draft-card-kind {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .draft-new-badge {
+    display: none;
+    flex: 0 0 auto;
+    padding: 1px 3px;
+    border-radius: 4px;
+    background: #fff;
+    color: #111827;
+    font-size: 5px;
+    line-height: 1.25;
+    letter-spacing: .05em;
+    box-shadow: 0 0 8px rgba(255,255,255,.9);
+  }
+  .is-new-discovery .draft-new-badge { display: inline-flex; }
+  .draft-card-icon {
+    color: var(--rarity-color);
+    font-size: 20px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,.65));
+  }
+  .draft-card-title {
+    width: 100%;
+    min-width: 0;
+    color: #fff;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1.08;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+  .draft-card-desc {
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+    color: #aeb7c2;
+    font-size: 7px;
+    line-height: 1.16;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+  .draft-card-level {
+    width: 100%;
+    color: var(--rarity-color);
+    font-size: 6px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: .08em;
+    text-align: center;
+  }
+
+  /* Rarity is represented by frame, pattern and restrained motion, never by rarity text. */
+  .mekora-draft-wrapper[data-rarity="common"] {
+    --rarity-color: #aeb8c5;
+    --rarity-soft: rgba(174,184,197,.11);
+  }
+  .mekora-draft-wrapper[data-rarity="uncommon"] {
+    --rarity-color: #55c889;
+    --rarity-soft: rgba(85,200,137,.14);
+  }
+  .mekora-draft-wrapper[data-rarity="uncommon"] .mekora-draft-card {
+    animation: rarityUncommon 2.8s ease-in-out infinite;
+  }
+  .mekora-draft-wrapper[data-rarity="rare"] {
+    --rarity-color: #5ea8ff;
+    --rarity-soft: rgba(94,168,255,.16);
+  }
+  .mekora-draft-wrapper[data-rarity="rare"] .mekora-draft-card::after {
+    opacity: .32;
+    animation: raritySweep 3.1s ease-in-out infinite;
+  }
+  .mekora-draft-wrapper[data-rarity="epic"] {
+    --rarity-color: #c27cff;
+    --rarity-soft: rgba(194,124,255,.18);
+  }
+  .mekora-draft-wrapper[data-rarity="epic"] .mekora-draft-card {
+    animation: rarityEpic 2.45s ease-in-out infinite;
+  }
+  .mekora-draft-wrapper[data-rarity="epic"] .mekora-draft-card::after {
+    opacity: .24;
+    animation: raritySweep 2.6s ease-in-out infinite;
+  }
+  .mekora-draft-wrapper[data-rarity="legendary"] {
+    --rarity-color: #f4bd52;
+    --rarity-soft: rgba(244,189,82,.21);
+  }
+  .mekora-draft-wrapper[data-rarity="legendary"] .mekora-draft-card {
+    animation: rarityLegendary 1.95s ease-in-out infinite;
+  }
+  .mekora-draft-wrapper[data-rarity="legendary"] .mekora-draft-card::after {
+    opacity: .52;
+    animation: raritySweep 1.9s linear infinite;
+  }
+  .mekora-draft-wrapper.is-new-discovery .mekora-draft-card {
+    animation: newDiscoveryFlash .82s cubic-bezier(.18,.82,.24,1) 2;
+  }
+  .mekora-draft-wrapper.is-new-rarity .mekora-draft-card {
+    box-shadow: 0 0 0 2px #fff, 0 0 18px var(--rarity-color), inset 0 0 16px var(--rarity-soft);
+  }
+  @keyframes rarityUncommon {
+    0%,100% { box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+    50% { box-shadow: 0 0 8px rgba(85,200,137,.28), inset 0 0 0 1px rgba(255,255,255,.06); }
+  }
+  @keyframes raritySweep {
+    0% { transform: translateX(-45%); }
+    55%,100% { transform: translateX(45%); }
+  }
+  @keyframes rarityEpic {
+    0%,100% { box-shadow: 0 0 5px rgba(194,124,255,.24), inset 0 0 0 1px rgba(255,255,255,.04); }
+    50% { box-shadow: 0 0 14px rgba(194,124,255,.48), inset 0 0 10px rgba(194,124,255,.11); }
+  }
+  @keyframes rarityLegendary {
+    0%,100% { box-shadow: 0 0 8px rgba(244,189,82,.34), inset 0 0 8px rgba(244,189,82,.07); }
+    50% { box-shadow: 0 0 18px rgba(244,189,82,.62), inset 0 0 14px rgba(244,189,82,.15); }
+  }
+  @keyframes newDiscoveryFlash {
+    0% { filter: brightness(1); transform: scale(1); }
+    42% { filter: brightness(1.55); transform: scale(1.025); }
+    100% { filter: brightness(1); transform: scale(1); }
+  }
+
+  @media (orientation: portrait) {
+    #roguelike-draft-modal { padding: 4px !important; }
+    #draft-content-panel { gap: 2px !important; }
+    #draft-level-title { font-size: 7px !important; }
+    #draft-choose-title { font-size: 9px !important; margin-bottom: 2px !important; }
+    #upgrade-cards-container {
+      width: 100% !important;
+      height: clamp(126px, 23dvh, 162px) !important;
+      gap: 4px !important;
+    }
+    .mekora-draft-card {
+      grid-template-rows: 13px 22px minmax(19px, auto) minmax(0, 1fr) 10px;
+      padding: 4px 3px 3px;
+      border-radius: 6px;
+    }
+    .draft-card-topline { font-size: 5px; }
+    .draft-new-badge { font-size: 4px; padding: 1px 2px; }
+    .draft-card-icon { font-size: 17px; }
+    .draft-card-title { font-size: 7px; }
+    .draft-card-desc { font-size: 6px; -webkit-line-clamp: 3; }
+    .draft-card-level { font-size: 5px; }
+  }
+  @media (orientation: landscape) and (max-height: 500px) {
+    #upgrade-cards-container { height: clamp(116px, 35dvh, 152px) !important; }
+    .mekora-draft-card { padding: 4px; }
+    .draft-card-desc { -webkit-line-clamp: 2; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mekora-draft-card, .mekora-draft-card::after { animation: none !important; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -1722,7 +1992,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.0.0</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.0.1</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2489,7 +2759,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.0.0';
+      const MEKORA_VERSION = '3.0.1';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -2571,6 +2841,8 @@ stats.recentRuns = stats.recentRuns || [];
           cores: 0,
           blueprints,
           discoveredEvolutions: [],
+          discoveredContent: ['w-plasma'],
+          discoveredRarities: ['uncommon'],
           unlockedMechs: ['vanguard'],
           pinnedMissions: [],
           missions: {},
@@ -2587,6 +2859,8 @@ stats.recentRuns = stats.recentRuns || [];
           ...defaults,
           ...stored,
           blueprints: {...defaults.blueprints, ...(stored.blueprints || {})},
+          discoveredContent: Array.from(new Set([...(defaults.discoveredContent || []), ...((stored.discoveredContent || []))])),
+          discoveredRarities: Array.from(new Set([...(defaults.discoveredRarities || []), ...((stored.discoveredRarities || []))])),
           pity: {...defaults.pity, ...(stored.pity || {}), rejected: {...(defaults.pity.rejected || {}), ...((stored.pity && stored.pity.rejected) || {})}},
           hangar: {...defaults.hangar, ...(stored.hangar || {})}
         };
@@ -2655,7 +2929,111 @@ stats.recentRuns = stats.recentRuns || [];
         });
         saveProgressionV3();
       }
+
+      function prepareDraftDiscoveriesV301(cards) {
+        const knownContent = new Set(progressionV3.discoveredContent || []);
+        const knownRarities = new Set(progressionV3.discoveredRarities || []);
+        const claimedNewRarities = new Set();
+        const flags = {};
+        (cards || []).forEach(card => {
+          const rarity = getContentMetaV3(card.id)?.rarity || 'common';
+          const isNewContent = !knownContent.has(card.id);
+          const isNewRarity = !knownRarities.has(rarity) && !claimedNewRarities.has(rarity);
+          flags[card.id] = { isNewContent, isNewRarity };
+          knownContent.add(card.id);
+          if (isNewRarity) claimedNewRarities.add(rarity);
+          knownRarities.add(rarity);
+        });
+        state.draftDiscoveryFlags = flags;
+        progressionV3.discoveredContent = Array.from(knownContent);
+        progressionV3.discoveredRarities = Array.from(knownRarities);
+        saveProgressionV3();
+        return flags;
+      }
       //#endregion v3_foundation
+
+      //#region primary_magazine_v301 · Stable primary weapon magazine
+      const PRIMARY_MAGAZINE_BASE_V301 = 10;
+
+      function getPrimaryWeaponIdV301() {
+        return Array.isArray(state.activeWeapons) && state.activeWeapons.length ? state.activeWeapons[0] : null;
+      }
+
+      function getPrimaryMagazineCapacityV301() {
+        const bonus = Math.max(0, Math.floor(Number(state.mecha.maxAmmoBonus) || 0));
+        return PRIMARY_MAGAZINE_BASE_V301 + bonus;
+      }
+
+      function normalizePrimaryMagazineV301() {
+        const capacity = getPrimaryMagazineCapacityV301();
+        state.mecha.maxAmmo = capacity;
+        if (!Number.isFinite(state.mecha.ammo)) state.mecha.ammo = capacity;
+        state.mecha.ammo = Math.max(0, Math.min(capacity, Math.floor(state.mecha.ammo)));
+        if (state.devInfAmmo) {
+          state.mecha.ammo = capacity;
+          state.mecha.isReloading = false;
+          state.mecha.reloadProgress = 1;
+        }
+        return capacity;
+      }
+
+      function updatePrimaryAmmoHudV301() {
+        normalizePrimaryMagazineV301();
+        __mekoraSetAmmoHud(state.mecha.ammo, state.mecha.isReloading);
+      }
+
+      function beginPrimaryReloadV301(timestamp = performance.now()) {
+        if (state.devInfAmmo) {
+          normalizePrimaryMagazineV301();
+          updatePrimaryAmmoHudV301();
+          return false;
+        }
+        if (state.mecha.isReloading) return false;
+        state.mecha.isReloading = true;
+        state.mecha.reloadStartTime = timestamp;
+        state.mecha.reloadProgress = 0;
+        updatePrimaryAmmoHudV301();
+        return true;
+      }
+
+      function consumePrimaryAmmoV301(timestamp = performance.now()) {
+        const capacity = normalizePrimaryMagazineV301();
+        if (state.devInfAmmo) {
+          state.mecha.ammo = capacity;
+          updatePrimaryAmmoHudV301();
+          return true;
+        }
+        if (state.mecha.isReloading) return false;
+        if (state.mecha.ammo <= 0) {
+          beginPrimaryReloadV301(timestamp);
+          return false;
+        }
+        state.mecha.ammo -= 1;
+        if (state.mecha.ammo <= 0) beginPrimaryReloadV301(timestamp);
+        else updatePrimaryAmmoHudV301();
+        return true;
+      }
+
+      function updatePrimaryReloadV301(timestamp = performance.now()) {
+        normalizePrimaryMagazineV301();
+        if (!state.mecha.isReloading) {
+          updatePrimaryAmmoHudV301();
+          return false;
+        }
+        const baseDuration = Math.max(120, Number(state.mecha.reloadDuration) || 1500);
+        const reloadDuration = baseDuration / Math.max(.1, Number(state.stats.reloadSpeedMult) || 1);
+        const elapsed = Math.max(0, timestamp - (state.mecha.reloadStartTime || timestamp));
+        state.mecha.reloadProgress = Math.min(1, elapsed / reloadDuration);
+        if (elapsed >= reloadDuration) {
+          state.mecha.isReloading = false;
+          state.mecha.ammo = getPrimaryMagazineCapacityV301();
+          state.mecha.reloadProgress = 1;
+        }
+        updatePrimaryAmmoHudV301();
+        return state.mecha.isReloading;
+      }
+      //#endregion primary_magazine_v301
+
       function damageEnemy(e, damage, timestamp) {
         const safeDamage = Math.max(0, Math.round(damage || 0));
         if (e.isDummy) {
@@ -3342,20 +3720,11 @@ stats.recentRuns = stats.recentRuns || [];
           state.mecha.y = Math.max(50, Math.min(worldSize - 50, state.mecha.y));
         }
 
-        // Update Reload Progress
-        if (state.mecha.isReloading) {
-          const reloadDuration = 1500 / (state.stats.reloadSpeedMult || 1.0);
-          const elapsed = timestamp - state.mecha.reloadStartTime;
-          state.mecha.reloadProgress = Math.min(1.0, elapsed / reloadDuration);
-          if (elapsed >= reloadDuration) {
-            state.mecha.isReloading = false;
-            state.mecha.ammo = 10 + (state.mecha.maxAmmoBonus || 0);
-            state.mecha.reloadProgress = 1.0;
-          }
-        }
+        // Update only the primary weapon magazine. Secondary weapons and powers keep running while it reloads.
+        updatePrimaryReloadV301(timestamp);
 
          // Automated weapon firing
-          if (!state.mecha.isReloading && nearestEnemy) {
+          if (nearestEnemy) {
            if (!state.lastWeaponFireTimes) {
              state.lastWeaponFireTimes = {};
            }
@@ -3979,18 +4348,9 @@ stats.recentRuns = stats.recentRuns || [];
 
                // Offensive weapons fire if there is an enemy in range
                if (nearestEnemy && minDistSq < 360000) {
-                 if (PROJECTILE_WEAPONS.has(weaponId)) {
-                    if (state.mecha.ammo <= 0 && !state.devInfAmmo) {
-                      state.mecha.isReloading = true;
-                      state.mecha.reloadStartTime = timestamp;
-                      state.mecha.reloadProgress = 0.0;
-                      return;
-                    }
-                    if (!state.devInfAmmo) {
-                      state.mecha.ammo--;
-                    } else {
-                      state.mecha.ammo = 10 + (state.mecha.maxAmmoBonus || 0);
-                    }
+                 const isPrimaryWeaponV301 = weaponId === getPrimaryWeaponIdV301();
+                 if (PROJECTILE_WEAPONS.has(weaponId) && isPrimaryWeaponV301) {
+                   if (!consumePrimaryAmmoV301(timestamp)) return;
                  }
 
                  state.lastWeaponFireTimes[weaponId] = timestamp;
@@ -6050,6 +6410,7 @@ stats.recentRuns = stats.recentRuns || [];
          });
 
          state.draftCards = selectDraftCardsV3(eligible, Math.min(3, eligible.length), state);
+         prepareDraftDiscoveriesV301(state.draftCards);
          state.draftSelection = 0;
 
          updateDraftMenuUI();
@@ -6432,75 +6793,38 @@ stats.recentRuns = stats.recentRuns || [];
 
         state.draftCards.forEach((upg, idx) => {
           const isWeapon = upg.type === 'weapon';
-          const hasIt = isWeapon ? state.activeWeapons.includes(upg.id) : state.passives.includes(upg.id);
           const currentLvl = isWeapon ? (state.weaponLevels[upg.id] || 0) : (state.passiveLevels[upg.id] || 0);
           const isSelected = state.draftSelection === idx;
           const metaV3 = getContentMetaV3(upg.id);
           const rarityV3 = metaV3?.rarity || 'common';
-          const rarityDefV3 = RARITY_DEFS_V3[rarityV3] || RARITY_DEFS_V3.common;
           const kindLabelV3 = metaV3?.kind === 'power' ? 'PODER' : metaV3?.kind === 'module' ? 'MÓDULO' : 'ARMA';
+          const discovery = (state.draftDiscoveryFlags && state.draftDiscoveryFlags[upg.id]) || {};
 
           const wrapper = document.createElement('div');
-          if (isSelected) {
-            wrapper.className = `relative flex-1 flex flex-col items-stretch transition-all duration-200 scale-105 ${state.draftConfirmArmed ? 'draft-confirm-armed' : 'heartbeat-card'}`;
+          wrapper.className = [
+            'mekora-draft-wrapper',
+            isSelected ? 'is-selected' : '',
+            state.draftConfirmArmed && isSelected ? 'draft-confirm-armed' : '',
+            discovery.isNewContent || discovery.isNewRarity ? 'is-new-discovery' : '',
+            discovery.isNewRarity ? 'is-new-rarity' : ''
+          ].filter(Boolean).join(' ');
+          wrapper.dataset.rarity = rarityV3;
+          wrapper.dataset.contentId = upg.id;
+          wrapper.setAttribute('aria-label', `${upg.title}. ${kindLabelV3}.`);
 
-            const card = document.createElement('div');
-            card.className = "hud-border border-[#00ffcc] p-2 rounded-lg flex flex-col items-center text-center flex-1 bg-gradient-to-b from-cyan-950/40 to-slate-900/90 shadow-lg pointer-events-none relative z-10";
-
-            // Generate 24 sparkles along the borders
-            let sparklesHtml = '';
-            const numSparkles = 24;
-            for (let s = 0; s < numSparkles; s++) {
-              let left, top;
-              const side = s % 4;
-              const pct = Math.random() * 100;
-              if (side === 0) { // Top
-                left = pct;
-                top = 0;
-              } else if (side === 1) { // Right
-                left = 100;
-                top = pct;
-              } else if (side === 2) { // Bottom
-                left = pct;
-                top = 100;
-              } else { // Left
-                left = 0;
-                top = pct;
-              }
-
-              const angle = Math.atan2(top - 50, left - 50);
-              const dist = 10 + Math.random() * 20;
-              const tx = Math.cos(angle) * dist;
-              const ty = Math.sin(angle) * dist;
-              const delay = Math.random() * 1.5;
-              sparklesHtml += `<div class="sparkle" style="--x: ${tx}px; --y: ${ty}px; left: ${left}%; top: ${top}%; animation-delay: ${delay}s;"></div>`;
-            }
-
-            card.innerHTML = `
-              <div class="w-full flex items-center justify-between gap-1 mb-1 text-[6px] font-bold tracking-wider">
-                <span style="color:${rarityDefV3.color}">${rarityDefV3.label}</span><span class="text-gray-400">${kindLabelV3}</span>
-              </div>
-              <div class="text-lg mb-1 text-[#00ffcc] animate-pulse">${upg.icon}</div>
-              <div class="font-title text-[10px] font-bold text-white mb-0.5">${upg.title} ${currentLvl > 0 ? `Niv ${currentLvl}` : ''}</div>
-              <div class="text-[8px] text-gray-300 mb-1.5 leading-tight flex-1 flex items-center justify-center">${upg.desc}</div>
-            `;
-            wrapper.innerHTML = sparklesHtml;
-            wrapper.appendChild(card);
-          } else {
-            wrapper.className = "relative flex-1 flex flex-col items-stretch transition-all duration-200 opacity-60";
-
-            const card = document.createElement('div');
-            card.className = "hud-border border-slate-800/60 p-2 rounded-lg flex flex-col items-center text-center flex-1 bg-slate-950/80 pointer-events-none relative z-10";
-            card.innerHTML = `
-              <div class="w-full flex items-center justify-between gap-1 mb-1 text-[6px] font-bold tracking-wider">
-                <span style="color:${rarityDefV3.color}">${rarityDefV3.label}</span><span class="text-gray-500">${kindLabelV3}</span>
-              </div>
-              <div class="text-lg mb-1 text-gray-500">${upg.icon}</div>
-              <div class="font-title text-[10px] font-bold text-gray-400 mb-0.5">${upg.title} ${currentLvl > 0 ? `Niv ${currentLvl}` : ''}</div>
-              <div class="text-[8px] text-gray-500 mb-1.5 leading-tight flex-1 flex items-center justify-center">${upg.desc}</div>
-            `;
-            wrapper.appendChild(card);
-          }
+          const card = document.createElement('div');
+          card.className = 'mekora-draft-card';
+          card.innerHTML = `
+            <div class="draft-card-topline">
+              <span class="draft-card-kind">${kindLabelV3}</span>
+              <span class="draft-new-badge">NUEVO</span>
+            </div>
+            <div class="draft-card-icon">${upg.icon}</div>
+            <div class="draft-card-title">${upg.title}</div>
+            <div class="draft-card-desc">${upg.desc}</div>
+            <div class="draft-card-level">${currentLvl > 0 ? `NIVEL ${currentLvl} → ${currentLvl + 1}` : 'NIVEL 1'}</div>
+          `;
+          wrapper.appendChild(card);
           container.appendChild(wrapper);
         });
       }
@@ -7388,14 +7712,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function render() {
-  try {
-    const p = (typeof state !== 'undefined' && state.mecha) ? state.mecha : null;
-    if (p) {
-      const ammoValue = typeof p.ammo === 'number' ? p.ammo : 10;
-      const isReloading = !!p.isReloading;
-      __mekoraSetAmmoHud(ammoValue, isReloading);
-    }
-  } catch(e) {}
+  try { updatePrimaryAmmoHudV301(); } catch(e) {}
 
         document.body.dataset.phase = state.phase;
         document.body.dataset.testMode = state.testMode ? 'true' : 'false';
@@ -7404,6 +7721,8 @@ stats.recentRuns = stats.recentRuns || [];
 
       function initApp() {
         __mekoraBindAmmoHud();
+        normalizePrimaryMagazineV301();
+        updatePrimaryAmmoHudV301();
         installDeviceProfile();
         document.body.dataset.phase = 'menu';
         state.phase = 'menu';
@@ -7919,7 +8238,17 @@ const btnControlPause = document.getElementById('btn-control-pause');
         resetProgression() { progressionV3 = createDefaultProgressionV3(); saveProgressionV3(); return this.progression(); },
         setPity(rareMisses = 0, epicMisses = 0) { progressionV3.pity.rareMisses = Math.max(0, rareMisses|0); progressionV3.pity.epicMisses = Math.max(0, epicMisses|0); saveProgressionV3(); return this.progression().pity; },
         draftSample(count = 3) { return selectDraftCardsV3(UPGRADE_POOL, count, state).map(item => ({id:item.id, rarity:getContentMetaV3(item.id)?.rarity, kind:getContentMetaV3(item.id)?.kind})); },
-        testAmmo(ammo = 10, reloading = false) { state.mecha.ammo = Math.max(0, ammo|0); state.mecha.isReloading = !!reloading; __mekoraSetAmmoHud(state.mecha.ammo, state.mecha.isReloading); return {ammo:state.mecha.ammo,reloading:state.mecha.isReloading,text:__mekoraAmmoHud.count?.textContent}; },
+        startRunForTest() { startRun(false,false); return this.ammoState(); },
+        startTestCombatForTest() { state.testDummyEnabled=true; state.testSpawnEnemies=false; startRun(true,true); return this.ammoState(); },
+        setFiringForTest(active = true) { state.isFiring = !!active; return {phase:state.phase,firing:state.isFiring,...this.ammoState()}; },
+        placeDummyNearForTest(distance = 180) { const dummy=state.enemies.find(e=>e.isDummy); if(dummy){ dummy.x=state.mecha.x+Math.max(60,Number(distance)||180); dummy.y=state.mecha.y; } return dummy ? {x:dummy.x,y:dummy.y,mechaX:state.mecha.x,mechaY:state.mecha.y} : null; },
+        ammoState() { normalizePrimaryMagazineV301(); return {primary:getPrimaryWeaponIdV301(),ammo:state.mecha.ammo,capacity:getPrimaryMagazineCapacityV301(),reloading:state.mecha.isReloading,text:__mekoraAmmoHud.count?.textContent}; },
+        testAmmo(ammo = 10, reloading = false) { state.mecha.ammo = Math.max(0, ammo|0); state.mecha.isReloading = !!reloading; updatePrimaryAmmoHudV301(); return this.ammoState(); },
+        simulatePrimaryShot(timestamp = performance.now()) { const fired = consumePrimaryAmmoV301(timestamp); return {fired,...this.ammoState()}; },
+        completePrimaryReload() { state.mecha.reloadStartTime = performance.now() - ((state.mecha.reloadDuration || 1500) / Math.max(.1,state.stats.reloadSpeedMult || 1)) - 10; updatePrimaryReloadV301(performance.now()); return this.ammoState(); },
+        equipSecondaryForTest(id = 'w-machinegun') { const before=this.ammoState(); if(!state.activeWeapons.includes(id)) state.activeWeapons.push(id); state.weaponLevels[id]=state.weaponLevels[id]||1; calculateMechaStats(); updatePrimaryAmmoHudV301(); return {before,after:this.ammoState(),loadout:[...state.activeWeapons]}; },
+        setMagazineBonusForTest(bonus = 0) { state.mecha.maxAmmoBonus=Math.max(0,bonus|0); normalizePrimaryMagazineV301(); updatePrimaryAmmoHudV301(); return this.ammoState(); },
+        showDraftForTest(ids = ['w-machinegun','w-laser','w-highbeam']) { const cards=ids.map(id=>UPGRADE_BY_ID.get(id)).filter(Boolean); state.phase='draft'; state.draftCards=cards; state.draftSelection=0; state.draftConfirmArmed=false; state.draftInputLocked=false; prepareDraftDiscoveriesV301(cards); document.getElementById('roguelike-draft-modal')?.classList.remove('hidden'); updateDraftMenuUI(); render(); return {cards:cards.map(c=>c.id),flags:state.draftDiscoveryFlags}; },
         testDamage(amount = 7, attackers = 1) { const hpBefore = state.mecha.hp; applyMechaDamage(amount, state.mecha.x, state.mecha.y, performance.now(), attackers); const latest = state.damageNumbers[state.damageNumbers.length - 1]; return {hpBefore,hpAfter:state.mecha.hp,flashUntil:state.mecha.damageFlashUntil,attackers:state.mecha.damageFlashAttackers,number:latest ? {text:latest.text,color:latest.color,size:latest.size} : null}; }
       });
 //#endregion debug_api
