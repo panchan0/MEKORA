@@ -810,7 +810,7 @@
   #settings-version-text { pointer-events: auto !important; }
 
   /* Modern panels and menu buttons. */
-  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev,
+  #btn-main-play, #btn-main-hangar, #btn-main-global, #btn-main-settings, #btn-main-dev,
   #btn-close-settings, #btn-close-global,
   .gameover-action, .dev-row, .dev-tab,
   #btn-resume, #btn-exit, #btn-confirm-exit, #btn-cancel-exit {
@@ -818,13 +818,13 @@
     box-shadow: none !important;
     backdrop-filter: none !important;
   }
-  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev {
+  #btn-main-play, #btn-main-hangar, #btn-main-global, #btn-main-settings, #btn-main-dev {
     background: #263342 !important;
     border-color: #3b4b60 !important;
     color: #bac3cd !important;
     transform: none !important;
   }
-  #btn-main-play.scale-105, #btn-main-global.scale-105,
+  #btn-main-play.scale-105, #btn-main-hangar.scale-105, #btn-main-global.scale-105,
   #btn-main-settings.scale-105, #btn-main-dev.scale-105 {
     background: #6c918e !important;
     border-color: #a5c4c1 !important;
@@ -940,6 +940,7 @@
     [data-show-on="menu"] > :first-child { padding: 8px 18px !important; }
     [data-show-on="menu"] h1 { font-size: clamp(20px, 3.2vw, 34px) !important; }
     [data-show-on="menu"] #btn-main-play,
+    [data-show-on="menu"] #btn-main-hangar,
     [data-show-on="menu"] #btn-main-global,
     [data-show-on="menu"] #btn-main-settings,
     [data-show-on="menu"] #btn-main-dev {
@@ -1031,7 +1032,7 @@
   .screen .absolute.inset-0.opacity-20 { display: none !important; }
 
   /* Solid general menu surfaces. */
-  #btn-main-play, #btn-main-global, #btn-main-settings, #btn-main-dev,
+  #btn-main-play, #btn-main-hangar, #btn-main-global, #btn-main-settings, #btn-main-dev,
   #btn-close-settings, #btn-close-global,
   #btn-resume, #btn-exit, #btn-confirm-exit, #btn-cancel-exit,
   .gameover-action, .dev-row, .dev-tab {
@@ -1059,6 +1060,7 @@
 
   /* Focus is a slow border pulse, never a full-color fill. */
   #btn-main-play.heartbeat-card,
+  #btn-main-hangar.heartbeat-card,
   #btn-main-global.heartbeat-card,
   #btn-main-settings.heartbeat-card,
   #btn-main-dev.heartbeat-card,
@@ -1689,7 +1691,7 @@
 
 
 <style id="mekora-v310-immersive-and-draft-fix">
-  /* v3.1.0 · Prevent rarity glows and portrait draft cards from being clipped. */
+  /* v3.2.0 · Prevent rarity glows and portrait draft cards from being clipped. */
   #roguelike-draft-modal {
     box-sizing: border-box !important;
     padding: 9px !important;
@@ -1917,6 +1919,70 @@
   }
 </style>
 
+
+<style id="mekora-economy-v32">
+  #btn-main-play, #btn-main-hangar, #btn-main-global, #btn-main-settings, #btn-main-dev {
+    min-height: 26px;
+  }
+  #hangar-modal-v32 {
+    position:absolute; inset:6px; z-index:80; border:1px solid #536174; border-radius:9px;
+    background:#111820; color:#e9eef3; padding:7px; display:flex; flex-direction:column; gap:5px;
+    overflow:hidden; box-shadow:inset 0 0 0 1px rgba(255,255,255,.035);
+  }
+  #hangar-modal-v32.hidden { display:none !important; }
+  .hangar-header-v32 { display:flex; justify-content:space-between; align-items:center; gap:8px; min-height:30px; border-bottom:1px solid #344152; padding-bottom:5px; }
+  .hangar-header-v32 strong { display:block; font-size:13px; color:#8fd4cd; letter-spacing:.1em; }
+  .hangar-header-v32 #hangar-subtitle-v32 { display:block; font-size:7px; color:#778597; }
+  .hangar-currency-v32 { text-align:right; }
+  .hangar-currency-v32 span { display:block; font-size:7px; color:#8a98a8; }
+  .hangar-currency-v32 b { font-size:15px; color:#f5bd65; }
+  .hangar-tabs-v32 { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:3px; }
+  .hangar-tab-v32 { min-width:0; padding:4px 2px; border:1px solid #344152; border-radius:4px; font-size:6px; line-height:1; color:#7f8c9b; text-align:center; white-space:nowrap; overflow:hidden; }
+  .hangar-tab-v32.selected { color:white; border-color:#8fc9c3; background:#23343c; }
+  .hangar-list-v32 { flex:1; min-height:0; display:flex; flex-direction:column; gap:3px; overflow:hidden; }
+  .hangar-row-v32 { display:grid; grid-template-columns:24px minmax(0,1fr) auto; align-items:center; gap:6px; min-height:30px; padding:4px 6px; border:1px solid #303c4b; border-radius:5px; background:#18212b; color:#9aa6b3; }
+  .hangar-row-v32.selected { border-color:#a7d2cd; color:white; background:#24343e; box-shadow:inset 3px 0 #79aaa6; }
+  .hangar-icon-v32 { font-size:15px; text-align:center; filter:grayscale(.15); }
+  .hangar-row-v32.locked .hangar-icon-v32 { filter:grayscale(1); opacity:.35; }
+  .hangar-copy-v32 { min-width:0; }
+  .hangar-copy-v32 strong { display:block; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:8px; }
+  .hangar-copy-v32 span { display:block; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:6px; color:#718093; }
+  .hangar-tag-v32 { font-size:7px; font-weight:800; color:#f1be72; white-space:nowrap; }
+  .hangar-status-v32 { min-height:16px; padding-top:3px; border-top:1px solid #303c4b; font-size:6px; color:#8190a0; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+
+  #hud-economy-v32 { font-family:ui-monospace, monospace; }
+  .hud-scrap-v32 { display:flex; align-items:baseline; gap:5px; color:#798797; font-size:7px; letter-spacing:.08em; }
+  .hud-scrap-v32 b { color:#d9a95f; font-size:12px; }
+  .hud-missions-v32 { margin-top:3px; display:flex; flex-direction:column; gap:1px; max-width:150px; }
+  .hud-mission-line-v32 { font-size:6px; color:rgba(220,228,235,.58); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+  .hud-mission-line-v32.complete { color:#8ed2b1; }
+
+  .field-shop-panel-v32 { width:min(92%,330px); max-height:90%; padding:8px; border:1px solid #7a5a38; border-radius:10px; background:#171c22; display:flex; flex-direction:column; gap:6px; box-shadow:0 0 18px rgba(208,138,54,.22); }
+  .field-shop-header-v32 { display:flex; justify-content:space-between; align-items:center; gap:8px; padding-bottom:5px; border-bottom:1px solid #4b3828; }
+  .field-shop-header-v32 strong { display:block; font-size:11px; color:#efbd79; letter-spacing:.08em; }
+  .field-shop-header-v32 span { display:block; font-size:6px; color:#86786a; }
+  .field-shop-header-v32 b { color:#ffd085; font-size:14px; }
+  .field-shop-list-v32 { display:flex; flex-direction:column; gap:4px; }
+  .field-shop-row-v32 { display:grid; grid-template-columns:24px minmax(0,1fr) auto; gap:6px; align-items:center; min-height:34px; padding:5px 7px; border:1px solid #3e352d; border-radius:6px; background:#20242a; color:#98a1aa; }
+  .field-shop-row-v32.selected { color:white; border-color:#e2a85e; background:#302a24; box-shadow:inset 3px 0 #d08a36; }
+  .field-shop-row-v32.sold { opacity:.38; }
+  .field-shop-row-v32 strong { display:block; font-size:8px; }
+  .field-shop-row-v32 span { display:block; font-size:6px; color:#80776d; }
+  .field-shop-price-v32 { font-size:8px; color:#f4bd72; font-weight:800; white-space:nowrap; }
+  .field-shop-status-v32 { min-height:14px; font-size:6px; color:#8d8275; text-align:center; }
+
+  @media (orientation:portrait) {
+    #hangar-modal-v32 { inset:5px; padding:6px; }
+    .hangar-tabs-v32 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .hangar-row-v32 { min-height:27px; padding:3px 5px; }
+    .hangar-list-v32 { gap:2px; }
+    #hud-economy-v32 { left:10px !important; top:42px !important; }
+    .hud-missions-v32 { max-width:116px; }
+    .hud-mission-line-v32 { font-size:5.5px; }
+  }
+  body.mekora-immersive #hud-economy-v32 { left:16px !important; top:46px !important; }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -1962,6 +2028,10 @@
                <span id="hud-enemy-count" class="text-pink-400">0</span>
              </div>
            </div>
+           <div id="hud-economy-v32" class="absolute left-3 top-12 z-40 pointer-events-none">
+             <div class="hud-scrap-v32"><span>CHATARRA</span><b id="hud-scrap-value-v32">0</b></div>
+             <div id="hud-missions-v32" class="hud-missions-v32"></div>
+           </div>
 
            <!-- CENTER: TIME COUNTER -->
            <div id="hud-time-block" class="absolute top-3 left-1/2 transform -translate-x-1/2 z-40 flex flex-col items-center text-white font-title pointer-events-none">
@@ -1985,6 +2055,17 @@
            <div class="absolute top-3 right-3 z-40 flex flex-col gap-0.5 items-end pointer-events-none">
              <div id="hud-active-slots" class="flex gap-0.5"></div>
              <div id="hud-passives-list" class="flex gap-0.5"></div>
+           </div>
+
+           <div id="field-shop-modal-v32" class="hidden absolute inset-0 z-50 bg-black/80 flex items-center justify-center p-2">
+             <div class="field-shop-panel-v32">
+               <div class="field-shop-header-v32">
+                 <div><strong>TIENDA DE CAMPO</strong><span>COMERCIANTE CHATARRERO</span></div>
+                 <div><span>CHATARRA</span><b id="field-shop-scrap-v32">0</b></div>
+               </div>
+               <div id="field-shop-list-v32" class="field-shop-list-v32"></div>
+               <div id="field-shop-status-v32" class="field-shop-status-v32">ARR/ABAJO: elegir · ROJO: comprar</div>
+             </div>
            </div>
 
            <!-- PAUSE MODAL -->
@@ -2086,6 +2167,9 @@
            <button id="btn-main-play" data-spec-id="btn-main-play" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              JUGAR
            </button>
+           <button id="btn-main-hangar" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
+             HANGAR
+           </button>
            <button id="btn-main-global" class="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200" style="pointer-events: none;">
              RED GLOBAL DE MECHAS
            </button>
@@ -2095,6 +2179,19 @@
            <button id="btn-main-dev" class="hidden w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200" style="pointer-events: none;">
              MODO DEVELOPER
            </button>
+         </div>
+
+         <div id="hangar-modal-v32" class="hidden" aria-live="polite">
+           <div class="hangar-header-v32">
+             <div>
+               <strong>HANGAR</strong>
+               <span id="hangar-subtitle-v32">PROGRESIÓN PERMANENTE</span>
+             </div>
+             <div class="hangar-currency-v32"><span>NÚCLEOS</span><b id="hangar-cores-v32">0</b></div>
+           </div>
+           <div id="hangar-tabs-v32" class="hangar-tabs-v32"></div>
+           <div id="hangar-list-v32" class="hangar-list-v32"></div>
+           <div id="hangar-status-v32" class="hangar-status-v32">IZQ/DER: sección · ARR/ABAJO: navegar · ROJO: acción</div>
          </div>
          
        </div>
@@ -2253,7 +2350,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.1.0</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.2.0</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2744,7 +2841,7 @@ stats.recentRuns = stats.recentRuns || [];
           runEvolutionCores: 0,
           awardedEvolutionMilestones: [],
 
-          // v3.1.0 · threat director and Chatarrero encounters
+          // v3.2.0 · threat director and Chatarrero encounters
           threatDirectorV31: { budget: 0, lastTick: 0, lastSpawnAt: 0 },
           encounterMilestonesV31: { miniboss: false, boss: false },
           bossEncounterV31: { active: false, id: null, type: null, name: '', phase: 0 },
@@ -2752,6 +2849,14 @@ stats.recentRuns = stats.recentRuns || [];
           minibossKillsV31: 0,
           bossKillsV31: 0,
           pendingRewardTierV31: null,
+
+          // v3.2.0 · economy, missions and field shop
+          fieldShopOpenV32: false,
+          fieldShopSelectionV32: 0,
+          fieldShopOffersV32: [],
+          fieldShopVisitsV32: 0,
+          nextFieldShopAtV32: 60000,
+          runCoresAwardedV32: false,
 
           // Developer/test flags
           devInfHp: false,
@@ -3057,7 +3162,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.1.0';
+      const MEKORA_VERSION = '3.2.0';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -3166,6 +3271,198 @@ stats.recentRuns = stats.recentRuns || [];
       }
       let progressionV3 = loadProgressionV3();
       function saveProgressionV3() { writeJson(MEKORA_V3_PROGRESSION_KEY, progressionV3); }
+
+      //#region economy_v320 · Permanent economy, blueprints, missions, hangar and field shop
+      const MISSION_DEFS_V32 = Object.freeze([
+        {id:'mission-kills-25', title:'PRIMER DESGUACE', short:'Elimina 25 enemigos', stat:'kills', target:25, rewardCores:60, blueprint:'w-energycannon', hint:'Los restos útiles financian el siguiente prototipo.'},
+        {id:'mission-scrap-150', title:'RECICLADOR INDUSTRIAL', short:'Recoge 150 de chatarra', stat:'scrapCollected', target:150, rewardCores:80, blueprint:'w-rotarycannon', hint:'Busca grupos y enemigos reforzados.'},
+        {id:'mission-elite-1', title:'ROMPEBLINDAJES', short:'Derrota 1 enemigo élite', stat:'eliteKills', target:1, rewardCores:100, blueprint:'p-last-magazine', hint:'Los élites muestran piezas adicionales.'},
+        {id:'mission-miniboss-1', title:'TALADRO NEUTRALIZADO', short:'Derrota al Taladro Bastión', stat:'minibossKills', target:1, rewardCores:160, blueprint:'w-pistonshotgun', hint:'Provoca una carga fallida y ataca su parte trasera.'},
+        {id:'mission-survive-180', title:'SISTEMA ESTABLE', short:'Sobrevive 3 minutos', stat:'bestSurvivalMs', target:180000, rewardCores:140, blueprint:'w-emp', hint:'La misión registra tu mejor tiempo de supervivencia.'},
+        {id:'mission-forge-titan', title:'CAÍDA DE LA FORJA', short:'Derrota al Titán de la Forja', stat:'bossKills', target:1, rewardCores:300, blueprint:'w-railgun', mechBlueprint:'lancer', hint:'Completa las tres fases del jefe Chatarrero.'}
+      ]);
+      const HANGAR_TABS_V32 = Object.freeze([
+        {id:'weapons',label:'ARMAS'}, {id:'powers',label:'PODERES'}, {id:'modules',label:'MÓDULOS'},
+        {id:'mechs',label:'MECHAS'}, {id:'missions',label:'MISIONES'}, {id:'exit',label:'SALIR'}
+      ]);
+      const MECH_DEFS_V32 = Object.freeze([
+        {id:'vanguard',name:'VANGUARD',role:'Equilibrado',price:0},
+        {id:'lancer',name:'LANCER',role:'Movilidad y críticos',price:1000},
+        {id:'bastion',name:'BASTION',role:'Defensa y contraataque',price:1200},
+        {id:'weaver',name:'WEAVER',role:'Drones y control',price:1250},
+        {id:'furnace',name:'FURNACE',role:'Explosiones y calor',price:1100},
+        {id:'wraith',name:'WRAITH',role:'Fase y precisión',price:1500}
+      ]);
+      const BLUEPRINT_STARTER_V32 = new Set(['w-plasma','w-machinegun','w-shotgun','p-bounce','p-pierce','p-cooldown']);
+      const BLUEPRINT_DISCOVERED_V32 = new Set(['w-energycannon','w-laser','w-missile','w-flamethrower','w-rotarycannon','w-pistonshotgun','w-emp','w-dash','p-lightning','p-extra-projectile','p-last-magazine','p-first-impact']);
+
+      function initializeEconomyV32() {
+        progressionV3.statistics = {...{kills:0,scrapCollected:0,eliteKills:0,minibossKills:0,bossKills:0,bestSurvivalMs:0}, ...(progressionV3.statistics||{})};
+        progressionV3.claimedMissions = Array.from(new Set(progressionV3.claimedMissions||[]));
+        progressionV3.pinnedMissions = Array.from(new Set(progressionV3.pinnedMissions||[])).slice(0,3);
+        progressionV3.mechBlueprints = {...{vanguard:'unlocked',lancer:'locked',bastion:'locked',weaver:'locked',furnace:'locked',wraith:'locked'}, ...(progressionV3.mechBlueprints||{})};
+        progressionV3.unlockedMechs = Array.from(new Set(['vanguard',...(progressionV3.unlockedMechs||[])]));
+        if (!progressionV3.economyV32Initialized) {
+          const previouslyDiscovered = new Set(progressionV3.discoveredContent||[]);
+          UPGRADE_POOL.forEach(item => {
+            if (BLUEPRINT_STARTER_V32.has(item.id) || previouslyDiscovered.has(item.id)) progressionV3.blueprints[item.id]='unlocked';
+            else if (BLUEPRINT_DISCOVERED_V32.has(item.id)) progressionV3.blueprints[item.id]='discovered';
+            else progressionV3.blueprints[item.id]='locked';
+          });
+          SYNERGIES.forEach(item => { if (progressionV3.blueprints[item.id] !== 'unlocked') progressionV3.blueprints[item.id]='hidden'; });
+          progressionV3.cores = Math.max(0, Number(progressionV3.cores)||0) + 300;
+          progressionV3.pinnedMissions = ['mission-kills-25','mission-scrap-150','mission-elite-1'];
+          progressionV3.economyV32Initialized = true;
+          progressionV3.economyVersion = '3.2.0';
+        }
+        saveProgressionV3();
+      }
+      initializeEconomyV32();
+
+      function getBlueprintPriceV32(item) {
+        const rarity=getContentMetaV3(item.id)?.rarity||'common';
+        const base={common:140,uncommon:280,rare:520,epic:850,legendary:1300}[rarity]||220;
+        const kind=getContentMetaV3(item.id)?.kind||item.type;
+        return Math.max(80, base + (kind==='power'?100:kind==='module'?-40:0));
+      }
+      function getMissionDefV32(id){return MISSION_DEFS_V32.find(m=>m.id===id)||null;}
+      function getMissionProgressV32(mission) {
+        const value=Number(progressionV3.statistics?.[mission.stat])||0;
+        return {value:Math.min(mission.target,value), raw:value, target:mission.target, complete:value>=mission.target, claimed:(progressionV3.claimedMissions||[]).includes(mission.id)};
+      }
+      function setHangarStatusV32(message){const el=document.getElementById('hangar-status-v32');if(el)el.textContent=message;}
+      function claimMissionV32(id) {
+        const mission=getMissionDefV32(id); if(!mission)return false;
+        const progress=getMissionProgressV32(mission); if(!progress.complete||progress.claimed)return false;
+        progressionV3.claimedMissions.push(id);
+        progressionV3.cores=(progressionV3.cores||0)+mission.rewardCores;
+        if(mission.blueprint && progressionV3.blueprints[mission.blueprint]!=='unlocked') progressionV3.blueprints[mission.blueprint]='discovered';
+        if(mission.mechBlueprint) progressionV3.mechBlueprints[mission.mechBlueprint]='discovered';
+        saveProgressionV3(); updateHangarUIV32(); updateMissionTrackingHudV32(); return true;
+      }
+      function togglePinnedMissionV32(id) {
+        const pinned=progressionV3.pinnedMissions||[]; const index=pinned.indexOf(id);
+        if(index>=0)pinned.splice(index,1); else {if(pinned.length>=3)pinned.shift(); pinned.push(id);} 
+        progressionV3.pinnedMissions=pinned; saveProgressionV3(); updateMissionTrackingHudV32(); updateHangarUIV32();
+      }
+      function recordEnemyDefeatV32(enemy,scrapReward) {
+        const stats=progressionV3.statistics;
+        stats.kills=(stats.kills||0)+1; stats.scrapCollected=(stats.scrapCollected||0)+Math.max(0,scrapReward||0);
+        if(enemy.isEliteV31)stats.eliteKills=(stats.eliteKills||0)+1;
+        if(enemy.isMinibossV31)stats.minibossKills=(stats.minibossKills||0)+1;
+        if(enemy.isBossV31)stats.bossKills=(stats.bossKills||0)+1;
+        updateMissionTrackingHudV32();
+      }
+      function updateEconomyHudV32() {
+        const scrap=document.getElementById('hud-scrap-value-v32'); if(scrap)scrap.textContent=Math.floor(state.scrap||0);
+        const shopScrap=document.getElementById('field-shop-scrap-v32'); if(shopScrap)shopScrap.textContent=Math.floor(state.scrap||0);
+      }
+      function updateMissionTrackingHudV32() {
+        const root=document.getElementById('hud-missions-v32'); if(!root)return;
+        root.innerHTML=(progressionV3.pinnedMissions||[]).slice(0,3).map(id=>{
+          const m=getMissionDefV32(id); if(!m)return''; const p=getMissionProgressV32(m);
+          const value=m.stat==='bestSurvivalMs'?Math.floor(p.value/1000):p.value; const target=m.stat==='bestSurvivalMs'?Math.floor(p.target/1000):p.target;
+          return `<div class="hud-mission-line-v32 ${p.complete?'complete':''}">${p.complete?'✓':'◇'} ${m.title}: ${value}/${target}${m.stat==='bestSurvivalMs'?'s':''}</div>`;
+        }).join('');
+      }
+      function getHangarItemsV32(tabId) {
+        if(tabId==='missions')return MISSION_DEFS_V32;
+        if(tabId==='mechs')return MECH_DEFS_V32;
+        return UPGRADE_POOL.filter(item=>{
+          const kind=getContentMetaV3(item.id)?.kind;
+          if(tabId==='weapons')return kind==='weapon';
+          if(tabId==='powers')return kind==='power';
+          if(tabId==='modules')return kind==='module';
+          return false;
+        });
+      }
+      function ensureHangarStateV32(){
+        if(!Number.isFinite(state.hangarTabIndexV32))state.hangarTabIndexV32=0;
+        if(!Number.isFinite(state.hangarItemIndexV32))state.hangarItemIndexV32=0;
+      }
+      function openHangarV32(){ensureHangarStateV32();state.hangarOpenV32=true;state.hangarTabIndexV32=0;state.hangarItemIndexV32=0;document.getElementById('hangar-modal-v32')?.classList.remove('hidden');updateHangarUIV32();lockConfirmInput(360);}
+      function closeHangarV32(){state.hangarOpenV32=false;document.getElementById('hangar-modal-v32')?.classList.add('hidden');state.menuSelectionIndex=0;updateMainMenuUI();lockConfirmInput(300);}
+      function getHangarRowDescriptionV32(item,tabId){
+        if(tabId==='missions'){const p=getMissionProgressV32(item);const value=item.stat==='bestSurvivalMs'?Math.floor(p.value/1000):Math.floor(p.value);const target=item.stat==='bestSurvivalMs'?Math.floor(item.target/1000):item.target;return `${item.short} · ${item.rewardCores} Núcleos · ${p.claimed?'RECLAMADA':p.complete?'LISTA PARA RECLAMAR':`${value}/${target}${item.stat==='bestSurvivalMs'?'s':''}`}`;}
+        if(tabId==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';return `${item.role} · ${st==='unlocked'?'DISPONIBLE':st==='discovered'?`${item.price} Núcleos · implementación jugable futura`:'PLANO BLOQUEADO'}`;}
+        const st=progressionV3.blueprints[item.id]||'locked';
+        if(st==='unlocked')return `${item.desc} · DESBLOQUEADO`;
+        if(st==='discovered')return `${item.desc} · ${getBlueprintPriceV32(item)} Núcleos`;
+        return `SILUETA BLOQUEADA · completa misiones o derrota jefes`;
+      }
+      function updateHangarUIV32(){
+        if(!state.hangarOpenV32)return; ensureHangarStateV32();
+        const cores=document.getElementById('hangar-cores-v32');if(cores)cores.textContent=Math.floor(progressionV3.cores||0);
+        const tabs=document.getElementById('hangar-tabs-v32');
+        if(tabs)tabs.innerHTML=HANGAR_TABS_V32.map((t,i)=>`<div class="hangar-tab-v32 ${i===state.hangarTabIndexV32?'selected':''}">${t.label}</div>`).join('');
+        const tab=HANGAR_TABS_V32[state.hangarTabIndexV32]||HANGAR_TABS_V32[0]; const list=document.getElementById('hangar-list-v32');
+        if(tab.id==='exit'){state.hangarItemIndexV32=0;if(list)list.innerHTML='<div class="hangar-row-v32 selected"><div class="hangar-icon-v32">↩</div><div class="hangar-copy-v32"><strong>VOLVER AL MENÚ</strong><span>Conserva todos los cambios realizados.</span></div><div class="hangar-tag-v32">ROJO</div></div>';return;}
+        const items=getHangarItemsV32(tab.id); state.hangarItemIndexV32=Math.max(0,Math.min(items.length-1,state.hangarItemIndexV32));
+        const start=Math.max(0,Math.min(Math.max(0,items.length-5),state.hangarItemIndexV32-2)); const visible=items.slice(start,start+5);
+        if(list)list.innerHTML=visible.map((item,offset)=>{
+          const actual=start+offset; let status=''; let locked=false; let icon=item.icon||'◇';
+          if(tab.id==='missions'){const p=getMissionProgressV32(item);status=p.claimed?'HECHO':p.complete?'RECLAMAR':(progressionV3.pinnedMissions||[]).includes(item.id)?'FIJADA':'FIJAR';icon=p.complete?'✓':'◇';}
+          else if(tab.id==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';status=st==='unlocked'?'LISTO':st==='discovered'?item.price:'BLOQ.';locked=st==='locked';icon=item.id==='vanguard'?'◆':'⬡';}
+          else {const st=progressionV3.blueprints[item.id]||'locked';status=st==='unlocked'?'LISTO':st==='discovered'?getBlueprintPriceV32(item):'BLOQ.';locked=st==='locked';}
+          return `<div class="hangar-row-v32 ${actual===state.hangarItemIndexV32?'selected':''} ${locked?'locked':''}"><div class="hangar-icon-v32">${locked?'?':icon}</div><div class="hangar-copy-v32"><strong>${locked?'PROYECTO DESCONOCIDO':(item.title||item.name)}</strong><span>${getHangarRowDescriptionV32(item,tab.id)}</span></div><div class="hangar-tag-v32">${status}</div></div>`;
+        }).join('');
+      }
+      function handleHangarJoystickInputV32(jx,jy){
+        ensureHangarStateV32(); const threshold=.52; let h=jx<-threshold?-1:jx>threshold?1:0;
+        if(h&&lastJoystickXDir!==h){lastJoystickXDir=h;state.hangarTabIndexV32=(state.hangarTabIndexV32+h+HANGAR_TABS_V32.length)%HANGAR_TABS_V32.length;state.hangarItemIndexV32=0;updateHangarUIV32();vibrate(22);}else if(!h)lastJoystickXDir=0;
+        const tab=HANGAR_TABS_V32[state.hangarTabIndexV32]; const items=tab.id==='exit'?[{}]:getHangarItemsV32(tab.id); let v=jy<-.52?-1:jy>.52?1:0;
+        if(v&&lastJoystickYDir!==v){lastJoystickYDir=v;state.hangarItemIndexV32=(state.hangarItemIndexV32+v+Math.max(1,items.length))%Math.max(1,items.length);updateHangarUIV32();vibrate(22);}else if(!v)lastJoystickYDir=0;
+      }
+      function confirmHangarActionV32(){
+        if(!state.hangarOpenV32)return; const tab=HANGAR_TABS_V32[state.hangarTabIndexV32]; if(tab.id==='exit'){closeHangarV32();return;}
+        const item=getHangarItemsV32(tab.id)[state.hangarItemIndexV32]; if(!item)return;
+        if(tab.id==='missions'){const p=getMissionProgressV32(item);if(p.complete&&!p.claimed){claimMissionV32(item.id);setHangarStatusV32(`RECOMPENSA RECIBIDA: +${item.rewardCores} NÚCLEOS`);}else{togglePinnedMissionV32(item.id);setHangarStatusV32((progressionV3.pinnedMissions||[]).includes(item.id)?'MISIÓN FIJADA':'MISIÓN RETIRADA');}return;}
+        if(tab.id==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';if(st==='locked'){setHangarStatusV32('PLANO DE MECHA BLOQUEADO');return;}if(st==='unlocked'){setHangarStatusV32(item.id==='vanguard'?'VANGUARD ES EL MECHA ACTIVO':'SELECCIÓN JUGABLE LLEGARÁ EN v3.4.0');return;}if((progressionV3.cores||0)<item.price){setHangarStatusV32('NÚCLEOS INSUFICIENTES');return;}progressionV3.cores-=item.price;progressionV3.mechBlueprints[item.id]='unlocked';progressionV3.unlockedMechs=Array.from(new Set([...(progressionV3.unlockedMechs||[]),item.id]));saveProgressionV3();updateHangarUIV32();setHangarStatusV32(`${item.name} CONSTRUIDO · SISTEMAS DE COMBATE EN v3.4.0`);return;}
+        const st=progressionV3.blueprints[item.id]||'locked'; if(st==='locked'||st==='hidden'){setHangarStatusV32('PLANO BLOQUEADO');return;} if(st==='unlocked'){setHangarStatusV32('EQUIPAMIENTO YA DESBLOQUEADO');return;}
+        const price=getBlueprintPriceV32(item);if((progressionV3.cores||0)<price){setHangarStatusV32('NÚCLEOS INSUFICIENTES');return;}progressionV3.cores-=price;progressionV3.blueprints[item.id]='unlocked';progressionV3.discoveredContent=Array.from(new Set([...(progressionV3.discoveredContent||[]),item.id]));saveProgressionV3();updateHangarUIV32();setHangarStatusV32(`${item.title} CONSTRUIDO Y AÑADIDO AL DRAFT`);
+      }
+
+      const FIELD_SHOP_DEFS_V32=Object.freeze([
+        {id:'repair',icon:'✚',title:'REPARACIÓN RÁPIDA',desc:'Restaura 30 de blindaje.',price:40},
+        {id:'ammo',icon:'▥',title:'CARGADOR COMPLETO',desc:'Finaliza la recarga y rellena munición.',price:25},
+        {id:'upgrade',icon:'▲',title:'CALIBRACIÓN DE ARMA',desc:'Aumenta un nivel el arma principal.',price:90},
+        {id:'speed',icon:'»',title:'SERVOMOTORES',desc:'Aumenta 5 % la velocidad durante esta partida.',price:70},
+        {id:'evolution',icon:'◆',title:'NÚCLEO DE EVOLUCIÓN',desc:'Entrega un núcleo para evoluciones.',price:140}
+      ]);
+      function generateFieldShopOffersV32(){
+        const pool=[...FIELD_SHOP_DEFS_V32].sort(()=>Math.random()-.5).slice(0,3);const multiplier=1+(state.fieldShopVisitsV32||0)*.12;
+        return [...pool.map(o=>({...o,price:Math.round(o.price*multiplier),sold:false})),{id:'exit',icon:'↩',title:'SALIR',desc:'Continuar la expedición.',price:0,sold:false}];
+      }
+      function openFieldShopV32(force=false){
+        if(state.fieldShopOpenV32||state.phase!=='playing'||state.testMode)return false;
+        if(!force&&(state.paused||state.bossEncounterV31?.active))return false;
+        state.fieldShopOpenV32=true;state.paused=true;state.isFiring=false;state.fieldShopSelectionV32=0;state.fieldShopOffersV32=generateFieldShopOffersV32();state.fieldShopVisitsV32=(state.fieldShopVisitsV32||0)+1;
+        document.getElementById('field-shop-modal-v32')?.classList.remove('hidden');updateFieldShopUIV32();lockConfirmInput(360);return true;
+      }
+      function closeFieldShopV32(){state.fieldShopOpenV32=false;state.paused=false;state.nextFieldShopAtV32=(state.playTime||0)+150000;document.getElementById('field-shop-modal-v32')?.classList.add('hidden');lockConfirmInput(260);}
+      function updateFieldShopUIV32(){
+        updateEconomyHudV32();const list=document.getElementById('field-shop-list-v32');if(!list)return;
+        list.innerHTML=(state.fieldShopOffersV32||[]).map((o,i)=>`<div class="field-shop-row-v32 ${i===state.fieldShopSelectionV32?'selected':''} ${o.sold?'sold':''}"><div>${o.icon}</div><div><strong>${o.title}</strong><span>${o.sold?'AGOTADO':o.desc}</span></div><div class="field-shop-price-v32">${o.id==='exit'?'ROJO':`${o.price} ◇`}</div></div>`).join('');
+      }
+      function handleFieldShopJoystickInputV32(jx,jy){const offers=state.fieldShopOffersV32||[];let v=jy<-.5?-1:jy>.5?1:0;if(v&&lastJoystickYDir!==v){lastJoystickYDir=v;state.fieldShopSelectionV32=(state.fieldShopSelectionV32+v+offers.length)%offers.length;updateFieldShopUIV32();vibrate(20);}else if(!v)lastJoystickYDir=0;lastJoystickXDir=0;}
+      function applyFieldShopOfferV32(offer){
+        if(offer.id==='repair')state.mecha.hp=Math.min(state.mecha.maxHp,state.mecha.hp+30);
+        else if(offer.id==='ammo'){state.mecha.isReloading=false;state.mecha.ammo=getPrimaryMagazineCapacityV301();state.mecha.primaryFirstShotReady=true;updatePrimaryAmmoHudV301();}
+        else if(offer.id==='upgrade'){const id=getPrimaryWeaponIdV301();state.weaponLevels[id]=Math.min(10,(state.weaponLevels[id]||1)+1);calculateMechaStats();}
+        else if(offer.id==='speed')state.stats.speedMult*=1.05;
+        else if(offer.id==='evolution')awardEvolutionCoreV302('field_shop');
+      }
+      function confirmFieldShopActionV32(){
+        const offer=(state.fieldShopOffersV32||[])[state.fieldShopSelectionV32];if(!offer)return;if(offer.id==='exit'){closeFieldShopV32();return;}if(offer.sold){document.getElementById('field-shop-status-v32').textContent='OFERTA AGOTADA';return;}if((state.scrap||0)<offer.price){document.getElementById('field-shop-status-v32').textContent='CHATARRA INSUFICIENTE';return;}state.scrap-=offer.price;applyFieldShopOfferV32(offer);offer.sold=true;document.getElementById('field-shop-status-v32').textContent=`COMPRA COMPLETADA: ${offer.title}`;updateFieldShopUIV32();
+      }
+      function maybeOpenFieldShopV32(){if(state.phase==='playing'&&!state.paused&&!state.testMode&&!state.bossEncounterV31?.active&&(state.playTime||0)>=(state.nextFieldShopAtV32||60000))openFieldShopV32();}
+      function awardRunCoresV32(){
+        if(state.runCoresAwardedV32||state.testMode)return 0;state.runCoresAwardedV32=true;
+        const award=Math.max(15,20+Math.floor((state.score||0)/1200)*5+(state.sector||1)*8+(state.bossKillsV31||0)*25);
+        progressionV3.cores=(progressionV3.cores||0)+award;progressionV3.statistics.bestSurvivalMs=Math.max(progressionV3.statistics.bestSurvivalMs||0,state.playTime||0);saveProgressionV3();return award;
+      }
+      //#endregion economy_v320
+
       function getContentMetaV3(id) { return CONTENT_CATALOG_V3.get(id) || null; }
       function isContentUnlockedV3(id) { return (progressionV3.blueprints[id] || 'locked') === 'unlocked'; }
 
@@ -4128,7 +4425,9 @@ stats.recentRuns = stats.recentRuns || [];
        function killEnemy(e, index) {
          const scoreReward=e.scoreRewardV31||100;
          state.score += scoreReward;
-         state.scrap = (state.scrap||0) + (e.scrapRewardV31||2);
+         const scrapRewardV32 = e.scrapRewardV31 || 2;
+         state.scrap = (state.scrap||0) + scrapRewardV32;
+         recordEnemyDefeatV32(e, scrapRewardV32);
          state.sectorEnemiesDefeated++;
          state.totalEnemiesDefeated = (state.totalEnemiesDefeated || 0) + 1;
          const xpGained = e.xpRewardV31 || getXpForEnemyType(e.type);
@@ -4276,6 +4575,10 @@ stats.recentRuns = stats.recentRuns || [];
           }
         }
         updateHudCooldowns(timestamp);
+        updateEconomyHudV32();
+        progressionV3.statistics.bestSurvivalMs = Math.max(progressionV3.statistics.bestSurvivalMs || 0, state.playTime || 0);
+        updateMissionTrackingHudV32();
+        maybeOpenFieldShopV32();
 
         const timeFactor = Math.min(3.0, 0.3 + (state.playTime / 60000) * 0.7);
         const simulationSpeed = state.devSpeedUp ? 2.0 : (state.devSlowMo ? 0.3 : 1.0);
@@ -7580,59 +7883,36 @@ stats.recentRuns = stats.recentRuns || [];
         });
       }
 
+      function getMainMenuButtonsV32() {
+        return ['btn-main-play','btn-main-hangar','btn-main-global','btn-main-settings','btn-main-dev']
+          .map(id=>document.getElementById(id)).filter(btn=>btn&&!btn.classList.contains('hidden'));
+      }
       function updateMainMenuUI() {
-        const btnPlay = document.getElementById('btn-main-play');
-        const btnGlobal = document.getElementById('btn-main-global');
-        const btnSettings = document.getElementById('btn-main-settings');
-        const btnDev = document.getElementById('btn-main-dev');
-        if (!btnPlay || !btnGlobal || !btnSettings || !btnDev) return;
-        const buttons = [btnPlay, btnGlobal, btnSettings, btnDev].filter(btn => !btn.classList.contains('hidden'));
-        state.menuSelectionIndex = Number.isFinite(state.menuSelectionIndex) ? state.menuSelectionIndex : 0;
-        state.menuSelectionIndex = (state.menuSelectionIndex + buttons.length) % buttons.length;
-        const selectedStyle = "w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
-        const unselectedStyle = "w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
-        buttons.forEach((btn, idx) => {
-          btn.className = idx === state.menuSelectionIndex ? selectedStyle : unselectedStyle;
-          btn.style.pointerEvents = 'none';
-        });
+        if(state.hangarOpenV32){updateHangarUIV32();return;}
+        const buttons=getMainMenuButtonsV32(); if(!buttons.length)return;
+        state.menuSelectionIndex=Number.isFinite(state.menuSelectionIndex)?state.menuSelectionIndex:0;
+        state.menuSelectionIndex=(state.menuSelectionIndex+buttons.length)%buttons.length;
+        const selectedStyle="w-full bg-gradient-to-r from-cyan-600 to-teal-700 text-white font-title text-[10px] py-1.5 px-4 rounded-lg border-2 border-cyan-400 shadow-lg scale-105 heartbeat-card transition-all duration-200";
+        const unselectedStyle="w-full bg-slate-900/60 text-gray-400 font-title text-[10px] py-1.5 px-4 rounded-lg border border-slate-800 transition-all duration-200";
+        buttons.forEach((btn,idx)=>{btn.className=idx===state.menuSelectionIndex?selectedStyle:unselectedStyle;btn.style.pointerEvents='none';});
       }
-
       function confirmMenuAction() {
-        if (!canAcceptConfirmInput() || state.phase !== 'menu') return;
-        const btnPlay = document.getElementById('btn-main-play');
-        const btnGlobal = document.getElementById('btn-main-global');
-        const btnSettings = document.getElementById('btn-main-settings');
-        const btnDev = document.getElementById('btn-main-dev');
-        if (!btnPlay || !btnGlobal || !btnSettings || !btnDev) return;
-        const buttons = [btnPlay, btnGlobal, btnSettings, btnDev].filter(btn => !btn.classList.contains('hidden'));
-        const selectedBtn = buttons[state.menuSelectionIndex];
-        if (!selectedBtn) return;
-        lockConfirmInput(560);
-        vibrate(50);
-        playSound('equip');
-        if (selectedBtn === btnPlay) startRun();
-        else if (selectedBtn === btnGlobal) {
-          stopRun(); state.phase = 'global_network'; joystickUsed = true; render(); updateGlobalStatsUI(); updateGlobalNetworkUI();
-        } else if (selectedBtn === btnSettings) startSettingsMenu();
-        else if (selectedBtn === btnDev) openDeveloperMenu();
+        if(!canAcceptConfirmInput()||state.phase!=='menu')return;
+        if(state.hangarOpenV32){lockConfirmInput(230);confirmHangarActionV32();vibrate(42);return;}
+        const buttons=getMainMenuButtonsV32();const selectedBtn=buttons[state.menuSelectionIndex];if(!selectedBtn)return;
+        lockConfirmInput(560);vibrate(50);playSound('equip');
+        if(selectedBtn.id==='btn-main-play')startRun();
+        else if(selectedBtn.id==='btn-main-hangar')openHangarV32();
+        else if(selectedBtn.id==='btn-main-global'){stopRun();state.phase='global_network';joystickUsed=true;render();updateGlobalStatsUI();updateGlobalNetworkUI();}
+        else if(selectedBtn.id==='btn-main-settings')startSettingsMenu();
+        else if(selectedBtn.id==='btn-main-dev')openDeveloperMenu();
       }
-
-      function handleMenuJoystickInput(jx, jy) {
-        joystickUsed = true;
-        const buttons = ['btn-main-play','btn-main-global','btn-main-settings','btn-main-dev']
-          .map(id => document.getElementById(id)).filter(btn => btn && !btn.classList.contains('hidden'));
-        const len = buttons.length;
-        if (!len) return;
-        if (jy < -0.5 && lastJoystickYDir !== -1) {
-          lastJoystickYDir = -1;
-          state.menuSelectionIndex = (state.menuSelectionIndex - 1 + len) % len;
-          updateMainMenuUI(); vibrate(30);
-        } else if (jy > 0.5 && lastJoystickYDir !== 1) {
-          lastJoystickYDir = 1;
-          state.menuSelectionIndex = (state.menuSelectionIndex + 1) % len;
-          updateMainMenuUI(); vibrate(30);
-        } else if (Math.abs(jy) <= 0.5) lastJoystickYDir = 0;
-        lastJoystickXDir = 0;
+      function handleMenuJoystickInput(jx,jy) {
+        joystickUsed=true;if(state.hangarOpenV32){handleHangarJoystickInputV32(jx,jy);return;}
+        const buttons=getMainMenuButtonsV32();const len=buttons.length;if(!len)return;
+        if(jy<-.5&&lastJoystickYDir!==-1){lastJoystickYDir=-1;state.menuSelectionIndex=(state.menuSelectionIndex-1+len)%len;updateMainMenuUI();vibrate(30);}
+        else if(jy>.5&&lastJoystickYDir!==1){lastJoystickYDir=1;state.menuSelectionIndex=(state.menuSelectionIndex+1)%len;updateMainMenuUI();vibrate(30);}
+        else if(Math.abs(jy)<=.5)lastJoystickYDir=0;lastJoystickXDir=0;
       }
 
       function updateGlobalNetworkUI() {
@@ -7923,10 +8203,11 @@ stats.recentRuns = stats.recentRuns || [];
         const settingsNavRepeater = createNavigationRepeater(handleSettingsJoystickInput, () => state.phase === 'settings');
         const gameoverNavRepeater = createNavigationRepeater(handleGameoverJoystickInput, () => state.phase === 'gameover');
         const playOverlayRepeater = createNavigationRepeater((jx, jy) => {
-          if (state.paused) handlePauseJoystickInput(jx, jy);
+          if (state.fieldShopOpenV32) handleFieldShopJoystickInputV32(jx, jy);
+          else if (state.paused) handlePauseJoystickInput(jx, jy);
           else if (state.phase === 'draft') handleDraftJoystickInput(jx, jy);
           else if (state.phase === 'gameover') handleGameoverJoystickInput(jx, jy);
-        }, () => state.paused || state.phase === 'draft' || state.phase === 'gameover');
+        }, () => state.fieldShopOpenV32 || state.paused || state.phase === 'draft' || state.phase === 'gameover');
 
         if (menuMoveZone) {
           menuMoveZone.addEventListener('pointerdown', (e) => {
@@ -8197,7 +8478,9 @@ stats.recentRuns = stats.recentRuns || [];
           state.moveJoystick.y = dy / maxR;
           playOverlayRepeater.set(state.moveJoystick.x, state.moveJoystick.y);
 
-          if (state.paused) {
+          if (state.fieldShopOpenV32) {
+            handleFieldShopJoystickInputV32(state.moveJoystick.x, state.moveJoystick.y);
+          } else if (state.paused) {
             handlePauseJoystickInput(state.moveJoystick.x, state.moveJoystick.y);
           } else if (state.phase === 'draft') {
             handleDraftJoystickInput(state.moveJoystick.x, state.moveJoystick.y);
@@ -8211,6 +8494,11 @@ stats.recentRuns = stats.recentRuns || [];
             e.preventDefault();
             initAudio();
             if (!canAcceptConfirmInput()) return;
+            if (state.fieldShopOpenV32) {
+              confirmFieldShopActionV32();
+              vibrate(50);
+              return;
+            }
             if (state.paused) {
               confirmPauseAction();
               vibrate(50);
@@ -8331,6 +8619,11 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         calculateMechaStats();
+        state.nextFieldShopAtV32 = 60000;
+        state.fieldShopOpenV32 = false;
+        document.getElementById('field-shop-modal-v32')?.classList.add('hidden');
+        updateEconomyHudV32();
+        updateMissionTrackingHudV32();
         updateBossHudV31();
         const testHud = document.getElementById('test-mode-hud');
         if (testHud) testHud.classList.toggle('hidden', !state.testMode);
@@ -8486,6 +8779,8 @@ stats.recentRuns = stats.recentRuns || [];
         stopRun();
         rewardDraftTokenV31++;
         state.phase = 'menu';
+        state.hangarOpenV32 = false;
+        document.getElementById('hangar-modal-v32')?.classList.add('hidden');
         state.menuSelectionIndex = 0;
         joystickUsed = true;
         joystickUsed = true;
@@ -8533,8 +8828,9 @@ stats.recentRuns = stats.recentRuns || [];
         });
         document.getElementById('final-wave-text').textContent = state.level;
         document.getElementById('text-final').textContent = state.score;
-        document.getElementById('reward-credits-text').textContent = `+${50 + state.sector * 20}`;
-        state.credits += 50 + state.sector * 20;
+        const coreAwardV32 = awardRunCoresV32();
+        document.getElementById('reward-credits-text').textContent = `+${coreAwardV32}`;
+        state.credits += coreAwardV32;
         updateGlobalStatsOnEnd(state.score, state.level, state.totalEnemiesDefeated);
         render();
         updateGameoverUI();
@@ -8547,6 +8843,8 @@ stats.recentRuns = stats.recentRuns || [];
 
         document.body.dataset.phase = state.phase;
         document.body.dataset.testMode = state.testMode ? 'true' : 'false';
+        updateEconomyHudV32();
+        updateMissionTrackingHudV32();
         updatePersistentConsoleControls();
       }
 
@@ -8558,6 +8856,9 @@ stats.recentRuns = stats.recentRuns || [];
         document.body.dataset.phase = 'menu';
         state.phase = 'menu';
         cacheDomRefs();
+        initializeEconomyV32();
+        updateEconomyHudV32();
+        updateMissionTrackingHudV32();
         document.querySelectorAll('.screen').forEach(screen => screen.firstElementChild?.classList.add('virtual-screen'));
         installPersistentConsoleControls();
         installBrowserGestureLock();
@@ -8566,6 +8867,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         if (btnControlPause) {
           btnControlPause.onclick = () => {
             if (state.phase === 'playing') {
+              if (state.fieldShopOpenV32) return;
               if (!state.paused && canAcceptConfirmInput()) {
                 lockConfirmInput(420);
                 state.paused = true;
@@ -9018,7 +9320,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
 
       const FACTION_PACKAGE_V31 = Object.freeze({
-        id:'scrappers', name:'Chatarreros', version:'3.1.0',
+        id:'scrappers', name:'Chatarreros', version:'3.2.0',
         basicEnemies:['scrap_hound','saw_raider','scrap_gunner','mine_junker'],
         eliteModifiers:['armored'], minibosses:['drill_bastion'], bosses:['forge_titan']
       });
@@ -9139,6 +9441,15 @@ const btnControlPause = document.getElementById('btn-control-pause');
           const rect = el => el ? ({x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,display:getComputedStyle(el).display,opacity:getComputedStyle(el).opacity}) : null;
           return {active:isImmersiveMode(),cameraZoom:getActiveCameraZoom(),screen:rect(activeScreen),display:rect(display),joystick:rect(joy),fire:rect(fire),pause:rect(pause),mute:rect(mute),fullscreen:rect(full),blockedPortrait:document.body.dataset.immersiveOrientationBlocked === 'true'};
         },
+        economyStateV32() { return {cores:progressionV3.cores,blueprints:{...progressionV3.blueprints},mechBlueprints:{...progressionV3.mechBlueprints},statistics:{...progressionV3.statistics},pinned:[...(progressionV3.pinnedMissions||[])],claimed:[...(progressionV3.claimedMissions||[])],scrap:state.scrap}; },
+        openHangarForTest(tab='missions') { state.phase='menu'; render(); openHangarV32(); const idx=HANGAR_TABS_V32.findIndex(t=>t.id===tab); if(idx>=0)state.hangarTabIndexV32=idx; state.hangarItemIndexV32=0; updateHangarUIV32(); return {open:state.hangarOpenV32,tab:HANGAR_TABS_V32[state.hangarTabIndexV32].id,cores:progressionV3.cores}; },
+        setCoresForTest(value=0) { progressionV3.cores=Math.max(0,Number(value)||0);saveProgressionV3();updateHangarUIV32();return progressionV3.cores; },
+        setMissionStatForTest(stat,value) { progressionV3.statistics[stat]=Math.max(0,Number(value)||0);updateMissionTrackingHudV32();updateHangarUIV32();return {...progressionV3.statistics}; },
+        claimMissionForTest(id) { return {claimed:claimMissionV32(id),progression:this.economyStateV32()}; },
+        purchaseBlueprintForTest(id) { const item=UPGRADE_BY_ID.get(id); if(!item)return null; progressionV3.blueprints[id]='discovered'; progressionV3.cores=Math.max(progressionV3.cores,getBlueprintPriceV32(item)); const before=progressionV3.cores; state.hangarOpenV32=true; state.hangarTabIndexV32=HANGAR_TABS_V32.findIndex(t=>t.id===(getContentMetaV3(id)?.kind==='power'?'powers':getContentMetaV3(id)?.kind==='module'?'modules':'weapons')); const items=getHangarItemsV32(HANGAR_TABS_V32[state.hangarTabIndexV32].id); state.hangarItemIndexV32=items.findIndex(x=>x.id===id); confirmHangarActionV32(); return {before,after:progressionV3.cores,status:progressionV3.blueprints[id]}; },
+        openFieldShopForTest(scrap=300) { state.phase='playing';state.started=true;state.testMode=false;state.scrap=Math.max(0,Number(scrap)||0);state.paused=false;render();const opened=openFieldShopV32(true);return {opened,offers:(state.fieldShopOffersV32||[]).map(o=>({id:o.id,price:o.price,sold:o.sold})),scrap:state.scrap}; },
+        buyFieldShopOfferForTest(index=0) { state.fieldShopSelectionV32=Math.max(0,Math.min((state.fieldShopOffersV32||[]).length-1,index|0));confirmInputLockedUntil=0;confirmFieldShopActionV32();return {open:state.fieldShopOpenV32,scrap:state.scrap,offers:(state.fieldShopOffersV32||[]).map(o=>({id:o.id,sold:o.sold,price:o.price})),hp:state.mecha.hp,ammo:state.mecha.ammo,speed:state.stats.speedMult}; },
+        awardRunCoresForTest() { state.testMode=false;state.runCoresAwardedV32=false;return {award:awardRunCoresV32(),cores:progressionV3.cores}; },
         pauseExitImmersiveForTest() { state.phase='playing'; state.paused=true; state.pauseConfirmState=false; state.pauseSelection='exit'; document.getElementById('pause-modal')?.classList.remove('hidden'); updatePauseMenuUI(); const label=document.getElementById('btn-exit')?.textContent || ''; confirmInputLockedUntil=0; confirmPauseAction(); return {active:isImmersiveMode(),paused:state.paused,phase:state.phase,label}; }
       });
 //#endregion debug_api
