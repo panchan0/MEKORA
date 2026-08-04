@@ -2032,13 +2032,112 @@
   }
 </style>
 
+
+<style id="mekora-v331-hotfix-and-polish">
+  :root { --v331-panel:#151a1f; --v331-line:#5b6872; --v331-accent:#d19a55; }
+  #btn-fullscreen, #btn-mute, #fullscreen-install-hint { display:none !important; }
+  .screen::after, .screen .console-controls > .absolute.top-2 { content:none !important; display:none !important; }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .console-controls,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) #persistent-console-controls,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) [id*="joystick-move-zone"],
+  body:not([data-phase="playing"]):not([data-phase="draft"]) [id*="tap-fire"] { display:none !important; }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen > div:first-child { height:100% !important; border:0 !important; }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen > div:nth-child(2) { display:none !important; }
+  body[data-phase="menu"] #btn-main-play,
+  body[data-phase="menu"] #btn-main-hangar,
+  body[data-phase="menu"] #btn-main-global,
+  body[data-phase="menu"] #btn-main-settings,
+  body[data-phase="menu"] #btn-main-dev,
+  #pause-modal button, #roguelike-draft-modal .mekora-draft-wrapper,
+  #hangar-modal-v32 *, #field-shop-modal-v32 *, .lang-btn,
+  #btn-gameover-retry, #btn-gameover-menu, #btn-close-settings, #btn-close-global { pointer-events:auto !important; touch-action:manipulation; }
+
+  body[data-phase="playing"] .screen[data-show-on="playing"],
+  body[data-phase="draft"] .screen[data-show-on="playing"] { position:fixed !important; inset:0 !important; width:100vw !important; height:100dvh !important; display:block !important; background:#080a0c !important; }
+  body[data-phase="playing"] .screen[data-show-on="playing"] > div:first-child,
+  body[data-phase="draft"] .screen[data-show-on="playing"] > div:first-child { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; max-height:none !important; border:0 !important; }
+  body[data-phase="playing"] .screen[data-show-on="playing"] > div:first-child > .relative.aspect-\[16\/9\],
+  body[data-phase="draft"] .screen[data-show-on="playing"] > div:first-child > .relative.aspect-\[16\/9\] { width:100% !important; height:100% !important; max-height:none !important; aspect-ratio:auto !important; }
+  body[data-phase="playing"] .screen[data-show-on="playing"] > div:nth-child(2),
+  body[data-phase="draft"] .screen[data-show-on="playing"] > div:nth-child(2) { display:block !important; position:static !important; width:0 !important; height:0 !important; }
+  body[data-phase="playing"] #joystick-move-zone,
+  body[data-phase="playing"] #btn-tap-fire { display:flex !important; position:fixed !important; bottom:calc(env(safe-area-inset-bottom,0px) + 18px) !important; z-index:120 !important; opacity:.38 !important; backdrop-filter:none !important; }
+  body[data-phase="playing"] #joystick-move-zone { left:calc(env(safe-area-inset-left,0px) + 22px) !important; width:112px !important; height:112px !important; }
+  body[data-phase="playing"] #btn-tap-fire { right:calc(env(safe-area-inset-right,0px) + 24px) !important; width:98px !important; height:98px !important; }
+  body[data-phase="playing"] #joystick-move-zone:active,
+  body[data-phase="playing"] #btn-tap-fire:active { opacity:.78 !important; }
+  body[data-phase="draft"] #joystick-move-zone,
+  body[data-phase="draft"] #btn-tap-fire,
+  body.mekora-death-v331 #joystick-move-zone,
+  body.mekora-death-v331 #btn-tap-fire { display:none !important; }
+  #persistent-console-controls, #v331-pause-dock { position:fixed !important; right:calc(env(safe-area-inset-right,0px) + 12px) !important; top:calc(env(safe-area-inset-top,0px) + 12px) !important; z-index:160 !important; width:auto !important; height:auto !important; display:block !important; pointer-events:none; }
+  #btn-control-pause { display:flex !important; position:static !important; width:42px !important; height:42px !important; border-radius:10px !important; background:rgba(18,22,27,.82) !important; border:1px solid rgba(214,174,114,.75) !important; pointer-events:auto !important; }
+  body:not([data-phase="playing"]) #btn-control-pause, body.mekora-death-v331 #btn-control-pause { display:none !important; }
+
+  #orientation-warning { position:fixed !important; inset:0 !important; width:100vw !important; height:100dvh !important; z-index:200000 !important; background:#0b0e11 !important; padding:28px !important; text-align:center; }
+  #orientation-warning h2 { color:#f0e7d8 !important; font-size:clamp(17px,4vw,28px) !important; letter-spacing:.08em; }
+
+  #hangar-modal-v32 { position:absolute !important; inset:10px !important; z-index:100 !important; border:1px solid #52606c !important; border-radius:16px !important; background:linear-gradient(145deg,#11161b,#20272e) !important; padding:12px !important; gap:10px !important; box-shadow:0 18px 60px rgba(0,0,0,.55) !important; }
+  .hangar-header-v32 { min-height:52px !important; padding:4px 6px 10px !important; }
+  .hangar-header-v32 strong { font-size:18px !important; color:#f0e6d6 !important; }
+  .hangar-header-v32 #hangar-subtitle-v32 { font-size:9px !important; color:#9ba8b0 !important; }
+  .hangar-currency-v32 b { font-size:24px !important; color:#d9a85f !important; }
+  .hangar-tabs-v32 { grid-template-columns:repeat(6,minmax(0,1fr)) !important; gap:7px !important; }
+  .hangar-tab-v32 { min-height:34px !important; display:flex; align-items:center; justify-content:center; padding:7px 4px !important; border-radius:9px !important; font-size:8px !important; background:#171d23 !important; }
+  .hangar-tab-v32.selected { background:#3a3025 !important; border-color:#d3a262 !important; box-shadow:inset 0 -3px #d3a262 !important; }
+  .hangar-list-v32 { display:grid !important; grid-template-columns:repeat(5,minmax(0,1fr)) !important; gap:8px !important; overflow:visible !important; }
+  .hangar-row-v32 { display:flex !important; flex-direction:column !important; justify-content:center !important; align-items:center !important; min-height:126px !important; padding:10px 7px !important; border-radius:12px !important; text-align:center; background:linear-gradient(160deg,#1b2229,#11161b) !important; position:relative; }
+  .hangar-row-v32.selected { transform:translateY(-3px); border-color:#d7aa6a !important; box-shadow:0 8px 22px rgba(0,0,0,.4), inset 0 -4px #b37943 !important; }
+  .hangar-icon-v32 { width:52px; height:52px; display:grid; place-items:center; border:1px solid #56636d; border-radius:50%; background:#0c1014; font-size:27px !important; }
+  .hangar-copy-v32 strong { margin-top:7px; font-size:9px !important; white-space:normal !important; line-height:1.1; }
+  .hangar-copy-v32 span { margin-top:4px; font-size:7px !important; white-space:normal !important; display:-webkit-box !important; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .hangar-tag-v32 { position:absolute; top:6px; right:7px; padding:2px 5px; border-radius:7px; background:#2a221a; font-size:6px !important; }
+  .hangar-status-v32 { font-size:8px !important; min-height:22px !important; padding-top:7px !important; }
+
+  #sector-transition-v331 { position:absolute; inset:0; z-index:145; display:grid; place-items:center; background:rgba(5,7,9,.68); backdrop-filter:blur(3px); pointer-events:none; }
+  #sector-transition-v331.hidden { display:none !important; }
+  .sector-transition-card-v331 { width:min(72%,520px); padding:20px; border:1px solid #b88a54; border-radius:14px; background:linear-gradient(145deg,rgba(20,24,28,.97),rgba(42,33,25,.96)); text-align:center; box-shadow:0 20px 80px #000; animation:v331CardIn .28s ease-out both; }
+  .sector-transition-card-v331 small { display:block; color:#9aa5ab; font:700 8px ui-monospace,monospace; letter-spacing:.2em; }
+  .sector-transition-card-v331 strong { display:block; margin-top:5px; color:#f2e7d8; font:900 clamp(19px,4vw,34px) ui-sans-serif,sans-serif; letter-spacing:.12em; }
+  .sector-transition-card-v331 span { display:block; margin-top:4px; color:#d1a264; font:800 clamp(11px,2vw,17px) ui-sans-serif,sans-serif; }
+  .sector-transition-card-v331 p { margin:8px 0 0; color:#9da8ae; font:600 9px ui-sans-serif,sans-serif; }
+  @keyframes v331CardIn { from{opacity:0;transform:scale(.88)} to{opacity:1;transform:scale(1)} }
+
+  body.mekora-death-v331 #hud-main-stats,
+  body.mekora-death-v331 #hud-economy-v32,
+  body.mekora-death-v331 #hud-time-block,
+  body.mekora-death-v331 #test-mode-hud,
+  body.mekora-death-v331 #sector-hud-v33,
+  body.mekora-death-v331 #sector-banner-v33,
+  body.mekora-death-v331 #event-hud-v33,
+  body.mekora-death-v331 #boss-hud-v31,
+  body.mekora-death-v331 #encounter-notice-v31,
+  body.mekora-death-v331 #poi-toast-v33,
+  body.mekora-death-v331 #ammo-hud,
+  body.mekora-death-v331 #xp-progress-bar,
+  body.mekora-death-v331 #hud-active-slots,
+  body.mekora-death-v331 #hud-passives-list { opacity:0 !important; visibility:hidden !important; transition:none !important; }
+  #death-cinematic-v331 { position:absolute; inset:0; z-index:140; pointer-events:none; overflow:hidden; }
+  #death-cinematic-v331.hidden { display:none !important; }
+  .death-flash-v331 { position:absolute; inset:0; opacity:0; background:white; }
+  body.mekora-death-explode-v331 .death-flash-v331 { animation:v331DeathFlash .58s ease-out both; }
+  @keyframes v331DeathFlash { 0%{opacity:0} 15%{opacity:.94} 42%{opacity:.28} 100%{opacity:0} }
+
+  @media (orientation:portrait) {
+    #hangar-modal-v32 { inset:6px !important; }
+    .hangar-tabs-v32 { grid-template-columns:repeat(3,minmax(0,1fr)) !important; }
+    .hangar-list-v32 { grid-template-columns:repeat(2,minmax(0,1fr)) !important; overflow:auto !important; }
+    .hangar-row-v32 { min-height:98px !important; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
      <!-- ORIENTATION WARNING OVERLAY -->
      <div id="orientation-warning" style="display: none;">
        <svg class="w-16 h-16 text-[#00ffcc] animate-bounce mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-       <h2 class="font-title text-xl text-white font-bold mb-2">MODO INMERSIVO: GIRA TU DISPOSITIVO EN HORIZONTAL</h2>
+       <h2 id="orientation-warning-title-v331" class="font-title text-xl text-white font-bold mb-2" data-i18n="orientation_landscape">GIRA TU DISPOSITIVO EN HORIZONTAL</h2>
        
      </div>
 
@@ -2108,6 +2207,18 @@
            <div id="sector-banner-v33"><strong>SECTOR 1</strong><span>DESGUACE EXTERIOR</span></div>
            <div id="poi-toast-v33"></div>
 
+           <div id="sector-transition-v331" class="hidden" aria-live="assertive">
+             <div class="sector-transition-card-v331">
+               <small id="sector-transition-kicker-v331">RUTA DE EXPEDICIÓN</small>
+               <strong id="sector-transition-title-v331">SECTOR 2</strong>
+               <span id="sector-transition-name-v331">PATIO DE PRENSAS</span>
+               <p id="sector-transition-detail-v331">Preparando salto de fase...</p>
+             </div>
+           </div>
+           <div id="death-cinematic-v331" class="hidden" aria-live="assertive">
+             <div class="death-flash-v331"></div>
+           </div>
+
 
            <!-- RIGHT: ACTIVE WEAPONS & PASSIVES MINI DISPLAY -->
            <div class="absolute top-3 right-3 z-40 flex flex-col gap-0.5 items-end pointer-events-none">
@@ -2122,7 +2233,7 @@
                  <div><span>CHATARRA</span><b id="field-shop-scrap-v32">0</b></div>
                </div>
                <div id="field-shop-list-v32" class="field-shop-list-v32"></div>
-               <div id="field-shop-status-v32" class="field-shop-status-v32">ARR/ABAJO: elegir · ROJO: comprar</div>
+               <div id="field-shop-status-v32" class="field-shop-status-v32">TOCA UNA OFERTA PARA COMPRAR</div>
              </div>
            </div>
 
@@ -2173,7 +2284,7 @@
 
        <!-- BOTTOM HALF: BLACK CONTROL AREA -->
        <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+         
          <!-- LEFT DYNAMIC MOVE ZONE -->
          <div id="joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
@@ -2249,13 +2360,13 @@
            </div>
            <div id="hangar-tabs-v32" class="hangar-tabs-v32"></div>
            <div id="hangar-list-v32" class="hangar-list-v32"></div>
-           <div id="hangar-status-v32" class="hangar-status-v32">IZQ/DER: sección · ARR/ABAJO: navegar · ROJO: acción</div>
+           <div id="hangar-status-v32" class="hangar-status-v32">TOCA UNA SECCIÓN Y UNA TARJETA PARA INTERACTUAR</div>
          </div>
          
        </div>
        <!-- BOTTOM HALF: BLACK CONTROL AREA -->
        <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-         <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+         
          <div id="menu-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
            <div id="menu-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75" style="transform: translate(0px, 0px);"></div>
            <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -2329,7 +2440,7 @@
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
       <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        
         <div id="global-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="global-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -2408,12 +2519,12 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.3.0</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.3.1</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
       <div class="w-full h-1/2 bg-black relative flex items-center justify-between p-4">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        
         <div id="settings-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="settings-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="move">MOVER</span>
@@ -2457,7 +2568,7 @@
       </div>
 
       <div class="console-controls">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        
         <div id="dev-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-cyan-500/30 bg-cyan-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="dev-joystick-move-knob" class="w-12 h-12 rounded-full bg-[#00ffcc]/60 border-2 border-[#00ffcc] shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span class="absolute text-[9px] text-cyan-400 font-bold bottom-2 tracking-widest" data-i18n="navigate">NAVEGAR</span>
@@ -2489,7 +2600,7 @@
         </div>
       </div>
       <div class="console-controls">
-        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-gray-500 font-title text-sm tracking-widest font-bold">MekoraBox</div>
+        
         <div id="gameover-joystick-move-zone" class="w-32 h-32 rounded-full border-2 border-pink-500/30 bg-pink-500/10 relative flex items-center justify-center shadow-2xl backdrop-blur-sm">
           <div id="gameover-joystick-move-knob" class="w-12 h-12 rounded-full bg-pink-500/60 border-2 border-pink-500 shadow-lg transform translate-x-0 translate-y-0 transition-transform duration-75"></div>
           <span data-i18n="navigate" class="absolute text-[9px] text-pink-400 font-bold bottom-2 tracking-widest">NAVEGAR</span>
@@ -2837,11 +2948,11 @@ stats.recentRuns = stats.recentRuns || [];
 
         { id: 'syn-cyclonic', name: 'Cañón ciclónico', reqs: ['w-rotarycannon', 'p-bounce'], icon: '🌀', desc: 'La cadencia máxima perfora y rebota; cada ocho impactos libera una onda de presión.' },
         // Legendary Synergies
-        { id: 'syn-celestial', name: 'Arsenal Celestial', reqs: ['w-machinegun', 'w-missile', 'w-drones', 'w-reactor'], icon: '🌌', desc: 'Todas las armas disparan simultáneamente durante un periodo de tiempo, aumentando drásticamente la potencia ofensiva.' },
+        { id: 'syn-celestial', name: 'Arsenal Celestial', reqs: ['w-machinegun', 'w-missile', 'w-drones', 'p-extra-projectile'], icon: '🌌', desc: 'Todas las armas disparan simultáneamente durante un periodo de tiempo, aumentando drásticamente la potencia ofensiva.' },
         { id: 'syn-nova', name: 'Nova Solar', reqs: ['w-laser', 'w-plasma', 'p-lightning', 'p-bounce'], icon: '💥', desc: 'Genera un gigantesco rayo prismático que atraviesa todo el escenario, rebota y aplica daño continuo.' },
         { id: 'syn-dragon', name: 'Dragón de Acero', reqs: ['w-flamethrower', 'w-missile', 'w-drones'], icon: '🐉', desc: 'El dron evoluciona en un dragón mecánico que sobrevuela el campo de batalla lanzando napalm continuamente.' },
         { id: 'syn-motor-vacio', name: 'Motor del Vacío', reqs: ['w-gravityfield', 'w-railgun'], icon: '🌀', desc: 'Dispara singularidades capaces de absorber grupos completos de enemigos antes de colapsar en una explosión devastadora.' },
-        { id: 'syn-berserker', name: 'Titán Berserker', reqs: ['w-kinetichammer', 'w-energysword', 'w-dash', 'w-reactor'], icon: '🤖', desc: 'El mecha entra en un estado de combate cuerpo a cuerpo extremo, aumentando la velocidad, la resistencia y el daño de todos los ataques físicos mientras la habilidad permanezca activa.' }
+        { id: 'syn-berserker', name: 'Titán Berserker', reqs: ['w-kinetichammer', 'w-energysword', 'w-dash', 'p-kill-cooldown'], icon: '🤖', desc: 'El mecha entra en un estado de combate cuerpo a cuerpo extremo, aumentando la velocidad, la resistencia y el daño de todos los ataques físicos mientras la habilidad permanezca activa.' }
       ];
 
 
@@ -2882,7 +2993,7 @@ stats.recentRuns = stats.recentRuns || [];
           sector: 1,
           level: 1,
           xp: 0,
-          xpNeeded: 100,
+          xpNeeded: 30,
           waveProgress: 0,
           sectorEnemiesDefeated: 0,
           totalEnemiesDefeated: 0,
@@ -2917,7 +3028,7 @@ stats.recentRuns = stats.recentRuns || [];
           runCoresAwardedV32: false,
 
 
-          // v3.3.0 · sectors, points of interest, hazards, events and adaptive director
+          // v3.3.1 · sectors, points of interest, hazards, events and adaptive director
           sectorCurrentV33: 0,
           sectorEnteredAtV33: 0,
           sectorBannerUntilV33: 0,
@@ -2977,8 +3088,8 @@ stats.recentRuns = stats.recentRuns || [];
             vx: 0,
             vy: 0,
             angle: 0,
-            hp: 100,
-            maxHp: 100,
+            hp: 160,
+            maxHp: 160,
             shield: 0,
             maxShield: 0,
             ammo: 10,
@@ -3232,13 +3343,15 @@ stats.recentRuns = stats.recentRuns || [];
 
       function getWeaponStats(weaponId, lvl) {
         const level = Math.max(1, lvl || 1);
-        const damage = Math.round((WEAPON_BASE_DAMAGE[weaponId] || 20) * (1 + (level - 1) * 0.25));
-        const cooldown = Math.round((WEAPON_BASE_COOLDOWN[weaponId] || 1000) * Math.pow(0.92, level - 1));
+        const utilityIds = new Set(['w-shield','w-repairdrones']);
+        const baseDamage = (WEAPON_BASE_DAMAGE[weaponId] || 20) * (1 + (level - 1) * 0.22);
+        const damage = Math.round(baseDamage * (utilityIds.has(weaponId) ? 1 : 0.68));
+        const cooldown = Math.round((WEAPON_BASE_COOLDOWN[weaponId] || 1000) * Math.pow(0.93, level - 1));
         return { damage, cooldown };
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.3.0';
+      const MEKORA_VERSION = '3.3.1';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -3354,7 +3467,7 @@ stats.recentRuns = stats.recentRuns || [];
         {id:'mission-scrap-150', title:'RECICLADOR INDUSTRIAL', short:'Recoge 150 de chatarra', stat:'scrapCollected', target:150, rewardCores:80, blueprint:'w-rotarycannon', hint:'Busca grupos y enemigos reforzados.'},
         {id:'mission-elite-1', title:'ROMPEBLINDAJES', short:'Derrota 1 enemigo élite', stat:'eliteKills', target:1, rewardCores:100, blueprint:'p-last-magazine', hint:'Los élites muestran piezas adicionales.'},
         {id:'mission-miniboss-1', title:'TALADRO NEUTRALIZADO', short:'Derrota al Taladro Bastión', stat:'minibossKills', target:1, rewardCores:160, blueprint:'w-pistonshotgun', hint:'Provoca una carga fallida y ataca su parte trasera.'},
-        {id:'mission-survive-180', title:'SISTEMA ESTABLE', short:'Sobrevive 3 minutos', stat:'bestSurvivalMs', target:180000, rewardCores:140, blueprint:'w-emp', hint:'La misión registra tu mejor tiempo de supervivencia.'},
+        {id:'mission-survive-180', title:'SISTEMA ESTABLE', short:'Sobrevive 3 minutos', stat:'bestSurvivalMs', target:180000, rewardCores:140, blueprint:'p-cooldown', hint:'La misión registra tu mejor tiempo de supervivencia.'},
         {id:'mission-forge-titan', title:'CAÍDA DE LA FORJA', short:'Derrota al Titán de la Forja', stat:'bossKills', target:1, rewardCores:300, blueprint:'w-railgun', mechBlueprint:'lancer', hint:'Completa las tres fases del jefe Chatarrero.'},
         {id:'mission-pois-8', title:'CARTÓGRAFO DE CAMPO', short:'Activa 8 puntos de interés', stat:'poisDiscovered', target:8, rewardCores:130, blueprint:'p-drone-copy', hint:'Explora cada sector y acércate a los marcadores mecánicos.'},
         {id:'mission-events-3', title:'PROTOCOLO IMPREVISTO', short:'Completa 3 eventos dinámicos', stat:'eventsCompleted', target:3, rewardCores:180, blueprint:'w-orbital', hint:'Los eventos aparecen durante la expedición y alteran la presión.'},
@@ -3373,7 +3486,7 @@ stats.recentRuns = stats.recentRuns || [];
         {id:'wraith',name:'WRAITH',role:'Fase y precisión',price:1500}
       ]);
       const BLUEPRINT_STARTER_V32 = new Set(['w-plasma','w-machinegun','w-shotgun','p-bounce','p-pierce','p-cooldown']);
-      const BLUEPRINT_DISCOVERED_V32 = new Set(['w-energycannon','w-laser','w-missile','w-flamethrower','w-rotarycannon','w-pistonshotgun','w-emp','w-dash','p-lightning','p-extra-projectile','p-last-magazine','p-first-impact']);
+      const BLUEPRINT_DISCOVERED_V32 = new Set(['w-energycannon','w-laser','w-missile','w-flamethrower','w-rotarycannon','w-pistonshotgun','w-dash','p-lightning','p-extra-projectile','p-last-magazine','p-first-impact']);
 
       function initializeEconomyV32() {
         progressionV3.statistics = {...{kills:0,scrapCollected:0,eliteKills:0,minibossKills:0,bossKills:0,bestSurvivalMs:0,poisDiscovered:0,eventsCompleted:0,maxSector:1}, ...(progressionV3.statistics||{})};
@@ -3462,28 +3575,30 @@ stats.recentRuns = stats.recentRuns || [];
       function openHangarV32(){ensureHangarStateV32();state.hangarOpenV32=true;state.hangarTabIndexV32=0;state.hangarItemIndexV32=0;document.getElementById('hangar-modal-v32')?.classList.remove('hidden');updateHangarUIV32();lockConfirmInput(360);}
       function closeHangarV32(){state.hangarOpenV32=false;document.getElementById('hangar-modal-v32')?.classList.add('hidden');state.menuSelectionIndex=0;updateMainMenuUI();lockConfirmInput(300);}
       function getHangarRowDescriptionV32(item,tabId){
-        if(tabId==='missions'){const p=getMissionProgressV32(item);const value=item.stat==='bestSurvivalMs'?Math.floor(p.value/1000):Math.floor(p.value);const target=item.stat==='bestSurvivalMs'?Math.floor(item.target/1000):item.target;return `${item.short} · ${item.rewardCores} Núcleos · ${p.claimed?'RECLAMADA':p.complete?'LISTA PARA RECLAMAR':`${value}/${target}${item.stat==='bestSurvivalMs'?'s':''}`}`;}
-        if(tabId==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';return `${item.role} · ${st==='unlocked'?'DISPONIBLE':st==='discovered'?`${item.price} Núcleos · implementación jugable futura`:'PLANO BLOQUEADO'}`;}
+        const lang=SETTINGS_STATE.language;const w=(es,en,pt)=>lang==='en'?en:lang==='pt'?pt:es;
+        if(tabId==='missions'){const p=getMissionProgressV32(item);const value=item.stat==='bestSurvivalMs'?Math.floor(p.value/1000):Math.floor(p.value);const target=item.stat==='bestSurvivalMs'?Math.floor(item.target/1000):item.target;return `${item.short} · ${item.rewardCores} ${w('Núcleos','Cores','Núcleos')} · ${p.claimed?w('RECLAMADA','CLAIMED','RESGATADA'):p.complete?w('LISTA PARA RECLAMAR','READY TO CLAIM','PRONTA PARA RESGATAR'):`${value}/${target}${item.stat==='bestSurvivalMs'?'s':''}`}`;}
+        if(tabId==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';return `${item.role} · ${st==='unlocked'?w('DISPONIBLE','AVAILABLE','DISPONÍVEL'):st==='discovered'?`${item.price} ${w('Núcleos · implementación jugable futura','Cores · playable implementation pending','Núcleos · implementação jogável futura')}`:w('PLANO BLOQUEADO','BLUEPRINT LOCKED','PROJETO BLOQUEADO')}`;}
         const st=progressionV3.blueprints[item.id]||'locked';
-        if(st==='unlocked')return `${item.desc} · DESBLOQUEADO`;
-        if(st==='discovered')return `${item.desc} · ${getBlueprintPriceV32(item)} Núcleos`;
-        return `SILUETA BLOQUEADA · completa misiones o derrota jefes`;
+        if(st==='unlocked')return `${item.desc} · ${w('DESBLOQUEADO','UNLOCKED','DESBLOQUEADO')}`;
+        if(st==='discovered')return `${item.desc} · ${getBlueprintPriceV32(item)} ${w('Núcleos','Cores','Núcleos')}`;
+        return w('SILUETA BLOQUEADA · completa misiones o derrota jefes','LOCKED SILHOUETTE · complete missions or defeat bosses','SILHUETA BLOQUEADA · complete missões ou derrote chefes');
       }
       function updateHangarUIV32(){
         if(!state.hangarOpenV32)return; ensureHangarStateV32();
+        const lang=SETTINGS_STATE.language;const w=(es,en,pt)=>lang==='en'?en:lang==='pt'?pt:es;
         const cores=document.getElementById('hangar-cores-v32');if(cores)cores.textContent=Math.floor(progressionV3.cores||0);
         const tabs=document.getElementById('hangar-tabs-v32');
         if(tabs)tabs.innerHTML=HANGAR_TABS_V32.map((t,i)=>`<div class="hangar-tab-v32 ${i===state.hangarTabIndexV32?'selected':''}">${t.label}</div>`).join('');
         const tab=HANGAR_TABS_V32[state.hangarTabIndexV32]||HANGAR_TABS_V32[0]; const list=document.getElementById('hangar-list-v32');
-        if(tab.id==='exit'){state.hangarItemIndexV32=0;if(list)list.innerHTML='<div class="hangar-row-v32 selected"><div class="hangar-icon-v32">↩</div><div class="hangar-copy-v32"><strong>VOLVER AL MENÚ</strong><span>Conserva todos los cambios realizados.</span></div><div class="hangar-tag-v32">ROJO</div></div>';return;}
+        if(tab.id==='exit'){state.hangarItemIndexV32=0;if(list)list.innerHTML=`<div class="hangar-row-v32 selected"><div class="hangar-icon-v32">↩</div><div class="hangar-copy-v32"><strong>${w('VOLVER AL MENÚ','RETURN TO MENU','VOLTAR AO MENU')}</strong><span>${w('Conserva todos los cambios realizados.','Keeps every saved change.','Mantém todas as alterações salvas.')}</span></div><div class="hangar-tag-v32">${w('SALIR','EXIT','SAIR')}</div></div>`;return;}
         const items=getHangarItemsV32(tab.id); state.hangarItemIndexV32=Math.max(0,Math.min(items.length-1,state.hangarItemIndexV32));
         const start=Math.max(0,Math.min(Math.max(0,items.length-5),state.hangarItemIndexV32-2)); const visible=items.slice(start,start+5);
         if(list)list.innerHTML=visible.map((item,offset)=>{
           const actual=start+offset; let status=''; let locked=false; let icon=item.icon||'◇';
-          if(tab.id==='missions'){const p=getMissionProgressV32(item);status=p.claimed?'HECHO':p.complete?'RECLAMAR':(progressionV3.pinnedMissions||[]).includes(item.id)?'FIJADA':'FIJAR';icon=p.complete?'✓':'◇';}
-          else if(tab.id==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';status=st==='unlocked'?'LISTO':st==='discovered'?item.price:'BLOQ.';locked=st==='locked';icon=item.id==='vanguard'?'◆':'⬡';}
-          else {const st=progressionV3.blueprints[item.id]||'locked';status=st==='unlocked'?'LISTO':st==='discovered'?getBlueprintPriceV32(item):'BLOQ.';locked=st==='locked';}
-          return `<div class="hangar-row-v32 ${actual===state.hangarItemIndexV32?'selected':''} ${locked?'locked':''}"><div class="hangar-icon-v32">${locked?'?':icon}</div><div class="hangar-copy-v32"><strong>${locked?'PROYECTO DESCONOCIDO':(item.title||item.name)}</strong><span>${getHangarRowDescriptionV32(item,tab.id)}</span></div><div class="hangar-tag-v32">${status}</div></div>`;
+          if(tab.id==='missions'){const p=getMissionProgressV32(item);status=p.claimed?w('HECHO','DONE','FEITO'):p.complete?w('RECLAMAR','CLAIM','RESGATAR'):(progressionV3.pinnedMissions||[]).includes(item.id)?w('FIJADA','PINNED','FIXADA'):w('FIJAR','PIN','FIXAR');icon=p.complete?'✓':'◇';}
+          else if(tab.id==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';status=st==='unlocked'?w('LISTO','READY','PRONTO'):st==='discovered'?item.price:w('BLOQ.','LOCKED','BLOQ.');locked=st==='locked';icon=item.id==='vanguard'?'◆':'⬡';}
+          else {const st=progressionV3.blueprints[item.id]||'locked';status=st==='unlocked'?w('LISTO','READY','PRONTO'):st==='discovered'?getBlueprintPriceV32(item):w('BLOQ.','LOCKED','BLOQ.');locked=st==='locked';}
+          return `<div class="hangar-row-v32 ${actual===state.hangarItemIndexV32?'selected':''} ${locked?'locked':''}"><div class="hangar-icon-v32">${locked?'?':icon}</div><div class="hangar-copy-v32"><strong>${locked?w('PROYECTO DESCONOCIDO','UNKNOWN PROJECT','PROJETO DESCONHECIDO'):(item.title||item.name)}</strong><span>${getHangarRowDescriptionV32(item,tab.id)}</span></div><div class="hangar-tag-v32">${status}</div></div>`;
         }).join('');
       }
       function handleHangarJoystickInputV32(jx,jy){
@@ -3521,7 +3636,7 @@ stats.recentRuns = stats.recentRuns || [];
       function closeFieldShopV32(){state.fieldShopOpenV32=false;state.paused=false;state.nextFieldShopAtV32=(state.playTime||0)+150000;document.getElementById('field-shop-modal-v32')?.classList.add('hidden');lockConfirmInput(260);}
       function updateFieldShopUIV32(){
         updateEconomyHudV32();const list=document.getElementById('field-shop-list-v32');if(!list)return;
-        list.innerHTML=(state.fieldShopOffersV32||[]).map((o,i)=>`<div class="field-shop-row-v32 ${i===state.fieldShopSelectionV32?'selected':''} ${o.sold?'sold':''}"><div>${o.icon}</div><div><strong>${o.title}</strong><span>${o.sold?'AGOTADO':o.desc}</span></div><div class="field-shop-price-v32">${o.id==='exit'?'ROJO':`${o.price} ◇`}</div></div>`).join('');
+        const soldLabel=SETTINGS_STATE.language==='en'?'SOLD OUT':SETTINGS_STATE.language==='pt'?'ESGOTADO':'AGOTADO';const exitLabel=SETTINGS_STATE.language==='en'?'EXIT':SETTINGS_STATE.language==='pt'?'SAIR':'SALIR';const exitDesc=SETTINGS_STATE.language==='en'?'Continue the expedition.':SETTINGS_STATE.language==='pt'?'Continuar a expedição.':'Continuar la expedición.';list.innerHTML=(state.fieldShopOffersV32||[]).map((o,i)=>`<div class="field-shop-row-v32 ${i===state.fieldShopSelectionV32?'selected':''} ${o.sold?'sold':''}"><div>${o.icon}</div><div><strong>${o.id==='exit'?exitLabel:o.title}</strong><span>${o.sold?soldLabel:o.id==='exit'?exitDesc:o.desc}</span></div><div class="field-shop-price-v32">${o.id==='exit'?exitLabel:`${o.price} ◇`}</div></div>`).join('');
       }
       function handleFieldShopJoystickInputV32(jx,jy){const offers=state.fieldShopOffersV32||[];let v=jy<-.5?-1:jy>.5?1:0;if(v&&lastJoystickYDir!==v){lastJoystickYDir=v;state.fieldShopSelectionV32=(state.fieldShopSelectionV32+v+offers.length)%offers.length;updateFieldShopUIV32();vibrate(20);}else if(!v)lastJoystickYDir=0;lastJoystickXDir=0;}
       function applyFieldShopOfferV32(offer){
@@ -3532,7 +3647,7 @@ stats.recentRuns = stats.recentRuns || [];
         else if(offer.id==='evolution')awardEvolutionCoreV302('field_shop');
       }
       function confirmFieldShopActionV32(){
-        const offer=(state.fieldShopOffersV32||[])[state.fieldShopSelectionV32];if(!offer)return;if(offer.id==='exit'){closeFieldShopV32();return;}if(offer.sold){document.getElementById('field-shop-status-v32').textContent='OFERTA AGOTADA';return;}if((state.scrap||0)<offer.price){document.getElementById('field-shop-status-v32').textContent='CHATARRA INSUFICIENTE';return;}state.scrap-=offer.price;applyFieldShopOfferV32(offer);offer.sold=true;document.getElementById('field-shop-status-v32').textContent=`COMPRA COMPLETADA: ${offer.title}`;updateFieldShopUIV32();
+        const offer=(state.fieldShopOffersV32||[])[state.fieldShopSelectionV32];if(!offer)return;if(offer.id==='exit'){closeFieldShopV32();return;}if(offer.sold){document.getElementById('field-shop-status-v32').textContent=SETTINGS_STATE.language==='en'?'OFFER SOLD OUT':SETTINGS_STATE.language==='pt'?'OFERTA ESGOTADA':'OFERTA AGOTADA';return;}if((state.scrap||0)<offer.price){document.getElementById('field-shop-status-v32').textContent=SETTINGS_STATE.language==='en'?'NOT ENOUGH SCRAP':SETTINGS_STATE.language==='pt'?'SUCATA INSUFICIENTE':'CHATARRA INSUFICIENTE';return;}state.scrap-=offer.price;applyFieldShopOfferV32(offer);offer.sold=true;document.getElementById('field-shop-status-v32').textContent=`${SETTINGS_STATE.language==='en'?'PURCHASE COMPLETE':SETTINGS_STATE.language==='pt'?'COMPRA CONCLUÍDA':'COMPRA COMPLETADA'}: ${offer.title}`;updateFieldShopUIV32();
       }
       function maybeOpenFieldShopV32(){if(state.phase==='playing'&&!state.paused&&!state.testMode&&!state.bossEncounterV31?.active&&(state.playTime||0)>=(state.nextFieldShopAtV32||60000))openFieldShopV32();}
       function awardRunCoresV32(){
@@ -4107,7 +4222,7 @@ stats.recentRuns = stats.recentRuns || [];
         });
         vibrate(attackers > 1 ? 70 : 45);
         updateStatsUI();
-        if (state.mecha.hp <= 0) endRun();
+        if (state.mecha.hp <= 0) beginDeathSequenceV331(sourceX, sourceY, timestamp);
         return true;
       }
 
@@ -4120,14 +4235,16 @@ stats.recentRuns = stats.recentRuns || [];
       // COMBAT SIMULATION ENGINE
       //#region enemies_v310 · Chatarreros faction, elite, miniboss, boss and threat director
       const ENEMY_DEFS_V31 = Object.freeze({
-        scrap_hound: { name:'Sabueso de Chatarra', role:'perseguidor', hp:30, speed:2.45, radius:12, color:'#d9633c', contactDamage:6, xp:14, score:90, scrap:3, threat:1 },
-        saw_raider: { name:'Saqueador Sierra', role:'asedio', hp:52, speed:1.55, radius:16, color:'#e48a43', contactDamage:8, xp:20, score:130, scrap:5, threat:2 },
-        scrap_gunner: { name:'Tirador Remachado', role:'tirador', hp:42, speed:1.25, radius:15, color:'#c9a45b', contactDamage:5, xp:22, score:145, scrap:5, threat:2 },
-        mine_junker: { name:'Minador Improvisado', role:'controlador', hp:58, speed:1.05, radius:17, color:'#b9753f', contactDamage:6, xp:26, score:170, scrap:7, threat:3 },
-        drill_bastion: { name:'Taladro Bastión', role:'mini_jefe', hp:760, speed:.95, radius:34, color:'#dd753c', contactDamage:15, xp:120, score:1500, scrap:65, threat:15, miniboss:true },
-        forge_titan: { name:'Titán de la Forja', role:'jefe', hp:2800, speed:.62, radius:52, color:'#d25535', contactDamage:22, xp:300, score:6000, scrap:220, threat:40, boss:true }
+        scrap_hound: { name:'Sabueso de Chatarra', role:'perseguidor', hp:92, speed:3.25, radius:12, color:'#d9633c', contactDamage:9, xp:2, score:90, scrap:3, threat:1 },
+        saw_raider: { name:'Saqueador Sierra', role:'asedio', hp:168, speed:2.22, radius:16, color:'#e48a43', contactDamage:13, xp:5, score:145, scrap:5, threat:2 },
+        scrap_gunner: { name:'Tirador Remachado', role:'tirador', hp:142, speed:1.82, radius:15, color:'#c9a45b', contactDamage:7, xp:5, score:160, scrap:5, threat:2 },
+        mine_junker: { name:'Minador Improvisado', role:'controlador', hp:205, speed:1.55, radius:17, color:'#b9753f', contactDamage:9, xp:8, score:190, scrap:7, threat:3 },
+        scrap_suicide: { name:'Detonador Errante', role:'suicida', hp:118, speed:5.15, radius:14, color:'#d84a32', contactDamage:0, xp:5, score:175, scrap:6, threat:3 },
+        scrap_bomber: { name:'Bombardero de Forja', role:'bombardero', hp:156, speed:5.65, radius:18, color:'#8f6a4e', contactDamage:0, xp:8, score:220, scrap:8, threat:4, flying:true },
+        drill_bastion: { name:'Taladro Bastión', role:'mini_jefe', hp:6200, speed:1.42, radius:36, color:'#dd753c', contactDamage:25, xp:60, score:1800, scrap:80, threat:18, miniboss:true },
+        forge_titan: { name:'Titán de la Forja', role:'jefe', hp:22000, speed:.92, radius:55, color:'#d25535', contactDamage:34, xp:180, score:7500, scrap:260, threat:45, boss:true }
       });
-      const CHATARRERO_BASIC_TYPES_V31 = Object.freeze(['scrap_hound','saw_raider','scrap_gunner','mine_junker']);
+      const CHATARRERO_BASIC_TYPES_V31 = Object.freeze(['scrap_hound','saw_raider','scrap_gunner','mine_junker','scrap_suicide','scrap_bomber']);
 
       function getEnemyDefV31(type) { return ENEMY_DEFS_V31[type] || ENEMY_DEFS_V31.scrap_hound; }
       function getEnemyTypeForSector(sector) {
@@ -4157,10 +4274,10 @@ stats.recentRuns = stats.recentRuns || [];
         enemy.isEliteV31 = true;
         enemy.eliteModifierV31 = modifier;
         enemy.displayNameV31 = `ÉLITE · ${enemy.displayNameV31}`;
-        enemy.maxHp = Math.round(enemy.maxHp * 1.75);
+        enemy.maxHp = Math.round(enemy.maxHp * 2.15);
         enemy.hp = enemy.maxHp;
         enemy.radius = Math.round(enemy.radius * 1.14);
-        enemy.contactDamage = Math.round(enemy.contactDamage * 1.25);
+        enemy.contactDamage = Math.round(enemy.contactDamage * 1.35);
         enemy.scoreRewardV31 = Math.round(enemy.scoreRewardV31 * 2.5);
         enemy.scrapRewardV31 += 22;
         enemy.xpRewardV31 = Math.round(enemy.xpRewardV31 * 2);
@@ -4395,6 +4512,8 @@ stats.recentRuns = stats.recentRuns || [];
         else if(e.type==='saw_raider') { ctx.arc(0,0,e.radius,0,Math.PI*2); for(let k=0;k<8;k++){const a=k*Math.PI/4;ctx.moveTo(Math.cos(a)*e.radius,Math.sin(a)*e.radius);ctx.lineTo(Math.cos(a)*(e.radius+6),Math.sin(a)*(e.radius+6));} }
         else if(e.type==='scrap_gunner') { ctx.rect(-14,-11,28,22);ctx.moveTo(6,-4);ctx.lineTo(25,-4);ctx.lineTo(25,4);ctx.lineTo(6,4); }
         else if(e.type==='mine_junker') { for(let k=0;k<6;k++){const a=k*Math.PI/3;const x=Math.cos(a)*e.radius,y=Math.sin(a)*e.radius;k?ctx.lineTo(x,y):ctx.moveTo(x,y);} }
+        else if(e.type==='scrap_suicide') { ctx.moveTo(18,0);ctx.lineTo(2,-13);ctx.lineTo(-13,-9);ctx.lineTo(-18,0);ctx.lineTo(-13,9);ctx.lineTo(2,13);ctx.moveTo(-5,-12);ctx.lineTo(-12,-20);ctx.moveTo(-5,12);ctx.lineTo(-12,20); }
+        else if(e.type==='scrap_bomber') { ctx.moveTo(25,0);ctx.lineTo(1,-8);ctx.lineTo(-14,-22);ctx.lineTo(-20,-18);ctx.lineTo(-10,-5);ctx.lineTo(-24,0);ctx.lineTo(-10,5);ctx.lineTo(-20,18);ctx.lineTo(-14,22);ctx.lineTo(1,8); }
         else if(e.type==='drill_bastion') { ctx.rect(-26,-22,44,44);ctx.moveTo(18,-14);ctx.lineTo(42,0);ctx.lineTo(18,14); }
         else { ctx.arc(0,0,e.radius,0,Math.PI*2);ctx.moveTo(-e.radius*.8,-12);ctx.lineTo(-e.radius-25,-24);ctx.lineTo(-e.radius-15,0);ctx.lineTo(-e.radius-25,24);ctx.lineTo(-e.radius*.8,12);ctx.moveTo(e.radius*.8,-12);ctx.lineTo(e.radius+25,-24);ctx.lineTo(e.radius+15,0);ctx.lineTo(e.radius+25,24);ctx.lineTo(e.radius*.8,12); }
         ctx.closePath(); ctx.fill(); ctx.stroke();
@@ -4479,7 +4598,7 @@ stats.recentRuns = stats.recentRuns || [];
         progressionV3.statistics={...{poisDiscovered:0,eventsCompleted:0,maxSector:1},...(progressionV3.statistics||{})};
         if(!progressionV3.sectorSystemV33Initialized){
           progressionV3.sectorSystemV33Initialized=true;
-          progressionV3.sectorSystemVersion='3.3.0';
+          progressionV3.sectorSystemVersion='3.3.1';
         }
         saveProgressionV3();
       }
@@ -4716,40 +4835,40 @@ stats.recentRuns = stats.recentRuns || [];
        }
 
        function killEnemy(e, index) {
-         const scoreReward=e.scoreRewardV31||100;
-         state.score += scoreReward;
-         const scrapRewardV32 = e.scrapRewardV31 || 2;
-         state.scrap = (state.scrap||0) + scrapRewardV32;
-         recordEnemyDefeatV32(e, scrapRewardV32);
-         state.sectorEnemiesDefeated++;
-         state.totalEnemiesDefeated = (state.totalEnemiesDefeated || 0) + 1;
-         const xpGained = e.xpRewardV31 || getXpForEnemyType(e.type);
-         state.orbs.push({x:e.x,y:e.y,xpValue:xpGained,radius:e.isBossV31?11:e.isMinibossV31?9:6,color:e.isBossV31?'#ffb24d':'#00ffcc'});
-         const hudScore=document.getElementById('hud-score'); if(hudScore) hudScore.textContent=state.score;
+         const noReward = !!e.noRewardV331;
+         if (!noReward) {
+           const scoreReward=e.scoreRewardV31||100;
+           state.score += scoreReward;
+           const scrapRewardV32 = e.scrapRewardV31 || 2;
+           state.scrap = (state.scrap||0) + scrapRewardV32;
+           recordEnemyDefeatV32(e, scrapRewardV32);
+           state.sectorEnemiesDefeated++;
+           state.totalEnemiesDefeated = (state.totalEnemiesDefeated || 0) + 1;
+           spawnEnergyOrbsV331(e);
+           maybeDropRareConsumableV331(e);
+           const hudScore=document.getElementById('hud-score'); if(hudScore) hudScore.textContent=state.score;
 
-         if (state.passives.includes('p-kill-cooldown')) {
-           const reduction=(state.passiveLevels['p-kill-cooldown']||1)*300;
-           if(state.lastWeaponFireTimes) for(const k in state.lastWeaponFireTimes) state.lastWeaponFireTimes[k]=Math.max(0,state.lastWeaponFireTimes[k]-reduction);
+           if (state.passives.includes('p-kill-cooldown')) {
+             const reduction=(state.passiveLevels['p-kill-cooldown']||1)*220;
+             if(state.lastWeaponFireTimes) for(const k in state.lastWeaponFireTimes) state.lastWeaponFireTimes[k]=Math.max(0,state.lastWeaponFireTimes[k]-reduction);
+           }
+           if(state.passives.includes('p-explode')) triggerSplashExplosion(e.x,e.y,80,30);
+
+           if(e.isEliteV31){state.eliteKillsV31++; progressionV3.cores=(progressionV3.cores||0)+4;}
+           if(e.isMinibossV31){state.minibossKillsV31++; awardEvolutionCoreV302('drill_bastion'); progressionV3.cores=(progressionV3.cores||0)+30; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0};}
+           if(e.isBossV31){state.bossKillsV31++; awardEvolutionCoreV302('forge_titan'); progressionV3.cores=(progressionV3.cores||0)+150; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0}; progressionV3.missions=progressionV3.missions||{}; progressionV3.missions['boss-forge-titan']={completed:true,completedAt:Date.now()};}
+           if(e.isEliteV31||e.isMinibossV31||e.isBossV31) saveProgressionV3();
          }
-         if(state.passives.includes('p-explode')) triggerSplashExplosion(e.x,e.y,80,40);
-
-         let rewardTier=null;
-         if(e.isEliteV31){state.eliteKillsV31++; progressionV3.cores=(progressionV3.cores||0)+4; rewardTier='elite';}
-         if(e.isMinibossV31){state.minibossKillsV31++; awardEvolutionCoreV302('drill_bastion'); progressionV3.cores=(progressionV3.cores||0)+30; rewardTier='miniboss'; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0};}
-         if(e.isBossV31){state.bossKillsV31++; awardEvolutionCoreV302('forge_titan'); progressionV3.cores=(progressionV3.cores||0)+150; rewardTier='boss'; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0}; progressionV3.missions=progressionV3.missions||{}; progressionV3.missions['boss-forge-titan']={completed:true,completedAt:Date.now()};}
-         if(rewardTier) saveProgressionV3();
 
          if (e.type === 'heavy' && e.faction !== 'scrappers') {
            explodeHeavyEnemy(e, index);
-           if(rewardTier) queueRewardDraftV31(rewardTier);
            return;
          }
          handleEventEnemyKilledV33(e);
-         const particleCount=e.isBossV31?70:e.isMinibossV31?40:e.isEliteV31?24:12;
-         for(let p=0;p<particleCount;p++) state.particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*(e.isBossV31?13:8),vy:(Math.random()-.5)*(e.isBossV31?13:8),life:e.isBossV31?42:25,color:e.color||'#ffaa00'});
+         const particleCount=e.isBossV31?90:e.isMinibossV31?55:e.isEliteV31?28:14;
+         for(let p=0;p<particleCount;p++) state.particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*(e.isBossV31?14:8),vy:(Math.random()-.5)*(e.isBossV31?14:8),life:e.isBossV31?48:28,color:e.color||'#ffaa00'});
          state.enemies.splice(index,1);
          updateBossHudV31();
-         if(rewardTier) queueRewardDraftV31(rewardTier);
        }
 
        function applyElementalStatus(enemy) {
@@ -4830,7 +4949,7 @@ stats.recentRuns = stats.recentRuns || [];
 
          // Check player death
          if (state.mecha.hp <= 0) {
-           endRun();
+           beginDeathSequenceV331(e.x, e.y, performance.now());
          }
        }
 
@@ -4851,6 +4970,8 @@ stats.recentRuns = stats.recentRuns || [];
         const dt = Math.min(100, timestamp - state.lastFrameTime);
         state.lastFrameTime = timestamp;
         state.playTime = (state.playTime || 0) + dt;
+        ensureV331State();
+        updateDeathSequenceV331(timestamp, dt);
         updateSectorProgressionV33(timestamp);
         updateDynamicEventsV33();
         maybeSpawnSectorHazardV33();
@@ -4897,6 +5018,7 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.scale(cameraZoom, cameraZoom);
         const halfW = (canvas.width / cameraZoom) / 2;
         const halfH = (canvas.height / cameraZoom) / 2;
+        state.cameraViewV331 = { halfW, halfH, zoom: cameraZoom };
         const cameraX = halfW - state.mecha.x;
         const cameraY = halfH - state.mecha.y;
         ctx.translate(cameraX, cameraY);
@@ -4957,7 +5079,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         // Update Mecha Movement from Move Joystick across open world
-        let speed = (3.5 + (state.mecha.stability / 100) * 1.5) * state.stats.speedMult;
+        let speed = (4.65 + (state.mecha.stability / 100) * 1.75) * state.stats.speedMult;
         if (state.mecha.reactorOverloadUntil && timestamp < state.mecha.reactorOverloadUntil) {
           speed *= 1.5;
         }
@@ -4972,6 +5094,8 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         drawSectorObjectsV33(timestamp);
+        updateRareConsumablesV331(timestamp);
+        spawnPlayerTrailV331(timestamp);
 
         // Update only the primary weapon magazine. Secondary weapons and powers keep running while it reloads.
         updatePrimaryReloadV301(timestamp);
@@ -6110,6 +6234,7 @@ stats.recentRuns = stats.recentRuns || [];
         // Update Bullets
         for (let i = state.bullets.length - 1; i >= 0; i--) {
           const b = state.bullets[i];
+          if (!b.speedBoostedV331) { b.vx *= 1.24; b.vy *= 1.24; b.speedBoostedV331 = true; }
 
           // Missile tracking logic
           if (b.type === 'missile') {
@@ -6773,7 +6898,7 @@ stats.recentRuns = stats.recentRuns || [];
              state.damageNumbers.push({
                x: orb.x,
                y: orb.y - 10,
-               text: `+${orb.xpValue} XP`,
+               text: `+${orb.xpValue} ${SETTINGS_STATE.language==='en'?'ENERGY':SETTINGS_STATE.language==='pt'?'ENERGIA':'ENERGÍA'}`,
                life: 30,
                vx: (Math.random() - 0.5) * 1,
                vy: -1.5,
@@ -6787,7 +6912,7 @@ stats.recentRuns = stats.recentRuns || [];
                  vx: (Math.random() - 0.5) * 4,
                  vy: (Math.random() - 0.5) * 4,
                  life: 15,
-                 color: '#00ffcc'
+                 color: orb.color || '#3e7dc9'
                });
              }
 
@@ -6802,10 +6927,10 @@ stats.recentRuns = stats.recentRuns || [];
            }
 
            ctx.save();
-           ctx.fillStyle = '#00ffcc';
-           ctx.strokeStyle = '#ffffff';
+           ctx.fillStyle = orb.color || '#3e7dc9';
+           ctx.strokeStyle = orb.stroke || '#ffffff';
            ctx.lineWidth = 1.5;
-           ctx.shadowColor = '#00ffcc';
+           ctx.shadowColor = orb.color || '#3e7dc9';
            ctx.shadowBlur = 8 + Math.sin(timestamp * 0.01) * 3;
            ctx.beginPath();
            ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
@@ -6882,6 +7007,7 @@ stats.recentRuns = stats.recentRuns || [];
 
         // Spawn enemy wave if field empty
         updateThreatDirectorV33(timestamp, timeFactor);
+        updateRareEnemySpawnsV331(timestamp);
 
         // Update Active Targets array for Mekora contract/harness
         state.activeTargets.length = 0;
@@ -6928,7 +7054,7 @@ stats.recentRuns = stats.recentRuns || [];
            } else {
            // Initialize/reset vision entry for projectile enemies
            if (e.type === 'square' || e.type === 'purple_arrow') {
-            if (distToPlayer <= visibleRange) {
+            if (isEnemyInsideCombatViewV331(e, 20)) {
               if (!e.hasEnteredVision) {
                 e.hasEnteredVision = true;
                 e.nextShotTime = timestamp + 5000 + (Math.random() - 0.5) * 2000;
@@ -7012,7 +7138,7 @@ stats.recentRuns = stats.recentRuns || [];
            }
 
           // Ranged enemy firing logic
-          if ((e.type === 'square' || e.type === 'purple_arrow') && e.hasEnteredVision && e.nextShotTime !== null && !isStunned) {
+          if ((e.type === 'square' || e.type === 'purple_arrow') && isEnemyInsideCombatViewV331(e,20) && e.hasEnteredVision && e.nextShotTime !== null && !isStunned) {
             const now = timestamp;
             if (now >= e.nextShotTime) {
               let baseFireInterval = 2000;
@@ -7053,6 +7179,8 @@ stats.recentRuns = stats.recentRuns || [];
           }
 
            }
+
+          spawnEnemyTrailV331(e, timestamp);
 
           // Register for harness interactivity state reader
           state.activeTargets.push({ id: e.id, x: e.x - e.radius, y: e.y - e.radius, w: e.radius * 2, h: e.radius * 2 });
@@ -7393,6 +7521,7 @@ stats.recentRuns = stats.recentRuns || [];
         // Update Enemy Projectiles
         for (let i = state.enemyBullets.length - 1; i >= 0; i--) {
           const eb = state.enemyBullets[i];
+          if (!eb.speedBoostedV331) { eb.vx *= 1.32; eb.vy *= 1.32; eb.speedBoostedV331 = true; }
           const enemyBulletSpeedFactor = simulationSpeed;
           eb.x += eb.vx * enemyBulletSpeedFactor;
           eb.y += eb.vy * enemyBulletSpeedFactor;
@@ -7487,7 +7616,7 @@ stats.recentRuns = stats.recentRuns || [];
           p.x += p.vx; p.y += p.vy;
           p.life--;
           ctx.fillStyle = p.color;
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.life / 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(.15, p.life / 5), 0, Math.PI * 2); ctx.fill();
           if (p.life <= 0) state.particles.splice(i, 1);
         }
 
@@ -7602,6 +7731,7 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.save();
         ctx.translate(state.mecha.x, state.mecha.y);
         ctx.rotate(state.mecha.angle);
+        if (state.mecha.hiddenV331) ctx.globalAlpha = 0;
 
         // Core Chassis Graphic
         ctx.fillStyle = getMechaDamageTint(timestamp) || (state.mecha.mismatchedPenalty ? '#ff3366' : '#00ffcc');
@@ -7650,6 +7780,7 @@ stats.recentRuns = stats.recentRuns || [];
         // Draw mini health, shield, and ammo/reload bars above the mecha (horizontal, not rotated)
         ctx.save();
         ctx.translate(state.mecha.x, state.mecha.y);
+        if (state.mecha.hiddenV331 || state.deathSequenceV331?.active) ctx.globalAlpha = 0;
 
         const barW = 58;
         const hpH = 6;
@@ -7699,6 +7830,7 @@ stats.recentRuns = stats.recentRuns || [];
 
         // Restore Camera Transform
         ctx.restore();
+        drawFogV331(timestamp);
 
         enforceTransientEntityLimits();
         rafId = requestAnimationFrame(loop);
@@ -7707,6 +7839,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       //#region roguelite_draft · Roguelite upgrade draft modal logic
        function triggerLevelUp() {
+         if (state.phase !== 'playing' || state.deathSequenceV331?.active || state.xp < state.xpNeeded) return false;
          state.level++;
          state.xp = Math.max(0, state.xp - state.xpNeeded);
          state.xpNeeded = Math.round(state.xpNeeded * 1.5);
@@ -7768,6 +7901,7 @@ stats.recentRuns = stats.recentRuns || [];
            updateDraftMenuUI();
          }, 900);
          updateXpUI();
+         return true;
        }
       //#endregion roguelite_draft
 //#region controls · Non-static dynamic joystick and tap fire handlers
@@ -8152,7 +8286,9 @@ stats.recentRuns = stats.recentRuns || [];
           const isSelected = state.draftSelection === idx;
           const metaV3 = getContentMetaV3(upg.id);
           const rarityV3 = metaV3?.rarity || 'common';
-          const kindLabelV3 = isEvolution ? 'EVOLUCIÓN' : (metaV3?.kind === 'power' ? 'PODER' : metaV3?.kind === 'module' ? 'MÓDULO' : 'ARMA');
+          const langV331=SETTINGS_STATE.language;
+          const wordV331=(es,en,pt)=>langV331==='en'?en:langV331==='pt'?pt:es;
+          const kindLabelV3 = isEvolution ? wordV331('EVOLUCIÓN','EVOLUTION','EVOLUÇÃO') : (metaV3?.kind === 'power' ? wordV331('PODER','POWER','PODER') : metaV3?.kind === 'module' ? wordV331('MÓDULO','MODULE','MÓDULO') : wordV331('ARMA','WEAPON','ARMA'));
           const discovery = (state.draftDiscoveryFlags && state.draftDiscoveryFlags[upg.id]) || {};
 
           const wrapper = document.createElement('div');
@@ -8172,12 +8308,12 @@ stats.recentRuns = stats.recentRuns || [];
           card.innerHTML = `
             <div class="draft-card-topline">
               <span class="draft-card-kind">${kindLabelV3}</span>
-              <span class="draft-new-badge">NUEVO</span>
+              <span class="draft-new-badge">${wordV331('NUEVO','NEW','NOVO')}</span>
             </div>
             <div class="draft-card-icon">${upg.icon}</div>
             <div class="draft-card-title">${upg.title}</div>
             <div class="draft-card-desc">${upg.desc}</div>
-            <div class="draft-card-level">${isEvolution ? 'CONSUME 1 NÚCLEO' : (currentLvl > 0 ? `NIVEL ${currentLvl} → ${Math.min(WEAPON_MAX_LEVEL_V302[upg.id] || 99, currentLvl + 1)}` : 'NIVEL 1')}</div>
+            <div class="draft-card-level">${isEvolution ? wordV331('CONSUME 1 NÚCLEO','CONSUMES 1 CORE','CONSOME 1 NÚCLEO') : (currentLvl > 0 ? `${wordV331('NIVEL','LEVEL','NÍVEL')} ${currentLvl} → ${Math.min(WEAPON_MAX_LEVEL_V302[upg.id] || 99, currentLvl + 1)}` : `${wordV331('NIVEL','LEVEL','NÍVEL')} 1`)}</div>
           `;
           wrapper.appendChild(card);
           container.appendChild(wrapper);
@@ -8957,8 +9093,8 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       function getActiveCameraZoom() {
-        const base = Math.max(.42, Number(SETTINGS_STATE.cameraZoom) || .7);
-        return isImmersiveMode() ? Math.max(.46, base * .78) : base;
+        const configured = Math.max(.74, Number(SETTINGS_STATE.cameraZoom) || .84);
+        return Math.min(1.02, configured + .08);
       }
 
       function syncImmersiveOrientation() {
@@ -9615,6 +9751,390 @@ const btnControlPause = document.getElementById('btn-control-pause');
         });
       }
 
+
+      //#region hotfix_v331 · progression, controls, combat pace and polish
+      const CONTENT_LOCALE_V331 = {"upgrades": {"en": {"w-machinegun": ["Machine Gun", "Fires rapid bursts of kinetic rounds"], "w-energycannon": ["Energy Cannon", "Fires high-impact energy spheres"], "w-laser": ["Continuous Laser", "Fires a continuous piercing laser beam"], "w-shotgun": ["Shrapnel Shotgun", "Fires several projectiles in a short-range cone"], "w-missile": ["Homing Missiles", "Launches missiles that seek and explode on enemies"], "w-grenadelauncher": ["Grenade Launcher", "Launches bouncing grenades that deal area damage"], "w-railgun": ["Linear Railgun", "Fires a hypersonic projectile that pierces everything"], "w-sniper": ["Precision Rifle", "Slow but devastating long-range shot"], "w-flamethrower": ["Flamethrower", "Burns enemies in a timed cone of fire"], "w-plasma": ["Plasma Cannon", "Fires plasma spheres that explode on impact"], "w-energysword": ["Energy Sword", "Fast arcing melee attack"], "w-kinetichammer": ["Kinetic Hammer", "Heavy strike that creates an expanding shockwave"], "w-lance": ["Plasma Lance", "Long-reaching frontal thrust with penetration"], "w-claws": ["Combat Claws", "Extremely fast dual melee attacks"], "w-boomerang": ["Energy Boomerang", "Projectile that damages enemies on the way out and back"], "w-drones": ["Support Drones", "Orbiting drones fire at nearby enemies"], "w-repairdrones": ["Repair Drones", "Periodically restore the mecha armor and shield"], "w-turrets": ["Deployable Turret", "Deploys static turrets that fire automatically"], "w-mines": ["Proximity Mines", "Drops mines that explode when enemies approach"], "w-shield": ["Force Shield", "Creates a temporary protective bubble"], "w-gravityfield": ["Gravity Field", "Creates a zone that pulls and slows enemies"], "w-teleport": ["Teleport", "Instantly moves forward and releases a shockwave"], "w-dash": ["Tactical Boost", "Fast displacement that damages and pushes enemies"], "w-orbital": ["Orbital Strike", "Calls laser bombardments from orbit"], "w-highbeam": ["High Beam", "Fires a massive devastating beam forward"], "w-summons": ["Support Unit", "Summons allied mini-mechas"], "w-rotarycannon": ["Rotary Cannon", "Fire rate rises while firing; spread grows at maximum speed"], "w-pistonshotgun": ["Piston Shotgun", "Short-range kinetic blast that pushes the mecha backward"], "p-bounce": ["Projectile Ricochet", "Bullets bounce between nearby enemies"], "p-pierce": ["Piercing Rounds", "Projectiles pass through targets"], "p-explode": ["Death Explosion", "Enemies explode when destroyed"], "p-fire-zone": ["Fire Zones", "Explosions leave damaging fire zones"], "p-lightning": ["Electric Arcs", "Shots generate chain lightning"], "p-extra-missile": ["Extra Missile", "Every five shots launches a homing missile"], "p-crit-effect": ["Critical Strikes", "Critical hits create energy explosions"], "p-drone-copy": ["Drone Sync", "Drones copy the main weapon projectile"], "p-kill-cooldown": ["Tactical Reactor", "Enemy kills reduce ability cooldowns"], "p-dash-wave": ["Expanding Dash", "Dashes create large shockwaves"], "p-extra-projectile": ["Additional Shots", "The main weapon fires additional projectiles"], "p-elemental": ["Elemental Effects", "Attacks burn, freeze or slow enemies"], "p-shield-reflect": ["Reflective Shield", "Shields reflect enemy projectiles"], "p-melee-wave": ["Energy Waves", "Melee attacks generate energy waves"], "p-evolve": ["Weapon Evolution", "Combines weapons and modules to unlock evolutions"], "p-cooldown": ["Rapid Cooling", "Reduces cooldown for all weapons"], "p-last-magazine": ["Last Magazine", "The final three rounds of the main magazine deal extra damage"], "p-first-impact": ["First Impact", "The first shot after reloading gains damage and penetration"]}, "pt": {"w-machinegun": ["Metralhadora", "Dispara rajadas rápidas de projéteis cinéticos"], "w-energycannon": ["Canhão de Energia", "Dispara esferas de energia de alto impacto"], "w-laser": ["Laser Contínuo", "Dispara um feixe laser contínuo e perfurante"], "w-shotgun": ["Escopeta de Estilhaços", "Dispara vários projéteis em cone a curta distância"], "w-missile": ["Mísseis Teleguiados", "Lança mísseis que perseguem e explodem nos inimigos"], "w-grenadelauncher": ["Lança-granadas", "Lança granadas que ricocheteiam e causam dano em área"], "w-railgun": ["Railgun Linear", "Dispara um projétil hipersônico que atravessa tudo"], "w-sniper": ["Rifle de Precisão", "Disparo lento, porém devastador, a longa distância"], "w-flamethrower": ["Lança-chamas", "Queima inimigos em um cone temporizado de fogo"], "w-plasma": ["Canhão de Plasma", "Dispara esferas de plasma que explodem no impacto"], "w-energysword": ["Espada de Energia", "Ataque corpo a corpo rápido em arco"], "w-kinetichammer": ["Martelo Cinético", "Golpe pesado que cria uma onda de choque expansiva"], "w-lance": ["Lança de Plasma", "Estocada frontal longa e perfurante"], "w-claws": ["Garras de Combate", "Ataques corpo a corpo duplos e muito rápidos"], "w-boomerang": ["Bumerangue de Energia", "Projétil que causa dano na ida e na volta"], "w-drones": ["Drones de Apoio", "Drones orbitais disparam em inimigos próximos"], "w-repairdrones": ["Drones de Reparo", "Restauram periodicamente a blindagem e o escudo"], "w-turrets": ["Torreta Implantável", "Implanta torretas estáticas com disparo automático"], "w-mines": ["Minas de Proximidade", "Solta minas que explodem quando um inimigo se aproxima"], "w-shield": ["Escudo de Força", "Cria uma bolha protetora temporária"], "w-gravityfield": ["Campo Gravitacional", "Cria uma zona que atrai e desacelera inimigos"], "w-teleport": ["Teletransporte", "Move-se instantaneamente para frente e solta uma onda"], "w-dash": ["Impulso Tático", "Deslocamento rápido que causa dano e empurra inimigos"], "w-orbital": ["Ataque Orbital", "Solicita bombardeios laser da órbita"], "w-highbeam": ["Megafeixe de Luz", "Dispara um enorme feixe devastador para frente"], "w-summons": ["Unidade de Apoio", "Invoca mini-mechas aliados"], "w-rotarycannon": ["Canhão Rotativo", "A cadência aumenta durante o fogo; a dispersão cresce no máximo"], "w-pistonshotgun": ["Escopeta de Pistões", "Explosão cinética curta que empurra o mecha para trás"], "p-bounce": ["Ricochete de Projéteis", "As balas ricocheteiam entre inimigos próximos"], "p-pierce": ["Munição Perfurante", "Os projéteis atravessam os alvos"], "p-explode": ["Explosão ao Morrer", "Inimigos explodem ao serem destruídos"], "p-fire-zone": ["Zonas de Fogo", "Explosões deixam áreas de fogo danosas"], "p-lightning": ["Arcos Elétricos", "Disparos geram relâmpagos em cadeia"], "p-extra-missile": ["Míssil Adicional", "A cada cinco disparos lança um míssil teleguiado"], "p-crit-effect": ["Golpes Críticos", "Golpes críticos criam explosões de energia"], "p-drone-copy": ["Sincronia de Drones", "Drones copiam o projétil da arma principal"], "p-kill-cooldown": ["Reator Tático", "Abates reduzem o tempo de recarga das habilidades"], "p-dash-wave": ["Dash Expansivo", "Dashes criam grandes ondas de choque"], "p-extra-projectile": ["Disparos Adicionais", "A arma principal dispara projéteis adicionais"], "p-elemental": ["Efeitos Elementais", "Ataques queimam, congelam ou desaceleram inimigos"], "p-shield-reflect": ["Escudo Refletor", "Escudos refletem projéteis inimigos"], "p-melee-wave": ["Ondas de Energia", "Ataques corpo a corpo geram ondas de energia"], "p-evolve": ["Evolução de Armas", "Combina armas e módulos para liberar evoluções"], "p-cooldown": ["Resfriamento Rápido", "Reduz a recarga de todas as armas"], "p-last-magazine": ["Último Carregador", "As três últimas balas do carregador principal causam dano extra"], "p-first-impact": ["Primeiro Impacto", "O primeiro disparo após recarregar ganha dano e perfuração"]}}, "synergies": {"en": {"syn-napalm": ["Napalm MX-9", "Fires napalm missiles that explode and leave large burning zones."], "syn-vulcan": ["Vulcan Gauss", "Rapid bursts build energy and release a giant electromagnetic round."], "syn-prisma": ["Infinite Prism", "The beam splits, ricochets and pierces targets."], "syn-tesla": ["Tesla Shotgun", "Each pellet creates lightning that jumps between enemies."], "syn-fantasma": ["Phantom Blade", "Each dash creates a spectral copy that repeats attacks."], "syn-singularidad": ["Singularity Hammer", "Every impact creates a small pulling singularity before exploding."], "syn-eclipse": ["Eclipse", "Critical shots cross the whole arena and deal massive damage."], "syn-portamisiles": ["Autonomous Missile Carrier", "The drone independently fires intelligent missiles."], "syn-centinela": ["Solar Sentry", "The turret fires a continuous tracking beam."], "syn-biotoxico": ["Biotoxic Field", "Mines release a persistent toxic cloud."], "syn-criogenico": ["Cryogenic Cannon", "Projectiles freeze every pierced enemy."], "syn-arco-plasma": ["Plasma Arc", "Each shot creates chained electrical discharges."], "syn-represalia": ["Retaliation Shield", "Blocks projectiles and returns amplified damage."], "syn-nanoenjambre": ["Nanoswarm", "The drone splits into repairing and attacking microdrones."], "syn-satelite": ["Exterminator Satellite", "A satellite automatically bombards marked enemies."], "syn-devorador": ["Celestial Devourer", "Missiles are absorbed by a singularity and detonate together."], "syn-relampago": ["Lightning Blade", "Each strike generates powerful electrical arcs."], "syn-incinerador": ["Omega Incinerator", "Flames persist while enemies remain inside the area."], "syn-ricochet": ["Ricochet Shotgun", "Pellets bounce repeatedly without losing power."], "syn-lanza-fotonica": ["Photonic Lance", "Combines an instant piercing shot with a continuous beam."], "syn-sismico": ["Seismic Destroyer", "Impacts create earthquakes and chained explosions."], "syn-dimensional": ["Dimensional Cutter", "Teleporting performs a cut through the entire path."], "syn-helios": ["Helios Swarm", "Three drones orbit and fire interconnected beams."], "syn-apocalipsis": ["Apocalypse Storm", "Calls a continuous rain of intelligent missiles."], "syn-cyclonic": ["Cyclonic Cannon", "Maximum spin pierces and ricochets; every eight hits releases pressure."], "syn-celestial": ["Celestial Arsenal", "All weapons fire together for a short period."], "syn-nova": ["Solar Nova", "Creates a gigantic prism beam that crosses and ricochets."], "syn-dragon": ["Steel Dragon", "The drone evolves into a mechanical napalm dragon."], "syn-motor-vacio": ["Void Engine", "Fires singularities that absorb groups before collapsing."], "syn-berserker": ["Berserker Titan", "Enters an extreme melee state with greater speed, resistance and damage."]}, "pt": {"syn-napalm": ["Napalm MX-9", "Dispara mísseis de napalm que explodem e deixam grandes áreas em chamas."], "syn-vulcan": ["Vulcan Gauss", "Rajadas rápidas acumulam energia e liberam um projétil eletromagnético gigante."], "syn-prisma": ["Prisma Infinito", "O feixe se divide, ricocheteia e perfura alvos."], "syn-tesla": ["Escopeta Tesla", "Cada chumbo cria raios que saltam entre inimigos."], "syn-fantasma": ["Lâmina Fantasma", "Cada dash cria uma cópia espectral que repete ataques."], "syn-singularidad": ["Martelo Singularidade", "Cada impacto cria uma pequena singularidade antes de explodir."], "syn-eclipse": ["Eclipse", "Disparos críticos atravessam toda a arena e causam dano massivo."], "syn-portamisiles": ["Porta-mísseis Autônomo", "O drone dispara mísseis inteligentes de forma independente."], "syn-centinela": ["Sentinela Solar", "A torreta dispara um feixe contínuo de rastreamento."], "syn-biotoxico": ["Campo Biotóxico", "Minas liberam uma nuvem tóxica persistente."], "syn-criogenico": ["Canhão Criogênico", "Projéteis congelam todos os inimigos perfurados."], "syn-arco-plasma": ["Arco de Plasma", "Cada disparo cria descargas elétricas em cadeia."], "syn-represalia": ["Escudo de Retaliação", "Bloqueia projéteis e devolve dano amplificado."], "syn-nanoenjambre": ["Nanoenxame", "O drone se divide em microdrones de reparo e ataque."], "syn-satelite": ["Satélite Exterminador", "Um satélite bombardeia automaticamente inimigos marcados."], "syn-devorador": ["Devorador Celeste", "Mísseis são absorvidos por uma singularidade e detonam juntos."], "syn-relampago": ["Lâmina Relâmpago", "Cada golpe gera poderosos arcos elétricos."], "syn-incinerador": ["Incinerador Ômega", "As chamas persistem enquanto houver inimigos na área."], "syn-ricochet": ["Escopeta Ricochet", "Os chumbos ricocheteiam sem perder potência."], "syn-lanza-fotonica": ["Lança Fotônica", "Combina um disparo perfurante com um feixe contínuo."], "syn-sismico": ["Destruidor Sísmico", "Impactos criam terremotos e explosões em cadeia."], "syn-dimensional": ["Cortador Dimensional", "O teletransporte executa um corte por todo o trajeto."], "syn-helios": ["Enxame Hélio", "Três drones orbitam e disparam feixes conectados."], "syn-apocalipsis": ["Tempestade Apocalipse", "Invoca uma chuva contínua de mísseis inteligentes."], "syn-cyclonic": ["Canhão Ciclônico", "A rotação máxima perfura e ricocheteia; oito impactos liberam pressão."], "syn-celestial": ["Arsenal Celestial", "Todas as armas disparam juntas por um curto período."], "syn-nova": ["Nova Solar", "Cria um gigantesco feixe prismático que atravessa e ricocheteia."], "syn-dragon": ["Dragão de Aço", "O drone evolui para um dragão mecânico de napalm."], "syn-motor-vacio": ["Motor do Vazio", "Dispara singularidades que absorvem grupos antes de colapsar."], "syn-berserker": ["Titã Berserker", "Entra em estado corpo a corpo extremo com mais velocidade, resistência e dano."]}}};
+      const ENERGY_ORB_TIERS_V331 = Object.freeze({
+        blue:{id:'blue',xp:2,color:'#3e7dc9',stroke:'#bdd7f7',radius:5},
+        green:{id:'green',xp:5,color:'#50a869',stroke:'#d0f3d8',radius:6},
+        yellow:{id:'yellow',xp:12,color:'#d3aa3c',stroke:'#fff0ad',radius:7},
+        red:{id:'red',xp:25,color:'#c94e44',stroke:'#ffd0cb',radius:8},
+        purple:{id:'purple',xp:60,color:'#7b58a7',stroke:'#e4d2ff',radius:10}
+      });
+      const DRAFT_AFFINITY_V331 = Object.freeze({
+        fire:['w-flamethrower','w-missile','w-grenadelauncher','p-fire-zone','p-explode','p-elemental','syn-napalm','syn-incinerador','syn-dragon'],
+        kinetic:['w-machinegun','w-shotgun','w-railgun','w-sniper','w-rotarycannon','w-pistonshotgun','p-bounce','p-pierce','p-last-magazine','p-first-impact','syn-vulcan','syn-ricochet','syn-cyclonic'],
+        energy:['w-energycannon','w-laser','w-plasma','w-highbeam','w-lance','p-lightning','syn-prisma','syn-nova','syn-lanza-fotonica'],
+        drone:['w-drones','w-repairdrones','w-turrets','w-summons','p-drone-copy','syn-portamisiles','syn-centinela','syn-nanoenjambre','syn-helios'],
+        mobility:['w-dash','w-teleport','p-dash-wave','syn-fantasma','syn-dimensional','syn-berserker'],
+        defense:['w-shield','w-repairdrones','p-shield-reflect','p-cooldown','p-kill-cooldown','syn-represalia'],
+        gravity:['w-gravityfield','w-orbital','syn-singularidad','syn-devorador','syn-motor-vacio']
+      });
+
+      function ensureV331State(target=state) {
+        if (!target) return target;
+        target.xpNeeded = Math.max(30, Number(target.xpNeeded)||30);
+        target.sectorConsumablesV331 = target.sectorConsumablesV331 || [];
+        target.nextConsumableRollAtV331 = Number(target.nextConsumableRollAtV331)||22000;
+        target.nextSuicideRollAtV331 = Number(target.nextSuicideRollAtV331)||16000;
+        target.nextBomberRollAtV331 = Number(target.nextBomberRollAtV331)||28000;
+        target.deathSequenceV331 = target.deathSequenceV331 || {active:false,startedAt:0,exploded:false,ended:false,cause:''};
+        target.sectorTransitionV331 = target.sectorTransitionV331 || {active:false,target:0,startedAt:0,applied:false};
+        target.mecha.maxHp = Math.max(160, Number(target.mecha.maxHp)||160);
+        target.mecha.hp = Math.min(target.mecha.maxHp, Math.max(0, Number(target.mecha.hp)||target.mecha.maxHp));
+        target.activeWeapons = (target.activeWeapons||[]).filter(id=>id!=='w-emp'&&id!=='w-reactor');
+        delete target.weaponLevels?.['w-emp']; delete target.weaponLevels?.['w-reactor'];
+        return target;
+      }
+
+      const __createStateV331 = createState;
+      createState = function(){ const next=__createStateV331(); next.xpNeeded=30; next.mecha.hp=160; next.mecha.maxHp=160; return ensureV331State(next); };
+      ensureV331State(state);
+
+      // EMP and reactor overload are rare map consumables, never draft cards.
+      for (let i=UPGRADE_POOL.length-1;i>=0;i--) if (UPGRADE_POOL[i].id==='w-emp'||UPGRADE_POOL[i].id==='w-reactor') UPGRADE_POOL.splice(i,1);
+      UPGRADE_BY_ID.delete('w-emp'); UPGRADE_BY_ID.delete('w-reactor');
+      CONTENT_CATALOG_V3.delete('w-emp'); CONTENT_CATALOG_V3.delete('w-reactor');
+      POWER_IDS_V3.delete('w-emp'); POWER_IDS_V3.delete('w-reactor');
+      for (let i=WEAPON_UPGRADES.length-1;i>=0;i--) if (WEAPON_UPGRADES[i].id==='w-emp'||WEAPON_UPGRADES[i].id==='w-reactor') WEAPON_UPGRADES.splice(i,1);
+
+      function isEnemyInsideCombatViewV331(enemy, margin=0) {
+        const view=state.cameraViewV331;
+        if(!view||!enemy)return false;
+        return Math.abs(enemy.x-state.mecha.x)<=view.halfW+margin && Math.abs(enemy.y-state.mecha.y)<=view.halfH+margin;
+      }
+      function predictedPlayerAngleV331(enemy,lead=34) {
+        const vx=(state.moveJoystick?.active?state.moveJoystick.x:0)*lead;
+        const vy=(state.moveJoystick?.active?state.moveJoystick.y:0)*lead;
+        return Math.atan2((state.mecha.y+vy)-enemy.y,(state.mecha.x+vx)-enemy.x);
+      }
+
+      function weightedTierV331(weights) {
+        let cursor=Math.random()*weights.reduce((a,b)=>a+b[1],0);
+        for(const [id,w] of weights){cursor-=w;if(cursor<=0)return id;}
+        return weights[weights.length-1][0];
+      }
+      function tierForEnemyV331(enemy, forcedPurple=false) {
+        if(forcedPurple)return 'purple';
+        if(enemy.isBossV31)return weightedTierV331([['yellow',20],['red',50],['purple',30]]);
+        if(enemy.isMinibossV31)return weightedTierV331([['green',12],['yellow',46],['red',34],['purple',8]]);
+        if(enemy.isEliteV31)return weightedTierV331([['blue',12],['green',45],['yellow',32],['red',10],['purple',1]]);
+        if(enemy.type==='mine_junker'||enemy.type==='scrap_bomber')return weightedTierV331([['blue',58],['green',30],['yellow',10],['red',2]]);
+        if(enemy.type==='saw_raider'||enemy.type==='scrap_gunner'||enemy.type==='scrap_suicide')return weightedTierV331([['blue',70],['green',24],['yellow',5],['red',1]]);
+        return weightedTierV331([['blue',84],['green',14],['yellow',2]]);
+      }
+      function spawnOneEnergyOrbV331(enemy,tierId,offset=0) {
+        const tier=ENERGY_ORB_TIERS_V331[tierId]||ENERGY_ORB_TIERS_V331.blue;
+        const a=Math.random()*Math.PI*2,d=offset+Math.random()*18;
+        state.orbs.push({x:enemy.x+Math.cos(a)*d,y:enemy.y+Math.sin(a)*d,xpValue:tier.xp,radius:tier.radius,color:tier.color,stroke:tier.stroke,tierV331:tier.id,energyOrbV331:true});
+      }
+      function spawnEnergyOrbsV331(enemy) {
+        if(!enemy||enemy.noRewardV331)return 0;
+        let count=0,dropChance=.22;
+        if(enemy.type==='scrap_hound')dropChance=.18;
+        else if(enemy.type==='saw_raider')dropChance=.24;
+        else if(enemy.type==='scrap_gunner')dropChance=.27;
+        else if(enemy.type==='mine_junker')dropChance=.31;
+        else if(enemy.type==='scrap_suicide')dropChance=.30;
+        else if(enemy.type==='scrap_bomber')dropChance=.36;
+        if(enemy.isEliteV31){dropChance=.78;count=1;}
+        if(enemy.isMinibossV31){dropChance=1;count=4;}
+        if(enemy.isBossV31){dropChance=1;count=7;}
+        if(Math.random()>dropChance)return 0;
+        count=Math.max(1,count);
+        for(let i=0;i<count;i++)spawnOneEnergyOrbV331(enemy,tierForEnemyV331(enemy,enemy.isBossV31&&i===count-1),i*4);
+        return count;
+      }
+
+      // Elite/miniboss/boss rewards no longer open free drafts.
+      queueRewardDraftV31 = function(tier='elite') {
+        state.pendingRewardTierV31=null;
+        showEncounterNoticeV31(tier==='boss'?'NÚCLEO DE JEFE RECUPERADO':tier==='miniboss'?'NÚCLEO DE MINI JEFE RECUPERADO':'COMPONENTE ÉLITE RECUPERADO',1300);
+        return false;
+      };
+
+      function getOwnedAffinityTagsV331(stateRef) {
+        const owned=new Set([...(stateRef.activeWeapons||[]),...(stateRef.passives||[]),...(stateRef.activatedSynergies||[])]),tags=new Set();
+        for(const [tag,ids] of Object.entries(DRAFT_AFFINITY_V331))if(ids.some(id=>owned.has(id)))tags.add(tag);
+        return tags;
+      }
+      function contextualDraftWeightV331(item,stateRef) {
+        const tags=getOwnedAffinityTagsV331(stateRef);let mult=1;
+        for(const [tag,ids] of Object.entries(DRAFT_AFFINITY_V331))if(tags.has(tag)&&ids.includes(item.id))mult*=2.15;
+        const owned=item.type==='weapon'?stateRef.activeWeapons.includes(item.id):item.type==='passive'?stateRef.passives.includes(item.id):false;
+        if(owned)mult*=2.35;
+        for(const syn of SYNERGIES){if(syn.reqs?.includes(item.id)&&syn.reqs.some(req=>(stateRef.activeWeapons||[]).includes(req)||(stateRef.passives||[]).includes(req)))mult*=1.55;}
+        return Math.min(8,mult);
+      }
+      selectDraftCardsV3 = function(eligible,count,stateRef) {
+        const filtered=eligible.filter(item=>item.id!=='w-emp'&&item.id!=='w-reactor');
+        const unlocked=filtered.filter(item=>item.type==='evolution'||isContentUnlockedV3(item.id));
+        const pool=unlocked.length?unlocked:filtered,selected=[],forceRare=(progressionV3.pity.rareMisses||0)>=8;
+        for(let slot=0;slot<count&&selected.length<pool.length;slot++){
+          const remaining=pool.filter(item=>!selected.some(x=>x.id===item.id));
+          const rarities=[...new Set(remaining.map(item=>getContentMetaV3(item.id)?.rarity||'common'))];
+          const rarity=chooseRarityV3(rarities,stateRef,forceRare&&slot===0);
+          const candidates=remaining.filter(item=>(getContentMetaV3(item.id)?.rarity||'common')===rarity);
+          const chosen=weightedPickV3(candidates.length?candidates:remaining,item=>{
+            const rejection=progressionV3.pity.rejected[item.id]||0;
+            return contextualDraftWeightV331(item,stateRef)*Math.pow(.76,Math.min(5,rejection));
+          });
+          if(chosen)selected.push(chosen);
+        }
+        return selected;
+      };
+
+      function spawnRareConsumableV331(type,x,y) {
+        ensureV331State();
+        if(state.sectorConsumablesV331.length>=2)return null;
+        const world=getCurrentWorldSize();
+        const c={id:`cons_${Math.random().toString(36).slice(2,9)}`,type,x:Math.max(60,Math.min(world-60,x)),y:Math.max(60,Math.min(world-60,y)),radius:15,expiresAt:(state.playTime||0)+55000};
+        state.sectorConsumablesV331.push(c);return c;
+      }
+      function maybeDropRareConsumableV331(enemy) {
+        if(!enemy||enemy.noRewardV331)return false;
+        let chance=enemy.isBossV31?.16:enemy.isMinibossV31?.075:enemy.isEliteV31?.025:.004;
+        if(Math.random()>chance)return false;
+        return !!spawnRareConsumableV331(Math.random()<.54?'reactor':'emp',enemy.x,enemy.y);
+      }
+      function rollMapConsumableV331() {
+        if(state.sectorConsumablesV331.length||state.testMode)return false;
+        if(Math.random()>.065)return false;
+        const a=Math.random()*Math.PI*2,d=300+Math.random()*360;
+        return !!spawnRareConsumableV331(Math.random()<.58?'reactor':'emp',state.mecha.x+Math.cos(a)*d,state.mecha.y+Math.sin(a)*d);
+      }
+      function useConsumableV331(c,timestamp) {
+        if(c.type==='emp'){
+          let removed=0;
+          for(const e of state.enemies){if(e.hp<=0||!isEnemyInsideCombatViewV331(e,30))continue;if(e.isBossV31||e.isMinibossV31){damageEnemy(e,Math.max(1,Math.round(e.maxHp*.08)),timestamp);e.stunnedUntil=timestamp+1800;}else{e.hp=0;removed++;}}
+          state.enemyBullets=state.enemyBullets.filter(b=>Math.abs(b.x-state.mecha.x)>(state.cameraViewV331?.halfW||500)||Math.abs(b.y-state.mecha.y)>(state.cameraViewV331?.halfH||300));
+          state.empFlash=8;showEncounterNoticeV31(`${SETTINGS_STATE.language==='en'?'MAGNETIC PULSE':SETTINGS_STATE.language==='pt'?'PULSO MAGNÉTICO':'PULSO MAGNÉTICO'} · ${removed} ${SETTINGS_STATE.language==='en'?'TARGETS NEUTRALIZED':SETTINGS_STATE.language==='pt'?'ALVOS NEUTRALIZADOS':'OBJETIVOS NEUTRALIZADOS'}`,1700);playSound('hit');vibrate([70,40,110]);
+        }else{
+          state.mecha.reactorOverloadUntil=timestamp+10000;showEncounterNoticeV31(`${SETTINGS_STATE.language==='en'?'REACTOR OVERLOAD':SETTINGS_STATE.language==='pt'?'SOBRECARGA DO REATOR':'SOBRECARGA DEL REACTOR'} · 10 s`,1700);playSound('equip');vibrate(90);
+        }
+      }
+      function updateRareConsumablesV331(timestamp) {
+        ensureV331State();const now=state.playTime||0;
+        if(now>=state.nextConsumableRollAtV331){rollMapConsumableV331();state.nextConsumableRollAtV331=now+21000+Math.random()*18000;}
+        for(let i=state.sectorConsumablesV331.length-1;i>=0;i--){const c=state.sectorConsumablesV331[i];if(now>c.expiresAt){state.sectorConsumablesV331.splice(i,1);continue;}const dist=Math.hypot(state.mecha.x-c.x,state.mecha.y-c.y);if(dist<30){useConsumableV331(c,timestamp);state.sectorConsumablesV331.splice(i,1);continue;}ctx.save();ctx.translate(c.x,c.y);ctx.rotate(timestamp*.0014);ctx.fillStyle=c.type==='emp'?'#557888':'#a56b3e';ctx.strokeStyle='#eee4d4';ctx.lineWidth=2;ctx.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;const x=Math.cos(a)*c.radius,y=Math.sin(a)*c.radius;k?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#14191d';ctx.font='bold 12px ui-monospace,monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(c.type==='emp'?'M':'R',0,1);ctx.globalAlpha=.55;ctx.beginPath();ctx.arc(0,0,22+Math.sin(timestamp*.006)*2,0,Math.PI*2);ctx.stroke();ctx.restore();}
+      }
+
+      function explosionParticlesV331(x,y,count=70,color='#d16b3e') { for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*12;state.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:24+Math.random()*42,color:i%5===0?'#f5efe6':color});} }
+      function inferDeathCauseV331(sourceX,sourceY) {
+        let nearest=null,best=190;
+        for(const e of state.enemies){const d=Math.hypot(e.x-sourceX,e.y-sourceY);if(d<best){best=d;nearest=e;}}
+        return nearest?.displayNameV31||tr('critical_failure');
+      }
+      function beginDeathSequenceV331(sourceX=state.mecha.x,sourceY=state.mecha.y,timestamp=performance.now()) {
+        ensureV331State();if(state.deathSequenceV331.active||state.phase!=='playing')return false;
+        state.mecha.hp=0;state.isFiring=false;state.moveJoystick.active=false;state.devPauseEnemies=true;
+        state.deathSequenceV331={active:true,startedAt:timestamp,exploded:false,ended:false,cause:inferDeathCauseV331(sourceX,sourceY)};
+        document.body.classList.add('mekora-death-v331');document.getElementById('death-cinematic-v331')?.classList.remove('hidden');
+        showEncounterNoticeV31(tr('reactor_critical'),1800);vibrate([80,70,80,70,140]);return true;
+      }
+      function updateDeathSequenceV331(timestamp,dt) {
+        const seq=state.deathSequenceV331;if(!seq?.active)return;
+        const elapsed=timestamp-seq.startedAt;state.isFiring=false;state.moveJoystick.active=false;state.mecha.damageFlashUntil=timestamp+150;state.mecha.damageFlashAttackers=1;
+        if(elapsed<1500&&timestamp>=(seq.nextSparkAt||0)){seq.nextSparkAt=timestamp+80+Math.random()*70;for(let i=0;i<3;i++)state.particles.push({x:state.mecha.x+(Math.random()-.5)*34,y:state.mecha.y+(Math.random()-.5)*34,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5,life:12+Math.random()*15,color:i?'#e19a48':'#f5f2e9'});}
+        if(elapsed>=1500&&!seq.exploded){seq.exploded=true;state.mecha.hiddenV331=true;document.body.classList.add('mekora-death-explode-v331');explosionParticlesV331(state.mecha.x,state.mecha.y,150,'#d75d37');const radius=250;for(const e of state.enemies){if(Math.hypot(e.x-state.mecha.x,e.y-state.mecha.y)<=radius){e.noRewardV331=true;e.hp=0;}}state.enemyBullets.length=0;playSound('hit');vibrate([180,60,220]);}
+        if(elapsed>=2550&&!seq.ended){seq.ended=true;const title=document.getElementById('gameover-title');if(title)title.textContent=`${tr('destroyed_by')} ${seq.cause}`;document.body.classList.remove('mekora-death-v331','mekora-death-explode-v331');document.getElementById('death-cinematic-v331')?.classList.add('hidden');endRun();}
+      }
+      const __damageTintV331=getMechaDamageTint;
+      getMechaDamageTint=function(timestamp){if(state.deathSequenceV331?.active&&!state.deathSequenceV331.exploded)return Math.floor((timestamp-state.deathSequenceV331.startedAt)/90)%2===0?'#ffffff':'#d55b3e';if(state.sectorTransitionV331?.active&&!state.mecha.hiddenV331)return Math.floor((timestamp-state.sectorTransitionV331.startedAt)/80)%2===0?'#ffffff':'#7e9da2';return __damageTintV331(timestamp);};
+
+      function spawnPlayerTrailV331(timestamp) {
+        if(state.deathSequenceV331?.active||state.sectorTransitionV331?.active||!state.moveJoystick?.active)return;
+        if(timestamp<(state.nextPlayerTrailV331||0))return;state.nextPlayerTrailV331=timestamp+70;
+        const speed=Math.hypot(state.moveJoystick.x,state.moveJoystick.y);if(speed<.18)return;const a=Math.atan2(state.moveJoystick.y,state.moveJoystick.x),side=a+Math.PI/2;
+        for(const sign of [-1,1])state.particles.push({x:state.mecha.x-Math.cos(a)*17+Math.cos(side)*sign*12,y:state.mecha.y-Math.sin(a)*17+Math.sin(side)*sign*12,vx:-Math.cos(a)*(1+Math.random()*1.8)+(Math.random()-.5),vy:-Math.sin(a)*(1+Math.random()*1.8)+(Math.random()-.5),life:14+Math.random()*10,color:'#8b8175'});
+      }
+      function spawnEnemyTrailV331(e,timestamp) {
+        if(!e||e.isDummy||state.deathSequenceV331?.active)return;const lx=e._trailLastXV331??e.x,ly=e._trailLastYV331??e.y,dx=e.x-lx,dy=e.y-ly;e._trailLastXV331=e.x;e._trailLastYV331=e.y;
+        if(dx*dx+dy*dy<.5||timestamp<(e._nextTrailV331||0))return;e._nextTrailV331=timestamp+(e.type==='scrap_suicide'?45:95);const a=Math.atan2(dy,dx),side=a+Math.PI/2;
+        for(const sign of [-1,1])state.particles.push({x:e.x-Math.cos(a)*e.radius*.75+Math.cos(side)*sign*e.radius*.55,y:e.y-Math.sin(a)*e.radius*.75+Math.sin(side)*sign*e.radius*.55,vx:-Math.cos(a)*(1+Math.random()*1.5),vy:-Math.sin(a)*(1+Math.random()*1.5),life:10+Math.random()*9,color:e.type==='scrap_bomber'?'#77736e':'#776c60'});
+      }
+      function drawFogV331(timestamp) {
+        if(!ctx||!canvas)return;ctx.save();const g=ctx.createRadialGradient(canvas.width*.5,canvas.height*.5,Math.min(canvas.width,canvas.height)*.22,canvas.width*.5,canvas.height*.5,Math.max(canvas.width,canvas.height)*.72);g.addColorStop(0,'rgba(120,125,126,.015)');g.addColorStop(.62,'rgba(100,105,106,.075)');g.addColorStop(1,'rgba(49,54,56,.17)');ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.globalAlpha=.07;ctx.fillStyle='#d7d3ca';for(let i=0;i<10;i++){const x=(i*173+timestamp*.012*(i%2?1:-1))%(canvas.width+180)-90,y=(i*89+timestamp*.004)%(canvas.height+100)-50;ctx.beginPath();ctx.ellipse(x,y,70+(i%3)*24,18+(i%4)*5,0,0,Math.PI*2);ctx.fill();}ctx.restore();
+      }
+
+      function detonateSuicideV331(e,timestamp) {
+        if(e.suicideDetonatedV331)return;e.suicideDetonatedV331=true;e.noRewardV331=true;e.hp=0;const radius=145,dist=Math.hypot(state.mecha.x-e.x,state.mecha.y-e.y);if(dist<radius)applyMechaDamage(Math.max(18,Math.round(68*(1-dist/radius))),e.x,e.y,timestamp,1);for(const other of state.enemies){if(other===e||other.hp<=0)continue;const d=Math.hypot(other.x-e.x,other.y-e.y);if(d<radius)damageEnemy(other,Math.round(110*(1-d/radius)),timestamp);}explosionParticlesV331(e.x,e.y,70,'#d95034');playSound('hit');vibrate(80);
+      }
+      function updateRareEnemySpawnsV331(timestamp) {
+        ensureV331State();if(state.testMode||state.deathSequenceV331?.active||state.enemies.some(e=>e.isBossV31))return;const now=state.playTime||0;
+        if(now>=state.nextSuicideRollAtV331){if(!state.enemies.some(e=>e.type==='scrap_suicide')&&Math.random()<.38)safeSpawnAroundPlayerV31('scrap_suicide',500+Math.random()*180);state.nextSuicideRollAtV331=now+15000+Math.random()*17000;}
+        if(now>=state.nextBomberRollAtV331){if(!state.enemies.some(e=>e.type==='scrap_bomber')&&Math.random()<.27)safeSpawnAroundPlayerV31('scrap_bomber',620+Math.random()*150);state.nextBomberRollAtV331=now+26000+Math.random()*26000;}
+      }
+
+      executeBossAttackV31 = function(e,timestamp,angle) {
+        e.attackCycleV331=(e.attackCycleV331||0)+1;
+        if(e.type==='drill_bastion'){
+          const pattern=e.attackCycleV331%3;
+          if(pattern===0){e.chargeAngle=predictedPlayerAngleV331(e,64);e.chargeUntil=timestamp+950;e.suppressContactDamageV31=true;}
+          else if(pattern===1){fireRadialBurstV31(e,10,4.4,13,'#e88b46');fireFanV31(e,angle,5,.75,5.4,14,'#f0bd70');e.vulnerableUntil=timestamp+1100;}
+          else{for(let i=-1;i<=1;i++){const a=angle+i*.35;state.enemyMinesV31.push({x:state.mecha.x+Math.cos(a)*80,y:state.mecha.y+Math.sin(a)*80,radius:58,damage:21,armedAt:timestamp+850,expiresAt:timestamp+6500,color:'#d85d39'});}e.vulnerableUntil=timestamp+1250;}
+          return;
+        }
+        const pattern=e.attackCycleV331%4;
+        if(e.phaseV31===1){if(pattern%2===0){fireRadialBurstV31(e,12,4.2,13,'#ef8742');}else{fireFanV31(e,angle,7,1.1,5.1,15,'#efb55f');state.enemyMinesV31.push({x:state.mecha.x,y:state.mecha.y,radius:70,damage:22,armedAt:timestamp+950,expiresAt:timestamp+5200,color:'#e65b37'});}}
+        else if(e.phaseV31===2){if(pattern===0){fireFanV31(e,angle,9,1.45,5.5,16,'#f0a24e');}else if(pattern===1){fireRadialBurstV31(e,16,4.8,14,'#ef6f3d');safeSpawnAroundPlayerV31('scrap_gunner',480);}else{for(let i=0;i<4;i++){const a=angle+(i-1.5)*.32;state.enemyMinesV31.push({x:state.mecha.x+Math.cos(a)*90,y:state.mecha.y+Math.sin(a)*90,radius:58,damage:22,armedAt:timestamp+800,expiresAt:timestamp+5600,color:'#d85d39'});}}}
+        else{if(pattern===0){fireRadialBurstV31(e,22,5.2,17,'#ff5a3c');}else if(pattern===1){for(let wave=0;wave<3;wave++)setTimeout(()=>{if(e.hp>0)fireFanV31(e,Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x),7,.82,6,19,'#ffd064');},wave*180);}else if(pattern===2){safeSpawnAroundPlayerV31('scrap_suicide',420);safeSpawnAroundPlayerV31('scrap_suicide',500);}else{e.chargeAngle=predictedPlayerAngleV331(e,70);e.chargeUntil=timestamp+720;e.suppressContactDamageV31=true;}}
+        e.vulnerableUntil=timestamp+1050;
+      };
+
+      updateScrapperEnemyV31 = function(e,timestamp,distToPlayer,angle,isStunned,simulationSpeed,visibleRange) {
+        e.suppressContactDamageV31=false;if(isStunned||state.deathSequenceV331?.active||state.sectorTransitionV331?.active)return;
+        const visible=isEnemyInsideCombatViewV331(e,35);
+        if(e.type==='scrap_hound'){moveEnemyTowardV31(e,angle+Math.sin(timestamp*.004+(e.x%17))*.14,e.speed,simulationSpeed);}
+        else if(e.type==='scrap_suicide'){
+          if(e.detonateAtV331){e.attackWarningUntil=e.detonateAtV331;if(timestamp>=e.detonateAtV331)detonateSuicideV331(e,timestamp);else moveEnemyTowardV31(e,predictedPlayerAngleV331(e,18),e.speed*.55,simulationSpeed);return;}
+          moveEnemyTowardV31(e,predictedPlayerAngleV331(e,30),e.speed,simulationSpeed);if(distToPlayer<78){e.detonateAtV331=timestamp+560;e.attackWarningUntil=e.detonateAtV331;}
+        }
+        else if(e.type==='saw_raider'){
+          if(timestamp<(e.windupUntil||0)){e.attackWarningUntil=e.windupUntil;e.chargeAngle=e.chargeAngle*.82+predictedPlayerAngleV331(e,55)*.18;return;}
+          if(timestamp<(e.chargeUntil||0)){e.suppressContactDamageV31=true;moveEnemyTowardV31(e,e.chargeAngle,e.speed*5.8,simulationSpeed);if(distToPlayer<e.radius+25&&timestamp>=(e.nextChargeHitAt||0)){e.nextChargeHitAt=timestamp+900;applyMechaDamage(19,e.x,e.y,timestamp,1);}return;}
+          if(e.chargeUntil&&timestamp>=e.chargeUntil){e.chargeUntil=0;e.vulnerableUntil=timestamp+850;}
+          if(timestamp>=(e.nextActionAt||0)&&distToPlayer<310){e.chargeAngle=predictedPlayerAngleV331(e,58);e.windupUntil=timestamp+610;e.chargeUntil=timestamp+1280;e.nextActionAt=timestamp+3300;e.attackWarningUntil=e.windupUntil;return;}
+          moveEnemyTowardV31(e,angle,e.speed,simulationSpeed);
+        }
+        else if(e.type==='scrap_gunner'){
+          let moveAngle=angle;if(distToPlayer<270)moveAngle=angle+Math.PI;else if(distToPlayer<440)moveAngle=angle+(e.id.charCodeAt(e.id.length-1)%2?1:-1)*Math.PI/2;moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
+          if(!visible){e.pendingAttackAt=0;return;}
+          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt){fireFanV31(e,predictedPlayerAngleV331(e,22),4,.25,5.7,11,'#f1bd6a');e.pendingAttackAt=0;e.nextActionAt=timestamp+1850+Math.random()*450;}
+          else if(!e.pendingAttackAt&&timestamp>=(e.nextActionAt||0)){e.pendingAttackAt=timestamp+480;e.attackWarningUntil=e.pendingAttackAt;}
+        }
+        else if(e.type==='mine_junker'){
+          let moveAngle=angle;if(distToPlayer<240)moveAngle=angle+Math.PI;else if(distToPlayer<410)moveAngle=angle+Math.PI/2;moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
+          if(visible&&timestamp>=(e.nextActionAt||0)){state.enemyMinesV31.push({x:e.x,y:e.y,radius:52,damage:17,armedAt:timestamp+620,expiresAt:timestamp+9500,color:'#d27b38'});e.nextActionAt=timestamp+2700+Math.random()*650;}
+        }
+        else if(e.type==='scrap_bomber'){
+          if(e.flyAngleV331===undefined)e.flyAngleV331=predictedPlayerAngleV331(e,80);moveEnemyTowardV31(e,e.flyAngleV331,e.speed,simulationSpeed);
+          if(visible&&!e.bombDroppedV331&&!e.pendingAttackAt){e.pendingAttackAt=timestamp+450;e.attackWarningUntil=e.pendingAttackAt;}
+          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt&&!e.bombDroppedV331){e.bombDroppedV331=true;e.pendingAttackAt=0;const px=state.mecha.x+(state.moveJoystick.active?state.moveJoystick.x*65:0),py=state.mecha.y+(state.moveJoystick.active?state.moveJoystick.y*65:0);state.enemyMinesV31.push({x:px,y:py,radius:78,damage:28,armedAt:timestamp+900,expiresAt:timestamp+3300,color:'#bd633a'});}
+          if(e.bombDroppedV331&&distToPlayer>1150){e.noRewardV331=true;e.hp=0;}
+        }
+        else if(e.type==='drill_bastion'){
+          if(timestamp<(e.windupUntil||0)){e.attackWarningUntil=e.windupUntil;e.chargeAngle=e.chargeAngle*.86+predictedPlayerAngleV331(e,70)*.14;return;}
+          if(timestamp<(e.chargeUntil||0)){e.suppressContactDamageV31=true;moveEnemyTowardV31(e,e.chargeAngle,e.speed*7.8,simulationSpeed);if(distToPlayer<e.radius+30&&timestamp>=(e.nextChargeHitAt||0)){e.nextChargeHitAt=timestamp+1050;applyMechaDamage(30,e.x,e.y,timestamp,1);}return;}
+          if(e.chargeUntil&&timestamp>=e.chargeUntil){e.chargeUntil=0;e.vulnerableUntil=timestamp+1450;}
+          if(timestamp>=(e.nextActionAt||0)){if(distToPlayer<430&&(e.attackCycleV331||0)%3===0){e.chargeAngle=predictedPlayerAngleV331(e,72);e.windupUntil=timestamp+820;e.chargeUntil=timestamp+1900;e.nextActionAt=timestamp+3900;e.attackWarningUntil=e.windupUntil;}else{e.pendingAttackAt=timestamp+650;e.attackWarningUntil=e.pendingAttackAt;e.nextActionAt=timestamp+3500;}return;}
+          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt){executeBossAttackV31(e,timestamp,angle);e.pendingAttackAt=0;}
+          moveEnemyTowardV31(e,angle,e.speed,simulationSpeed);
+        }
+        else if(e.type==='forge_titan'){
+          const hpRatio=Math.max(0,e.hp/e.maxHp);e.phaseV31=hpRatio>.66?1:(hpRatio>.33?2:3);state.bossEncounterV31.phase=e.phaseV31;
+          if(timestamp<(e.chargeUntil||0)){e.suppressContactDamageV31=true;moveEnemyTowardV31(e,e.chargeAngle,e.speed*6.2,simulationSpeed);if(distToPlayer<e.radius+34&&timestamp>=(e.nextChargeHitAt||0)){e.nextChargeHitAt=timestamp+1200;applyMechaDamage(38,e.x,e.y,timestamp,1);}return;}
+          const preferred=e.phaseV31===1?300:e.phaseV31===2?365:315;const orbit=(e.attackCycleV331||0)%2?1:-1;const moveAngle=distToPlayer<preferred*.72?angle+Math.PI:distToPlayer>preferred?angle:angle+orbit*Math.PI/2;moveEnemyTowardV31(e,moveAngle,e.speed*(e.phaseV31===3?1.32:1),simulationSpeed);
+          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt){executeBossAttackV31(e,timestamp,angle);e.pendingAttackAt=0;e.nextActionAt=timestamp+(e.phaseV31===3?1250:e.phaseV31===2?1700:2200);}
+          else if(!e.pendingAttackAt&&timestamp>=(e.nextActionAt||0)){e.pendingAttackAt=timestamp+(e.phaseV31===3?520:680);e.attackWarningUntil=e.pendingAttackAt;}
+        }
+      };
+
+      // Real viewport firing guard for legacy ranged enemies.
+      const __fireEnemyBulletV331=fireEnemyBulletV31;
+      fireEnemyBulletV31=function(e,angle,speed,damage,color='#ff9b53',radius=5,life=220){if(!isEnemyInsideCombatViewV331(e,40))return false;return __fireEnemyBulletV331(e,angle,speed*1.18,damage,color,radius,life);};
+
+      function applySectorNowV331(next) {
+        state.sector=next;state.sectorCurrentV33=next;state.sectorEnteredAtV33=state.playTime||0;state.sectorEnemiesDefeated=0;const def=getSectorDefV33(next);state.sectorPropsV33=generateSectorPropsV33(def);state.sectorHazardsV33=[];state.nextSectorHazardAtV33=(state.playTime||0)+(def.hazard?9000:99999999);spawnSectorPoisV33(def);state.mecha.x=Math.round(getCurrentWorldSize()*.5);state.mecha.y=Math.round(getCurrentWorldSize()*.5);progressionV3.statistics.maxSector=Math.max(progressionV3.statistics.maxSector||1,next);saveProgressionV3();updateMissionTrackingHudV32();showSectorBannerV33(def);updateSectorHudV33();return def;
+      }
+      function updateSectorTransitionV331(timestamp) {
+        const t=state.sectorTransitionV331;if(!t?.active)return false;const elapsed=timestamp-t.startedAt;
+        if(elapsed>=620&&!t.teleportStarted){t.teleportStarted=true;for(let i=0;i<38;i++)state.particles.push({x:state.mecha.x+(Math.random()-.5)*35,y:state.mecha.y+(Math.random()-.5)*35,vx:(Math.random()-.5)*7,vy:-2-Math.random()*6,life:18+Math.random()*25,color:i%4?'#879da0':'#f2eee6'});}
+        if(elapsed>=900&&!t.applied){t.applied=true;state.mecha.hiddenV331=true;state.enemyBullets.length=0;state.enemies=state.enemies.filter(e=>e.isBossV31||e.isMinibossV31);applySectorNowV331(t.target);}
+        if(elapsed>=1180)state.mecha.hiddenV331=false;
+        if(elapsed>=1750){t.active=false;state.devPauseEnemies=false;document.getElementById('sector-transition-v331')?.classList.add('hidden');showEncounterNoticeV31(`${tr('route_updated')} · ${getSectorDefV33().name}`,1500);return true;}return false;
+      }
+      updateSectorProgressionV33=function(timestamp=performance.now(),force=false){ensureV331State();if(state.sectorTransitionV331.active){updateSectorTransitionV331(timestamp);return false;}const next=Math.min(5,Math.floor((state.playTime||0)/60000)+1);if(next===state.sectorCurrentV33)return false;if(force||state.sectorCurrentV33===0){applySectorNowV331(next);return true;}state.sectorTransitionV331={active:true,target:next,startedAt:timestamp,applied:false,teleportStarted:false};state.devPauseEnemies=true;state.isFiring=false;state.moveJoystick.active=false;const def=getSectorDefV33(next),root=document.getElementById('sector-transition-v331');document.getElementById('sector-transition-title-v331').textContent=`${tr('sector')} ${next}`;document.getElementById('sector-transition-name-v331').textContent=def.name;document.getElementById('sector-transition-detail-v331').textContent=def.subtitle;root?.classList.remove('hidden');return true;};
+
+      function applyContentLocaleV331(lang) {
+        const selected=lang==='en'||lang==='pt'?lang:'es';
+        for(const item of UPGRADE_POOL){item._v331Base=item._v331Base||{title:item.title,desc:item.desc};const loc=CONTENT_LOCALE_V331.upgrades[selected]?.[item.id];item.title=loc?.[0]||item._v331Base.title;item.desc=loc?.[1]||item._v331Base.desc;}
+        for(const item of SYNERGIES){item._v331Base=item._v331Base||{name:item.name,desc:item.desc};const loc=CONTENT_LOCALE_V331.synergies[selected]?.[item.id];item.name=loc?.[0]||item._v331Base.name;item.title=item.name;item.desc=loc?.[1]||item._v331Base.desc;}
+        const sectorLoc={en:[['OUTER SCRAPYARD','Gateway to the recycling chain','More scrap · stable pressure'],['PRESS YARD','Heavy machinery remains active','Periodic presses · frequent raiders'],['RAIL CORRIDOR','Magnetic freight rails','Linear sweeps · reinforced gunners'],['OPEN FOUNDRY','Exposed heat conduits','Thermal vents · more controllers'],['FORGE CORE','Chamber of the Forge Titan','Maximum threat · elites and industrial heat']],pt:[['FERRO-VELHO EXTERNO','Entrada da cadeia de reciclagem','Mais sucata · pressão estável'],['PÁTIO DE PRENSAS','Maquinário pesado ainda ativo','Prensas periódicas · saqueadores frequentes'],['CORREDOR FERROVIÁRIO','Trilhos magnéticos de carga','Varreduras lineares · atiradores reforçados'],['FUNDIÇÃO ABERTA','Condutos de calor expostos','Respiradouros térmicos · mais controladores'],['NÚCLEO DA FORJA','Câmara do Titã da Forja','Ameaça máxima · elites e calor industrial']]};
+        SECTOR_DEFS_V33.forEach((d,i)=>{d._v331Base=d._v331Base||{name:d.name,subtitle:d.subtitle,modifier:d.modifier};const loc=sectorLoc[selected]?.[i];d.name=loc?.[0]||d._v331Base.name;d.subtitle=loc?.[1]||d._v331Base.subtitle;d.modifier=loc?.[2]||d._v331Base.modifier;});
+        const eventLoc={en:{salvage_rain:['DEBRIS RAIN','Scrap fragments fall across the zone'],overdrive:['OVERDRIVE WINDOW','More fire rate, but threat pressure rises'],elite_patrol:['ARMORED PATROL','Destroy the elite squad before it withdraws'],repair_signal:['DISTRESS SIGNAL','Locate and activate the repair relay']},pt:{salvage_rain:['CHUVA DE DESTROÇOS','Fragmentos de sucata caem pela zona'],overdrive:['JANELA DE SOBRECARGA','Mais cadência, mas a pressão inimiga aumenta'],elite_patrol:['PATRULHA BLINDADA','Destrua o esquadrão elite antes que ele recue'],repair_signal:['SINAL DE SOCORRO','Localize e ative o relé de reparo']}};
+        for(const [id,d] of Object.entries(EVENT_DEFS_V33)){d._v331Base=d._v331Base||{title:d.title,detail:d.detail};const loc=eventLoc[selected]?.[id];d.title=loc?.[0]||d._v331Base.title;d.detail=loc?.[1]||d._v331Base.detail;}
+
+        const missionLoc={
+          en:{
+            'mission-kills-25':['FIRST SCRAP','Eliminate 25 enemies','Useful remains finance the next prototype.'],
+            'mission-scrap-150':['INDUSTRIAL RECYCLER','Collect 150 scrap','Search groups and reinforced enemies.'],
+            'mission-elite-1':['ARMOR BREAKER','Defeat 1 elite enemy','Elites display additional armor pieces.'],
+            'mission-miniboss-1':['DRILL NEUTRALIZED','Defeat the Bastion Drill','Bait a failed charge and strike its rear.'],
+            'mission-survive-180':['STABLE SYSTEM','Survive 3 minutes','The mission records your best survival time.'],
+            'mission-forge-titan':['FALL OF THE FORGE','Defeat the Forge Titan','Complete all three phases of the Scrapper boss.'],
+            'mission-pois-8':['FIELD CARTOGRAPHER','Activate 8 points of interest','Explore each sector and approach mechanical markers.'],
+            'mission-events-3':['UNEXPECTED PROTOCOL','Complete 3 dynamic events','Events appear during the expedition and alter pressure.'],
+            'mission-sector-5':['ROUTE TO THE FORGE','Reach Sector 5','Survive the previous four sectors and enter the Forge Core.']
+          },
+          pt:{
+            'mission-kills-25':['PRIMEIRA SUCATA','Elimine 25 inimigos','Restos úteis financiam o próximo protótipo.'],
+            'mission-scrap-150':['RECICLADOR INDUSTRIAL','Colete 150 de sucata','Procure grupos e inimigos reforçados.'],
+            'mission-elite-1':['QUEBRA-BLINDAGEM','Derrote 1 inimigo elite','Elites exibem peças adicionais de blindagem.'],
+            'mission-miniboss-1':['BROCA NEUTRALIZADA','Derrote a Broca Bastião','Provoque uma carga falha e ataque a traseira.'],
+            'mission-survive-180':['SISTEMA ESTÁVEL','Sobreviva 3 minutos','A missão registra seu melhor tempo de sobrevivência.'],
+            'mission-forge-titan':['QUEDA DA FORJA','Derrote o Titã da Forja','Complete as três fases do chefe Sucateiro.'],
+            'mission-pois-8':['CARTÓGRAFO DE CAMPO','Ative 8 pontos de interesse','Explore cada setor e aproxime-se dos marcadores mecânicos.'],
+            'mission-events-3':['PROTOCOLO IMPREVISTO','Complete 3 eventos dinâmicos','Eventos aparecem durante a expedição e alteram a pressão.'],
+            'mission-sector-5':['ROTA PARA A FORJA','Alcance o Setor 5','Sobreviva aos quatro setores anteriores e entre no Núcleo da Forja.']
+          }
+        };
+        MISSION_DEFS_V32.forEach(m=>{m._v331Base=m._v331Base||{title:m.title,short:m.short,hint:m.hint};const loc=missionLoc[selected]?.[m.id];m.title=loc?.[0]||m._v331Base.title;m.short=loc?.[1]||m._v331Base.short;m.hint=loc?.[2]||m._v331Base.hint;});
+
+        const tabLoc={en:{weapons:'WEAPONS',powers:'POWERS',modules:'MODULES',mechs:'MECHS',missions:'MISSIONS',exit:'EXIT'},pt:{weapons:'ARMAS',powers:'PODERES',modules:'MÓDULOS',mechs:'MECHAS',missions:'MISSÕES',exit:'SAIR'}};
+        HANGAR_TABS_V32.forEach(t=>{t._v331Base=t._v331Base||t.label;t.label=tabLoc[selected]?.[t.id]||t._v331Base;});
+        const roleLoc={en:{vanguard:'Balanced',lancer:'Mobility and critical hits',bastion:'Defense and counterattack',weaver:'Drones and control',furnace:'Explosions and heat',wraith:'Phase and precision'},pt:{vanguard:'Equilibrado',lancer:'Mobilidade e críticos',bastion:'Defesa e contra-ataque',weaver:'Drones e controle',furnace:'Explosões e calor',wraith:'Fase e precisão'}};
+        MECH_DEFS_V32.forEach(m=>{m._v331BaseRole=m._v331BaseRole||m.role;m.role=roleLoc[selected]?.[m.id]||m._v331BaseRole;});
+
+        const shopLoc={
+          en:{repair:['QUICK REPAIR','Restores 30 armor.'],ammo:['FULL MAGAZINE','Finishes reload and refills ammunition.'],upgrade:['WEAPON CALIBRATION','Raises the main weapon by one level.'],speed:['SERVOMOTORS','Raises speed by 5% for this run.'],evolution:['EVOLUTION CORE','Provides one core for evolutions.']},
+          pt:{repair:['REPARO RÁPIDO','Restaura 30 de blindagem.'],ammo:['CARREGADOR COMPLETO','Conclui a recarga e repõe a munição.'],upgrade:['CALIBRAÇÃO DE ARMA','Aumenta um nível da arma principal.'],speed:['SERVOMOTORES','Aumenta a velocidade em 5% nesta partida.'],evolution:['NÚCLEO DE EVOLUÇÃO','Fornece um núcleo para evoluções.']}
+        };
+        FIELD_SHOP_DEFS_V32.forEach(o=>{o._v331Base=o._v331Base||{title:o.title,desc:o.desc};const loc=shopLoc[selected]?.[o.id];o.title=loc?.[0]||o._v331Base.title;o.desc=loc?.[1]||o._v331Base.desc;});
+
+        const poiLoc={
+          en:{salvage:['SCRAP CACHE','Scrap recovered'],repair:['REPAIR RELAY','Armor restored'],relay:['TACTICAL REPEATER','Director suppressed'],cache:['COMBAT ARCHIVE','Energy recovered'],overclock:['SERVO BENCH','Temporary fire rate improved']},
+          pt:{salvage:['DEPÓSITO DE SUCATA','Sucata recuperada'],repair:['RELÉ DE REPARO','Blindagem restaurada'],relay:['REPETIDOR TÁTICO','Diretor suprimido'],cache:['ARQUIVO DE COMBATE','Energia recuperada'],overclock:['BANCO DE SERVOS','Cadência temporária melhorada']}
+        };
+        for(const [id,d] of Object.entries(POI_DEFS_V33)){d._v331Base=d._v331Base||{name:d.name,desc:d.desc};const loc=poiLoc[selected]?.[id];d.name=loc?.[0]||d._v331Base.name;d.desc=loc?.[1]||d._v331Base.desc;}
+      }
+
+      Object.assign(UI_I18N.es,{hangar:'HANGAR',orientation_landscape:'GIRA TU DISPOSITIVO EN HORIZONTAL',critical_failure:'FALLO CRÍTICO',reactor_critical:'REACTOR EN ESTADO CRÍTICO',destroyed_by:'DESTRUIDO POR:',route_updated:'RUTA ACTUALIZADA',sector:'SECTOR'});
+      Object.assign(UI_I18N.en,{hangar:'HANGAR',orientation_landscape:'ROTATE YOUR DEVICE TO LANDSCAPE',critical_failure:'CRITICAL FAILURE',reactor_critical:'REACTOR CRITICAL',destroyed_by:'DESTROYED BY:',route_updated:'ROUTE UPDATED',sector:'SECTOR'});
+      Object.assign(UI_I18N.pt,{hangar:'HANGAR',orientation_landscape:'GIRE O DISPOSITIVO PARA O MODO HORIZONTAL',critical_failure:'FALHA CRÍTICA',reactor_critical:'REATOR EM ESTADO CRÍTICO',destroyed_by:'DESTRUÍDO POR:',route_updated:'ROTA ATUALIZADA',sector:'SETOR'});
+      const __applyLanguageV331=applyLanguage;
+      applyLanguage=function(lang,persist=true){const result=__applyLanguageV331(lang,persist);applyContentLocaleV331(SETTINGS_STATE.language);setUiText('btn-main-hangar','hangar');setUiText('orientation-warning-title-v331','orientation_landscape');const touchHint=SETTINGS_STATE.language==='en'?'TOUCH A SECTION AND CARD TO INTERACT':SETTINGS_STATE.language==='pt'?'TOQUE EM UMA SEÇÃO E CARTA PARA INTERAGIR':'TOCA UNA SECCIÓN Y UNA TARJETA PARA INTERACTUAR';const shopHint=SETTINGS_STATE.language==='en'?'TOUCH AN OFFER TO BUY':SETTINGS_STATE.language==='pt'?'TOQUE EM UMA OFERTA PARA COMPRAR':'TOCA UNA OFERTA PARA COMPRAR';const hs=document.getElementById('hangar-status-v32');if(hs&&!state.hangarOpenV32)hs.textContent=touchHint;const hangarSub=document.getElementById('hangar-subtitle-v32');if(hangarSub)hangarSub.textContent=SETTINGS_STATE.language==='en'?'PERMANENT PROGRESSION':SETTINGS_STATE.language==='pt'?'PROGRESSÃO PERMANENTE':'PROGRESIÓN PERMANENTE';const hc=document.querySelector('.hangar-currency-v32 span');if(hc)hc.textContent=SETTINGS_STATE.language==='en'?'CORES':SETTINGS_STATE.language==='pt'?'NÚCLEOS':'NÚCLEOS';const sh=document.querySelector('.field-shop-header-v32 strong');if(sh)sh.textContent=SETTINGS_STATE.language==='en'?'FIELD SHOP':SETTINGS_STATE.language==='pt'?'LOJA DE CAMPO':'TIENDA DE CAMPO';const ss=document.querySelector('.field-shop-header-v32 strong + span');if(ss)ss.textContent=SETTINGS_STATE.language==='en'?'SCRAPPER MERCHANT':SETTINGS_STATE.language==='pt'?'COMERCIANTE SUCATEIRO':'COMERCIANTE CHATARRERO';const sc=document.querySelector('.field-shop-header-v32 > div:last-child span');if(sc)sc.textContent=SETTINGS_STATE.language==='en'?'SCRAP':SETTINGS_STATE.language==='pt'?'SUCATA':'CHATARRA';const fs=document.getElementById('field-shop-status-v32');if(fs)fs.textContent=shopHint;if(state.phase==='draft')updateDraftMenuUI();if(state.hangarOpenV32)updateHangarUIV32();updateSectorHudV33();return result;};
+
+      function decorateHangarTouchV331() {
+        if(!state.hangarOpenV32)return;const tabs=[...document.querySelectorAll('#hangar-tabs-v32 .hangar-tab-v32')];tabs.forEach((el,i)=>el.dataset.tabIndex=i);const tab=HANGAR_TABS_V32[state.hangarTabIndexV32];if(!tab||tab.id==='exit')return;const items=getHangarItemsV32(tab.id),start=Math.max(0,Math.min(Math.max(0,items.length-5),state.hangarItemIndexV32-2));[...document.querySelectorAll('#hangar-list-v32 .hangar-row-v32')].forEach((el,i)=>el.dataset.itemIndex=start+i);
+      }
+      const __updateHangarV331=updateHangarUIV32;
+      updateHangarUIV32=function(){__updateHangarV331();decorateHangarTouchV331();};
+
+      function installDirectTouchNavigationV331() {
+        const action=(id,fn)=>{const el=document.getElementById(id);if(!el)return;el.style.pointerEvents='auto';el.addEventListener('pointerup',ev=>{ev.preventDefault();ev.stopPropagation();initAudio();fn();});};
+        action('btn-main-play',()=>startRun());action('btn-main-hangar',()=>openHangarV32());action('btn-main-global',()=>{stopRun();state.phase='global_network';joystickUsed=true;render();updateGlobalStatsUI();updateGlobalNetworkUI();});action('btn-main-settings',()=>startSettingsMenu());action('btn-main-dev',()=>openDeveloperMenu());
+        action('btn-resume',()=>{state.pauseSelection='resume';confirmInputLockedUntil=0;confirmPauseAction();});action('btn-exit',()=>{state.pauseSelection='exit';confirmInputLockedUntil=0;confirmPauseAction();});action('btn-confirm-exit',()=>{state.pauseSelection='confirm';confirmInputLockedUntil=0;confirmPauseAction();});action('btn-cancel-exit',()=>{state.pauseSelection='cancel';confirmInputLockedUntil=0;confirmPauseAction();});
+        action('btn-gameover-retry',()=>startRun());action('btn-gameover-menu',()=>startMainMenu());action('btn-close-settings',()=>startMainMenu());action('btn-close-global',()=>startMainMenu());
+        document.getElementById('upgrade-cards-container')?.addEventListener('pointerup',ev=>{const card=ev.target.closest('.mekora-draft-wrapper');if(!card||state.phase!=='draft')return;ev.preventDefault();const idx=[...card.parentElement.children].indexOf(card);if(idx!==state.draftSelection){state.draftSelection=idx;state.draftConfirmArmed=false;updateDraftMenuUI();vibrate(22);}else{confirmInputLockedUntil=0;confirmDraftAction();}});
+        document.getElementById('hangar-tabs-v32')?.addEventListener('pointerup',ev=>{const tab=ev.target.closest('.hangar-tab-v32');if(!tab)return;state.hangarTabIndexV32=Number(tab.dataset.tabIndex)||0;state.hangarItemIndexV32=0;updateHangarUIV32();});
+        document.getElementById('hangar-list-v32')?.addEventListener('pointerup',ev=>{const row=ev.target.closest('.hangar-row-v32');if(!row)return;const idx=Number(row.dataset.itemIndex);if(Number.isFinite(idx)&&idx!==state.hangarItemIndexV32){state.hangarItemIndexV32=idx;updateHangarUIV32();}else{confirmInputLockedUntil=0;confirmHangarActionV32();}});
+        document.getElementById('field-shop-list-v32')?.addEventListener('pointerup',ev=>{const row=ev.target.closest('.field-shop-row-v32');if(!row)return;const idx=[...row.parentElement.children].indexOf(row);if(idx!==state.fieldShopSelectionV32){state.fieldShopSelectionV32=idx;updateFieldShopUIV32();}else{confirmInputLockedUntil=0;confirmFieldShopActionV32();}});
+      }
+
+      installPersistentConsoleControls=function(){const pause=document.getElementById('btn-control-pause');if(!pause)return;let dock=document.getElementById('v331-pause-dock');if(!dock){dock=document.createElement('div');dock.id='v331-pause-dock';document.body.appendChild(dock);}dock.appendChild(pause);};
+      syncImmersiveOrientation=function(){const warning=dom.orientationWarning||document.getElementById('orientation-warning');if(!warning)return;const blocked=(state.phase==='playing'||state.phase==='draft')&&window.innerHeight>window.innerWidth;warning.style.display=blocked?'flex':'none';document.body.dataset.immersiveOrientationBlocked=blocked?'true':'false';};
+      async function activateLandscapePlayV331(){document.documentElement.classList.add('mekora-immersive');document.body.classList.add('mekora-immersive');document.body.dataset.immersive='true';try{const req=document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen;if(req&&!getNativeFullscreenElement())await req.call(document.documentElement,{navigationUI:'hide'});}catch(e){setPseudoFullscreen(true);}try{await screen.orientation?.lock?.('landscape');}catch(e){}syncImmersiveOrientation();}
+      const __startRunV331=startRun;
+      startRun=function(isDev=false,isTest=false){__startRunV331(isDev,isTest);ensureV331State();state.xpNeeded=30;state.mecha.hp=state.mecha.maxHp=160;state.activeWeapons=state.activeWeapons.filter(id=>id!=='w-emp'&&id!=='w-reactor');activateLandscapePlayV331();};
+      confirmPauseAction=function(){if(!canAcceptConfirmInput())return;lockConfirmInput(240);if(!state.pauseConfirmState){if(state.pauseSelection==='resume'){state.paused=false;document.getElementById('pause-modal')?.classList.add('hidden');vibrate(35);}else{state.pauseConfirmState=true;state.pauseSelection='cancel';updatePauseMenuUI();vibrate(35);}}else if(state.pauseSelection==='confirm'){triggerExitTransition(state.testMode||state.isDevPlay?'dev':'menu');}else{state.paused=false;state.pauseConfirmState=false;document.getElementById('pause-modal')?.classList.add('hidden');vibrate(35);}};
+
+      const __initAppV331=initApp;
+      initApp=function(){__initAppV331();installDirectTouchNavigationV331();applyLanguage(SETTINGS_STATE.language,false);syncImmersiveOrientation();};
+      window.addEventListener('resize',syncImmersiveOrientation,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(syncImmersiveOrientation,60),{passive:true});
+      //#endregion hotfix_v331
+
+
       if (document.readyState === 'loading') {
         window.addEventListener('DOMContentLoaded', initApp, { once: true });
       } else {
@@ -9624,7 +10144,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
 
       const FACTION_PACKAGE_V31 = Object.freeze({
-        id:'scrappers', name:'Chatarreros', version:'3.3.0',
+        id:'scrappers', name:'Chatarreros', version:'3.3.1',
         basicEnemies:['scrap_hound','saw_raider','scrap_gunner','mine_junker'],
         eliteModifiers:['armored'], minibosses:['drill_bastion'], bosses:['forge_titan']
       });
@@ -9767,6 +10287,26 @@ const btnControlPause = document.getElementById('btn-control-pause');
         openFieldShopForTest(scrap=300) { state.phase='playing';state.started=true;state.testMode=false;state.scrap=Math.max(0,Number(scrap)||0);state.paused=false;render();const opened=openFieldShopV32(true);return {opened,offers:(state.fieldShopOffersV32||[]).map(o=>({id:o.id,price:o.price,sold:o.sold})),scrap:state.scrap}; },
         buyFieldShopOfferForTest(index=0) { state.fieldShopSelectionV32=Math.max(0,Math.min((state.fieldShopOffersV32||[]).length-1,index|0));confirmInputLockedUntil=0;confirmFieldShopActionV32();return {open:state.fieldShopOpenV32,scrap:state.scrap,offers:(state.fieldShopOffersV32||[]).map(o=>({id:o.id,sold:o.sold,price:o.price})),hp:state.mecha.hp,ammo:state.mecha.ammo,speed:state.stats.speedMult}; },
         awardRunCoresForTest() { state.testMode=false;state.runCoresAwardedV32=false;return {award:awardRunCoresV32(),cores:progressionV3.cores}; },
+        v331StateForTest() { ensureV331State(); return {phase:state.phase,level:state.level,xp:state.xp,xpNeeded:state.xpNeeded,orbs:state.orbs.map(o=>({tier:o.tierV331,xpValue:o.xpValue,color:o.color,x:o.x,y:o.y})),consumables:state.sectorConsumablesV331.map(c=>({...c})),death:{...state.deathSequenceV331},transition:{...state.sectorTransitionV331},player:{hp:state.mecha.hp,maxHp:state.mecha.maxHp,speed:(4.65+(state.mecha.stability/100)*1.75)*(state.stats.speedMult||1),hidden:!!state.mecha.hiddenV331},cameraZoom:getActiveCameraZoom(),reactorOverloadUntil:state.mecha.reactorOverloadUntil||0,retiredPowers:{emp:UPGRADE_BY_ID.has('w-emp'),reactor:UPGRADE_BY_ID.has('w-reactor')},hudVisible:(()=>{const el=document.getElementById('ui-layer')||document.querySelector('[data-show-on="playing"]');return el?getComputedStyle(el).display:'missing';})()}; },
+        energyOrbTableV331ForTest() { return Object.fromEntries(Object.entries(ENERGY_ORB_TIERS_V331).map(([id,t])=>[id,{...t}])); },
+        setXpV331ForTest(xp=0,needed=30,level=1) { state.phase='playing';state.started=true;state.paused=false;state.xp=Math.max(0,Number(xp)||0);state.xpNeeded=Math.max(1,Number(needed)||30);state.level=Math.max(1,Number(level)||1);document.getElementById('roguelike-draft-modal')?.classList.add('hidden');updateXpUI();return this.v331StateForTest(); },
+        collectEnergyOrbV331ForTest(tier='blue') { const t=ENERGY_ORB_TIERS_V331[tier]||ENERGY_ORB_TIERS_V331.blue;const before={xp:state.xp,level:state.level,phase:state.phase};state.xp+=t.xp;if(state.xp>=state.xpNeeded)triggerLevelUp();updateXpUI();return {tier,before,after:{xp:state.xp,level:state.level,phase:state.phase},draft:{cards:(state.draftCards||[]).map(c=>({id:c.id,title:c.title,type:c.type})),selected:state.draftSelection,locked:state.draftInputLocked,armed:state.draftConfirmArmed}}; },
+        spawnEnergyOrbV331ForTest(tier='blue',distance=80) { const t=ENERGY_ORB_TIERS_V331[tier]||ENERGY_ORB_TIERS_V331.blue;const orb={x:state.mecha.x+Math.max(0,Number(distance)||0),y:state.mecha.y,radius:t.radius,xpValue:t.xp,color:t.color,stroke:t.stroke,tierV331:tier};state.orbs.push(orb);return {...orb}; },
+        spawnConsumableV331ForTest(type='emp',distance=60) { const c=spawnRareConsumableV331(type,state.mecha.x+Math.max(0,Number(distance)||0),state.mecha.y);return c?{...c}:null; },
+        useConsumableV331ForTest(type='emp') { const c={type,x:state.mecha.x,y:state.mecha.y};useConsumableV331(c,performance.now());return this.v331StateForTest(); },
+        beginDeathV331ForTest(cause='TEST IMPACT') { state.phase='playing';state.started=true;state.paused=false;state.testMode=false;const ok=beginDeathSequenceV331(state.mecha.x,state.mecha.y,performance.now());if(ok)state.deathSequenceV331.cause=cause;return {ok,...this.v331StateForTest()}; },
+        advanceDeathV331ForTest(ms=0) { const start=state.deathSequenceV331?.startedAt||performance.now();updateDeathSequenceV331(start+Math.max(0,Number(ms)||0),16);return this.v331StateForTest(); },
+        setLanguageV331ForTest(lang='en') { applyLanguage(lang,false);return {language:SETTINGS_STATE.language,firstCards:UPGRADE_POOL.slice(0,4).map(x=>({id:x.id,title:x.title,desc:x.desc})),mission:{title:MISSION_DEFS_V32[0].title,short:MISSION_DEFS_V32[0].short},shop:{title:FIELD_SHOP_DEFS_V32[0].title,desc:FIELD_SHOP_DEFS_V32[0].desc},sector:{name:SECTOR_DEFS_V33[0].name,subtitle:SECTOR_DEFS_V33[0].subtitle}}; },
+        enemyTuningV331ForTest() { return Object.fromEntries(Object.entries(ENEMY_DEFS_V31).map(([id,d])=>[id,{hp:d.hp,speed:d.speed,contactDamage:d.contactDamage,role:d.role}])); },
+        weaponStatsV331ForTest(id='w-machinegun',level=1) { return {...getWeaponStats(id,Math.max(1,Number(level)||1))}; },
+        projectileSpeedsV331ForTest() { const mag=o=>Math.hypot(Number(o.vx)||0,Number(o.vy)||0);return {player:state.bullets.map(mag),enemy:state.enemyBullets.map(mag)}; },
+        cycleBossPatternsV331ForTest(id,times=4) { const e=state.enemies.find(v=>v.id===id);if(!e)return null;const before={bullets:state.enemyBullets.length,mines:state.enemyMinesV31.length,cycle:e.attackCycleV331||0};for(let i=0;i<Math.max(1,Number(times)||1);i++)executeBossAttackV31(e,performance.now()+i*100,Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x));return {before,after:{bullets:state.enemyBullets.length,mines:state.enemyMinesV31.length,cycle:e.attackCycleV331||0},bulletColors:[...new Set(state.enemyBullets.slice(before.bullets).map(b=>b.color))]}; },
+        affinityWeightV331ForTest(id='p-fire-zone') { const item=UPGRADE_BY_ID.get(id);return item?{id,weight:contextualDraftWeightV331(item,state),ownedTags:[...getOwnedAffinityTagsV331(state)]}:null; },
+        armEnemyAttackV331ForTest(id,delay=0) { const e=state.enemies.find(v=>v.id===id);if(!e)return null;e.nextActionAt=performance.now()+Math.max(0,Number(delay)||0);e.pendingAttackAt=0;e.windupUntil=0;e.chargeUntil=0;return {id:e.id,nextActionAt:e.nextActionAt}; },
+        setEnemyPositionV331ForTest(id,x,y) { const e=state.enemies.find(v=>v.id===id);if(!e)return null;e.x=Number(x);e.y=Number(y);return {id:e.id,x:e.x,y:e.y,visible:isEnemyInsideCombatViewV331(e,40)}; },
+        clearEnemyBulletsV331ForTest() { state.enemyBullets.length=0;return 0; },
+        triggerSectorTransitionV331ForTest(target=2) { state.phase='playing';state.started=true;state.sectorCurrentV33=Math.max(1,Math.min(5,(Number(target)||2)-1));state.sector=state.sectorCurrentV33;state.playTime=(Math.max(1,Math.min(5,Number(target)||2))-1)*60000;updateSectorProgressionV33(performance.now(),false);return this.v331StateForTest(); },
+        advanceSectorTransitionV331ForTest(ms=0) { const start=state.sectorTransitionV331?.startedAt||performance.now();updateSectorTransitionV331(start+Math.max(0,Number(ms)||0));return this.v331StateForTest(); },
         pauseExitImmersiveForTest() { state.phase='playing'; state.paused=true; state.pauseConfirmState=false; state.pauseSelection='exit'; document.getElementById('pause-modal')?.classList.remove('hidden'); updatePauseMenuUI(); const label=document.getElementById('btn-exit')?.textContent || ''; confirmInputLockedUntil=0; confirmPauseAction(); return {active:isImmersiveMode(),paused:state.paused,phase:state.phase,label}; }
       });
 //#endregion debug_api
