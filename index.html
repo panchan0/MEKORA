@@ -1,4 +1,4 @@
-<html lang="es" style="height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; --mekora-bg: #526176; --mekora-text: #f4f1ea; --mekora-cyan: #79aaa6; --mekora-pink: #b96b78; --mekora-amber: #c79a61; --mekora-panel: #202a36;"><head>
+<html lang="es" style="height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; --mekora-bg: #0b1016; --mekora-text: #f4f1ea; --mekora-cyan: #79aaa6; --mekora-pink: #b96b78; --mekora-amber: #c79a61; --mekora-panel: #202a36;"><head>
 <script>
 
 
@@ -65,7 +65,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>MEKORA - Mecha Roguelike</title>
-<meta name="theme-color" content="#526176">
+<meta name="theme-color" content="#0b1016">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2131,6 +2131,173 @@
   }
 </style>
 
+
+<style id="mekora-v332-fullscreen-interface">
+  :root {
+    --v332-bg:#090d12;
+    --v332-bg-soft:#111820;
+    --v332-panel:#17212b;
+    --v332-panel-2:#202c38;
+    --v332-line:#405064;
+    --v332-text:#f2eee6;
+    --v332-muted:#98a7b4;
+    --v332-cyan:#77b9b4;
+    --v332-amber:#d3a262;
+    --v332-red:#b9636d;
+  }
+  html,body { background:var(--v332-bg)!important; }
+  body::before {
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background:
+      radial-gradient(circle at 16% 10%,rgba(119,185,180,.12),transparent 30%),
+      radial-gradient(circle at 84% 92%,rgba(211,162,98,.09),transparent 34%),
+      linear-gradient(145deg,#080c10,#111820 58%,#0a0f15);
+  }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen {
+    position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;
+    min-height:100dvh!important;padding:0!important;margin:0!important;display:none!important;
+    grid-template:none!important;background:var(--v332-bg)!important;overflow:hidden!important;
+  }
+  body[data-phase="menu"] .screen[data-show-on="menu"],
+  body[data-phase="settings"] .screen[data-show-on="settings"],
+  body[data-phase="global_network"] .screen[data-show-on="global_network"],
+  body[data-phase="dev"] .screen[data-show-on="dev"],
+  body[data-phase="gameover"] .screen[data-show-on="gameover"],
+  body[data-phase="assembly"] .screen[data-show-on="assembly"],
+  body[data-phase="shop"] .screen[data-show-on="shop"] { display:flex!important; }
+
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen > :first-child {
+    position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;
+    min-height:0!important;margin:0!important;padding:calc(env(safe-area-inset-top,0px) + clamp(14px,2.6vw,30px))
+    calc(env(safe-area-inset-right,0px) + clamp(14px,3vw,36px))
+    calc(env(safe-area-inset-bottom,0px) + clamp(14px,2.6vw,30px))
+    calc(env(safe-area-inset-left,0px) + clamp(14px,3vw,36px))!important;
+    border:0!important;border-radius:0!important;box-shadow:none!important;
+    background:
+      linear-gradient(rgba(119,185,180,.045) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(119,185,180,.045) 1px,transparent 1px),
+      radial-gradient(circle at 50% 45%,#18222c 0,#0b1117 72%)!important;
+    background-size:48px 48px,48px 48px,auto!important;
+  }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen > :first-child::after,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen::after { display:none!important;content:none!important; }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .screen > :nth-child(2),
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .console-controls,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) [id*="joystick-move-zone"],
+  body:not([data-phase="playing"]):not([data-phase="draft"]) [id*="tap-fire"],
+  body:not([data-phase="playing"]):not([data-phase="draft"]) #persistent-console-controls,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) #v331-pause-dock { display:none!important; }
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .virtual-screen,
+  body:not([data-phase="playing"]):not([data-phase="draft"]) .console-display { border:0!important;border-radius:0!important;background:transparent!important; }
+
+  /* Main menu: card dashboard instead of a console viewport. */
+  [data-show-on="menu"] > div:first-child { justify-content:center!important;align-items:center!important;gap:clamp(18px,3vh,34px)!important; }
+  [data-show-on="menu"] h1 { margin:0!important;font-size:clamp(38px,7vw,78px)!important;letter-spacing:.13em!important;color:var(--v332-text)!important;text-shadow:0 7px 30px rgba(0,0,0,.55); }
+  [data-show-on="menu"] > div:first-child > div.flex.flex-col { width:min(88vw,920px)!important;max-width:none!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important; }
+  #btn-main-play,#btn-main-hangar,#btn-main-global,#btn-main-settings,#btn-main-dev {
+    min-height:clamp(62px,10vh,98px)!important;padding:14px 18px!important;border:1px solid var(--v332-line)!important;
+    border-radius:16px!important;background:linear-gradient(160deg,var(--v332-panel-2),var(--v332-panel))!important;
+    color:#dbe3e9!important;font-size:clamp(12px,1.8vw,18px)!important;letter-spacing:.08em!important;
+    pointer-events:auto!important;box-shadow:0 12px 32px rgba(0,0,0,.24)!important;
+  }
+  #btn-main-play { grid-column:1/-1;background:linear-gradient(160deg,#344b50,#23343a)!important;border-color:#7ea7a3!important;color:white!important; }
+  #btn-main-dev { border-color:#8d724d!important;color:#f0d3a8!important; }
+  #btn-main-play:active,#btn-main-hangar:active,#btn-main-global:active,#btn-main-settings:active,#btn-main-dev:active { transform:translateY(2px) scale(.99)!important; }
+
+  /* Full-screen Hangar. */
+  #hangar-modal-v32 {
+    position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:900!important;
+    padding:calc(env(safe-area-inset-top,0px) + 18px) calc(env(safe-area-inset-right,0px) + 20px)
+      calc(env(safe-area-inset-bottom,0px) + 16px) calc(env(safe-area-inset-left,0px) + 20px)!important;
+    border:0!important;border-radius:0!important;background:
+      linear-gradient(rgba(119,185,180,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(119,185,180,.04) 1px,transparent 1px),
+      linear-gradient(145deg,#0b1117,#17212a)!important;background-size:44px 44px,44px 44px,auto!important;
+    box-shadow:none!important;overflow:hidden!important;
+  }
+  .hangar-header-v32 { min-height:70px!important;border-bottom:1px solid var(--v332-line)!important; }
+  .hangar-list-v32 { grid-template-columns:repeat(5,minmax(0,1fr))!important;align-content:start!important;overflow:auto!important;padding:4px 2px 10px!important; }
+  .hangar-row-v32 { min-height:clamp(118px,22vh,178px)!important; }
+
+  /* Global network. */
+  [data-show-on="global_network"] > div:first-child { align-items:center!important;justify-content:center!important; }
+  [data-show-on="global_network"] > div:first-child > .relative { position:static!important;width:100%!important;height:100%!important;padding:0!important;display:grid!important;place-items:center!important; }
+  [data-show-on="global_network"] .hud-border {
+    width:min(94vw,1040px)!important;max-width:none!important;height:min(84dvh,720px)!important;
+    padding:clamp(20px,4vw,42px)!important;border:1px solid var(--v332-line)!important;border-radius:20px!important;
+    background:linear-gradient(150deg,rgba(31,44,57,.97),rgba(17,25,33,.98))!important;box-shadow:0 22px 70px rgba(0,0,0,.35)!important;
+  }
+  #global-title { font-size:clamp(18px,3vw,30px)!important;padding-bottom:14px!important;color:#b9d9d6!important; }
+  #btn-close-global { min-height:52px!important;border-radius:12px!important;pointer-events:auto!important; }
+
+  /* Settings as an interactive dashboard. */
+  [data-show-on="settings"] > div:first-child { pointer-events:auto!important;align-items:center!important;justify-content:center!important; }
+  [data-show-on="settings"] .hud-border {
+    width:min(94vw,1040px)!important;max-width:none!important;min-height:min(78dvh,680px)!important;
+    padding:clamp(20px,4vw,42px)!important;border:1px solid var(--v332-line)!important;border-radius:22px!important;
+    background:linear-gradient(150deg,rgba(31,44,57,.98),rgba(17,25,33,.98))!important;box-shadow:0 22px 70px rgba(0,0,0,.35)!important;
+  }
+  #settings-title { font-size:clamp(22px,3.6vw,38px)!important;margin-bottom:clamp(18px,3vh,30px)!important;color:#b9d9d6!important; }
+  [data-show-on="settings"] .w-full.space-y-3 { display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important;margin:0!important; }
+  [data-show-on="settings"] [data-settings-idx] {
+    margin:0!important;padding:16px!important;border:1px solid #3b4c5e!important;border-radius:16px!important;
+    background:linear-gradient(160deg,#22303d,#17212a)!important;pointer-events:auto!important;
+  }
+  [data-show-on="settings"] [data-settings-idx="2"],
+  [data-show-on="settings"] [data-settings-idx="3"] { grid-column:1/-1!important; }
+  #slider-bgm,#slider-sfx,.lang-btn,#btn-close-settings,#settings-version-text { pointer-events:auto!important;touch-action:manipulation!important; }
+  .lang-btn { min-height:48px!important;border-radius:12px!important; }
+  #btn-close-settings { min-height:54px!important;border-radius:12px!important; }
+  #settings-version-text { margin-top:18px!important;color:#6f8190!important; }
+
+  /* Developer: full screen and touch-first. */
+  [data-show-on="dev"] .console-display { display:flex!important;align-items:stretch!important;justify-content:stretch!important; }
+  [data-show-on="dev"] .compact-console-panel {
+    width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;padding:clamp(18px,3vw,34px)!important;
+    border:0!important;border-radius:0!important;background:transparent!important;display:grid!important;
+    grid-template-rows:auto auto minmax(0,1fr) auto auto!important;gap:14px!important;box-shadow:none!important;
+  }
+  [data-show-on="dev"] h2 { font-size:clamp(24px,4vw,42px)!important;color:#b9d9d6!important; }
+  .dev-tab-grid { gap:8px!important; }
+  .dev-tab { min-height:48px!important;border-radius:12px!important;pointer-events:auto!important;touch-action:manipulation!important;font-size:clamp(9px,1.4vw,13px)!important; }
+  .dev-list { height:auto!important;max-height:none!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;overflow:auto!important;align-content:start!important;padding:2px!important; }
+  .dev-row { min-height:64px!important;padding:12px 14px!important;border-radius:13px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(160deg,#22303d,#17212a)!important; }
+  .dev-row.selected { border-color:var(--v332-amber)!important;box-shadow:inset 0 -3px #9a6a39!important; }
+  .dev-status { min-height:28px!important;text-align:center!important;color:#92a2ae!important; }
+  #dev-touch-toolbar { display:grid;grid-template-columns:auto 1fr auto auto;gap:9px; }
+  #dev-touch-toolbar button { min-height:46px;padding:8px 14px;border:1px solid var(--v332-line);border-radius:12px;background:#202c38;color:#dbe4ea;font:800 10px ui-sans-serif,system-ui;letter-spacing:.05em;touch-action:manipulation; }
+  #dev-touch-toolbar button:active { transform:translateY(1px);background:#304251; }
+  #dev-touch-toolbar .dev-touch-back { border-color:#8a5960;color:#f0c9ce; }
+  #dev-touch-toolbar .dev-touch-level { border-color:#8a744e;color:#f0d3a8; }
+  #dev-touch-toolbar .dev-touch-level[disabled] { opacity:.28; }
+
+  /* Game over: full-screen presentation, no console frame. */
+  [data-show-on="gameover"] .console-display { display:grid!important;place-items:center!important; }
+  .gameover-panel { width:min(88vw,720px)!important;max-width:none!important;padding:clamp(24px,5vw,54px)!important;border-radius:22px!important;background:linear-gradient(150deg,#202c38,#151d26)!important; }
+  .gameover-action { min-height:52px!important;border-radius:12px!important;pointer-events:auto!important; }
+
+  @media (orientation:portrait) {
+    [data-show-on="menu"] > div:first-child > div.flex.flex-col { grid-template-columns:1fr!important;width:min(88vw,620px)!important; }
+    #btn-main-play { grid-column:auto!important; }
+    [data-show-on="settings"] .w-full.space-y-3 { grid-template-columns:1fr!important; }
+    [data-show-on="settings"] [data-settings-idx="2"],[data-show-on="settings"] [data-settings-idx="3"] { grid-column:auto!important; }
+    .dev-list { grid-template-columns:1fr!important; }
+    .hangar-list-v32 { grid-template-columns:repeat(2,minmax(0,1fr))!important; }
+  }
+  @media (orientation:landscape) and (max-height:500px) {
+    [data-show-on="menu"] h1 { font-size:34px!important; }
+    #btn-main-play,#btn-main-hangar,#btn-main-global,#btn-main-settings,#btn-main-dev { min-height:52px!important; }
+    [data-show-on="settings"] .hud-border { min-height:0!important;height:100%!important;padding:14px 20px!important; }
+    #settings-title { font-size:22px!important;margin-bottom:10px!important; }
+    [data-show-on="settings"] [data-settings-idx] { padding:10px 12px!important; }
+    [data-show-on="dev"] .compact-console-panel { padding:12px 18px!important;gap:8px!important; }
+    [data-show-on="dev"] h2 { font-size:22px!important; }
+    .dev-tab { min-height:34px!important; }
+    .dev-row { min-height:45px!important;padding:8px 10px!important; }
+    #dev-touch-toolbar button { min-height:36px!important; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -2519,7 +2686,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.3.1</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA v3.3.2</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -3351,7 +3518,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.3.1';
+      const MEKORA_VERSION = '3.3.2';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -4261,7 +4428,7 @@ stats.recentRuns = stats.recentRuns || [];
           vx:0, vy:0, hp:Math.round(def.hp * sectorScale), maxHp:Math.round(def.hp * sectorScale),
           radius:def.radius, speed:def.speed, color:def.color, contactDamage:def.contactDamage,
           xpRewardV31:def.xp, scoreRewardV31:def.score, scrapRewardV31:def.scrap, threatCostV31:def.threat,
-          explodeTimer:null, hasEnteredVision:false, nextShotTime:null, nextActionAt:performance.now()+700+Math.random()*700,
+          explodeTimer:null, hasEnteredVision:false, nextShotTime:null, nextActionAt:performance.now()+700+Math.random()*1900, fireCadenceOffsetV332:Math.random()*1300, fireIntervalV332:1750+Math.random()*1050, fireWindupV332:360+Math.random()*360,
           attackWarningUntil:0, pendingAttackAt:0, vulnerableUntil:0, chargeUntil:0, windupUntil:0,
           chargeAngle:0, nextMeleeHitAt:0, isMinibossV31:!!def.miniboss, isBossV31:!!def.boss,
           phaseV31:1, suppressContactDamageV31:false
@@ -4562,15 +4729,15 @@ stats.recentRuns = stats.recentRuns || [];
       //#region sectors_v330 · Sector route, POIs, hazards, events and adaptive threat director
       const SECTOR_DEFS_V33 = Object.freeze([
         {id:'outer_scrapyard', index:1, name:'DESGUACE EXTERIOR', subtitle:'Entrada a la cadena de reciclaje', modifier:'Más chatarra · presión estable', bg:'#11161a', grid:'rgba(154,174,178,.11)', accent:'#8e9ba0', hazard:null, hazardInterval:0,
-          weights:{scrap_hound:.55,saw_raider:.25,scrap_gunner:.20,mine_junker:0}},
+          weights:{scrap_hound:.65,saw_raider:.25,scrap_gunner:.10,mine_junker:0}},
         {id:'press_yard', index:2, name:'PATIO DE PRENSAS', subtitle:'Maquinaria pesada todavía activa', modifier:'Prensas periódicas · asaltantes frecuentes', bg:'#181714', grid:'rgba(191,148,88,.12)', accent:'#b9874f', hazard:'press', hazardInterval:17000,
-          weights:{scrap_hound:.28,saw_raider:.34,scrap_gunner:.18,mine_junker:.20}},
+          weights:{scrap_hound:.34,saw_raider:.36,scrap_gunner:.10,mine_junker:.20}},
         {id:'rail_corridor', index:3, name:'CORREDOR FERROVIARIO', subtitle:'Rieles magnéticos de carga', modifier:'Barridos lineales · tiradores reforzados', bg:'#12171a', grid:'rgba(104,159,169,.12)', accent:'#6f9ca5', hazard:'rail', hazardInterval:15000,
-          weights:{scrap_hound:.20,saw_raider:.20,scrap_gunner:.45,mine_junker:.15}},
+          weights:{scrap_hound:.30,saw_raider:.24,scrap_gunner:.26,mine_junker:.20}},
         {id:'open_foundry', index:4, name:'FUNDICIÓN ABIERTA', subtitle:'Conductos de calor expuestos', modifier:'Respiraderos térmicos · más controladores', bg:'#1a1412', grid:'rgba(191,104,66,.13)', accent:'#b76445', hazard:'heat', hazardInterval:13500,
-          weights:{scrap_hound:.22,saw_raider:.28,scrap_gunner:.20,mine_junker:.30}},
+          weights:{scrap_hound:.28,saw_raider:.30,scrap_gunner:.12,mine_junker:.30}},
         {id:'forge_core', index:5, name:'NÚCLEO DE FORJA', subtitle:'Cámara del Titán de la Forja', modifier:'Amenaza máxima · élites y calor industrial', bg:'#171111', grid:'rgba(187,77,57,.14)', accent:'#c45c43', hazard:'core', hazardInterval:12000,
-          weights:{scrap_hound:.18,saw_raider:.25,scrap_gunner:.25,mine_junker:.32}}
+          weights:{scrap_hound:.26,saw_raider:.27,scrap_gunner:.15,mine_junker:.32}}
       ]);
       const POI_DEFS_V33 = Object.freeze({
         salvage:{name:'DEPÓSITO DE CHATARRA',color:'#c99452',icon:'◇',desc:'Chatarra recuperada'},
@@ -4598,7 +4765,7 @@ stats.recentRuns = stats.recentRuns || [];
         progressionV3.statistics={...{poisDiscovered:0,eventsCompleted:0,maxSector:1},...(progressionV3.statistics||{})};
         if(!progressionV3.sectorSystemV33Initialized){
           progressionV3.sectorSystemV33Initialized=true;
-          progressionV3.sectorSystemVersion='3.3.1';
+          progressionV3.sectorSystemVersion='3.3.2';
         }
         saveProgressionV3();
       }
@@ -4750,7 +4917,7 @@ stats.recentRuns = stats.recentRuns || [];
         if(now>=(state.nextSectorEventAtV33||35000)&&!state.bossEncounterV31?.active&&!state.fieldShopOpenV32)startSectorEventV33();
       }
       function getDirectorSquadsV33(sector=state.sector) {
-        const squads=[{id:'pack',types:['scrap_hound','scrap_hound','scrap_hound'],cost:3},{id:'breach',types:['saw_raider','scrap_hound'],cost:3},{id:'fireteam',types:['scrap_gunner','scrap_gunner','scrap_hound'],cost:5}];
+        const squads=[{id:'pack',types:['scrap_hound','scrap_hound','scrap_hound'],cost:3},{id:'breach',types:['saw_raider','scrap_hound'],cost:3},{id:'fireteam',types:['scrap_gunner','scrap_hound','scrap_hound'],cost:4}];
         if(sector>=2)squads.push({id:'mine_screen',types:['mine_junker','scrap_hound','scrap_hound'],cost:5});if(sector>=4)squads.push({id:'assault',types:['saw_raider','scrap_gunner','mine_junker'],cost:7});return squads;
       }
       function spawnSquadV33(squad=null,eliteChance=0) {
@@ -7057,7 +7224,7 @@ stats.recentRuns = stats.recentRuns || [];
             if (isEnemyInsideCombatViewV331(e, 20)) {
               if (!e.hasEnteredVision) {
                 e.hasEnteredVision = true;
-                e.nextShotTime = timestamp + 5000 + (Math.random() - 0.5) * 2000;
+                e.fireCadenceOffsetV332=e.fireCadenceOffsetV332??Math.random()*1800;e.fireIntervalV332=e.fireIntervalV332??(e.type==='square'?850+Math.random()*850:2450+Math.random()*1500);e.nextShotTime = timestamp + 900 + e.fireCadenceOffsetV332;
               }
             } else {
               e.hasEnteredVision = false;
@@ -7161,8 +7328,8 @@ stats.recentRuns = stats.recentRuns || [];
                 bulletRadius = 8;
               }
 
-              const variation = (Math.random() - 0.5) * (baseFireInterval * 0.5);
-              e.nextShotTime = now + baseFireInterval + variation;
+              const personalInterval=e.fireIntervalV332||(baseFireInterval*.8+Math.random()*baseFireInterval*.8);const variation=(Math.random()-.5)*(personalInterval*.28);e.fireIntervalV332=Math.max(baseFireInterval*.65,personalInterval+(Math.random()-.5)*220);
+              e.nextShotTime = now + e.fireIntervalV332 + variation;
 
               const pAngle = Math.atan2(state.mecha.y - e.y, state.mecha.x - e.x);
               state.enemyBullets.push({
@@ -10000,16 +10167,16 @@ const btnControlPause = document.getElementById('btn-control-pause');
         else if(e.type==='scrap_gunner'){
           let moveAngle=angle;if(distToPlayer<270)moveAngle=angle+Math.PI;else if(distToPlayer<440)moveAngle=angle+(e.id.charCodeAt(e.id.length-1)%2?1:-1)*Math.PI/2;moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
           if(!visible){e.pendingAttackAt=0;return;}
-          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt){fireFanV31(e,predictedPlayerAngleV331(e,22),4,.25,5.7,11,'#f1bd6a');e.pendingAttackAt=0;e.nextActionAt=timestamp+1850+Math.random()*450;}
-          else if(!e.pendingAttackAt&&timestamp>=(e.nextActionAt||0)){e.pendingAttackAt=timestamp+480;e.attackWarningUntil=e.pendingAttackAt;}
+          if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt){fireFanV31(e,predictedPlayerAngleV331(e,22),4,.25,5.7,11,'#f1bd6a');e.pendingAttackAt=0;e.fireIntervalV332=1750+Math.random()*1150;e.nextActionAt=timestamp+e.fireIntervalV332;}
+          else if(!e.pendingAttackAt&&timestamp>=(e.nextActionAt||0)){e.fireWindupV332=360+Math.random()*360;e.pendingAttackAt=timestamp+e.fireWindupV332;e.attackWarningUntil=e.pendingAttackAt;}
         }
         else if(e.type==='mine_junker'){
           let moveAngle=angle;if(distToPlayer<240)moveAngle=angle+Math.PI;else if(distToPlayer<410)moveAngle=angle+Math.PI/2;moveEnemyTowardV31(e,moveAngle,e.speed,simulationSpeed);
-          if(visible&&timestamp>=(e.nextActionAt||0)){state.enemyMinesV31.push({x:e.x,y:e.y,radius:52,damage:17,armedAt:timestamp+620,expiresAt:timestamp+9500,color:'#d27b38'});e.nextActionAt=timestamp+2700+Math.random()*650;}
+          if(visible&&timestamp>=(e.nextActionAt||0)){state.enemyMinesV31.push({x:e.x,y:e.y,radius:52,damage:17,armedAt:timestamp+620,expiresAt:timestamp+9500,color:'#d27b38'});e.fireIntervalV332=2450+Math.random()*1450;e.nextActionAt=timestamp+e.fireIntervalV332;}
         }
         else if(e.type==='scrap_bomber'){
           if(e.flyAngleV331===undefined)e.flyAngleV331=predictedPlayerAngleV331(e,80);moveEnemyTowardV31(e,e.flyAngleV331,e.speed,simulationSpeed);
-          if(visible&&!e.bombDroppedV331&&!e.pendingAttackAt){e.pendingAttackAt=timestamp+450;e.attackWarningUntil=e.pendingAttackAt;}
+          if(visible&&!e.bombDroppedV331&&!e.pendingAttackAt){e.fireWindupV332=320+Math.random()*520;e.pendingAttackAt=timestamp+e.fireWindupV332;e.attackWarningUntil=e.pendingAttackAt;}
           if(e.pendingAttackAt&&timestamp>=e.pendingAttackAt&&!e.bombDroppedV331){e.bombDroppedV331=true;e.pendingAttackAt=0;const px=state.mecha.x+(state.moveJoystick.active?state.moveJoystick.x*65:0),py=state.mecha.y+(state.moveJoystick.active?state.moveJoystick.y*65:0);state.enemyMinesV31.push({x:px,y:py,radius:78,damage:28,armedAt:timestamp+900,expiresAt:timestamp+3300,color:'#bd633a'});}
           if(e.bombDroppedV331&&distToPlayer>1150){e.noRewardV331=true;e.hp=0;}
         }
@@ -10144,7 +10311,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
 
       const FACTION_PACKAGE_V31 = Object.freeze({
-        id:'scrappers', name:'Chatarreros', version:'3.3.1',
+        id:'scrappers', name:'Chatarreros', version:'3.3.2',
         basicEnemies:['scrap_hound','saw_raider','scrap_gunner','mine_junker'],
         eliteModifiers:['armored'], minibosses:['drill_bastion'], bosses:['forge_titan']
       });
@@ -10309,8 +10476,128 @@ const btnControlPause = document.getElementById('btn-control-pause');
         advanceSectorTransitionV331ForTest(ms=0) { const start=state.sectorTransitionV331?.startedAt||performance.now();updateSectorTransitionV331(start+Math.max(0,Number(ms)||0));return this.v331StateForTest(); },
         pauseExitImmersiveForTest() { state.phase='playing'; state.paused=true; state.pauseConfirmState=false; state.pauseSelection='exit'; document.getElementById('pause-modal')?.classList.remove('hidden'); updatePauseMenuUI(); const label=document.getElementById('btn-exit')?.textContent || ''; confirmInputLockedUntil=0; confirmPauseAction(); return {active:isImmersiveMode(),paused:state.paused,phase:state.phase,label}; }
       });
+// #region v332_interface_and_ranged_fixes
+
+(() => {
+  const V332 = '3.3.2';
+  function decorateDeveloperTouchV332(){
+    const tabs=document.getElementById('dev-section-tabs');
+    if(tabs)[...tabs.children].forEach((el,i)=>{el.dataset.devSectionIndex=String(i);el.setAttribute('role','button');el.tabIndex=0;});
+    const list=document.getElementById('dev-compact-list');
+    if(list){
+      const sectionId=state.devActiveSection||'weapons';
+      const items=getDevSectionItems(sectionId);
+      let start=0;
+      if(state.devFocus!=='tabs'){
+        start=Math.max(0,state.devItemIndex-2);
+        start=Math.min(start,Math.max(0,items.length-5));
+      }
+      [...list.children].forEach((el,i)=>{el.dataset.devItemIndex=String(start+i);el.setAttribute('role','button');el.tabIndex=0;});
+    }
+    const minus=document.getElementById('dev-touch-minus');
+    const plus=document.getElementById('dev-touch-plus');
+    const levelEnabled=state.devFocus==='list'&&(state.devActiveSection==='weapons'||state.devActiveSection==='passives');
+    if(minus)minus.disabled=!levelEnabled;
+    if(plus)plus.disabled=!levelEnabled;
+  }
+
+  function ensureDeveloperToolbarV332(){
+    const panel=document.querySelector('[data-show-on="dev"] .compact-console-panel');
+    if(!panel||document.getElementById('dev-touch-toolbar'))return;
+    const bar=document.createElement('div');bar.id='dev-touch-toolbar';
+    bar.innerHTML='<button class="dev-touch-back" id="dev-touch-back" type="button">VOLVER</button><span></span><button class="dev-touch-level" id="dev-touch-minus" type="button">− NIVEL</button><button class="dev-touch-level" id="dev-touch-plus" type="button">+ NIVEL</button>';
+    panel.appendChild(bar);
+    const back=bar.querySelector('#dev-touch-back');
+    back.addEventListener('pointerup',ev=>{ev.preventDefault();ev.stopPropagation();if(state.devFocus==='list'){state.devFocus='tabs';state.devSectionIndex=Math.max(0,DEV_SECTIONS.findIndex(v=>v.id===state.devActiveSection));updateDevMenuUI();}else startMainMenu();});
+    bar.querySelector('#dev-touch-minus').addEventListener('pointerup',ev=>{ev.preventDefault();ev.stopPropagation();modifyDevLevel(state.devActiveSection,-1);});
+    bar.querySelector('#dev-touch-plus').addEventListener('pointerup',ev=>{ev.preventDefault();ev.stopPropagation();modifyDevLevel(state.devActiveSection,1);});
+  }
+
+  function installDeveloperTouchV332(){
+    ensureDeveloperToolbarV332();
+    const tabs=document.getElementById('dev-section-tabs');
+    const list=document.getElementById('dev-compact-list');
+    if(tabs&&!tabs.dataset.touchV332){
+      tabs.dataset.touchV332='true';
+      tabs.addEventListener('pointerup',ev=>{
+        const tab=ev.target.closest('.dev-tab');if(!tab||state.phase!=='dev')return;
+        ev.preventDefault();ev.stopPropagation();
+        const idx=Number(tab.dataset.devSectionIndex);if(!Number.isFinite(idx))return;
+        state.devSectionIndex=idx;const section=DEV_SECTIONS[idx];
+        if(section.id==='exit'){startMainMenu();return;}
+        state.devActiveSection=section.id;state.devFocus='list';state.devItemIndex=0;confirmInputLockedUntil=0;updateDevMenuUI();vibrate(18);
+      });
+    }
+    if(list&&!list.dataset.touchV332){
+      list.dataset.touchV332='true';
+      list.addEventListener('pointerup',ev=>{
+        const row=ev.target.closest('.dev-row');if(!row||state.phase!=='dev')return;
+        ev.preventDefault();ev.stopPropagation();
+        if(state.devFocus==='tabs'){
+          const section=DEV_SECTIONS[state.devSectionIndex];if(section?.id==='exit'){startMainMenu();return;}
+          if(section){state.devActiveSection=section.id;state.devFocus='list';state.devItemIndex=0;updateDevMenuUI();}
+          return;
+        }
+        const idx=Number(row.dataset.devItemIndex);if(Number.isFinite(idx))state.devItemIndex=idx;
+        confirmInputLockedUntil=0;confirmDevAction();
+      });
+    }
+  }
+
+  const originalUpdateDevMenuUIV332=updateDevMenuUI;
+  updateDevMenuUI=function(){originalUpdateDevMenuUIV332();ensureDeveloperToolbarV332();decorateDeveloperTouchV332();};
+
+  // All newly created ranged enemies receive independent firing clocks.
+  const originalCreateEnemyV332=createEnemyV31;
+  createEnemyV31=function(type,ex,ey,worldSize,options={}){
+    const e=originalCreateEnemyV332(type,ex,ey,worldSize,options);
+    const ranged=['scrap_gunner','mine_junker','scrap_bomber','drill_bastion','forge_titan','square','purple_arrow'].includes(type);
+    if(ranged){
+      e.fireCadenceOffsetV332=240+Math.random()*1800;
+      e.fireIntervalV332=type==='scrap_gunner'?1750+Math.random()*1150:type==='mine_junker'?2450+Math.random()*1450:type==='scrap_bomber'?2600+Math.random()*1800:1800+Math.random()*1800;
+      e.fireWindupV332=320+Math.random()*520;
+      e.nextActionAt=performance.now()+e.fireCadenceOffsetV332;
+      e.nextShotTime=type==='square'||type==='purple_arrow'?performance.now()+e.fireCadenceOffsetV332:null;
+    }
+    return e;
+  };
+
+  function initV332(){
+    document.body.dataset.uiVersion=V332;
+    document.getElementById('settings-version-text')?.replaceChildren(document.createTextNode('MEKORA v3.3.2'));
+    installDeveloperTouchV332();
+    const menuButtons=['btn-main-play','btn-main-hangar','btn-main-global','btn-main-settings','btn-main-dev','btn-close-settings','btn-close-global','btn-gameover-retry','btn-gameover-menu'];
+    menuButtons.forEach(id=>{const el=document.getElementById(id);if(el){el.style.pointerEvents='auto';el.style.touchAction='manipulation';}});
+    document.querySelectorAll('#language-buttons-container .lang-btn').forEach(btn=>{
+      if(btn.dataset.touchV332)return;btn.dataset.touchV332='true';
+      btn.addEventListener('pointerup',ev=>{ev.preventDefault();ev.stopPropagation();applyLanguage(btn.dataset.lang,true);state.langSelectionIndex=Math.max(0,['es','en','pt'].indexOf(btn.dataset.lang));updateSettingsMenuUI();vibrate(18);});
+    });
+  }
+  if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',()=>setTimeout(initV332,0),{once:true});else setTimeout(initV332,0);
+
+  window.mekoraV332={
+    version:V332,
+    uiState(){return {phase:state.phase,bodyBackground:getComputedStyle(document.body).backgroundColor,screenBackground:getComputedStyle(document.querySelector(`.screen[data-show-on="${state.phase==='draft'?'playing':state.phase}"]`)||document.body).backgroundColor,developerTouch:!!document.getElementById('dev-touch-toolbar')};},
+    menu(){startMainMenu();return {phase:state.phase};},
+    unlockDeveloper(){unlockDeveloperMode(true);return {visible:!document.getElementById('btn-main-dev')?.classList.contains('hidden')};},
+    openDeveloper(){openDeveloperMenu();return {phase:state.phase};},
+    developerState(){return {phase:state.phase,focus:state.devFocus,section:state.devActiveSection,sectionIndex:state.devSectionIndex,itemIndex:state.devItemIndex,passives:[...state.passives],passiveLevels:{...state.passiveLevels},weapons:[...state.activeWeapons],weaponLevels:{...state.weaponLevels}};},
+    startTest(){startRun(true,true);return {phase:state.phase};},
+    gameover(){stopRun();state.phase='gameover';state.started=false;render();return {phase:state.phase};},
+    rangedEnemy(type='scrap_gunner'){state.phase='playing';state.started=true;const e=safeSpawnAroundPlayerV31(type,240);return {id:e.id,type:e.type,nextActionAt:e.nextActionAt,offset:e.fireCadenceOffsetV332,interval:e.fireIntervalV332,windup:e.fireWindupV332};},
+    armLastGunners(){const es=state.enemies.filter(e=>e.type==='scrap_gunner').slice(-2);const now=performance.now();es.forEach((e,i)=>{e.x=state.mecha.x+220+i*5;e.y=state.mecha.y;e.nextActionAt=now;e.pendingAttackAt=0;});es.forEach(e=>updateScrapperEnemyV31(e,now,Math.hypot(state.mecha.x-e.x,state.mecha.y-e.y),Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x),false,1,900));return es.map(e=>({id:e.id,pending:e.pendingAttackAt,windup:e.fireWindupV332,interval:e.fireIntervalV332}));},
+    gunnerWeights(){return SECTOR_DEFS_V33.map(s=>({sector:s.index,weight:s.weights.scrap_gunner}));},
+    developerTapTab(index=0){openDeveloperMenu();state.devSectionIndex=Math.max(0,Math.min(DEV_SECTIONS.length-1,index|0));const section=DEV_SECTIONS[state.devSectionIndex];if(section.id==='exit'){startMainMenu();return {phase:state.phase};}state.devActiveSection=section.id;state.devFocus='list';state.devItemIndex=0;updateDevMenuUI();return {phase:state.phase,section:state.devActiveSection,focus:state.devFocus};}
+  };
+})();
+
+// #endregion v332_interface_and_ranged_fixes
 //#endregion debug_api
     </script>
+
+
+
+
 
     <!-- MANIFEST DECLARATION AT END OF FILE -->
     </body></html>
