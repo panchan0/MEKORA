@@ -1983,6 +1983,55 @@
   body.mekora-immersive #hud-economy-v32 { left:16px !important; top:46px !important; }
 </style>
 
+
+<style id="mekora-v330-sector-style">
+  #sector-hud-v33 {
+    position:absolute; z-index:43; top:39px; left:50%; transform:translateX(-50%);
+    width:min(48%,310px); font-family:ui-monospace,monospace; pointer-events:none;
+    color:#d9e0e5; text-align:center; filter:drop-shadow(0 2px 3px rgba(0,0,0,.86));
+  }
+  .sector-meta-v33 { display:flex; align-items:center; justify-content:center; gap:5px; min-width:0; }
+  #sector-index-v33 { color:#d19a62; font-size:6px; font-weight:900; letter-spacing:.12em; white-space:nowrap; }
+  #sector-name-v33 { color:#f2eee7; font-size:7px; font-weight:900; letter-spacing:.06em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #threat-v33 { color:#cb7659; font-size:6px; white-space:nowrap; }
+  #sector-route-v33 { display:flex; justify-content:center; align-items:center; gap:3px; margin-top:2px; }
+  .sector-node-v33 { width:15px; height:3px; border:1px solid rgba(186,198,207,.35); background:rgba(12,15,18,.72); transform:skewX(-20deg); }
+  .sector-node-v33.done { background:#6e7c83; border-color:#9ca9ae; }
+  .sector-node-v33.active { background:#cb8650; border-color:#ffd099; box-shadow:0 0 4px rgba(203,134,80,.45); }
+  #sector-modifier-v33 { margin-top:1px; color:#949fa6; font-size:5.5px; letter-spacing:.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #event-hud-v33 {
+    position:absolute; z-index:43; top:76px; left:50%; transform:translateX(-50%);
+    width:min(44%,280px); padding:3px 7px; border:1px solid rgba(191,127,72,.55); border-radius:4px;
+    background:rgba(12,15,18,.78); pointer-events:none; font-family:ui-monospace,monospace; text-align:center;
+  }
+  #event-hud-v33.hidden { display:none !important; }
+  #event-title-v33 { color:#f1bd78; font-size:7px; font-weight:900; letter-spacing:.08em; }
+  #event-detail-v33 { color:#aab2b7; font-size:5.5px; }
+  #sector-banner-v33 {
+    position:absolute; z-index:46; left:50%; top:50%; transform:translate(-50%,-50%) scale(.96);
+    min-width:190px; max-width:72%; padding:7px 12px; border-top:1px solid rgba(222,169,103,.8); border-bottom:1px solid rgba(222,169,103,.8);
+    background:linear-gradient(90deg,rgba(8,10,12,0),rgba(8,10,12,.9) 18%,rgba(8,10,12,.9) 82%,rgba(8,10,12,0));
+    text-align:center; font-family:ui-monospace,monospace; opacity:0; transition:opacity .18s, transform .18s; pointer-events:none;
+  }
+  #sector-banner-v33.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  #sector-banner-v33 strong { display:block; color:#f2e7d6; font-size:11px; letter-spacing:.12em; }
+  #sector-banner-v33 span { display:block; color:#b68c63; font-size:6px; margin-top:2px; }
+  #poi-toast-v33 { position:absolute; z-index:45; right:10px; bottom:9px; color:#dfe8e8; font:700 6px ui-monospace,monospace; text-shadow:0 2px 3px #000; opacity:0; transition:opacity .18s; pointer-events:none; }
+  #poi-toast-v33.show { opacity:1; }
+  body.mekora-immersive #sector-hud-v33 { top:42px; width:min(40%,340px); }
+  body.mekora-immersive #event-hud-v33 { top:82px; }
+  @media (orientation:portrait) {
+    #sector-hud-v33 { top:39px; width:min(47%,190px); }
+    #sector-name-v33 { font-size:6px; }
+    #sector-index-v33, #threat-v33 { font-size:5px; }
+    .sector-node-v33 { width:10px; }
+    #sector-modifier-v33 { display:none; }
+    #event-hud-v33 { top:67px; width:min(46%,190px); padding:2px 4px; }
+    #event-title-v33 { font-size:6px; }
+    #event-detail-v33 { font-size:5px; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 
@@ -2049,6 +2098,15 @@
              <div id="boss-bar-v31"><div id="boss-hp-fill-v31"></div></div>
            </div>
            <div id="encounter-notice-v31"></div>
+
+           <div id="sector-hud-v33">
+             <div class="sector-meta-v33"><span id="sector-index-v33">SECTOR 1/5</span><b id="sector-name-v33">DESGUACE EXTERIOR</b><span id="threat-v33">AMENAZA 1</span></div>
+             <div id="sector-route-v33"></div>
+             <div id="sector-modifier-v33">Zona estable · recursos dispersos</div>
+           </div>
+           <div id="event-hud-v33" class="hidden"><div id="event-title-v33">EVENTO</div><div id="event-detail-v33"></div></div>
+           <div id="sector-banner-v33"><strong>SECTOR 1</strong><span>DESGUACE EXTERIOR</span></div>
+           <div id="poi-toast-v33"></div>
 
 
            <!-- RIGHT: ACTIVE WEAPONS & PASSIVES MINI DISPLAY -->
@@ -2350,7 +2408,7 @@
               </button>
             </div>
           </div>
-          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.2.0</div>
+          <div id="settings-version-text" class="text-gray-500 font-title text-[10px] cursor-pointer">MEKORA TACTICAL OS v3.3.0</div>
         </div>
       </div>
       <!-- BOTTOM HALF: BLACK CONTROL AREA -->
@@ -2858,6 +2916,24 @@ stats.recentRuns = stats.recentRuns || [];
           nextFieldShopAtV32: 60000,
           runCoresAwardedV32: false,
 
+
+          // v3.3.0 · sectors, points of interest, hazards, events and adaptive director
+          sectorCurrentV33: 0,
+          sectorEnteredAtV33: 0,
+          sectorBannerUntilV33: 0,
+          sectorPropsV33: [],
+          sectorPoisV33: [],
+          sectorDropsV33: [],
+          sectorHazardsV33: [],
+          nextSectorHazardAtV33: 0,
+          sectorEventV33: null,
+          nextSectorEventAtV33: 35000,
+          lastSectorEventIdV33: null,
+          directorSuppressedUntilV33: 0,
+          overclockUntilV33: 0,
+          threatDirectorV33: { budget: 0, lastTick: 0, lastSpawnAt: 0, intensity: 1, pressure: 0, squadCount: 0 },
+          sectorStatsV33: { poisCollected: 0, eventsCompleted: 0, eventsFailed: 0, hazardsTriggered: 0 },
+
           // Developer/test flags
           devInfHp: false,
           devInfShield: false,
@@ -3162,7 +3238,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.2.0';
+      const MEKORA_VERSION = '3.3.0';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -3279,7 +3355,10 @@ stats.recentRuns = stats.recentRuns || [];
         {id:'mission-elite-1', title:'ROMPEBLINDAJES', short:'Derrota 1 enemigo élite', stat:'eliteKills', target:1, rewardCores:100, blueprint:'p-last-magazine', hint:'Los élites muestran piezas adicionales.'},
         {id:'mission-miniboss-1', title:'TALADRO NEUTRALIZADO', short:'Derrota al Taladro Bastión', stat:'minibossKills', target:1, rewardCores:160, blueprint:'w-pistonshotgun', hint:'Provoca una carga fallida y ataca su parte trasera.'},
         {id:'mission-survive-180', title:'SISTEMA ESTABLE', short:'Sobrevive 3 minutos', stat:'bestSurvivalMs', target:180000, rewardCores:140, blueprint:'w-emp', hint:'La misión registra tu mejor tiempo de supervivencia.'},
-        {id:'mission-forge-titan', title:'CAÍDA DE LA FORJA', short:'Derrota al Titán de la Forja', stat:'bossKills', target:1, rewardCores:300, blueprint:'w-railgun', mechBlueprint:'lancer', hint:'Completa las tres fases del jefe Chatarrero.'}
+        {id:'mission-forge-titan', title:'CAÍDA DE LA FORJA', short:'Derrota al Titán de la Forja', stat:'bossKills', target:1, rewardCores:300, blueprint:'w-railgun', mechBlueprint:'lancer', hint:'Completa las tres fases del jefe Chatarrero.'},
+        {id:'mission-pois-8', title:'CARTÓGRAFO DE CAMPO', short:'Activa 8 puntos de interés', stat:'poisDiscovered', target:8, rewardCores:130, blueprint:'p-drone-copy', hint:'Explora cada sector y acércate a los marcadores mecánicos.'},
+        {id:'mission-events-3', title:'PROTOCOLO IMPREVISTO', short:'Completa 3 eventos dinámicos', stat:'eventsCompleted', target:3, rewardCores:180, blueprint:'w-orbital', hint:'Los eventos aparecen durante la expedición y alteran la presión.'},
+        {id:'mission-sector-5', title:'RUTA A LA FORJA', short:'Alcanza el Sector 5', stat:'maxSector', target:5, rewardCores:220, blueprint:'w-gravityfield', mechBlueprint:'bastion', hint:'Sobrevive a los cuatro sectores previos y entra al Núcleo de Forja.'}
       ]);
       const HANGAR_TABS_V32 = Object.freeze([
         {id:'weapons',label:'ARMAS'}, {id:'powers',label:'PODERES'}, {id:'modules',label:'MÓDULOS'},
@@ -3297,7 +3376,7 @@ stats.recentRuns = stats.recentRuns || [];
       const BLUEPRINT_DISCOVERED_V32 = new Set(['w-energycannon','w-laser','w-missile','w-flamethrower','w-rotarycannon','w-pistonshotgun','w-emp','w-dash','p-lightning','p-extra-projectile','p-last-magazine','p-first-impact']);
 
       function initializeEconomyV32() {
-        progressionV3.statistics = {...{kills:0,scrapCollected:0,eliteKills:0,minibossKills:0,bossKills:0,bestSurvivalMs:0}, ...(progressionV3.statistics||{})};
+        progressionV3.statistics = {...{kills:0,scrapCollected:0,eliteKills:0,minibossKills:0,bossKills:0,bestSurvivalMs:0,poisDiscovered:0,eventsCompleted:0,maxSector:1}, ...(progressionV3.statistics||{})};
         progressionV3.claimedMissions = Array.from(new Set(progressionV3.claimedMissions||[]));
         progressionV3.pinnedMissions = Array.from(new Set(progressionV3.pinnedMissions||[])).slice(0,3);
         progressionV3.mechBlueprints = {...{vanguard:'unlocked',lancer:'locked',bastion:'locked',weaver:'locked',furnace:'locked',wraith:'locked'}, ...(progressionV3.mechBlueprints||{})};
@@ -3976,6 +4055,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
         if (state.mecha.reactorOverloadUntil && timestamp < state.mecha.reactorOverloadUntil) cooldown *= 0.5;
         if (state.stats.fireRateMult) cooldown /= state.stats.fireRateMult;
+        cooldown /= getTemporaryFireRateMultV33();
         return Math.max(1, cooldown);
       }
 
@@ -4051,10 +4131,7 @@ stats.recentRuns = stats.recentRuns || [];
 
       function getEnemyDefV31(type) { return ENEMY_DEFS_V31[type] || ENEMY_DEFS_V31.scrap_hound; }
       function getEnemyTypeForSector(sector) {
-        const r = Math.random();
-        if (sector <= 1) return r < .62 ? 'scrap_hound' : (r < .84 ? 'saw_raider' : 'scrap_gunner');
-        if (sector === 2) return r < .42 ? 'scrap_hound' : (r < .67 ? 'saw_raider' : (r < .88 ? 'scrap_gunner' : 'mine_junker'));
-        return r < .3 ? 'scrap_hound' : (r < .56 ? 'saw_raider' : (r < .78 ? 'scrap_gunner' : 'mine_junker'));
+        return getEnemyTypeForSectorV33(sector);
       }
 
       function createEnemyV31(type, ex, ey, worldSize, options = {}) {
@@ -4363,6 +4440,222 @@ stats.recentRuns = stats.recentRuns || [];
       //#endregion enemies_v310
 
 
+      //#region sectors_v330 · Sector route, POIs, hazards, events and adaptive threat director
+      const SECTOR_DEFS_V33 = Object.freeze([
+        {id:'outer_scrapyard', index:1, name:'DESGUACE EXTERIOR', subtitle:'Entrada a la cadena de reciclaje', modifier:'Más chatarra · presión estable', bg:'#11161a', grid:'rgba(154,174,178,.11)', accent:'#8e9ba0', hazard:null, hazardInterval:0,
+          weights:{scrap_hound:.55,saw_raider:.25,scrap_gunner:.20,mine_junker:0}},
+        {id:'press_yard', index:2, name:'PATIO DE PRENSAS', subtitle:'Maquinaria pesada todavía activa', modifier:'Prensas periódicas · asaltantes frecuentes', bg:'#181714', grid:'rgba(191,148,88,.12)', accent:'#b9874f', hazard:'press', hazardInterval:17000,
+          weights:{scrap_hound:.28,saw_raider:.34,scrap_gunner:.18,mine_junker:.20}},
+        {id:'rail_corridor', index:3, name:'CORREDOR FERROVIARIO', subtitle:'Rieles magnéticos de carga', modifier:'Barridos lineales · tiradores reforzados', bg:'#12171a', grid:'rgba(104,159,169,.12)', accent:'#6f9ca5', hazard:'rail', hazardInterval:15000,
+          weights:{scrap_hound:.20,saw_raider:.20,scrap_gunner:.45,mine_junker:.15}},
+        {id:'open_foundry', index:4, name:'FUNDICIÓN ABIERTA', subtitle:'Conductos de calor expuestos', modifier:'Respiraderos térmicos · más controladores', bg:'#1a1412', grid:'rgba(191,104,66,.13)', accent:'#b76445', hazard:'heat', hazardInterval:13500,
+          weights:{scrap_hound:.22,saw_raider:.28,scrap_gunner:.20,mine_junker:.30}},
+        {id:'forge_core', index:5, name:'NÚCLEO DE FORJA', subtitle:'Cámara del Titán de la Forja', modifier:'Amenaza máxima · élites y calor industrial', bg:'#171111', grid:'rgba(187,77,57,.14)', accent:'#c45c43', hazard:'core', hazardInterval:12000,
+          weights:{scrap_hound:.18,saw_raider:.25,scrap_gunner:.25,mine_junker:.32}}
+      ]);
+      const POI_DEFS_V33 = Object.freeze({
+        salvage:{name:'DEPÓSITO DE CHATARRA',color:'#c99452',icon:'◇',desc:'Chatarra recuperada'},
+        repair:{name:'RELEVO DE REPARACIÓN',color:'#65a783',icon:'+',desc:'Blindaje restaurado'},
+        relay:{name:'REPETIDOR TÁCTICO',color:'#668f9a',icon:'⌁',desc:'Director suprimido'},
+        cache:{name:'ARCHIVO DE COMBATE',color:'#8d7ea8',icon:'▣',desc:'Experiencia recuperada'},
+        overclock:{name:'BANCO DE SERVOS',color:'#b8714f',icon:'»',desc:'Cadencia temporal mejorada'}
+      });
+      const EVENT_DEFS_V33 = Object.freeze({
+        salvage_rain:{title:'LLUVIA DE RESTOS',detail:'Fragmentos de chatarra caen en la zona',duration:16000,mode:'timer'},
+        overdrive:{title:'VENTANA DE SOBRECARGA',detail:'Más cadencia, pero el director aumenta la presión',duration:16000,mode:'timer'},
+        elite_patrol:{title:'PATRULLA BLINDADA',detail:'Neutraliza la escuadra élite antes de que se retire',duration:30000,mode:'targets'},
+        repair_signal:{title:'SEÑAL DE AUXILIO',detail:'Localiza y activa el relevo de reparación',duration:25000,mode:'poi'}
+      });
+
+      function getSectorDefV33(index=state.sector) {
+        return SECTOR_DEFS_V33[Math.max(0,Math.min(SECTOR_DEFS_V33.length-1,(Number(index)||1)-1))];
+      }
+      function getEnemyTypeForSectorV33(sector=state.sector) {
+        const weights=getSectorDefV33(sector).weights; let cursor=Math.random();
+        for(const [type,weight] of Object.entries(weights)){cursor-=weight;if(cursor<=0)return type;}
+        return 'scrap_hound';
+      }
+      function initializeSectorProgressionV33() {
+        progressionV3.statistics={...{poisDiscovered:0,eventsCompleted:0,maxSector:1},...(progressionV3.statistics||{})};
+        if(!progressionV3.sectorSystemV33Initialized){
+          progressionV3.sectorSystemV33Initialized=true;
+          progressionV3.sectorSystemVersion='3.3.0';
+        }
+        saveProgressionV3();
+      }
+      function initializeRunSectorsV33() {
+        state.sectorCurrentV33=0; state.sectorEnteredAtV33=0; state.sectorPropsV33=[]; state.sectorPoisV33=[];
+        state.sectorDropsV33=[]; state.sectorHazardsV33=[]; state.nextSectorEventAtV33=35000; state.lastSectorEventIdV33=null;
+        state.sectorEventV33=null; state.directorSuppressedUntilV33=0; state.overclockUntilV33=0;
+        state.threatDirectorV33={budget:0,lastTick:0,lastSpawnAt:0,intensity:1,pressure:0,squadCount:0};
+        state.sectorStatsV33={poisCollected:0,eventsCompleted:0,eventsFailed:0,hazardsTriggered:0};
+        updateSectorProgressionV33(performance.now(),true); updateSectorHudV33();
+      }
+      function showSectorBannerV33(def) {
+        const el=document.getElementById('sector-banner-v33'); if(!el)return;
+        el.innerHTML=`<strong>SECTOR ${def.index} · ${def.name}</strong><span>${def.subtitle}</span>`;
+        el.classList.add('show'); clearTimeout(el._timerV33); el._timerV33=setTimeout(()=>el.classList.remove('show'),2100);
+      }
+      function showPoiToastV33(text) {
+        const el=document.getElementById('poi-toast-v33'); if(!el)return;
+        el.textContent=text;el.classList.add('show');clearTimeout(el._timerV33);el._timerV33=setTimeout(()=>el.classList.remove('show'),1600);
+      }
+      function addScrapV33(amount) {
+        const value=Math.max(0,Math.round(Number(amount)||0)); state.scrap=(state.scrap||0)+value;
+        progressionV3.statistics.scrapCollected=(progressionV3.statistics.scrapCollected||0)+value;
+        updateEconomyHudV32(); updateMissionTrackingHudV32(); return value;
+      }
+      function generateSectorPropsV33(def) {
+        const worldSize=getCurrentWorldSize(); const props=[]; const count=state.testMode?12:44;
+        for(let i=0;i<count;i++) props.push({x:80+Math.random()*(worldSize-160),y:80+Math.random()*(worldSize-160),r:7+Math.random()*16,kind:i%4,rot:Math.random()*Math.PI*2,color:def.accent});
+        return props;
+      }
+      function getPoiPoolV33(def) {
+        if(def.index===1)return ['salvage','cache','repair'];
+        if(def.index===2)return ['salvage','repair','relay','overclock'];
+        if(def.index===3)return ['relay','cache','overclock','salvage'];
+        if(def.index===4)return ['repair','salvage','overclock','cache'];
+        return ['repair','relay','overclock','salvage'];
+      }
+      function createPoiV33(type,x,y,options={}) {
+        const worldSize=getCurrentWorldSize();
+        return {id:`poi_${Math.random().toString(36).slice(2,9)}`,type,x:Math.max(70,Math.min(worldSize-70,x)),y:Math.max(70,Math.min(worldSize-70,y)),radius:20,collected:false,eventId:options.eventId||null,expiresAt:options.expiresAt||0};
+      }
+      function spawnSectorPoisV33(def) {
+        const pool=[...getPoiPoolV33(def)].sort(()=>Math.random()-.5); const pois=[];
+        for(let i=0;i<2;i++){
+          const a=(i*Math.PI)+Math.random()*1.4-.7; const d=340+Math.random()*300;
+          pois.push(createPoiV33(pool[i%pool.length],state.mecha.x+Math.cos(a)*d,state.mecha.y+Math.sin(a)*d));
+        }
+        state.sectorPoisV33=pois;
+      }
+      function updateSectorProgressionV33(timestamp=performance.now(),force=false) {
+        const next=Math.min(5,Math.floor((state.playTime||0)/60000)+1);
+        if(!force && next===state.sectorCurrentV33)return false;
+        state.sector=next; state.sectorCurrentV33=next; state.sectorEnteredAtV33=state.playTime||0; state.sectorEnemiesDefeated=0;
+        const def=getSectorDefV33(next); state.sectorPropsV33=generateSectorPropsV33(def); state.sectorHazardsV33=[];
+        state.nextSectorHazardAtV33=(state.playTime||0)+(def.hazard?9000:99999999); spawnSectorPoisV33(def);
+        progressionV3.statistics.maxSector=Math.max(progressionV3.statistics.maxSector||1,next); saveProgressionV3(); updateMissionTrackingHudV32();
+        showSectorBannerV33(def); showEncounterNoticeV31(`RUTA ACTUALIZADA · ${def.name}`,1700); updateSectorHudV33(); return true;
+      }
+      function updateSectorHudV33() {
+        const def=getSectorDefV33(); const root=document.getElementById('sector-hud-v33'); const idx=document.getElementById('sector-index-v33'); const name=document.getElementById('sector-name-v33');
+        const encounterActive=state.enemies.some(e=>e.isBossV31||e.isMinibossV31); if(root)root.style.opacity=encounterActive?'0':'1';
+        const threat=document.getElementById('threat-v33'); const mod=document.getElementById('sector-modifier-v33'); const route=document.getElementById('sector-route-v33');
+        if(idx)idx.textContent=`SECTOR ${def.index}/5`; if(name)name.textContent=def.name; if(mod)mod.textContent=def.modifier;
+        const threatLevel=Math.max(1,Math.min(5,Math.ceil((state.threatDirectorV33?.intensity||.8)*2.15)));
+        if(threat)threat.textContent=`AMENAZA ${threatLevel}`;
+        if(route)route.innerHTML=SECTOR_DEFS_V33.map(s=>`<span class="sector-node-v33 ${s.index<def.index?'done':s.index===def.index?'active':''}"></span>`).join('');
+        const eventRoot=document.getElementById('event-hud-v33'); const event=state.sectorEventV33;
+        if(!eventRoot)return; eventRoot.style.opacity=encounterActive?'0':'1';
+        if(!event){eventRoot.classList.add('hidden');return;}
+        const remaining=Math.max(0,Math.ceil((event.endsAt-(state.playTime||0))/1000));
+        eventRoot.classList.remove('hidden'); const ed=EVENT_DEFS_V33[event.id];
+        const title=document.getElementById('event-title-v33'); const detail=document.getElementById('event-detail-v33');
+        if(title)title.textContent=`${ed.title} · ${remaining}s`; if(detail)detail.textContent=event.id==='elite_patrol'?`${ed.detail} · ${event.targetsRemaining||0} objetivos`:ed.detail;
+      }
+      function drawSectorBackdropV33(viewLeft,viewRight,viewTop,viewBottom,worldSize) {
+        const def=getSectorDefV33(); ctx.fillStyle=def.bg; ctx.fillRect(viewLeft,viewTop,viewRight-viewLeft,viewBottom-viewTop);
+        ctx.save();ctx.globalAlpha=.34;ctx.fillStyle=def.accent;
+        if(def.id==='press_yard')for(let x=100;x<worldSize;x+=420)ctx.fillRect(x,viewTop,34,viewBottom-viewTop);
+        else if(def.id==='rail_corridor')for(let y=160;y<worldSize;y+=520){ctx.fillRect(viewLeft,y,viewRight-viewLeft,10);ctx.fillRect(viewLeft,y+24,viewRight-viewLeft,4);}
+        else if(def.id==='open_foundry'||def.id==='forge_core')for(let x=160;x<worldSize;x+=560)ctx.fillRect(x,viewTop,8,viewBottom-viewTop);
+        ctx.restore();
+        for(const p of state.sectorPropsV33||[]){if(p.x<viewLeft-30||p.x>viewRight+30||p.y<viewTop-30||p.y>viewBottom+30)continue;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=.36;ctx.fillStyle=p.color;ctx.strokeStyle='rgba(10,12,14,.8)';ctx.lineWidth=2;if(p.kind===0)ctx.fillRect(-p.r,-p.r*.35,p.r*2,p.r*.7);else if(p.kind===1){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();ctx.stroke();}else if(p.kind===2){ctx.beginPath();ctx.moveTo(-p.r,0);ctx.lineTo(0,-p.r*.6);ctx.lineTo(p.r,0);ctx.lineTo(0,p.r*.6);ctx.closePath();ctx.fill();}else{ctx.fillRect(-p.r*.25,-p.r,p.r*.5,p.r*2);}ctx.restore();}
+      }
+      function collectPoiV33(poi) {
+        if(poi.collected)return;poi.collected=true;const def=POI_DEFS_V33[poi.type];let message=def.name;
+        if(poi.type==='salvage'){const value=30+state.sector*7;addScrapV33(value);message+=` · +${value} CHATARRA`;}
+        else if(poi.type==='repair'){const heal=30;state.mecha.hp=Math.min(state.mecha.maxHp,state.mecha.hp+heal);state.mecha.shield=Math.min(state.mecha.maxShield,state.mecha.shield+15);message+=` · +${heal} BLINDAJE`;}
+        else if(poi.type==='relay'){state.directorSuppressedUntilV33=(state.playTime||0)+18000;message+=' · PRESIÓN REDUCIDA';}
+        else if(poi.type==='cache'){state.xp+=80+state.sector*15;message+=' · DATOS DE COMBATE';if(state.xp>=state.xpNeeded)triggerLevelUp();}
+        else if(poi.type==='overclock'){state.overclockUntilV33=(state.playTime||0)+20000;message+=' · CADENCIA +15%';}
+        state.sectorStatsV33.poisCollected++;progressionV3.statistics.poisDiscovered=(progressionV3.statistics.poisDiscovered||0)+1;saveProgressionV3();updateMissionTrackingHudV32();showPoiToastV33(message);
+        if(poi.eventId==='repair_signal'&&state.sectorEventV33?.id==='repair_signal')completeSectorEventV33(true);
+      }
+      function spawnScrapDropsV33(count=10) {
+        const worldSize=getCurrentWorldSize();
+        for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,d=110+Math.random()*520;state.sectorDropsV33.push({x:Math.max(50,Math.min(worldSize-50,state.mecha.x+Math.cos(a)*d)),y:Math.max(50,Math.min(worldSize-50,state.mecha.y+Math.sin(a)*d)),value:5+Math.floor(Math.random()*8),radius:7,life:40000});}
+      }
+      function spawnSectorHazardV33(forcedType=null) {
+        const def=getSectorDefV33();const type=forcedType||def.hazard;if(!type)return [];
+        const now=state.playTime||0;const hazards=[];const worldSize=getCurrentWorldSize();
+        const point=(d=220)=>{const a=Math.random()*Math.PI*2;return{x:Math.max(70,Math.min(worldSize-70,state.mecha.x+Math.cos(a)*d)),y:Math.max(70,Math.min(worldSize-70,state.mecha.y+Math.sin(a)*d))}};
+        if(type==='press'){for(let i=0;i<2;i++){const p=point(130+i*120);hazards.push({type:'circle',kind:'press',x:p.x,y:p.y,radius:64,warnUntil:now+1300,activeUntil:now+1850,damage:15,nextTick:0});}}
+        else if(type==='rail'){const vertical=Math.random()<.5;hazards.push({type:'line',kind:'rail',vertical,pos:(vertical?state.mecha.x:state.mecha.y)+(Math.random()-.5)*220,width:58,warnUntil:now+1000,activeUntil:now+1900,damage:13,nextTick:0});}
+        else if(type==='heat'){for(let i=0;i<3;i++){const p=point(110+Math.random()*300);hazards.push({type:'circle',kind:'heat',x:p.x,y:p.y,radius:52,warnUntil:now+1000,activeUntil:now+5200,damage:5,nextTick:0});}}
+        else if(type==='core'){hazards.push(...spawnSectorHazardV33(Math.random()<.5?'heat':'rail'));return hazards;}
+        state.sectorHazardsV33.push(...hazards);state.sectorStatsV33.hazardsTriggered++;return hazards;
+      }
+      function applyHazardDamageV33(h,now) {
+        if(now<h.warnUntil||now>h.activeUntil||now<(h.nextTick||0))return;
+        h.nextTick=now+(h.kind==='heat'?500:700);let inside=false;
+        if(h.type==='circle')inside=Math.hypot(state.mecha.x-h.x,state.mecha.y-h.y)<h.radius+16;
+        else inside=Math.abs((h.vertical?state.mecha.x:state.mecha.y)-h.pos)<h.width*.5;
+        if(inside)applyMechaDamage(h.damage,h.x||state.mecha.x,h.y||state.mecha.y,performance.now(),1);
+        for(const e of state.enemies){if(e.hp<=0)continue;let hit=false;if(h.type==='circle')hit=Math.hypot(e.x-h.x,e.y-h.y)<h.radius+e.radius;else hit=Math.abs((h.vertical?e.x:e.y)-h.pos)<h.width*.5+e.radius;if(hit)damageEnemy(e,h.kind==='heat'?10:45,performance.now());}
+      }
+      function drawSectorObjectsV33(timestamp=performance.now()) {
+        const now=state.playTime||0;
+        for(let i=state.sectorPoisV33.length-1;i>=0;i--){const p=state.sectorPoisV33[i];if(p.expiresAt&&now>p.expiresAt&&!p.collected){state.sectorPoisV33.splice(i,1);continue;}if(!p.collected&&Math.hypot(state.mecha.x-p.x,state.mecha.y-p.y)<44)collectPoiV33(p);if(p.collected){state.sectorPoisV33.splice(i,1);continue;}const d=POI_DEFS_V33[p.type];ctx.save();ctx.translate(p.x,p.y);ctx.fillStyle='#171b1e';ctx.strokeStyle=d.color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,18,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle=d.color;ctx.font='bold 16px ui-monospace,monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(d.icon,0,1);ctx.strokeStyle=d.color;ctx.lineWidth=1;ctx.globalAlpha=.55;ctx.beginPath();ctx.arc(0,0,25+Math.sin(now*.006)*3,0,Math.PI*2);ctx.stroke();ctx.restore();}
+        for(let i=state.sectorDropsV33.length-1;i>=0;i--){const d=state.sectorDropsV33[i];d.life-=Math.max(0,state.lastFrameTime?16:0);const dist=Math.hypot(state.mecha.x-d.x,state.mecha.y-d.y);if(dist<130){const a=Math.atan2(state.mecha.y-d.y,state.mecha.x-d.x);d.x+=Math.cos(a)*Math.max(2,8*(1-dist/130));d.y+=Math.sin(a)*Math.max(2,8*(1-dist/130));}if(dist<25){addScrapV33(d.value);showPoiToastV33(`RESTOS RECUPERADOS · +${d.value}`);state.sectorDropsV33.splice(i,1);continue;}if(d.life<=0){state.sectorDropsV33.splice(i,1);continue;}ctx.fillStyle='#bf8b4d';ctx.strokeStyle='#2c241c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(d.x,d.y-7);ctx.lineTo(d.x+7,d.y);ctx.lineTo(d.x,d.y+7);ctx.lineTo(d.x-7,d.y);ctx.closePath();ctx.fill();ctx.stroke();}
+        for(let i=state.sectorHazardsV33.length-1;i>=0;i--){const h=state.sectorHazardsV33[i];if(now>h.activeUntil){state.sectorHazardsV33.splice(i,1);continue;}applyHazardDamageV33(h,now);const active=now>=h.warnUntil;ctx.save();ctx.globalAlpha=active?.48:.28;ctx.fillStyle=h.kind==='rail'?'#b6d0d2':h.kind==='heat'?'#b95a36':'#c07842';ctx.strokeStyle=active?'#f1c18d':'#d49b68';ctx.lineWidth=active?4:2;ctx.setLineDash(active?[]:[10,8]);if(h.type==='circle'){ctx.beginPath();ctx.arc(h.x,h.y,h.radius,0,Math.PI*2);ctx.fill();ctx.stroke();}else{const ws=getCurrentWorldSize();if(h.vertical){ctx.fillRect(h.pos-h.width/2,0,h.width,ws);ctx.strokeRect(h.pos-h.width/2,0,h.width,ws);}else{ctx.fillRect(0,h.pos-h.width/2,ws,h.width);ctx.strokeRect(0,h.pos-h.width/2,ws,h.width);}}ctx.restore();}
+      }
+      function maybeSpawnSectorHazardV33() {
+        const def=getSectorDefV33();if(!def.hazard||state.testMode)return;const now=state.playTime||0;if(now<(state.nextSectorHazardAtV33||Infinity))return;if(state.fieldShopOpenV32||state.paused)return;spawnSectorHazardV33();state.nextSectorHazardAtV33=now+def.hazardInterval;
+      }
+      function getTemporaryFireRateMultV33() {
+        let mult=1;if(state.sectorEventV33?.id==='overdrive')mult*=1.2;if((state.overclockUntilV33||0)>(state.playTime||0))mult*=1.15;return mult;
+      }
+      function startSectorEventV33(id=null) {
+        if(state.sectorEventV33||state.bossEncounterV31?.active||state.phase!=='playing')return false;
+        const ids=Object.keys(EVENT_DEFS_V33).filter(x=>x!==state.lastSectorEventIdV33);const selected=id&&EVENT_DEFS_V33[id]?id:ids[Math.floor(Math.random()*ids.length)];const def=EVENT_DEFS_V33[selected];
+        state.sectorEventV33={id:selected,startedAt:state.playTime||0,endsAt:(state.playTime||0)+def.duration,targetsRemaining:0};state.lastSectorEventIdV33=selected;
+        if(selected==='salvage_rain')spawnScrapDropsV33(12);
+        else if(selected==='elite_patrol'){const types=['saw_raider','scrap_gunner','mine_junker','scrap_hound'];for(let i=0;i<4;i++){const e=safeSpawnAroundPlayerV31(types[i],430+i*55,{elite:i===0});e.eventTagV33=selected;}state.sectorEventV33.targetsRemaining=4;}
+        else if(selected==='repair_signal'){const a=Math.random()*Math.PI*2,d=380;state.sectorPoisV33.push(createPoiV33('repair',state.mecha.x+Math.cos(a)*d,state.mecha.y+Math.sin(a)*d,{eventId:selected,expiresAt:state.sectorEventV33.endsAt}));}
+        showEncounterNoticeV31(`EVENTO · ${def.title}`,2100);updateSectorHudV33();return true;
+      }
+      function completeSectorEventV33(success=true) {
+        const event=state.sectorEventV33;if(!event)return false;const def=EVENT_DEFS_V33[event.id];
+        if(success){state.sectorStatsV33.eventsCompleted++;progressionV3.statistics.eventsCompleted=(progressionV3.statistics.eventsCompleted||0)+1;addScrapV33(20+state.sector*4);progressionV3.cores=(progressionV3.cores||0)+6;saveProgressionV3();updateMissionTrackingHudV32();showEncounterNoticeV31(`EVENTO COMPLETADO · ${def.title}`,1800);}else{state.sectorStatsV33.eventsFailed++;showEncounterNoticeV31(`EVENTO PERDIDO · ${def.title}`,1500);}
+        state.sectorEventV33=null;state.nextSectorEventAtV33=(state.playTime||0)+48000;updateSectorHudV33();return success;
+      }
+      function handleEventEnemyKilledV33(enemy) {
+        if(!enemy?.eventTagV33||state.sectorEventV33?.id!==enemy.eventTagV33)return;
+        state.sectorEventV33.targetsRemaining=Math.max(0,(state.sectorEventV33.targetsRemaining||0)-1);if(state.sectorEventV33.targetsRemaining<=0)completeSectorEventV33(true);
+      }
+      function updateDynamicEventsV33() {
+        if(state.testMode||state.phase!=='playing')return;const now=state.playTime||0;const event=state.sectorEventV33;
+        if(event){const def=EVENT_DEFS_V33[event.id];if(now>=event.endsAt){if(def.mode==='timer')completeSectorEventV33(true);else completeSectorEventV33(false);}return;}
+        if(now>=(state.nextSectorEventAtV33||35000)&&!state.bossEncounterV31?.active&&!state.fieldShopOpenV32)startSectorEventV33();
+      }
+      function getDirectorSquadsV33(sector=state.sector) {
+        const squads=[{id:'pack',types:['scrap_hound','scrap_hound','scrap_hound'],cost:3},{id:'breach',types:['saw_raider','scrap_hound'],cost:3},{id:'fireteam',types:['scrap_gunner','scrap_gunner','scrap_hound'],cost:5}];
+        if(sector>=2)squads.push({id:'mine_screen',types:['mine_junker','scrap_hound','scrap_hound'],cost:5});if(sector>=4)squads.push({id:'assault',types:['saw_raider','scrap_gunner','mine_junker'],cost:7});return squads;
+      }
+      function spawnSquadV33(squad=null,eliteChance=0) {
+        const candidates=getDirectorSquadsV33();const selected=squad||candidates[Math.floor(Math.random()*candidates.length)];const baseAngle=Math.random()*Math.PI*2;selected.types.forEach((type,i)=>{const dist=520+Math.random()*300;const angle=baseAngle+(i-(selected.types.length-1)/2)*.16;const worldSize=getCurrentWorldSize();spawnEnemyAt(state.mecha.x+Math.cos(angle)*dist,state.mecha.y+Math.sin(angle)*dist,worldSize,type,{elite:i===0&&Math.random()<eliteChance});});state.threatDirectorV33.squadCount++;return selected;
+      }
+      function updateThreatDirectorV33(timestamp,timeFactor) {
+        if(state.testMode&&(!state.testSpawnEnemies||state.devContinuousSpawn===false))return;
+        if(!state.encounterMilestonesV31.miniboss&&state.playTime>=90000){state.encounterMilestonesV31.miniboss=true;spawnMinibossV31();return;}
+        if(!state.encounterMilestonesV31.boss&&state.playTime>=240000&&!state.enemies.some(e=>e.isMinibossV31)){state.encounterMilestonesV31.boss=true;spawnBossV31();return;}
+        if(state.enemies.some(e=>e.isBossV31))return;
+        const d=state.threatDirectorV33;const dt=d.lastTick?Math.min(1000,timestamp-d.lastTick):16;d.lastTick=timestamp;
+        const hpRatio=Math.max(0,state.mecha.hp/Math.max(1,state.mecha.maxHp));const regular=state.enemies.filter(e=>!e.isDummy&&!e.isMinibossV31&&!e.isBossV31).length;
+        let cap=state.enemies.some(e=>e.isMinibossV31)?5:Math.min(26,9+state.sector*3);if(hpRatio<.35)cap=Math.max(6,Math.floor(cap*.72));
+        const eventMult=state.sectorEventV33?.id==='overdrive'?1.35:1;const suppression=(state.directorSuppressedUntilV33||0)>(state.playTime||0)?.62:1;
+        const healthAdapt=hpRatio<.35?.68:hpRatio>.78?1.12:1;d.pressure=cap?regular/cap:0;d.intensity=Math.max(.45,Math.min(2.25,(.68+state.sector*.16+(state.playTime||0)/360000)*eventMult*suppression*healthAdapt));
+        d.budget=Math.min(18,(d.budget||0)+(dt/1000)*(1.05+d.intensity*1.35));updateSectorHudV33();
+        if(regular===0){const sq=spawnSquadV33(null,0);d.budget=Math.max(0,d.budget-sq.cost);d.lastSpawnAt=timestamp;return;}
+        if(regular>=cap)return;let interval=Math.max(560,1900/Math.max(.42,timeFactor*d.intensity));if(hpRatio<.35)interval*=1.35;
+        if(timestamp-(d.lastSpawnAt||0)<interval)return;const available=getDirectorSquadsV33().filter(s=>s.cost<=d.budget+1.5);if(!available.length)return;
+        d.lastSpawnAt=timestamp;const selected=available[Math.floor(Math.random()*available.length)];const eliteChance=state.playTime>70000?Math.min(.22,.025+state.sector*.025)*healthAdapt:0;spawnSquadV33(selected,eliteChance);d.budget=Math.max(0,d.budget-selected.cost);
+      }
+      //#endregion sectors_v330
+
+
 
        function triggerSplashExplosion(x, y, radius, damage) {
          for (let p = 0; p < 15; p++) {
@@ -4451,6 +4744,7 @@ stats.recentRuns = stats.recentRuns || [];
            if(rewardTier) queueRewardDraftV31(rewardTier);
            return;
          }
+         handleEventEnemyKilledV33(e);
          const particleCount=e.isBossV31?70:e.isMinibossV31?40:e.isEliteV31?24:12;
          for(let p=0;p<particleCount;p++) state.particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*(e.isBossV31?13:8),vy:(Math.random()-.5)*(e.isBossV31?13:8),life:e.isBossV31?42:25,color:e.color||'#ffaa00'});
          state.enemies.splice(index,1);
@@ -4557,7 +4851,9 @@ stats.recentRuns = stats.recentRuns || [];
         const dt = Math.min(100, timestamp - state.lastFrameTime);
         state.lastFrameTime = timestamp;
         state.playTime = (state.playTime || 0) + dt;
-        state.sector = Math.floor(state.playTime / 60000) + 1;
+        updateSectorProgressionV33(timestamp);
+        updateDynamicEventsV33();
+        maybeSpawnSectorHazardV33();
 
         if (state.devInfHp) state.mecha.hp = state.mecha.maxHp;
         if (state.devInfShield) state.mecha.shield = state.mecha.maxShield;
@@ -4612,8 +4908,10 @@ stats.recentRuns = stats.recentRuns || [];
         const viewTop = Math.max(0, state.mecha.y - halfH - GRID_SIZE);
         const viewBottom = Math.min(worldSize, state.mecha.y + halfH + GRID_SIZE);
 
+        drawSectorBackdropV33(viewLeft,viewRight,viewTop,viewBottom,worldSize);
+
         // Draw only visible grid lines in one path instead of redrawing the full world.
-        ctx.strokeStyle = 'rgba(0, 255, 204, 0.08)';
+        ctx.strokeStyle = getSectorDefV33().grid;
         ctx.lineWidth = 1;
         ctx.beginPath();
         for (let x = Math.floor(viewLeft / GRID_SIZE) * GRID_SIZE; x <= viewRight; x += GRID_SIZE) {
@@ -4626,7 +4924,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
         ctx.stroke();
 
-        ctx.strokeStyle = 'rgba(0, 255, 204, 0.4)';
+        ctx.strokeStyle = getSectorDefV33().accent;
         ctx.lineWidth = 4;
         ctx.strokeRect(0, 0, worldSize, worldSize);
 
@@ -4673,6 +4971,8 @@ stats.recentRuns = stats.recentRuns || [];
           state.mecha.y = Math.max(50, Math.min(worldSize - 50, state.mecha.y));
         }
 
+        drawSectorObjectsV33(timestamp);
+
         // Update only the primary weapon magazine. Secondary weapons and powers keep running while it reloads.
         updatePrimaryReloadV301(timestamp);
         updateRotarySpinV302(dt, !!nearestEnemy);
@@ -4707,6 +5007,7 @@ stats.recentRuns = stats.recentRuns || [];
                if (state.stats.fireRateMult) {
                  cooldown /= state.stats.fireRateMult;
                }
+               cooldown /= getTemporaryFireRateMultV33();
              }
              if (weaponId === 'w-rotarycannon') {
                const spin = getWeaponRuntimeV302('w-rotarycannon').spin || 0;
@@ -6580,7 +6881,7 @@ stats.recentRuns = stats.recentRuns || [];
         }
 
         // Spawn enemy wave if field empty
-        updateThreatDirectorV31(timestamp, timeFactor);
+        updateThreatDirectorV33(timestamp, timeFactor);
 
         // Update Active Targets array for Mekora contract/harness
         state.activeTargets.length = 0;
@@ -8613,6 +8914,7 @@ stats.recentRuns = stats.recentRuns || [];
         const worldSize = getCurrentWorldSize();
         state.mecha.x = Math.round(worldSize * 0.34);
         state.mecha.y = Math.round(worldSize * 0.5);
+        initializeRunSectorsV33();
         if (state.testMode) {
           state.devContinuousSpawn = state.testSpawnEnemies;
           ensureTestEnvironment(0);
@@ -8845,6 +9147,7 @@ stats.recentRuns = stats.recentRuns || [];
         document.body.dataset.testMode = state.testMode ? 'true' : 'false';
         updateEconomyHudV32();
         updateMissionTrackingHudV32();
+        updateSectorHudV33();
         updatePersistentConsoleControls();
       }
 
@@ -8857,6 +9160,7 @@ stats.recentRuns = stats.recentRuns || [];
         state.phase = 'menu';
         cacheDomRefs();
         initializeEconomyV32();
+        initializeSectorProgressionV33();
         updateEconomyHudV32();
         updateMissionTrackingHudV32();
         document.querySelectorAll('.screen').forEach(screen => screen.firstElementChild?.classList.add('virtual-screen'));
@@ -9320,7 +9624,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
 
       const FACTION_PACKAGE_V31 = Object.freeze({
-        id:'scrappers', name:'Chatarreros', version:'3.2.0',
+        id:'scrappers', name:'Chatarreros', version:'3.3.0',
         basicEnemies:['scrap_hound','saw_raider','scrap_gunner','mine_junker'],
         eliteModifiers:['armored'], minibosses:['drill_bastion'], bosses:['forge_titan']
       });
@@ -9342,7 +9646,8 @@ const btnControlPause = document.getElementById('btn-control-pause');
               damageNumbers: state.damageNumbers.length,
               enemyMines: state.enemyMinesV31.length
             },
-            encounterV31: {...state.bossEncounterV31}
+            encounterV31: {...state.bossEncounterV31},
+            sectorV33: {current:state.sector,event:state.sectorEventV33?{...state.sectorEventV33}:null,director:{...state.threatDirectorV33}}
           };
         },
         reset() {
@@ -9421,7 +9726,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         spawnBossV31ForTest() { if(state.testMode){state.testSpawnEnemies=true;state.devContinuousSpawn=false;} return spawnBossV31(); },
         enemySnapshotV31() { return state.enemies.map(e=>({id:e.id,type:e.type,faction:e.faction,role:e.roleV31,hp:e.hp,maxHp:e.maxHp,elite:!!e.isEliteV31,miniboss:!!e.isMinibossV31,boss:!!e.isBossV31,phase:e.phaseV31||1,nextActionAt:e.nextActionAt||0})); },
         mineSnapshotV31() { return state.enemyMinesV31.map(m=>({...m})); },
-        setPlayTimeV31(ms=0) { state.playTime=Math.max(0,Number(ms)||0); state.sector=Math.floor(state.playTime/60000)+1; return {playTime:state.playTime,sector:state.sector}; },
+        setPlayTimeV31(ms=0) { state.playTime=Math.max(0,Number(ms)||0); updateSectorProgressionV33(performance.now(),true); return {playTime:state.playTime,sector:state.sector}; },
         damageEnemyV31ForTest(id, amount=100) { const e=state.enemies.find(x=>x.id===id); if(!e)return null; damageEnemy(e,amount,performance.now()); return {id:e.id,hp:e.hp,maxHp:e.maxHp,vulnerableUntil:e.vulnerableUntil||0}; },
         updateEnemyV31ForTest(id, timestamp=performance.now()) { const e=state.enemies.find(x=>x.id===id); if(!e)return null; const angle=Math.atan2(state.mecha.y-e.y,state.mecha.x-e.x); const dist=Math.hypot(state.mecha.x-e.x,state.mecha.y-e.y); updateScrapperEnemyV31(e,timestamp,dist,angle,false,1,900); updateEnemyMinesV31(timestamp); updateBossHudV31(); return {id:e.id,type:e.type,x:e.x,y:e.y,hp:e.hp,phase:e.phaseV31,warning:e.attackWarningUntil,pending:e.pendingAttackAt,charge:e.chargeUntil,mines:state.enemyMinesV31.length,bullets:state.enemyBullets.length}; },
         defeatEnemyV31ForTest(id) { const i=state.enemies.findIndex(x=>x.id===id); if(i<0)return null; const e=state.enemies[i]; e.hp=0; killEnemy(e,i); return {eliteKills:state.eliteKillsV31,minibossKills:state.minibossKillsV31,bossKills:state.bossKillsV31,cores:progressionV3.cores,evolutionCores:state.runEvolutionCores}; },
@@ -9441,6 +9746,18 @@ const btnControlPause = document.getElementById('btn-control-pause');
           const rect = el => el ? ({x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,display:getComputedStyle(el).display,opacity:getComputedStyle(el).opacity}) : null;
           return {active:isImmersiveMode(),cameraZoom:getActiveCameraZoom(),screen:rect(activeScreen),display:rect(display),joystick:rect(joy),fire:rect(fire),pause:rect(pause),mute:rect(mute),fullscreen:rect(full),blockedPortrait:document.body.dataset.immersiveOrientationBlocked === 'true'};
         },
+        sectorStateV33() { const def=getSectorDefV33();return {sector:state.sector,def:{...def},event:state.sectorEventV33?{...state.sectorEventV33}:null,pois:state.sectorPoisV33.map(p=>({...p})),drops:state.sectorDropsV33.map(d=>({...d})),hazards:state.sectorHazardsV33.map(h=>({...h})),director:{...state.threatDirectorV33},runStats:{...state.sectorStatsV33},persistent:{poisDiscovered:progressionV3.statistics.poisDiscovered,eventsCompleted:progressionV3.statistics.eventsCompleted,maxSector:progressionV3.statistics.maxSector}}; },
+        setPlayTimeV33(ms=0) { state.playTime=Math.max(0,Number(ms)||0);updateSectorProgressionV33(performance.now(),true);updateSectorHudV33();return this.sectorStateV33(); },
+        startSectorEventV33ForTest(id='salvage_rain') { state.phase='playing';state.started=true;state.testMode=false;state.paused=false;state.sectorEventV33=null;startSectorEventV33(id);return this.sectorStateV33(); },
+        completeSectorEventV33ForTest(success=true) { completeSectorEventV33(!!success);return this.sectorStateV33(); },
+        spawnPoiV33ForTest(type='salvage',distance=40) { const p=createPoiV33(type,state.mecha.x+Math.max(0,Number(distance)||0),state.mecha.y);state.sectorPoisV33.push(p);return {...p}; },
+        collectNearestPoiV33ForTest() { const p=state.sectorPoisV33.find(x=>!x.collected);if(!p)return null;p.x=state.mecha.x;p.y=state.mecha.y;collectPoiV33(p);return {type:p.type,scrap:state.scrap,hp:state.mecha.hp,statistics:{...progressionV3.statistics}}; },
+        spawnHazardV33ForTest(type='press') { return spawnSectorHazardV33(type).map(h=>({...h})); },
+        directorTickV33ForTest(timestamp=performance.now()) { state.phase='playing';state.started=true;state.testMode=false;updateThreatDirectorV33(timestamp,1);return this.sectorStateV33(); },
+        clearSectorObjectsV33ForTest() { state.sectorPoisV33=[];state.sectorDropsV33=[];state.sectorHazardsV33=[];return this.sectorStateV33(); },
+        collectPoiTypeV33ForTest(type='salvage') { state.sectorPoisV33=[];const p=createPoiV33(type,state.mecha.x,state.mecha.y);state.sectorPoisV33.push(p);const before={scrap:state.scrap,hp:state.mecha.hp,xp:state.xp,suppressed:state.directorSuppressedUntilV33,overclock:state.overclockUntilV33};collectPoiV33(p);return {type,before,after:{scrap:state.scrap,hp:state.mecha.hp,xp:state.xp,suppressed:state.directorSuppressedUntilV33,overclock:state.overclockUntilV33},statistics:{...progressionV3.statistics}}; },
+        triggerHazardV33ForTest(type='press',damage=15) { state.sectorHazardsV33=[];const now=state.playTime||0;const h={type:'circle',kind:type==='heat'?'heat':'press',x:state.mecha.x,y:state.mecha.y,radius:90,warnUntil:now-1,activeUntil:now+1000,damage:Math.max(1,Number(damage)||15),nextTick:0};state.sectorHazardsV33.push(h);const before=state.mecha.hp;applyHazardDamageV33(h,now);return {before,after:state.mecha.hp,hazard:{...h}}; },
+        temporaryFireRateV33ForTest() { return getTemporaryFireRateMultV33(); },
         economyStateV32() { return {cores:progressionV3.cores,blueprints:{...progressionV3.blueprints},mechBlueprints:{...progressionV3.mechBlueprints},statistics:{...progressionV3.statistics},pinned:[...(progressionV3.pinnedMissions||[])],claimed:[...(progressionV3.claimedMissions||[])],scrap:state.scrap}; },
         openHangarForTest(tab='missions') { state.phase='menu'; render(); openHangarV32(); const idx=HANGAR_TABS_V32.findIndex(t=>t.id===tab); if(idx>=0)state.hangarTabIndexV32=idx; state.hangarItemIndexV32=0; updateHangarUIV32(); return {open:state.hangarOpenV32,tab:HANGAR_TABS_V32[state.hangarTabIndexV32].id,cores:progressionV3.cores}; },
         setCoresForTest(value=0) { progressionV3.cores=Math.max(0,Number(value)||0);saveProgressionV3();updateHangarUIV32();return progressionV3.cores; },
