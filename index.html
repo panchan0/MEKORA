@@ -2363,8 +2363,82 @@ body[data-ui-version="3.3.3"] .scanlines,body[data-ui-version="3.3.3"] .screen>.
  .dev-layout-v333 #dev-touch-minus,.dev-layout-v333 #dev-touch-plus{height:36px!important}
 }
 </style>
+<style id="mekora-v340-overhaul-style">
+  :root{
+    --v340-bg:#080c10;--v340-panel:#141c24;--v340-panel2:#1e2a35;--v340-line:#3a4b58;
+    --v340-text:#f2ede3;--v340-muted:#8f9ca6;--v340-amber:#e5ad4d;--v340-cyan:#72b8b4;
+    --v340-red:#c75b58;--v340-green:#78b98c;
+  }
+  #orientation-warning{z-index:2147483645!important}
+  #v340-boot,#v340-run-loading,.v340-overlay{position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483646;background:radial-gradient(circle at 50% 40%,#1b2730 0,#090d11 72%);color:var(--v340-text);font-family:var(--v333-body,"Trebuchet MS",Arial,sans-serif)}
+  #v340-boot.hidden,#v340-run-loading.hidden,.v340-overlay.hidden{display:none!important}
+  #v340-boot{z-index:2147483647;display:grid;place-items:center;text-align:center;padding:7vw}
+  .v340-boot-card{width:min(88vw,720px);display:grid;gap:18px;justify-items:center}
+  .v340-boot-mark{width:94px;height:94px;border:2px solid var(--v340-amber);clip-path:polygon(50% 0,92% 24%,92% 76%,50% 100%,8% 76%,8% 24%);display:grid;place-items:center;font:700 28px var(--v333-title,Impact,sans-serif);color:var(--v340-amber);box-shadow:0 0 36px rgba(229,173,77,.15)}
+  #v340-boot-title{font:500 clamp(28px,5vw,58px)/1 var(--v333-title,Impact,sans-serif);letter-spacing:.14em}
+  #v340-boot-status{font-size:11px;letter-spacing:.16em;color:var(--v340-muted)}
+  .v340-progress{width:min(72vw,520px);height:7px;border:1px solid #495661;border-radius:9px;overflow:hidden;background:#0a0f13}.v340-progress>i{display:block;width:0;height:100%;background:linear-gradient(90deg,#97723c,var(--v340-amber));transition:width .12s linear}
+  .v340-rotate-icon{width:98px;height:58px;border:3px solid var(--v340-amber);border-radius:13px;transform:rotate(90deg);display:none}
+  #v340-boot[data-waiting="true"] .v340-rotate-icon{display:block}#v340-boot[data-waiting="true"] .v340-boot-mark{display:none}
+
+  body[data-input-device="keyboard_mouse"] #joystick-move-zone,
+  body[data-input-device="keyboard_mouse"] #btn-tap-fire,
+  body[data-input-device="gamepad"] #joystick-move-zone,
+  body[data-input-device="gamepad"] #btn-tap-fire{display:none!important}
+  body[data-input-device="keyboard_mouse"] #game-canvas{cursor:crosshair!important}
+  body[data-input-device="touch"] #game-canvas{cursor:default!important}
+  #v340-input-indicator{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));z-index:180;padding:6px 9px;border:1px solid rgba(121,170,166,.35);border-radius:9px;background:rgba(7,10,13,.72);font:700 8px ui-monospace,monospace;letter-spacing:.08em;color:#b8c8c8;pointer-events:none;opacity:.78}
+  body[data-phase="playing"] #v340-input-indicator{display:block}body:not([data-phase="playing"]) #v340-input-indicator{display:none}
+
+  .menu-brand-v333{gap:7px!important}.menu-brand-v333 b{font-size:clamp(22px,3.2vw,42px)!important;color:var(--v340-amber)!important}.menu-brand-v333 .v340-core-glyph{font-size:18px;color:var(--v340-amber)}
+  .menu-actions-v333{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-width:700px!important}
+  #btn-main-play{position:relative!important;display:grid!important;place-items:center!important;min-height:96px!important}
+  #btn-main-play svg{width:38px;height:38px;fill:currentColor}
+  #btn-main-play::before{content:none!important}
+  #btn-main-hangar::before,#btn-main-global::before{content:none!important}
+  #btn-main-missions,#btn-main-store{min-height:72px;border-radius:16px;background:linear-gradient(150deg,#202b34,#121920);border:1px solid #41515e;color:#e8e3da;font:500 clamp(12px,1.5vw,16px) var(--v333-title,Impact,sans-serif);letter-spacing:.075em}
+  #btn-main-store{border-color:#735c3b;color:#f0cb8d}
+
+  .v340-overlay{z-index:1200;padding:max(16px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));background:radial-gradient(circle at 68% 34%,#22303a 0,#10161c 52%,#090d11 90%)}
+  .v340-shell{height:100%;min-height:0;display:grid;grid-template-columns:68px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:14px}
+  .v340-back{grid-column:1;grid-row:1;width:56px;height:56px;border-radius:50%;border:1px solid #53616a;background:#172029;color:#f1e9dd;font-size:26px;display:grid;place-items:center}
+  .v340-head{grid-column:2;grid-row:1;display:flex;align-items:end;justify-content:space-between;gap:16px;border-bottom:1px solid #34434d;padding:0 0 12px}.v340-head h2{font:500 clamp(28px,4vw,48px)/1 var(--v333-title,Impact,sans-serif);letter-spacing:.09em}.v340-head p{margin:5px 0 0;color:var(--v340-muted);font-size:9px;letter-spacing:.13em}.v340-wallet{text-align:right}.v340-wallet b{display:block;color:var(--v340-amber);font-size:25px}.v340-wallet span{font-size:8px;color:var(--v340-muted);letter-spacing:.12em}
+  .v340-content{grid-column:2;grid-row:2;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:12px}
+  .v340-tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;touch-action:pan-x!important}.v340-tabs::-webkit-scrollbar{display:none}.v340-tab{flex:0 0 auto;min-width:126px;min-height:40px;padding:8px 16px;border-radius:22px;border:1px solid #374650;background:#151d23;color:#93a0a8;font:700 10px var(--v333-body,"Trebuchet MS",sans-serif)}.v340-tab.active{background:var(--v340-amber);color:#15110b;border-color:#f0c87f}
+  .v340-scroll,.hangar-list-v32,.dev-list,.settings-layout-v333>.hud-border{min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important;scrollbar-gutter:stable}
+  .v340-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-content:start;padding:2px 8px 22px 2px}
+  .v340-card{position:relative;min-height:146px;padding:15px;border:1px solid #394852;border-radius:16px;background:linear-gradient(145deg,#202b34,#11171c);display:flex;flex-direction:column;gap:8px;color:#dce3e7;text-align:left}.v340-card.locked{filter:saturate(.4);color:#88939a}.v340-card.selected{border-color:#d8aa65;box-shadow:inset 4px 0 #d39a4a}.v340-card h3{font:500 16px/1.05 var(--v333-title,Impact,sans-serif);letter-spacing:.05em}.v340-card p{font-size:9px;line-height:1.35;color:#8f9ca5}.v340-card .v340-meta{margin-top:auto;display:flex;justify-content:space-between;align-items:end;gap:8px;font-size:8px;color:#d9aa64}.v340-card button{min-height:34px;padding:7px 12px;border:1px solid #6b5940;border-radius:18px;background:#292219;color:#efc17b;font-weight:800;font-size:9px}.v340-card button:disabled{opacity:.36}
+
+  .v340-garage-stage{height:100%;min-height:0;display:grid;grid-template-columns:74px minmax(0,1fr) 74px;align-items:center;gap:18px}.v340-garage-arrow{width:62px;height:62px;border-radius:50%;border:1px solid #4b5b66;background:#19232b;color:#eee5d8;font-size:28px}.v340-mech-bay{height:100%;min-height:0;display:grid;grid-template-columns:minmax(260px,1.2fr) minmax(260px,.8fr);gap:20px}.v340-mech-preview{position:relative;overflow:hidden;border:1px solid #34434d;border-radius:22px;background:radial-gradient(ellipse at 50% 72%,#30393d 0,#182027 44%,#0c1115 75%);display:grid;place-items:center}.v340-mech-preview::after{content:"";position:absolute;left:12%;right:12%;bottom:7%;height:16%;border:1px solid #475157;border-radius:50%;transform:perspective(500px) rotateX(65deg);background:rgba(94,105,110,.16)}.v340-mech-preview svg{position:relative;z-index:2;width:min(86%,520px);height:86%;filter:drop-shadow(0 25px 18px rgba(0,0,0,.58))}.v340-mech-preview.silhouette svg{filter:brightness(0) drop-shadow(0 25px 18px rgba(0,0,0,.65));opacity:.72}.v340-mech-question{position:absolute;z-index:3;font:500 72px var(--v333-title,Impact,sans-serif);color:#b0a692}.v340-mech-info{align-self:center;display:flex;flex-direction:column;gap:12px}.v340-mech-info h3{font:500 clamp(34px,5vw,62px)/.95 var(--v333-title,Impact,sans-serif);letter-spacing:.08em}.v340-mech-info p{color:#94a1aa;font-size:11px;line-height:1.45}.v340-mech-status{padding:12px 14px;border:1px solid #3c4b56;border-radius:13px;background:#121920;font-size:10px;color:#d9ac66}.v340-primary{min-height:52px;border:0;border-radius:14px;background:linear-gradient(135deg,#e8b14b,#c17b31);color:#17130c;font:900 12px var(--v333-body,"Trebuchet MS",sans-serif);letter-spacing:.08em}.v340-primary:disabled{filter:grayscale(.7);opacity:.5}
+
+  #v340-run-setup{z-index:1600;background:rgba(5,8,11,.94);display:grid;place-items:center;padding:24px}.v340-setup-card{width:min(92vw,980px);max-height:92dvh;overflow-y:auto;border:1px solid #4a5965;border-radius:22px;background:linear-gradient(145deg,#1e2933,#111820);padding:22px;display:grid;gap:18px}.v340-setup-top{display:flex;justify-content:space-between;align-items:center}.v340-setup-top h2{font:500 clamp(26px,4vw,44px) var(--v333-title,Impact,sans-serif);letter-spacing:.09em}.v340-setup-close{width:44px;height:44px;border-radius:50%;border:1px solid #52616c;background:#151d24;color:#eee4d8;font-size:24px}.v340-choice-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.v340-choice{min-height:102px;padding:13px;border:1px solid #364650;border-radius:14px;background:#141c23;text-align:left}.v340-choice.active{border-color:#dfad61;box-shadow:inset 0 -4px #b9823e}.v340-choice b{display:block;color:#f1e8dc;font-size:13px}.v340-choice span{display:block;margin-top:5px;color:#8e9ba4;font-size:8px;line-height:1.35}.v340-section-label{font-size:9px;color:#b8c3c8;letter-spacing:.15em}.v340-launch{min-height:58px;border:0;border-radius:15px;background:linear-gradient(135deg,#e8b14b,#c17b31);color:#17130c;font:900 13px var(--v333-body,"Trebuchet MS",sans-serif);letter-spacing:.1em}
+  #v340-run-loading{z-index:1800;display:block;background:#080c10}.v340-run-name{position:absolute;inset:0;display:grid;place-items:center;font:500 clamp(44px,9vw,112px) var(--v333-title,Impact,sans-serif);letter-spacing:.16em}.v340-run-tip{position:absolute;left:max(26px,env(safe-area-inset-left));bottom:max(24px,env(safe-area-inset-bottom));width:min(44vw,520px);font-size:10px;line-height:1.5;color:#9ea8ae}.v340-run-tip b{display:block;color:#dcb066;letter-spacing:.13em;margin-bottom:5px}.v340-spinner{position:absolute;right:max(26px,env(safe-area-inset-right));top:max(24px,env(safe-area-inset-top));width:42px;height:42px;border:4px solid #2c3942;border-top-color:var(--v340-amber);border-radius:50%;animation:v340Spin .8s linear infinite}@keyframes v340Spin{to{transform:rotate(360deg)}}
+
+  #sector-transition-v331{inset:auto!important;left:50%!important;top:max(56px,env(safe-area-inset-top))!important;width:min(76vw,560px)!important;height:auto!important;transform:translateX(-50%)!important;background:transparent!important;backdrop-filter:none!important;display:block!important;pointer-events:none!important}
+  #sector-transition-v331.hidden{display:none!important}.sector-transition-card-v331{width:100%!important;padding:9px 15px!important;border:1px solid rgba(184,138,84,.78)!important;border-radius:10px!important;background:rgba(14,18,22,.94)!important;box-shadow:0 9px 26px rgba(0,0,0,.35)!important}.sector-transition-card-v331 strong{font-size:clamp(14px,2.3vw,22px)!important}.sector-transition-card-v331 p{display:none!important}
+
+  .hangar-list-v32,.dev-list{padding-bottom:68px!important}.dev-row{min-height:96px!important;overflow:visible!important}.dev-row span:first-child{white-space:normal!important;overflow-wrap:anywhere}.dev-layout-v333 #dev-touch-toolbar{position:sticky!important;bottom:0!important;background:linear-gradient(180deg,transparent,#0d1217 36%)!important;padding-top:8px!important}.dev-layout-v333 #dev-touch-minus,.dev-layout-v333 #dev-touch-plus{min-width:92px!important;white-space:nowrap!important;overflow:visible!important}
+  .settings-layout-v333{overflow:hidden!important}.settings-layout-v333>.hud-border{padding-right:8px!important;padding-bottom:28px!important}.settings-layout-v333 input[type=range]{pointer-events:auto!important;touch-action:pan-x!important;-webkit-user-select:none!important;user-select:none!important}.lang-btn.language-active{outline:2px solid #e0ad5f!important;outline-offset:2px!important;background:#2b3944!important;color:#fff!important}.lang-btn:not(.language-active){outline:none!important}
+
+  .v340-rate{position:absolute;left:12px;bottom:10px;font-size:7px;color:#9dabb2}.v340-toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:2200;padding:10px 16px;border:1px solid #8a714b;border-radius:12px;background:#1d1913;color:#efc57f;font:800 10px var(--v333-body,"Trebuchet MS",sans-serif);opacity:0;pointer-events:none;transition:opacity .2s}.v340-toast.show{opacity:1}
+  body[data-quality="low"] .menu-mech-v333,body[data-quality="low"] .v340-mech-preview svg{animation:none!important;filter:none!important}body[data-quality="low"] .sparkle,body[data-quality="low"] .scanlines{display:none!important}
+
+  @media (orientation:portrait){.v340-shell{grid-template-columns:54px minmax(0,1fr)}.v340-back{width:46px;height:46px}.v340-grid{grid-template-columns:1fr}.v340-garage-stage{grid-template-columns:48px minmax(0,1fr) 48px;gap:8px}.v340-garage-arrow{width:44px;height:44px}.v340-mech-bay{grid-template-columns:1fr;grid-template-rows:minmax(220px,1fr) auto}.v340-choice-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.menu-actions-v333{grid-template-columns:1fr!important}}
+  @media (orientation:landscape) and (max-height:520px){.v340-overlay{padding:10px 16px}.v340-head{padding-bottom:7px}.v340-head h2{font-size:28px}.v340-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.v340-card{min-height:112px;padding:10px}.v340-garage-stage{gap:10px}.v340-mech-info h3{font-size:34px}.v340-mech-info{gap:7px}.v340-primary{min-height:42px}.v340-setup-card{padding:14px;gap:11px}.v340-choice{min-height:76px;padding:9px}.v340-launch{min-height:46px}.v340-run-tip{font-size:8px}}
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
+<div id="v340-boot" data-waiting="true" aria-live="polite">
+  <div class="v340-boot-card">
+    <div class="v340-rotate-icon" aria-hidden="true"></div>
+    <div class="v340-boot-mark" aria-hidden="true">M</div>
+    <div id="v340-boot-title">MEKORA</div>
+    <div id="v340-boot-status">GIRA EL DISPOSITIVO EN HORIZONTAL PARA INICIAR</div>
+    <div class="v340-progress"><i id="v340-boot-progress"></i></div>
+  </div>
+</div>
+
 
      <!-- ORIENTATION WARNING OVERLAY -->
      <div id="orientation-warning" style="display: none;">
@@ -3583,7 +3657,7 @@ stats.recentRuns = stats.recentRuns || [];
       }
 
       //#region v3_foundation · Content architecture, rarity and permanent progression
-      const MEKORA_VERSION = '3.3.3';
+      const MEKORA_VERSION = '3.4.0';
       const CONTENT_SCHEMA_VERSION = 1;
       const MEKORA_V3_PROGRESSION_KEY = 'mekora_v3_progression';
 
@@ -3734,7 +3808,7 @@ stats.recentRuns = stats.recentRuns || [];
             else progressionV3.blueprints[item.id]='locked';
           });
           SYNERGIES.forEach(item => { if (progressionV3.blueprints[item.id] !== 'unlocked') progressionV3.blueprints[item.id]='hidden'; });
-          progressionV3.cores = Math.max(0, Number(progressionV3.cores)||0) + 300;
+          progressionV3.cores = Math.max(0, Number(progressionV3.cores)||0);
           progressionV3.pinnedMissions = ['mission-kills-25','mission-scrap-150','mission-elite-1'];
           progressionV3.economyV32Initialized = true;
           progressionV3.economyVersion = '3.2.0';
@@ -3884,7 +3958,7 @@ stats.recentRuns = stats.recentRuns || [];
       function maybeOpenFieldShopV32(){if(state.phase==='playing'&&!state.paused&&!state.testMode&&!state.bossEncounterV31?.active&&(state.playTime||0)>=(state.nextFieldShopAtV32||60000))openFieldShopV32();}
       function awardRunCoresV32(){
         if(state.runCoresAwardedV32||state.testMode)return 0;state.runCoresAwardedV32=true;
-        const award=Math.max(15,20+Math.floor((state.score||0)/1200)*5+(state.sector||1)*8+(state.bossKillsV31||0)*25);
+        const award=(state.playTime||0)>=60000?5:0;
         progressionV3.cores=(progressionV3.cores||0)+award;progressionV3.statistics.bestSurvivalMs=Math.max(progressionV3.statistics.bestSurvivalMs||0,state.playTime||0);saveProgressionV3();return award;
       }
       //#endregion economy_v320
@@ -4125,7 +4199,7 @@ stats.recentRuns = stats.recentRuns || [];
         runtime.pulses = (runtime.pulses || 0) + 1;
         const level = state.weaponLevels['w-flamethrower'] || 1;
         const base = getWeaponStats('w-flamethrower', level).damage;
-        const aimAngle = Math.atan2(nearestEnemy.y - state.mecha.y, nearestEnemy.x - state.mecha.x);
+        const aimAngle = state.manualAimV340 ? state.manualAimAngleV340 : Math.atan2(nearestEnemy.y - state.mecha.y, nearestEnemy.x - state.mecha.x);
         for (let f = 0; f < 2; f++) {
           const angle = aimAngle + (Math.random() - 0.5) * 0.34;
           state.bullets.push({
@@ -4572,12 +4646,12 @@ stats.recentRuns = stats.recentRuns || [];
 
       function updateThreatDirectorV31(timestamp, timeFactor) {
         if (state.testMode && (!state.testSpawnEnemies || state.devContinuousSpawn === false)) return;
-        if (!state.encounterMilestonesV31.miniboss && state.playTime >= 90000) {
+        if (!state.encounterMilestonesV31.miniboss && state.playTime >= 270000) {
           state.encounterMilestonesV31.miniboss = true;
           spawnMinibossV31();
           return;
         }
-        if (!state.encounterMilestonesV31.boss && state.playTime >= 240000 && !state.enemies.some(e => e.isMinibossV31)) {
+        if (!state.encounterMilestonesV31.boss && state.playTime >= 720000 && !state.enemies.some(e => e.isMinibossV31)) {
           state.encounterMilestonesV31.boss = true;
           spawnBossV31();
           return;
@@ -4883,7 +4957,7 @@ stats.recentRuns = stats.recentRuns || [];
         state.sectorPoisV33=pois;
       }
       function updateSectorProgressionV33(timestamp=performance.now(),force=false) {
-        const next=Math.min(5,Math.floor((state.playTime||0)/60000)+1);
+        const next=Math.min(5,Math.floor((state.playTime||0)/180000)+1);
         if(!force && next===state.sectorCurrentV33)return false;
         state.sector=next; state.sectorCurrentV33=next; state.sectorEnteredAtV33=state.playTime||0; state.sectorEnemiesDefeated=0;
         const def=getSectorDefV33(next); state.sectorPropsV33=generateSectorPropsV33(def); state.sectorHazardsV33=[];
@@ -4992,8 +5066,8 @@ stats.recentRuns = stats.recentRuns || [];
       }
       function updateThreatDirectorV33(timestamp,timeFactor) {
         if(state.testMode&&(!state.testSpawnEnemies||state.devContinuousSpawn===false))return;
-        if(!state.encounterMilestonesV31.miniboss&&state.playTime>=90000){state.encounterMilestonesV31.miniboss=true;spawnMinibossV31();return;}
-        if(!state.encounterMilestonesV31.boss&&state.playTime>=240000&&!state.enemies.some(e=>e.isMinibossV31)){state.encounterMilestonesV31.boss=true;spawnBossV31();return;}
+        if(!state.encounterMilestonesV31.miniboss&&state.playTime>=270000){state.encounterMilestonesV31.miniboss=true;spawnMinibossV31();return;}
+        if(!state.encounterMilestonesV31.boss&&state.playTime>=720000&&!state.enemies.some(e=>e.isMinibossV31)){state.encounterMilestonesV31.boss=true;spawnBossV31();return;}
         if(state.enemies.some(e=>e.isBossV31))return;
         const d=state.threatDirectorV33;const dt=d.lastTick?Math.min(1000,timestamp-d.lastTick):16;d.lastTick=timestamp;
         const hpRatio=Math.max(0,state.mecha.hp/Math.max(1,state.mecha.maxHp));const regular=state.enemies.filter(e=>!e.isDummy&&!e.isMinibossV31&&!e.isBossV31).length;
@@ -5088,9 +5162,9 @@ stats.recentRuns = stats.recentRuns || [];
            }
            if(state.passives.includes('p-explode')) triggerSplashExplosion(e.x,e.y,80,30);
 
-           if(e.isEliteV31){state.eliteKillsV31++; progressionV3.cores=(progressionV3.cores||0)+4;}
-           if(e.isMinibossV31){state.minibossKillsV31++; awardEvolutionCoreV302('drill_bastion'); progressionV3.cores=(progressionV3.cores||0)+30; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0};}
-           if(e.isBossV31){state.bossKillsV31++; awardEvolutionCoreV302('forge_titan'); progressionV3.cores=(progressionV3.cores||0)+150; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0}; progressionV3.missions=progressionV3.missions||{}; progressionV3.missions['boss-forge-titan']={completed:true,completedAt:Date.now()};}
+           if(e.isEliteV31){state.eliteKillsV31++;}
+           if(e.isMinibossV31){state.minibossKillsV31++; awardEvolutionCoreV302('drill_bastion'); if((progressionV3.statistics.minibossKills||0)%3===0) progressionV3.cores=(progressionV3.cores||0)+15; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0};}
+           if(e.isBossV31){state.bossKillsV31++; awardEvolutionCoreV302('forge_titan'); progressionV3.cores=(progressionV3.cores||0)+40; state.bossEncounterV31={active:false,id:null,type:null,name:'',phase:0}; progressionV3.missions=progressionV3.missions||{}; progressionV3.missions['boss-forge-titan']={completed:true,completedAt:Date.now()};}
            if(e.isEliteV31||e.isMinibossV31||e.isBossV31) saveProgressionV3();
          }
 
@@ -5310,13 +5384,16 @@ stats.recentRuns = stats.recentRuns || [];
           }
         }
 
-        if (nearestEnemy) {
+        if (state.manualAimV340) {
+          state.mecha.angle = Number.isFinite(state.manualAimAngleV340) ? state.manualAimAngleV340 : state.mecha.angle;
+        } else if (nearestEnemy && minDistSq <= 384400) {
           const targetAngle = Math.atan2(nearestEnemy.y - state.mecha.y, nearestEnemy.x - state.mecha.x);
-          // Smooth out rotation to prevent jittery spinning
           let angleDiff = targetAngle - state.mecha.angle;
           while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
           while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
           state.mecha.angle += angleDiff * 0.15;
+        } else if (state.moveJoystick.active && Math.hypot(state.moveJoystick.x,state.moveJoystick.y) > 0.12) {
+          state.mecha.angle = Math.atan2(state.moveJoystick.y,state.moveJoystick.x);
         }
 
         // Update Mecha Movement from Move Joystick across open world
@@ -6001,7 +6078,7 @@ stats.recentRuns = stats.recentRuns || [];
                }
 
                // Offensive weapons fire if there is an enemy in range
-               if (nearestEnemy && minDistSq < 360000) {
+               if ((nearestEnemy && minDistSq < 360000) || state.manualAimV340) {
                  const isPrimaryWeaponV301 = weaponId === getPrimaryWeaponIdV301();
                  if (PROJECTILE_WEAPONS.has(weaponId) && isPrimaryWeaponV301) {
                    if (!consumePrimaryAmmoV301(timestamp)) return;
@@ -7974,32 +8051,17 @@ stats.recentRuns = stats.recentRuns || [];
         ctx.rotate(state.mecha.angle);
         if (state.mecha.hiddenV331) ctx.globalAlpha = 0;
 
-        // Core Chassis Graphic
-        ctx.fillStyle = getMechaDamageTint(timestamp) || (state.mecha.mismatchedPenalty ? '#ff3366' : '#00ffcc');
-        ctx.shadowColor = ctx.fillStyle;
-        ctx.shadowBlur = 10;
-
-        // Main Body Pentagon
+        // v3.4.0 active mecha palette and industrial silhouette
+        const mechPaletteV340 = typeof window.getActiveMechPaletteV340 === 'function' ? window.getActiveMechPaletteV340() : {armor:'#d7d0c2',dark:'#29343a',accent:'#a6523f',energy:'#e0ad4e'};
+        ctx.fillStyle = getMechaDamageTint(timestamp) || (state.mecha.mismatchedPenalty ? '#ff3366' : mechPaletteV340.armor);
+        ctx.shadowColor = mechPaletteV340.energy;
+        ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.moveTo(20, 0);
-        ctx.lineTo(-10, -18);
-        ctx.lineTo(-18, -10);
-        ctx.lineTo(-18, 10);
-        ctx.lineTo(-10, 18);
-        ctx.closePath();
-        ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Left & Right Weapon Mounts
-        ctx.fillStyle = '#1c2430';
-        ctx.fillRect(-5, -24, 18, 6);
-        ctx.fillRect(-5, 18, 18, 6);
-
-        // Cockpit Reticle Field
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath(); ctx.arc(4, 0, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.moveTo(24,0);ctx.lineTo(10,-16);ctx.lineTo(-7,-20);ctx.lineTo(-19,-11);ctx.lineTo(-22,0);ctx.lineTo(-19,11);ctx.lineTo(-7,20);ctx.lineTo(10,16);ctx.closePath();ctx.fill();
+        ctx.strokeStyle = mechPaletteV340.dark;ctx.lineWidth = 3;ctx.stroke();
+        ctx.fillStyle = mechPaletteV340.dark;ctx.fillRect(-7,-27,22,7);ctx.fillRect(-7,20,22,7);ctx.fillRect(-18,-7,9,14);
+        ctx.fillStyle = mechPaletteV340.accent;ctx.fillRect(7,-12,12,7);ctx.fillRect(7,5,12,7);
+        ctx.fillStyle = mechPaletteV340.energy;ctx.beginPath();ctx.arc(2,0,5,0,Math.PI*2);ctx.fill();
         ctx.restore();
 
         // Render Shield Bubble
@@ -10285,7 +10347,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         if(elapsed>=1180)state.mecha.hiddenV331=false;
         if(elapsed>=1750){t.active=false;state.devPauseEnemies=false;document.getElementById('sector-transition-v331')?.classList.add('hidden');showEncounterNoticeV31(`${tr('route_updated')} · ${getSectorDefV33().name}`,1500);return true;}return false;
       }
-      updateSectorProgressionV33=function(timestamp=performance.now(),force=false){ensureV331State();if(state.sectorTransitionV331.active){updateSectorTransitionV331(timestamp);return false;}const next=Math.min(5,Math.floor((state.playTime||0)/60000)+1);if(next===state.sectorCurrentV33)return false;if(force||state.sectorCurrentV33===0){applySectorNowV331(next);return true;}state.sectorTransitionV331={active:true,target:next,startedAt:timestamp,applied:false,teleportStarted:false};state.devPauseEnemies=true;state.isFiring=false;state.moveJoystick.active=false;const def=getSectorDefV33(next),root=document.getElementById('sector-transition-v331');document.getElementById('sector-transition-title-v331').textContent=`${tr('sector')} ${next}`;document.getElementById('sector-transition-name-v331').textContent=def.name;document.getElementById('sector-transition-detail-v331').textContent=def.subtitle;root?.classList.remove('hidden');return true;};
+      updateSectorProgressionV33=function(timestamp=performance.now(),force=false){ensureV331State();if(state.sectorTransitionV331.active){updateSectorTransitionV331(timestamp);return false;}const next=Math.min(5,Math.floor((state.playTime||0)/180000)+1);if(next===state.sectorCurrentV33)return false;if(force||state.sectorCurrentV33===0){applySectorNowV331(next);return true;}state.sectorTransitionV331={active:true,target:next,startedAt:timestamp,applied:false,teleportStarted:false};state.devPauseEnemies=true;state.isFiring=false;state.moveJoystick.active=false;const def=getSectorDefV33(next),root=document.getElementById('sector-transition-v331');document.getElementById('sector-transition-title-v331').textContent=`${tr('sector')} ${next}`;document.getElementById('sector-transition-name-v331').textContent=def.name;document.getElementById('sector-transition-detail-v331').textContent=def.subtitle;root?.classList.remove('hidden');return true;};
 
       function applyContentLocaleV331(lang) {
         const selected=lang==='en'||lang==='pt'?lang:'es';
@@ -10777,8 +10839,8 @@ const btnControlPause = document.getElementById('btn-control-pause');
   /* Slow, readable opening. The first minute ramps rather than flooding the player. */
   updateThreatDirectorV33=function(timestamp,timeFactor){
     if(state.testMode&&(!state.testSpawnEnemies||state.devContinuousSpawn===false))return;
-    if(!state.encounterMilestonesV31.miniboss&&state.playTime>=90000){state.encounterMilestonesV31.miniboss=true;spawnMinibossV31();return;}
-    if(!state.encounterMilestonesV31.boss&&state.playTime>=240000&&!state.enemies.some(e=>e.isMinibossV31)){state.encounterMilestonesV31.boss=true;spawnBossV31();return;}
+    if(!state.encounterMilestonesV31.miniboss&&state.playTime>=270000){state.encounterMilestonesV31.miniboss=true;spawnMinibossV31();return;}
+    if(!state.encounterMilestonesV31.boss&&state.playTime>=720000&&!state.enemies.some(e=>e.isMinibossV31)){state.encounterMilestonesV31.boss=true;spawnBossV31();return;}
     if(state.enemies.some(e=>e.isBossV31))return;
     const t=state.playTime||0,d=state.threatDirectorV33;const dt=d.lastTick?Math.min(1000,timestamp-d.lastTick):16;d.lastTick=timestamp;
     const regular=state.enemies.filter(e=>!e.isDummy&&!e.isMinibossV31&&!e.isBossV31).length;const hpRatio=Math.max(0,state.mecha.hp/Math.max(1,state.mecha.maxHp));
@@ -10831,6 +10893,251 @@ const btnControlPause = document.getElementById('btn-control-pause');
   window.mekoraV333={version:V333,orientation(){return {portrait:isPortraitV333(),blocked:document.body.dataset.landscapeBlocked==='true',display:getComputedStyle(document.getElementById('orientation-warning')).display};},menu(){startMainMenu();buildMenuV333();return {phase:state.phase};},openHangar(){state.phase='menu';render();openHangarV32();return {cards:document.querySelectorAll('.hangar-row-v32').length,tabs:document.querySelectorAll('.hangar-tab-v32').length};},openSettings(){startSettingsMenu();return {phase:state.phase,developerVisible:document.getElementById('settings-dev-v333')?.classList.contains('visible')};},unlockDeveloper(){unlockDeveloperMode(true);return {mainVisible:getComputedStyle(document.getElementById('btn-main-dev')).display,settingsVisible:document.getElementById('settings-dev-v333')?.classList.contains('visible')};},openDeveloper(){openDeveloperMenu();return {cards:document.querySelectorAll('.dev-row').length,tabs:document.querySelectorAll('.dev-tab').length};},gameover(){stopRun();state.phase='gameover';render();decorateGameOverV333();return {phase:state.phase};},startOpening(){startRun(false,false);state.enemies.length=0;state.playTime=0;state.threatDirectorV33.lastSpawnAt=performance.now();state.threatDirectorV33.budget=0;return {enemies:state.enemies.length};},directorAt(ms){state.phase='playing';state.started=true;state.playTime=ms;updateThreatDirectorV33(performance.now()+ms,1);return {time:ms,enemies:state.enemies.map(e=>e.type),count:state.enemies.length};},gunnerShot(){state.phase='playing';state.started=true;state.enemyBullets.length=0;state.enemies=state.enemies.filter(e=>e.type!=='scrap_gunner');const e=safeSpawnAroundPlayerV31('scrap_gunner',250);e.pendingAttackAt=performance.now()-1;updateScrapperEnemyV31(e,performance.now(),250,0,false,1,900);return state.enemyBullets.map(b=>({speed:Math.hypot(b.vx,b.vy),damage:b.damage,radius:b.radius}));},wallCharge(elite=false){state.phase='playing';state.started=true;const e=safeSpawnAroundPlayerV31('saw_raider',250,{elite});const ws=getCurrentWorldSize();e.x=59;e.y=state.mecha.y;e.chargeAngle=Math.PI;e.chargeUntil=performance.now()+1000;updateScrapperEnemyV31(e,performance.now(),Math.abs(state.mecha.x-e.x),0,false,1,900);return {elite:!!e.isEliteV31,x:e.x,stunnedUntil:e.stunnedUntil||0,chargeUntil:e.chargeUntil||0,angle:e.chargeAngle};},nearWall(){state.phase='playing';state.started=true;state.mecha.x=100;state.mecha.y=getCurrentWorldSize()/2;return {x:state.mecha.x,y:state.mecha.y,size:getCurrentWorldSize()};},world(){return {size:getCurrentWorldSize(),mecha:{x:state.mecha.x,y:state.mecha.y}};},elite(){const e=safeSpawnAroundPlayerV31('saw_raider',220,{elite:true});return {hp:e.hp,speed:e.speed,color:e.color,glow:!!e.eliteGlowV333};}};
 })();
 // #endregion v333_full_landscape_ui_and_opening_balance
+
+// #region v340_multiplatform_overhaul
+(() => {
+  const V340 = '3.4.0';
+  const DIFFICULTIES_V340 = Object.freeze([
+    {id:'incursion',name:'INCURSIÓN',desc:'Presión estándar. Director táctico equilibrado.',hp:1,damage:1,speed:1,reward:1},
+    {id:'siege',name:'ASEDIO',desc:'Más escuadrones y enemigos reforzados.',hp:1.22,damage:1.16,speed:1.04,reward:1.2},
+    {id:'breach',name:'RUPTURA',desc:'Ventanas de reacción más cortas y élites más duras.',hp:1.5,damage:1.36,speed:1.09,reward:1.45},
+    {id:'extinction',name:'EXTINCIÓN',desc:'Máxima presión. Diseñado para construcciones completas.',hp:1.9,damage:1.62,speed:1.14,reward:1.8}
+  ]);
+  const MAPS_V340 = Object.freeze([
+    {id:'scrap_prime',name:'DESGUACE PRIME',desc:'Ruta industrial equilibrada entre chatarra, prensas y forja.',accent:'#d39a4a',bg:'#11161a'},
+    {id:'magnetic_corridor',name:'CORREDOR MAGNÉTICO',desc:'Rieles activos, líneas de tiro largas y peligros de barrido.',accent:'#6f9ca5',bg:'#10171b'},
+    {id:'night_foundry',name:'FUNDICIÓN NOCTURNA',desc:'Calor, baja visibilidad y mayor densidad de controladores.',accent:'#b76445',bg:'#181210'}
+  ]);
+  const MECHS_V340 = Object.freeze([
+    {id:'axiom',name:'AXIOM',role:'Unidad equilibrada de expedición',unlock:'starter',price:0,desc:'Chasis marfil y óxido, movilidad estable y respuesta precisa.',colors:{armor:'#d7d0c2',dark:'#29343a',accent:'#a6523f',energy:'#e0ad4e'}},
+    {id:'origins',name:'ORIGINS',role:'Prototipo histórico',unlock:'mission',mission:'mission-forge-titan',price:0,desc:'El primer chasis operativo de MEKORA. Solo se recupera completando la cadena de la Forja.',colors:{armor:'#6eb5b2',dark:'#243238',accent:'#4b7f86',energy:'#dceeea'}},
+    {id:'lancer',name:'LANCER',role:'Movilidad y críticos',unlock:'cores',price:900,desc:'Chasis ligero para desplazamiento rápido y precisión sostenida.',colors:{armor:'#c9c4b9',dark:'#272f39',accent:'#b95a4b',energy:'#f0b954'}},
+    {id:'bastion',name:'BASTION',role:'Defensa y contraataque',unlock:'modules',parts:4,desc:'Su identidad permanece oculta hasta reunir cuatro módulos de bastión.',colors:{armor:'#a8a59c',dark:'#252b31',accent:'#8a633f',energy:'#dcb269'}},
+    {id:'weaver',name:'WEAVER',role:'Drones y control',unlock:'cores',price:1250,desc:'Plataforma de comando para unidades autónomas y zonas de control.',colors:{armor:'#c8c1cf',dark:'#2d2834',accent:'#805c94',energy:'#d8b7ef'}},
+    {id:'wraith',name:'WRAITH',role:'Fase y precisión',unlock:'mission',mission:'mission-events-3',desc:'Chasis experimental desbloqueado mediante operaciones difíciles.',colors:{armor:'#b6bdc2',dark:'#222a30',accent:'#516e83',energy:'#9fd7e6'}}
+  ]);
+  const STORE_ITEMS_V340 = Object.freeze({
+    skins:[
+      {id:'skin-axiom-ash',name:'AXIOM · CENIZA',price:120,desc:'Revestimiento gris grafito con marcas de desgaste.'},
+      {id:'skin-origins-white',name:'ORIGINS · ARCHIVO BLANCO',price:180,desc:'Restauración ceremonial del prototipo original.'},
+      {id:'skin-lancer-red',name:'LANCER · CORTE ROJO',price:220,desc:'Paneles rojos y líneas de alta velocidad.'}
+    ],
+    effects:[
+      {id:'fx-impact-amber',name:'IMPACTO ÁMBAR',price:90,desc:'Destellos ámbar en impactos críticos.'},
+      {id:'fx-trail-ghost',name:'ESTELA FANTASMA',price:140,desc:'Estela fría durante impulsos y teletransportes.'},
+      {id:'fx-destruction-forge',name:'RUPTURA DE FORJA',price:200,desc:'Secuencia de destrucción con fragmentos incandescentes.'}
+    ],
+    boxes:[
+      {id:'box-salvage',name:'CAJA DE SALVAMENTO',price:35,desc:'Cosméticos básicos y efectos poco comunes.',rates:'70% COMÚN · 25% RARO · 5% ÉPICO'},
+      {id:'box-arsenal',name:'CAJA DE ARSENAL',price:85,desc:'Skins, efectos y una posibilidad baja de mecha.',rates:'45% SKIN · 40% EFECTO · 15% MECHA'}
+    ]
+  });
+  const runConfigV340 = {difficulty:'incursion',map:'scrap_prime'};
+  const inputV340 = {keys:new Set(),device:'touch',mouseAim:false,mouseAngle:0,gamepadIndex:null,lastPadButtons:[],navAt:0,lastFrame:performance.now(),frameSamples:[]};
+  let garageIndexV340 = 0;
+  let catalogTabV340 = 'weapons';
+  let storeTabV340 = 'mechs';
+  let bootStartedV340 = false;
+  let ambientNodeV340 = null;
+
+  function currentDifficultyV340(){return DIFFICULTIES_V340.find(x=>x.id===runConfigV340.difficulty)||DIFFICULTIES_V340[0];}
+  function currentMapV340(){return MAPS_V340.find(x=>x.id===runConfigV340.map)||MAPS_V340[0];}
+  function ensureProgressionV340(){
+    progressionV3.v340 = progressionV3.v340 || {};
+    progressionV3.v340.inventory = progressionV3.v340.inventory || {skins:[],effects:[],boxesOpened:0,parts:{bastion:0}};
+    progressionV3.v340.unlockedMechs = Array.from(new Set(['axiom',...(progressionV3.v340.unlockedMechs||[])]));
+    progressionV3.v340.activeMech = progressionV3.v340.activeMech || 'axiom';
+    if(!progressionV3.v340.migrated){
+      const s=progressionV3.statistics||{};
+      const untouched=(s.kills||0)+(s.scrapCollected||0)+(s.eliteKills||0)+(s.minibossKills||0)+(s.bossKills||0)===0 && !(progressionV3.claimedMissions||[]).length;
+      if(untouched) progressionV3.cores=0;
+      progressionV3.v340.migrated=true;
+    }
+    const rewards=[12,16,20,28,24,42,22,30,36];
+    MISSION_DEFS_V32.forEach((m,i)=>{m.rewardCores=rewards[i]||18;});
+    saveProgressionV3();
+  }
+  function isMechUnlockedV340(mech){
+    if(mech.unlock==='starter')return true;
+    if((progressionV3.v340.unlockedMechs||[]).includes(mech.id))return true;
+    if(mech.unlock==='mission')return (progressionV3.claimedMissions||[]).includes(mech.mission);
+    if(mech.unlock==='modules')return (progressionV3.v340.inventory.parts?.bastion||0)>=mech.parts;
+    return false;
+  }
+  function unlockMechV340(id){progressionV3.v340.unlockedMechs=Array.from(new Set([...(progressionV3.v340.unlockedMechs||[]),id]));saveProgressionV3();}
+  function activeMechV340(){return MECHS_V340.find(m=>m.id===progressionV3.v340.activeMech)||MECHS_V340[0];}
+  function getActiveMechPaletteV340(){return activeMechV340().colors;}
+  window.getActiveMechPaletteV340=getActiveMechPaletteV340;
+
+  function wordV340(es,en,pt){return SETTINGS_STATE.language==='en'?en:SETTINGS_STATE.language==='pt'?pt:es;}
+  function toastV340(text){let t=document.getElementById('v340-toast');if(!t){t=document.createElement('div');t.id='v340-toast';t.className='v340-toast';document.body.appendChild(t);}t.textContent=text;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),1900);}
+  function setDeviceV340(device){
+    if(!['touch','keyboard_mouse','gamepad'].includes(device))device='touch';
+    if(inputV340.device===device)return;
+    inputV340.device=device;document.body.dataset.inputDevice=device;if(device==='touch'){inputV340.mouseAim=false;if(typeof state==='object')state.manualAimV340=false;}
+    const label=document.getElementById('v340-input-indicator');if(label)label.textContent=device==='gamepad'?'MANDO':device==='keyboard_mouse'?'TECLADO + RATÓN':'TÁCTIL';
+  }
+  function createIconPlayV340(){return '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 10 54 32 18 54Z"/></svg>';}
+  function refreshCoreCountersV340(){
+    const n=Math.floor(progressionV3.cores||0);
+    ['v340-menu-cores','v340-wallet-cores','hangar-cores-v32'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=n;});
+  }
+  function replaceButtonV340(id,label,handler,extraClass=''){
+    const old=document.getElementById(id);if(!old)return null;
+    const b=old.cloneNode(false);b.id=id;b.type='button';b.className=extraClass||old.className;b.removeAttribute('style');b.style.pointerEvents='auto';b.setAttribute('aria-label',label);b.textContent=label;old.replaceWith(b);b.addEventListener('click',ev=>{ev.preventDefault();initAudio();playSound('equip');handler(ev);});return b;
+  }
+  function mechSvgV340(mech){const c=mech.colors;return `<svg viewBox="0 0 520 520" aria-hidden="true"><g transform="translate(42 22)"><path fill="${c.dark}" stroke="#11181d" stroke-width="8" d="M171 52 251 22 335 56 370 139 346 238 263 278 174 240 139 141Z"/><path fill="${c.armor}" stroke="#28343a" stroke-width="7" d="M187 67 251 45 319 70 341 137 325 214 261 247 195 218 168 140Z"/><path fill="${c.accent}" stroke="#3d241f" stroke-width="6" d="M207 83 292 84 316 122 300 159 197 158 183 120Z"/><path fill="${c.dark}" d="M214 96 285 96 300 122 288 143 208 143 196 121Z"/><rect x="230" y="111" width="42" height="14" rx="6" fill="${c.energy}"/><path fill="${c.armor}" stroke="#28343a" stroke-width="7" d="M142 137 74 173 51 253 98 283 166 222Z"/><path fill="${c.dark}" stroke="#11181d" stroke-width="7" d="M79 181 35 215 18 306 72 323 116 252Z"/><path fill="${c.armor}" stroke="#28343a" stroke-width="7" d="M359 139 424 171 459 239 427 281 342 221Z"/><path fill="${c.dark}" stroke="#11181d" stroke-width="7" d="M423 181 472 213 492 304 438 324 390 249Z"/><path fill="${c.accent}" d="M31 246 78 257 62 329 9 317Z"/><path fill="${c.accent}" d="M444 247 484 230 515 312 462 331Z"/><path fill="${c.dark}" stroke="#11181d" stroke-width="7" d="M198 233 173 324 216 365 258 309 303 365 347 323 320 231Z"/><path fill="${c.armor}" stroke="#28343a" stroke-width="7" d="M177 309 116 347 101 442 153 468 218 377Z"/><path fill="${c.dark}" stroke="#11181d" stroke-width="7" d="M126 360 82 391 72 482 133 490 168 432Z"/><path fill="${c.armor}" stroke="#28343a" stroke-width="7" d="M343 311 405 349 426 443 375 470 305 376Z"/><path fill="${c.dark}" stroke="#11181d" stroke-width="7" d="M396 361 439 390 455 482 394 492 357 430Z"/><path fill="${c.accent}" d="M70 447 145 447 164 495 49 495Z"/><path fill="${c.accent}" d="M383 447 451 447 473 495 361 495Z"/><circle cx="259" cy="205" r="29" fill="${c.energy}" stroke="#46371e" stroke-width="6"/><circle cx="259" cy="205" r="12" fill="${c.dark}"/></g></svg>`;}
+
+  function buildMenuV340(){
+    ensureProgressionV340();
+    const brand=document.querySelector('.menu-brand-v333');if(brand)brand.innerHTML='<span class="v340-core-glyph">◇</span><b id="v340-menu-cores">0</b><span>NÚCLEOS</span>';
+    const title=document.querySelector('.menu-panel-v333 h1');if(title)title.textContent='MEKORA';
+    const subtitle=document.querySelector('.menu-subtitle-v333');if(subtitle)subtitle.textContent=`EXPEDICIÓN MECÁNICA · UNIDAD ${activeMechV340().name}`;
+    const stage=document.getElementById('menu-stage-v333');if(stage)stage.innerHTML=mechSvgV340(activeMechV340());
+    const actions=document.querySelector('.menu-actions-v333');if(!actions)return;
+    const play=replaceButtonV340('btn-main-play','JUGAR',()=>openRunSetupV340());if(play)play.innerHTML=createIconPlayV340();
+    replaceButtonV340('btn-main-hangar','GARAJE',()=>openGarageV340());
+    replaceButtonV340('btn-main-global','ARSENAL',()=>openCatalogV340('weapons'));
+    let missions=document.getElementById('btn-main-missions');if(!missions){missions=document.createElement('button');missions.id='btn-main-missions';missions.type='button';actions.appendChild(missions);}missions.textContent='MISIONES';missions.onclick=()=>{initAudio();playSound('equip');openMissionsV340();};
+    let store=document.getElementById('btn-main-store');if(!store){store=document.createElement('button');store.id='btn-main-store';store.type='button';actions.appendChild(store);}store.textContent='TIENDA';store.onclick=()=>{initAudio();playSound('equip');openStoreV340('mechs');};
+    const dev=document.getElementById('btn-main-dev');if(dev){dev.style.display='none';dev.hidden=true;}
+    const settings=replaceButtonV340('btn-main-settings','CONFIGURACIÓN',()=>startSettingsMenu());if(settings)settings.innerHTML='<span class="menu-settings-icon-v333">⚙</span>';
+    refreshCoreCountersV340();
+  }
+
+  function ensureOverlayV340(id,title,subtitle){let root=document.getElementById(id);if(root)return root;root=document.createElement('section');root.id=id;root.className='v340-overlay hidden';root.innerHTML=`<div class="v340-shell"><button class="v340-back" type="button" aria-label="Volver">←</button><header class="v340-head"><div><h2>${title}</h2><p>${subtitle}</p></div><div class="v340-wallet"><b id="v340-wallet-cores">0</b><span>NÚCLEOS</span></div></header><main class="v340-content"></main></div>`;document.body.appendChild(root);root.querySelector('.v340-back').onclick=()=>closeOverlayV340(root);return root;}
+  function closeOverlayV340(root){(root||document.querySelector('.v340-overlay:not(.hidden)'))?.classList.add('hidden');refreshCoreCountersV340();buildMenuV340();}
+  function closeAllOverlaysV340(){document.querySelectorAll('.v340-overlay').forEach(x=>x.classList.add('hidden'));document.getElementById('v340-run-setup')?.classList.add('hidden');}
+
+  function openGarageV340(){
+    const root=ensureOverlayV340('v340-garage','GARAJE','SELECCIÓN Y RECUPERACIÓN DE MECHAS');root.classList.remove('hidden');
+    garageIndexV340=Math.max(0,MECHS_V340.findIndex(m=>m.id===progressionV3.v340.activeMech));renderGarageV340();
+  }
+  function renderGarageV340(){
+    const root=document.getElementById('v340-garage');if(!root)return;refreshCoreCountersV340();const mech=MECHS_V340[garageIndexV340];const unlocked=isMechUnlockedV340(mech);const unknown=mech.unlock==='modules'&&!unlocked;let status='';let action='';let disabled=false;
+    if(unlocked){status=progressionV3.v340.activeMech===mech.id?'MECHA ACTIVO':'DISPONIBLE';action=progressionV3.v340.activeMech===mech.id?'ACTIVO':'SELECCIONAR';disabled=progressionV3.v340.activeMech===mech.id;}
+    else if(mech.unlock==='cores'){status=`BLOQUEADO · ${mech.price} NÚCLEOS`;action='COMPRAR';}
+    else if(mech.unlock==='mission'){const m=getMissionDefV32(mech.mission);const p=m?getMissionProgressV32(m):null;status=`MISIÓN DIFÍCIL · ${p?`${p.value}/${p.target}`:'0/1'}`;action='SOLO MEDIANTE MISIÓN';disabled=true;}
+    else {const parts=progressionV3.v340.inventory.parts?.bastion||0;status=`MÓDULOS ENCONTRADOS · ${parts}/${mech.parts}`;action='REQUIERE MÓDULOS';disabled=true;}
+    root.querySelector('.v340-content').innerHTML=`<div class="v340-garage-stage"><button class="v340-garage-arrow" id="v340-garage-prev" type="button">‹</button><div class="v340-mech-bay"><div class="v340-mech-preview ${unknown?'silhouette':''}">${mechSvgV340(mech)}${unknown?'<div class="v340-mech-question">?</div>':''}</div><div class="v340-mech-info"><span class="v340-section-label">${String(garageIndexV340+1).padStart(2,'0')} / ${String(MECHS_V340.length).padStart(2,'0')}</span><h3>${unknown?'PROYECTO DESCONOCIDO':mech.name}</h3><p>${unknown?'La silueta y sus sistemas permanecen ocultos hasta reunir los módulos requeridos.':mech.desc}</p><div class="v340-mech-status">${status}</div><button id="v340-garage-action" class="v340-primary" type="button" ${disabled?'disabled':''}>${action}</button></div></div><button class="v340-garage-arrow" id="v340-garage-next" type="button">›</button></div>`;
+    root.querySelector('#v340-garage-prev').onclick=()=>{garageIndexV340=(garageIndexV340-1+MECHS_V340.length)%MECHS_V340.length;renderGarageV340();};
+    root.querySelector('#v340-garage-next').onclick=()=>{garageIndexV340=(garageIndexV340+1)%MECHS_V340.length;renderGarageV340();};
+    const actionBtn=root.querySelector('#v340-garage-action');if(actionBtn&&!disabled)actionBtn.onclick=()=>{
+      if(unlocked){progressionV3.v340.activeMech=mech.id;saveProgressionV3();toastV340(`${mech.name} EQUIPADO`);renderGarageV340();buildMenuV340();return;}
+      if(mech.unlock==='cores'){if((progressionV3.cores||0)<mech.price){toastV340('NÚCLEOS INSUFICIENTES');return;}progressionV3.cores-=mech.price;unlockMechV340(mech.id);progressionV3.v340.activeMech=mech.id;saveProgressionV3();toastV340(`${mech.name} DESBLOQUEADO`);renderGarageV340();}
+    };
+  }
+
+  function getCatalogItemsV340(tab){return getHangarItemsV32(tab);}
+  function openCatalogV340(tab='weapons'){catalogTabV340=tab;const root=ensureOverlayV340('v340-catalog','ARSENAL','ARMAS, PODERES Y HABILIDADES');root.classList.remove('hidden');renderCatalogV340();}
+  function renderCatalogV340(){
+    const root=document.getElementById('v340-catalog');if(!root)return;refreshCoreCountersV340();const tabs=[['weapons','ARMAS'],['powers','PODERES'],['modules','HABILIDADES']];const items=getCatalogItemsV340(catalogTabV340);
+    root.querySelector('.v340-content').innerHTML=`<nav class="v340-tabs">${tabs.map(([id,l])=>`<button class="v340-tab ${id===catalogTabV340?'active':''}" data-tab="${id}" type="button">${l}</button>`).join('')}</nav><div class="v340-scroll"><div class="v340-grid">${items.map(item=>{const st=progressionV3.blueprints[item.id]||'locked';const locked=st==='locked'||st==='hidden';const price=getBlueprintPriceV32(item);const label=st==='unlocked'?'DESBLOQUEADO':st==='discovered'?`${price} NÚCLEOS`:'MISIÓN / DESCUBRIMIENTO';return `<article class="v340-card ${locked?'locked':''}"><h3>${locked?'PROYECTO DESCONOCIDO':item.title}</h3><p>${locked?'Continúa jugando para descubrir este sistema.':item.desc}</p><div class="v340-meta"><span>${label}</span><button data-buy="${item.id}" type="button" ${st!=='discovered'?'disabled':''}>${st==='discovered'?'COMPRAR':'INSPECCIONAR'}</button></div></article>`;}).join('')}</div></div>`;
+    root.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{catalogTabV340=b.dataset.tab;renderCatalogV340();});root.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const item=UPGRADE_BY_ID.get(b.dataset.buy);if(!item)return;const price=getBlueprintPriceV32(item);if((progressionV3.cores||0)<price){toastV340('NÚCLEOS INSUFICIENTES');return;}progressionV3.cores-=price;progressionV3.blueprints[item.id]='unlocked';progressionV3.discoveredContent=Array.from(new Set([...(progressionV3.discoveredContent||[]),item.id]));saveProgressionV3();toastV340(`${item.title} DESBLOQUEADO`);renderCatalogV340();});installScrollableV340(root);
+  }
+
+  function openMissionsV340(){const root=ensureOverlayV340('v340-missions','MISIONES','DESAFÍOS OPCIONALES Y OPERACIONES DIFÍCILES');root.classList.remove('hidden');renderMissionsV340();}
+  function renderMissionsV340(){const root=document.getElementById('v340-missions');if(!root)return;refreshCoreCountersV340();root.querySelector('.v340-content').innerHTML=`<div class="v340-scroll"><div class="v340-grid">${MISSION_DEFS_V32.map(m=>{const p=getMissionProgressV32(m);return `<article class="v340-card ${p.complete?'selected':''}"><h3>${m.title}</h3><p>${m.short}</p><div class="v340-meta"><span>${p.value}/${p.target} · +${m.rewardCores} NÚCLEOS</span><button data-mission="${m.id}" type="button" ${p.claimed?'disabled':''}>${p.claimed?'COMPLETADA':p.complete?'RECLAMAR':(progressionV3.pinnedMissions||[]).includes(m.id)?'QUITAR':'FIJAR'}</button></div></article>`;}).join('')}</div></div>`;root.querySelectorAll('[data-mission]').forEach(b=>b.onclick=()=>{const m=getMissionDefV32(b.dataset.mission);const p=getMissionProgressV32(m);if(p.complete&&!p.claimed){claimMissionV32(m.id);if(m.id==='mission-forge-titan')unlockMechV340('origins');if(m.id==='mission-events-3')unlockMechV340('wraith');toastV340(`+${m.rewardCores} NÚCLEOS`);}else togglePinnedMissionV32(m.id);renderMissionsV340();});installScrollableV340(root);}
+
+  function openStoreV340(tab='mechs'){storeTabV340=tab;const root=ensureOverlayV340('v340-store','TIENDA','MECHAS, SKINS, EFECTOS Y CAJAS');root.classList.remove('hidden');renderStoreV340();}
+  function storeItemsV340(){if(storeTabV340==='mechs')return MECHS_V340.filter(m=>m.unlock==='cores');return STORE_ITEMS_V340[storeTabV340]||[];}
+  function renderStoreV340(){const root=document.getElementById('v340-store');if(!root)return;refreshCoreCountersV340();const tabs=[['mechs','MECHAS'],['skins','SKINS'],['effects','EFECTOS'],['boxes','CAJAS']];const items=storeItemsV340();root.querySelector('.v340-content').innerHTML=`<nav class="v340-tabs">${tabs.map(([id,l])=>`<button class="v340-tab ${id===storeTabV340?'active':''}" data-store-tab="${id}" type="button">${l}</button>`).join('')}</nav><div class="v340-scroll"><div class="v340-grid">${items.map(item=>{const owned=storeTabV340==='mechs'?isMechUnlockedV340(item):(progressionV3.v340.inventory[storeTabV340]||[]).includes(item.id);return `<article class="v340-card ${owned?'selected':''}"><h3>${item.name}</h3><p>${item.desc}</p>${item.rates?`<span class="v340-rate">ⓘ ${item.rates}</span>`:''}<div class="v340-meta"><span>${item.price} NÚCLEOS</span><button data-store-buy="${item.id}" type="button" ${owned?'disabled':''}>${owned?'OBTENIDO':storeTabV340==='boxes'?'ABRIR':'COMPRAR'}</button></div></article>`;}).join('')}</div></div>`;root.querySelectorAll('[data-store-tab]').forEach(b=>b.onclick=()=>{storeTabV340=b.dataset.storeTab;renderStoreV340();});root.querySelectorAll('[data-store-buy]').forEach(b=>b.onclick=()=>buyStoreItemV340(b.dataset.storeBuy));installScrollableV340(root);}
+  function buyStoreItemV340(id){const all=[...MECHS_V340,...STORE_ITEMS_V340.skins,...STORE_ITEMS_V340.effects,...STORE_ITEMS_V340.boxes];const item=all.find(x=>x.id===id);if(!item)return;if((progressionV3.cores||0)<item.price){toastV340('NÚCLEOS INSUFICIENTES');return;}progressionV3.cores-=item.price;if(id.startsWith('box-'))openBoxV340(item);else if(MECHS_V340.some(m=>m.id===id))unlockMechV340(id);else{const bucket=id.startsWith('skin-')?'skins':'effects';progressionV3.v340.inventory[bucket]=Array.from(new Set([...(progressionV3.v340.inventory[bucket]||[]),id]));}saveProgressionV3();toastV340(id.startsWith('box-')?'CAJA ABIERTA':`${item.name} OBTENIDO`);renderStoreV340();}
+  function openBoxV340(box){progressionV3.v340.inventory.boxesOpened=(progressionV3.v340.inventory.boxesOpened||0)+1;const roll=Math.random();let reward;if(box.id==='box-arsenal'&&roll<.15){const pool=MECHS_V340.filter(m=>m.unlock==='cores'&&!isMechUnlockedV340(m));reward=pool[Math.floor(Math.random()*pool.length)];if(reward)unlockMechV340(reward.id);}if(!reward){const bucket=(box.id==='box-arsenal'&&roll<.55)?'effects':'skins';const pool=STORE_ITEMS_V340[bucket].filter(x=>!(progressionV3.v340.inventory[bucket]||[]).includes(x.id));reward=pool[Math.floor(Math.random()*pool.length)]||STORE_ITEMS_V340[bucket][Math.floor(Math.random()*STORE_ITEMS_V340[bucket].length)];progressionV3.v340.inventory[bucket]=Array.from(new Set([...(progressionV3.v340.inventory[bucket]||[]),reward.id]));}saveProgressionV3();toastV340(`RECOMPENSA: ${reward?.name||'50 NÚCLEOS'}`);}
+
+  function ensureRunSetupV340(){let root=document.getElementById('v340-run-setup');if(root)return root;root=document.createElement('section');root.id='v340-run-setup';root.className='hidden';root.innerHTML='<div class="v340-setup-card"><div class="v340-setup-top"><h2>CONFIGURAR EXPEDICIÓN</h2><button class="v340-setup-close" type="button">×</button></div><div class="v340-section-label">DIFICULTAD</div><div id="v340-difficulty-grid" class="v340-choice-grid"></div><div class="v340-section-label">MAPA</div><div id="v340-map-grid" class="v340-choice-grid"></div><button id="v340-launch" class="v340-launch" type="button">INICIAR RUN</button></div>';document.body.appendChild(root);root.querySelector('.v340-setup-close').onclick=()=>root.classList.add('hidden');root.querySelector('#v340-launch').onclick=()=>beginRunLoadingV340();return root;}
+  function openRunSetupV340(){const root=ensureRunSetupV340();root.classList.remove('hidden');renderRunSetupV340();}
+  function renderRunSetupV340(){const root=ensureRunSetupV340();root.querySelector('#v340-difficulty-grid').innerHTML=DIFFICULTIES_V340.map(d=>`<button type="button" class="v340-choice ${d.id===runConfigV340.difficulty?'active':''}" data-difficulty="${d.id}"><b>${d.name}</b><span>${d.desc}</span></button>`).join('');root.querySelector('#v340-map-grid').innerHTML=MAPS_V340.map(m=>`<button type="button" class="v340-choice ${m.id===runConfigV340.map?'active':''}" data-map="${m.id}"><b>${m.name}</b><span>${m.desc}</span></button>`).join('');root.querySelectorAll('[data-difficulty]').forEach(b=>b.onclick=()=>{runConfigV340.difficulty=b.dataset.difficulty;renderRunSetupV340();});root.querySelectorAll('[data-map]').forEach(b=>b.onclick=()=>{runConfigV340.map=b.dataset.map;renderRunSetupV340();});}
+  function ensureRunLoadingV340(){let root=document.getElementById('v340-run-loading');if(root)return root;root=document.createElement('section');root.id='v340-run-loading';root.className='hidden';root.innerHTML='<div class="v340-run-name">MEKORA</div><div class="v340-spinner"></div><div class="v340-run-tip"><b>CONSEJO TÁCTICO</b><span id="v340-run-tip-text"></span></div>';document.body.appendChild(root);return root;}
+  function beginRunLoadingV340(){const setup=document.getElementById('v340-run-setup');setup?.classList.add('hidden');const loading=ensureRunLoadingV340();const tips=['Las armas comunes siguen siendo viables si mejoras su cadencia, recarga y sinergias.','Los Núcleos son escasos. Prioriza desafíos opcionales y evita abandonar expediciones demasiado pronto.','Un mini jefe entrega Núcleos únicamente al completar cada tercer derribo acumulado.','En PC, usa WASD para moverte, ratón para apuntar y clic izquierdo para disparar.'];loading.querySelector('#v340-run-tip-text').textContent=tips[Math.floor(Math.random()*tips.length)];loading.classList.remove('hidden');setTimeout(()=>{state.runLaunchAuthorizedV340=true;startRun(false,false);loading.classList.add('hidden');},950);}
+
+  function installScrollableV340(scope=document){
+    scope.querySelectorAll?.('.v340-scroll,.hangar-list-v32,.dev-list,.settings-layout-v333>.hud-border').forEach(el=>{if(el.dataset.scrollV340)return;el.dataset.scrollV340='true';el.addEventListener('touchmove',ev=>ev.stopPropagation(),{capture:true,passive:true});el.addEventListener('wheel',ev=>ev.stopPropagation(),{capture:true,passive:true});});
+  }
+  function fixSettingsV340(){
+    ['slider-bgm','slider-sfx'].forEach(id=>{const s=document.getElementById(id);if(!s)return;s.style.pointerEvents='auto';s.style.touchAction='pan-x';const update=()=>{const value=Math.max(0,Math.min(100,Number(s.value)||0));if(id==='slider-bgm'){SETTINGS_STATE.bgmVolume=value/100;document.getElementById('val-bgm-text').textContent=`${value}%`;}else{SETTINGS_STATE.sfxVolume=value/100;document.getElementById('val-sfx-text').textContent=`${value}%`;}saveRuntimeSettings();};s.addEventListener('input',update);s.addEventListener('change',update);s.addEventListener('pointerdown',ev=>ev.stopPropagation(),true);s.addEventListener('touchmove',ev=>ev.stopPropagation(),{capture:true,passive:true});});
+    document.querySelectorAll('.lang-btn').forEach(btn=>{btn.style.pointerEvents='auto';btn.onclick=ev=>{ev.preventDefault();ev.stopPropagation();applyLanguage(btn.dataset.lang,true);state.langSelectionIndex=Math.max(0,['es','en','pt'].indexOf(btn.dataset.lang));document.querySelectorAll('.lang-btn').forEach(x=>x.classList.remove('settings-focus','settings-edit-focus'));document.querySelectorAll('.lang-btn').forEach(x=>x.classList.toggle('language-active',x.dataset.lang===SETTINGS_STATE.language));};});
+    const devEntry=document.getElementById('settings-dev-v333');if(devEntry)devEntry.onclick=ev=>{ev.preventDefault();openDeveloperMenu();};
+    const sub=document.getElementById('hangar-subtitle-v32');if(sub)sub.textContent='';installScrollableV340(document);
+  }
+
+  const oldStartRunV340=startRun;
+  startRun=function(isDev=false,isTest=false){
+    if(!isDev&&!isTest&&!state.runLaunchAuthorizedV340){openRunSetupV340();return false;}
+    state.runLaunchAuthorizedV340=false;const result=oldStartRunV340(isDev,isTest);state.runDifficultyV340=currentDifficultyV340().id;state.runMapV340=currentMapV340().id;state.manualAimV340=false;state.manualAimAngleV340=0;state.inputDeviceV340=inputV340.device;state.mapThemeV340=currentMapV340();state.stats.rewardMultV340=currentDifficultyV340().reward;return result;
+  };
+  const oldEndRunV340=endRun;
+  endRun=function(){const result=oldEndRunV340();refreshCoreCountersV340();return result;};
+  const oldAwardRunCoresV340=awardRunCoresV32;
+  awardRunCoresV32=function(){if(state.runCoresAwardedV32||state.testMode)return 0;state.runCoresAwardedV32=true;const award=(state.playTime||0)>=60000?5:0;progressionV3.cores=(progressionV3.cores||0)+award;progressionV3.statistics.bestSurvivalMs=Math.max(progressionV3.statistics.bestSurvivalMs||0,state.playTime||0);saveProgressionV3();return award;};
+  const oldSafeSpawnV340=safeSpawnAroundPlayerV31;
+  safeSpawnAroundPlayerV31=function(...args){const e=oldSafeSpawnV340(...args);if(e&&!e.difficultyScaledV340&&!state.testMode){const d=currentDifficultyV340();e.maxHp=Math.round((e.maxHp||e.hp||1)*d.hp);e.hp=e.maxHp;e.contactDamage=Math.round((e.contactDamage||1)*d.damage);e.speed=(e.speed||1)*d.speed;e.difficultyScaledV340=true;}return e;};
+  const oldGetSectorDefV340=getSectorDefV33;
+  getSectorDefV33=function(index=state.sector){const d=oldGetSectorDefV340(index);const map=state.mapThemeV340||currentMapV340();if(!map||map.id==='scrap_prime')return d;return {...d,bg:map.bg,accent:map.accent,name:index===1?map.name:d.name,modifier:index===1?map.desc:d.modifier};};
+  const oldGetWeaponStatsV340=getWeaponStats;
+  getWeaponStats=function(id,lvl){const s=oldGetWeaponStatsV340(id,lvl);const mult={'w-machinegun':.92,'w-plasma':.9,'w-missile':.88,'w-orbital':.78,'w-highbeam':.76,'w-gravityfield':.84,'syn-celestial':.72,'syn-berserker':.78,'syn-apocalipsis':.8}[id]||1;return {damage:Math.max(1,Math.round(s.damage*mult)),cooldown:Math.max(90,s.cooldown)};};
+  const oldTriggerLevelV340=triggerLevelUp;
+  triggerLevelUp=function(){if((state.testMode||state.isDevPlay)&&state.phase==='playing'&&state.xp>=state.xpNeeded){state.level++;state.xp=Math.max(0,state.xp-state.xpNeeded);state.xpNeeded=Math.round(state.xpNeeded*1.5);updateXpUI();return true;}return oldTriggerLevelV340();};
+  const oldQueueRewardV340=queueRewardDraftV31;
+  queueRewardDraftV31=function(tier='elite'){if(state.testMode||state.isDevPlay)return;return oldQueueRewardV340(tier);};
+  const oldSpawnOrbsV340=spawnEnergyOrbsV331;
+  spawnEnergyOrbsV331=function(e){if(state.testMode||state.isDevPlay)return;return oldSpawnOrbsV340(e);};
+  const oldSectorProgressV340=updateSectorProgressionV33;
+  updateSectorProgressionV33=function(timestamp=performance.now(),force=false){const changed=oldSectorProgressV340(timestamp,force);if(changed){const root=document.getElementById('sector-transition-v331');clearTimeout(root?._safetyV340);if(root)root._safetyV340=setTimeout(()=>{root.classList.add('hidden');if(state.sectorTransitionV331){state.sectorTransitionV331.active=false;state.devPauseEnemies=false;}},2600);}return changed;};
+  const oldStartMainV340=startMainMenu;
+  startMainMenu=function(){const r=oldStartMainV340();setTimeout(buildMenuV340,0);return r;};
+  const oldSettingsV340=startSettingsMenu;
+  startSettingsMenu=function(){const r=oldSettingsV340();setTimeout(()=>{fixSettingsV340();},0);return r;};
+  const oldDeveloperV340=openDeveloperMenu;
+  openDeveloperMenu=function(){const r=oldDeveloperV340();setTimeout(()=>{updateDevMenuUI();installScrollableV340(document);},0);return r;};
+  const oldApplyLanguageV340=applyLanguage;
+  applyLanguage=function(lang,persist=true){const r=oldApplyLanguageV340(lang,persist);document.querySelectorAll('.lang-btn').forEach(x=>{x.classList.remove('settings-focus','settings-edit-focus');x.classList.toggle('language-active',x.dataset.lang===SETTINGS_STATE.language);});buildMenuV340();return r;};
+  updateMainMenuUI=function(){refreshCoreCountersV340();};
+  getMainMenuButtonsV32=function(){return ['btn-main-play','btn-main-hangar','btn-main-global','btn-main-missions','btn-main-store','btn-main-settings'].map(id=>document.getElementById(id)).filter(Boolean);};
+  confirmMenuAction=function(){const buttons=getMainMenuButtonsV32();const b=buttons[Math.max(0,Math.min(buttons.length-1,state.menuSelectionIndex||0))];b?.click();};
+
+  function installInputV340(){
+    if(document.getElementById('v340-input-indicator'))return;const indicator=document.createElement('div');indicator.id='v340-input-indicator';indicator.textContent='TÁCTIL';document.body.appendChild(indicator);document.body.dataset.inputDevice='touch';
+    const movementKeys=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight']);
+    window.addEventListener('keydown',ev=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;setDeviceV340('keyboard_mouse');inputV340.keys.add(ev.code);if(movementKeys.has(ev.code)||['Space','Enter','Escape'].includes(ev.code))ev.preventDefault();if(ev.code==='Space'&&state.phase==='playing')state.isFiring=true;if(ev.code==='Escape'){const overlay=document.querySelector('.v340-overlay:not(.hidden)');if(overlay)closeOverlayV340(overlay);else if(!document.getElementById('v340-run-setup')?.classList.contains('hidden'))document.getElementById('v340-run-setup').classList.add('hidden');else if(state.phase==='playing'&&!state.paused)document.getElementById('btn-control-pause')?.click();else if(state.paused){state.paused=false;document.getElementById('pause-modal')?.classList.add('hidden');}else startMainMenu();}if(ev.code==='Enter'&&state.phase!=='playing'){const active=document.activeElement;if(active&&active.matches('button'))active.click();else focusFirstInteractiveV340();}});
+    window.addEventListener('keyup',ev=>{inputV340.keys.delete(ev.code);if(ev.code==='Space')state.isFiring=false;});
+    document.addEventListener('pointerdown',ev=>{if(ev.pointerType==='touch'){setDeviceV340('touch');return;}if(ev.pointerType==='mouse')setDeviceV340('keyboard_mouse');},{capture:true,passive:true});
+    const canvasEl=document.getElementById('game-canvas');if(canvasEl){canvasEl.addEventListener('pointermove',ev=>{if(ev.pointerType!=='mouse')return;setDeviceV340('keyboard_mouse');const r=canvasEl.getBoundingClientRect();inputV340.mouseAngle=Math.atan2(ev.clientY-(r.top+r.height/2),ev.clientX-(r.left+r.width/2));inputV340.mouseAim=true;state.manualAimV340=true;state.manualAimAngleV340=inputV340.mouseAngle;state.mecha.angle=inputV340.mouseAngle;});canvasEl.addEventListener('pointerdown',ev=>{if(ev.pointerType==='mouse'&&ev.button===0){state.manualAimV340=true;state.isFiring=true;}});}
+    window.addEventListener('pointerup',ev=>{if(ev.pointerType==='mouse'&&ev.button===0)state.isFiring=false;});
+    window.addEventListener('gamepadconnected',ev=>{inputV340.gamepadIndex=ev.gamepad.index;setDeviceV340('gamepad');toastV340(`MANDO CONECTADO: ${ev.gamepad.id.split('(')[0].trim()}`);});window.addEventListener('gamepaddisconnected',()=>{inputV340.gamepadIndex=null;setDeviceV340(matchMedia('(pointer:coarse)').matches?'touch':'keyboard_mouse');});
+    requestAnimationFrame(inputLoopV340);
+  }
+  function focusFirstInteractiveV340(){const scope=document.querySelector('.v340-overlay:not(.hidden),#v340-run-setup:not(.hidden)')||document;const first=scope.querySelector('button:not(:disabled)');first?.focus();}
+  function navigateFocusV340(dir){const scope=document.querySelector('.v340-overlay:not(.hidden),#v340-run-setup:not(.hidden)')||document;const items=[...scope.querySelectorAll('button:not(:disabled)')].filter(x=>x.offsetParent!==null);if(!items.length)return;let i=items.indexOf(document.activeElement);i=(i+dir+items.length)%items.length;items[i].focus();}
+  function pollGamepadV340(now){const pads=navigator.getGamepads?.()||[];const pad=inputV340.gamepadIndex!=null?pads[inputV340.gamepadIndex]:[...pads].find(Boolean);if(!pad)return false;setDeviceV340('gamepad');const ax=pad.axes[0]||0,ay=pad.axes[1]||0,rx=pad.axes[2]||0,ry=pad.axes[3]||0;const dead=.18;if(state.phase==='playing'&&!state.paused){if(Math.hypot(ax,ay)>dead){state.moveJoystick.active=true;state.moveJoystick.x=ax;state.moveJoystick.y=ay;}else if(inputV340.device==='gamepad'){state.moveJoystick.active=false;state.moveJoystick.x=0;state.moveJoystick.y=0;}if(Math.hypot(rx,ry)>.3){state.manualAimV340=true;state.manualAimAngleV340=Math.atan2(ry,rx);state.mecha.angle=state.manualAimAngleV340;}state.isFiring=!!pad.buttons[0]?.pressed;}const pressed=pad.buttons.map(b=>b.pressed);if(pressed[9]&&!inputV340.lastPadButtons[9])document.getElementById('btn-control-pause')?.click();if(state.phase!=='playing'||state.paused||document.querySelector('.v340-overlay:not(.hidden),#v340-run-setup:not(.hidden)')){if(now>inputV340.navAt){if(pressed[12]||ay<-.65){navigateFocusV340(-1);inputV340.navAt=now+220;}else if(pressed[13]||ay>.65){navigateFocusV340(1);inputV340.navAt=now+220;}else if(pressed[0]&&!inputV340.lastPadButtons[0]){(document.activeElement?.matches('button')?document.activeElement:null)?.click();}}}inputV340.lastPadButtons=pressed;return true;}
+  function inputLoopV340(now){
+    const padActive=pollGamepadV340(now);if(state.phase==='playing'&&!state.paused&&!padActive&&inputV340.device==='keyboard_mouse'){
+      let x=(inputV340.keys.has('KeyD')||inputV340.keys.has('ArrowRight')?1:0)-(inputV340.keys.has('KeyA')||inputV340.keys.has('ArrowLeft')?1:0);let y=(inputV340.keys.has('KeyS')||inputV340.keys.has('ArrowDown')?1:0)-(inputV340.keys.has('KeyW')||inputV340.keys.has('ArrowUp')?1:0);const len=Math.hypot(x,y);if(len){state.moveJoystick.active=true;state.moveJoystick.x=x/len;state.moveJoystick.y=y/len;if(!state.manualAimV340)state.mecha.angle=Math.atan2(y,x);}else{state.moveJoystick.active=false;state.moveJoystick.x=0;state.moveJoystick.y=0;}
+    }
+    if(state.testMode||state.isDevPlay){state.sectorDropsV33=[];state.orbs=[];document.getElementById('roguelike-draft-modal')?.classList.add('hidden');if(state.phase==='draft'){state.phase='playing';render();}}
+    const dt=now-inputV340.lastFrame;inputV340.lastFrame=now;inputV340.frameSamples.push(dt);if(inputV340.frameSamples.length>90)inputV340.frameSamples.shift();if(inputV340.frameSamples.length===90){const avg=inputV340.frameSamples.reduce((a,b)=>a+b,0)/90;document.body.dataset.quality=avg>23?'low':'high';const particleCap=avg>23?520:1000;if(state.particles?.length>particleCap)state.particles.splice(0,state.particles.length-particleCap);if(state.damageNumbers?.length>180)state.damageNumbers.splice(0,state.damageNumbers.length-180);}
+    requestAnimationFrame(inputLoopV340);
+  }
+
+  function startAmbientV340(){if(!audioCtx||ambientNodeV340||state.muted||SETTINGS_STATE.bgmVolume<=0)return;try{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();osc.type='sawtooth';osc.frequency.value=46;filter.type='lowpass';filter.frequency.value=170;gain.gain.value=.018*SETTINGS_STATE.bgmVolume;osc.connect(filter);filter.connect(gain);gain.connect(audioCtx.destination);osc.start();ambientNodeV340={osc,gain};}catch(e){}}
+  const oldInitAudioV340=initAudio;initAudio=function(){const ok=oldInitAudioV340();if(ok)startAmbientV340();return ok;};
+
+  function bootV340(){
+    const root=document.getElementById('v340-boot');if(!root||bootStartedV340)return;const status=document.getElementById('v340-boot-status'),bar=document.getElementById('v340-boot-progress');
+    const attempt=()=>{const landscape=window.innerWidth>=window.innerHeight;if(!landscape){root.dataset.waiting='true';status.textContent=wordV340('GIRA EL DISPOSITIVO EN HORIZONTAL PARA INICIAR','ROTATE TO LANDSCAPE TO START','GIRE PARA HORIZONTAL PARA INICIAR');if(bar)bar.style.width='0%';return;}if(bootStartedV340)return;bootStartedV340=true;root.dataset.waiting='false';let p=0;const timer=setInterval(()=>{p=Math.min(100,p+8+Math.random()*10);bar.style.width=`${p}%`;status.textContent=p<35?'PREPARANDO SISTEMAS':p<70?'CARGANDO ARSENAL Y EFECTOS':'OPTIMIZANDO CAMPO DE COMBATE';if(p>=100){clearInterval(timer);setTimeout(()=>{root.classList.add('hidden');document.getElementById('orientation-warning').style.display='none';},160);}},70);};attempt();window.addEventListener('resize',attempt,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(attempt,80),{passive:true});
+  }
+
+  function initV340(){
+    ensureProgressionV340();document.title='MEKORA v3.4.0';document.getElementById('settings-version-text')?.replaceChildren(document.createTextNode('MEKORA v3.4.0'));buildMenuV340();fixSettingsV340();installInputV340();installScrollableV340(document);bootV340();refreshCoreCountersV340();
+    const title=document.getElementById('hangar-subtitle-v32');if(title)title.textContent='';
+    document.querySelectorAll('[data-i18n],.hangar-copy-v32 span').forEach(el=>{if(/progresi[oó]n permanente|permanent progression|progress[aã]o permanente/i.test(el.textContent||''))el.textContent='';});
+  }
+  if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',()=>setTimeout(initV340,120),{once:true});else setTimeout(initV340,120);
+
+  window.mekoraV340={version:V340,unlockDeveloper(){unlockDeveloperMode(true);syncDeveloperButtonVisibility();const b=document.getElementById('settings-dev-v333');b?.classList.add('visible');if(b)b.onclick=()=>openDeveloperMenu();return {visible:!!b?.classList.contains('visible')};},input(){return {device:inputV340.device,manualAim:!!state.manualAimV340};},economy(){return {cores:progressionV3.cores,runAward:5,minibossEvery:3,bossReward:40};},runConfig(){return {...runConfigV340};},openGarage(){openGarageV340();return {active:progressionV3.v340.activeMech,index:garageIndexV340};},openArsenal(tab='weapons'){openCatalogV340(tab);return {tab:catalogTabV340};},openMissions(){openMissionsV340();return {count:MISSION_DEFS_V32.length};},openStore(tab='mechs'){openStoreV340(tab);return {tab:storeTabV340};},setDifficulty(id){if(DIFFICULTIES_V340.some(x=>x.id===id))runConfigV340.difficulty=id;return currentDifficultyV340();},setMap(id){if(MAPS_V340.some(x=>x.id===id))runConfigV340.map=id;return currentMapV340();}};
+})();
+// #endregion v340_multiplatform_overhaul
+
 
 //#endregion debug_api
     </script>
