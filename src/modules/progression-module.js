@@ -4,17 +4,20 @@ import { setText } from '../utils/dom.js';
 function normalizeProgression(raw = {}) {
   const progression = { ...raw };
   progression.cores = Math.max(0, Math.floor(Number(progression.cores) || 0));
-  progression.unlockedMechs = Array.from(new Set(progression.unlockedMechs || ['vanguard']));
+  progression.unlockedMechs = Array.from(new Set(progression.unlockedMechs || ['axiom']));
   progression.mechBlueprints = { ...(progression.mechBlueprints || {}) };
   progression.v340 = progression.v340 || {};
-  progression.v340.activeMech = progression.v340.activeMech || 'vanguard';
+  progression.v340.activeMech = progression.v340.activeMech === 'vanguard' ? 'axiom' : (progression.v340.activeMech || 'axiom');
   progression.v340.unlockedMechs = Array.from(new Set(
-    progression.v340.unlockedMechs || progression.unlockedMechs || ['vanguard']
+    progression.v340.unlockedMechs || progression.unlockedMechs || ['axiom']
   ));
   progression.v340.inventory = {
     skins: [], effects: [], boxesOpened: 0, parts: {},
     ...(progression.v340.inventory || {})
   };
+  progression.v1 = progression.v1 || {};
+  progression.v1.cosmetics = { skin: null, effect: null, ...(progression.v1.cosmetics || {}) };
+  progression.v1.contentMigration = '1.1.0';
   return progression;
 }
 

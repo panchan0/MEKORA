@@ -43,7 +43,7 @@ for (const file of jsFiles) {
 }
 
 const packageJson = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-if (packageJson.version !== '1.0.0') errors.push('package.json version must be 1.0.0');
+if (packageJson.version !== '1.1.0') errors.push('package.json version must be 1.1.0');
 if (!packageJson.devDependencies?.vite) errors.push('Vite is not declared in devDependencies');
 if (packageJson.scripts?.build !== 'vite build') errors.push('Build script must use Vite');
 
@@ -51,7 +51,7 @@ const indexPath = resolve(root, 'index.html');
 const index = await readFile(indexPath, 'utf8');
 if (!index.includes('./src/main.js')) errors.push('index.html does not load src/main.js');
 if (!index.includes('./src/styles/index.css')) errors.push('index.html does not load src/styles/index.css');
-if (!index.includes('data-release="1.0.0"')) warnings.push('index.html release metadata was not found exactly as expected');
+if (!index.includes(`data-release="${packageJson.version}"`)) warnings.push('index.html release metadata was not found exactly as expected');
 
 const localReferences = [...index.matchAll(/(?:src|href)=["']([^"']+)["']/g)]
   .map((match) => match[1])

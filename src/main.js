@@ -11,6 +11,10 @@ import { uiModule } from './modules/ui-module.js';
 import { developerModule } from './modules/developer-module.js';
 import { workflowModule } from './modules/workflow-module.js';
 import { legacyBridgeModule } from './modules/legacy-bridge-module.js';
+import { contentServiceModule } from './modules/content-service-module.js';
+import { contentAuditModule } from './modules/content-audit-module.js';
+import { gameplayProfileModule } from './modules/gameplay-profile-module.js';
+import { cosmeticsModule } from './modules/cosmetics-module.js';
 
 const runtime = createRuntime();
 runtime.modules.register('persistence', persistenceModule);
@@ -21,6 +25,10 @@ runtime.modules.register('input', inputModule);
 runtime.modules.register('ui', uiModule);
 runtime.modules.register('developer', developerModule);
 runtime.modules.register('workflow', workflowModule);
+runtime.modules.register('contentService', contentServiceModule);
+runtime.modules.register('contentAudit', contentAuditModule);
+runtime.modules.register('gameplayProfile', gameplayProfileModule);
+runtime.modules.register('cosmetics', cosmeticsModule);
 runtime.modules.register('legacyBridge', legacyBridgeModule);
 
 const publicApi = {
@@ -51,6 +59,20 @@ const publicApi = {
     get: () => runtime.services.get('runConfig')?.get(),
     setDifficulty: (id) => runtime.services.get('runConfig')?.setDifficulty(id),
     setMap: (id) => runtime.services.get('runConfig')?.setMap(id)
+  },
+  content: {
+    summary: () => runtime.services.get('contentService')?.summary(),
+    find: (id) => runtime.services.get('contentService')?.find(id),
+    audit: () => runtime.services.get('contentAudit')?.run()
+  },
+  cosmetics: {
+    getEquipped: () => runtime.services.get('cosmetics')?.getEquipped(),
+    equipSkin: (id) => runtime.services.get('cosmetics')?.equipSkin(id),
+    equipEffect: (id) => runtime.services.get('cosmetics')?.equipEffect(id)
+  },
+  gameplay: {
+    getMechaProfile: () => runtime.services.get('gameplayProfile')?.getActiveProfile(),
+    getMapModifier: () => runtime.services.get('gameplayProfile')?.getActiveMapModifier()
   },
   workflow: {
     listSchemas: () => runtime.services.get('workflow')?.listSchemas(),

@@ -958,7 +958,7 @@ stats.recentRuns = stats.recentRuns || [];
       function getHangarRowDescriptionV32(item,tabId){
         const lang=SETTINGS_STATE.language;const w=(es,en,pt)=>lang==='en'?en:lang==='pt'?pt:es;
         if(tabId==='missions'){const p=getMissionProgressV32(item);const value=item.stat==='bestSurvivalMs'?Math.floor(p.value/1000):Math.floor(p.value);const target=item.stat==='bestSurvivalMs'?Math.floor(item.target/1000):item.target;return `${item.short} · ${item.rewardCores} ${w('Núcleos','Cores','Núcleos')} · ${p.claimed?w('RECLAMADA','CLAIMED','RESGATADA'):p.complete?w('LISTA PARA RECLAMAR','READY TO CLAIM','PRONTA PARA RESGATAR'):`${value}/${target}${item.stat==='bestSurvivalMs'?'s':''}`}`;}
-        if(tabId==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';return `${item.role} · ${st==='unlocked'?w('DISPONIBLE','AVAILABLE','DISPONÍVEL'):st==='discovered'?`${item.price} ${w('Núcleos · implementación jugable futura','Cores · playable implementation pending','Núcleos · implementação jogável futura')}`:w('PLANO BLOQUEADO','BLUEPRINT LOCKED','PROJETO BLOQUEADO')}`;}
+        if(tabId==='mechs'){const st=progressionV3.mechBlueprints[item.id]||'locked';return `${item.role} · ${st==='unlocked'?w('DISPONIBLE','AVAILABLE','DISPONÍVEL'):st==='discovered'?`${item.price} ${w('Núcleos · chasis jugable con perfil propio','Cores · playable chassis with unique profile','Núcleos · chassi jogável com perfil próprio')}`:w('PLANO BLOQUEADO','BLUEPRINT LOCKED','PROJETO BLOQUEADO')}`;}
         const st=progressionV3.blueprints[item.id]||'locked';
         if(st==='unlocked')return `${item.desc} · ${w('DESBLOQUEADO','UNLOCKED','DESBLOQUEADO')}`;
         if(st==='discovered')return `${item.desc} · ${getBlueprintPriceV32(item)} ${w('Núcleos','Cores','Núcleos')}`;
@@ -2104,7 +2104,7 @@ stats.recentRuns = stats.recentRuns || [];
         for(let i=state.sectorHazardsV33.length-1;i>=0;i--){const h=state.sectorHazardsV33[i];if(now>h.activeUntil){state.sectorHazardsV33.splice(i,1);continue;}applyHazardDamageV33(h,now);const active=now>=h.warnUntil;ctx.save();ctx.globalAlpha=active?.48:.28;ctx.fillStyle=h.kind==='rail'?'#b6d0d2':h.kind==='heat'?'#b95a36':'#c07842';ctx.strokeStyle=active?'#f1c18d':'#d49b68';ctx.lineWidth=active?4:2;ctx.setLineDash(active?[]:[10,8]);if(h.type==='circle'){ctx.beginPath();ctx.arc(h.x,h.y,h.radius,0,Math.PI*2);ctx.fill();ctx.stroke();}else{const ws=getCurrentWorldSize();if(h.vertical){ctx.fillRect(h.pos-h.width/2,0,h.width,ws);ctx.strokeRect(h.pos-h.width/2,0,h.width,ws);}else{ctx.fillRect(0,h.pos-h.width/2,ws,h.width);ctx.strokeRect(0,h.pos-h.width/2,ws,h.width);}}ctx.restore();}
       }
       function maybeSpawnSectorHazardV33() {
-        const def=getSectorDefV33();if(!def.hazard||state.testMode)return;const now=state.playTime||0;if(now<(state.nextSectorHazardAtV33||Infinity))return;if(state.fieldShopOpenV32||state.paused)return;spawnSectorHazardV33();state.nextSectorHazardAtV33=now+def.hazardInterval;
+        const def=getSectorDefV33();if(!def.hazard||state.testMode)return;const now=state.playTime||0;if(now<(state.nextSectorHazardAtV33||Infinity))return;if(state.fieldShopOpenV32||state.paused)return;spawnSectorHazardV33();const hazardRateMultV11=Math.max(.5,Number(state.activeMapModifierV11?.gameplay?.hazardRateMult)||1);state.nextSectorHazardAtV33=now+def.hazardInterval/hazardRateMultV11;
       }
       function getTemporaryFireRateMultV33() {
         let mult=1;if(state.sectorEventV33?.id==='overdrive')mult*=1.2;if((state.overclockUntilV33||0)>(state.playTime||0))mult*=1.15;return mult;
@@ -7160,8 +7160,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         target.sectorTransitionV331 = target.sectorTransitionV331 || {active:false,target:0,startedAt:0,applied:false};
         target.mecha.maxHp = Math.max(160, Number(target.mecha.maxHp)||160);
         target.mecha.hp = Math.min(target.mecha.maxHp, Math.max(0, Number(target.mecha.hp)||target.mecha.maxHp));
-        target.activeWeapons = (target.activeWeapons||[]).filter(id=>id!=='w-emp'&&id!=='w-reactor');
-        delete target.weaponLevels?.['w-emp']; delete target.weaponLevels?.['w-reactor'];
+        target.activeWeapons = Array.from(new Set(target.activeWeapons||[]));
         return target;
       }
 
@@ -7169,12 +7168,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
       createState = function(){ const next=__createStateV331(); next.xpNeeded=30; next.mecha.hp=160; next.mecha.maxHp=160; return ensureV331State(next); };
       ensureV331State(state);
 
-      // EMP and reactor overload are rare map consumables, never draft cards.
-      for (let i=UPGRADE_POOL.length-1;i>=0;i--) if (UPGRADE_POOL[i].id==='w-emp'||UPGRADE_POOL[i].id==='w-reactor') UPGRADE_POOL.splice(i,1);
-      UPGRADE_BY_ID.delete('w-emp'); UPGRADE_BY_ID.delete('w-reactor');
-      CONTENT_CATALOG_V3.delete('w-emp'); CONTENT_CATALOG_V3.delete('w-reactor');
-      POWER_IDS_V3.delete('w-emp'); POWER_IDS_V3.delete('w-reactor');
-      for (let i=WEAPON_UPGRADES.length-1;i>=0;i--) if (WEAPON_UPGRADES[i].id==='w-emp'||WEAPON_UPGRADES[i].id==='w-reactor') WEAPON_UPGRADES.splice(i,1);
+      // v1.1.0: EMP y Sobrecarga de Reactor vuelven al draft como poderes jugables completos.
 
       function isEnemyInsideCombatViewV331(enemy, margin=0) {
         const view=state.cameraViewV331;
@@ -7245,7 +7239,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
         return Math.min(8,mult);
       }
       selectDraftCardsV3 = function(eligible,count,stateRef) {
-        const filtered=eligible.filter(item=>item.id!=='w-emp'&&item.id!=='w-reactor');
+        const filtered=eligible;
         const unlocked=filtered.filter(item=>item.type==='evolution'||isContentUnlockedV3(item.id));
         const pool=unlocked.length?unlocked:filtered,selected=[],forceRare=(progressionV3.pity.rareMisses||0)>=8;
         for(let slot=0;slot<count&&selected.length<pool.length;slot++){
@@ -7504,7 +7498,7 @@ const btnControlPause = document.getElementById('btn-control-pause');
       syncImmersiveOrientation=function(){const warning=dom.orientationWarning||document.getElementById('orientation-warning');if(!warning)return;const blocked=(state.phase==='playing'||state.phase==='draft')&&window.innerHeight>window.innerWidth;warning.style.display=blocked?'flex':'none';document.body.dataset.immersiveOrientationBlocked=blocked?'true':'false';};
       async function activateLandscapePlayV331(){document.documentElement.classList.add('mekora-immersive');document.body.classList.add('mekora-immersive');document.body.dataset.immersive='true';try{const req=document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen;if(req&&!getNativeFullscreenElement())await req.call(document.documentElement,{navigationUI:'hide'});}catch(e){setPseudoFullscreen(true);}try{await screen.orientation?.lock?.('landscape');}catch(e){}syncImmersiveOrientation();}
       const __startRunV331=startRun;
-      startRun=function(isDev=false,isTest=false){__startRunV331(isDev,isTest);ensureV331State();state.xpNeeded=30;state.mecha.hp=state.mecha.maxHp=160;state.activeWeapons=state.activeWeapons.filter(id=>id!=='w-emp'&&id!=='w-reactor');activateLandscapePlayV331();};
+      startRun=function(isDev=false,isTest=false){__startRunV331(isDev,isTest);ensureV331State();state.xpNeeded=30;activateLandscapePlayV331();};
       confirmPauseAction=function(){if(!canAcceptConfirmInput())return;lockConfirmInput(240);if(!state.pauseConfirmState){if(state.pauseSelection==='resume'){state.paused=false;document.getElementById('pause-modal')?.classList.add('hidden');vibrate(35);}else{state.pauseConfirmState=true;state.pauseSelection='cancel';updatePauseMenuUI();vibrate(35);}}else if(state.pauseSelection==='confirm'){triggerExitTransition(state.testMode||state.isDevPlay?'dev':'menu');}else{state.paused=false;state.pauseConfirmState=false;document.getElementById('pause-modal')?.classList.add('hidden');vibrate(35);}};
 
       const __initAppV331=initApp;
@@ -7979,17 +7973,17 @@ const btnControlPause = document.getElementById('btn-control-pause');
     {id:'extinction',name:'EXTINCIÓN',desc:'Máxima presión. Diseñado para construcciones completas.',hp:1.9,damage:1.62,speed:1.14,reward:1.8}
   ]);
   const MAPS_V340 = Object.freeze([
-    {id:'scrap_prime',name:'DESGUACE PRIME',desc:'Ruta industrial equilibrada entre chatarra, prensas y forja.',accent:'#d39a4a',bg:'#11161a'},
-    {id:'magnetic_corridor',name:'CORREDOR MAGNÉTICO',desc:'Rieles activos, líneas de tiro largas y peligros de barrido.',accent:'#6f9ca5',bg:'#10171b'},
-    {id:'night_foundry',name:'FUNDICIÓN NOCTURNA',desc:'Calor, baja visibilidad y mayor densidad de controladores.',accent:'#b76445',bg:'#181210'}
+    {id:'scrap_prime',name:'DESGUACE PRIME',desc:'Ruta industrial equilibrada. Otorga 20% más chatarra y reduce la frecuencia de peligros.',accent:'#d39a4a',bg:'#11161a'},
+    {id:'magnetic_corridor',name:'CORREDOR MAGNÉTICO',desc:'Interferencia magnética: recarga 14% más rápida, enemigos a distancia más agresivos y peligros frecuentes.',accent:'#6f9ca5',bg:'#10171b'},
+    {id:'night_foundry',name:'FUNDICIÓN NOCTURNA',desc:'Visibilidad reducida, peligros 35% más frecuentes, enemigos resistentes y explosiones potenciadas.',accent:'#b76445',bg:'#181210'}
   ]);
   const MECHS_V340 = Object.freeze([
-    {id:'axiom',name:'AXIOM',role:'Unidad equilibrada de expedición',unlock:'starter',price:0,desc:'Chasis marfil y óxido, movilidad estable y respuesta precisa.',colors:{armor:'#d7d0c2',dark:'#29343a',accent:'#a6523f',energy:'#e0ad4e'}},
-    {id:'origins',name:'ORIGINS',role:'Prototipo histórico',unlock:'mission',mission:'mission-forge-titan',price:0,desc:'El primer chasis operativo de MEKORA. Solo se recupera completando la cadena de la Forja.',colors:{armor:'#6eb5b2',dark:'#243238',accent:'#4b7f86',energy:'#dceeea'}},
-    {id:'lancer',name:'LANCER',role:'Movilidad y críticos',unlock:'cores',price:900,desc:'Chasis ligero para desplazamiento rápido y precisión sostenida.',colors:{armor:'#c9c4b9',dark:'#272f39',accent:'#b95a4b',energy:'#f0b954'}},
-    {id:'bastion',name:'BASTION',role:'Defensa y contraataque',unlock:'modules',parts:4,desc:'Su identidad permanece oculta hasta reunir cuatro módulos de bastión.',colors:{armor:'#a8a59c',dark:'#252b31',accent:'#8a633f',energy:'#dcb269'}},
-    {id:'weaver',name:'WEAVER',role:'Drones y control',unlock:'cores',price:1250,desc:'Plataforma de comando para unidades autónomas y zonas de control.',colors:{armor:'#c8c1cf',dark:'#2d2834',accent:'#805c94',energy:'#d8b7ef'}},
-    {id:'wraith',name:'WRAITH',role:'Fase y precisión',unlock:'mission',mission:'mission-events-3',desc:'Chasis experimental desbloqueado mediante operaciones difíciles.',colors:{armor:'#b6bdc2',dark:'#222a30',accent:'#516e83',energy:'#9fd7e6'}}
+    {id:'axiom',name:'AXIOM',role:'Unidad equilibrada de expedición',unlock:'starter',price:0,desc:'Chasis equilibrado. Regenera blindaje lentamente cuando evita daño.',colors:{armor:'#d7d0c2',dark:'#29343a',accent:'#a6523f',energy:'#e0ad4e'}},
+    {id:'origins',name:'ORIGINS',role:'Prototipo histórico',unlock:'mission',mission:'mission-forge-titan',price:0,desc:'Prototipo ofensivo. Cada 20 bajas restaura escudo y activa una breve sobrecarga.',colors:{armor:'#6eb5b2',dark:'#243238',accent:'#4b7f86',energy:'#dceeea'}},
+    {id:'lancer',name:'LANCER',role:'Movilidad y críticos',unlock:'cores',price:900,desc:'Chasis ligero. Gana daño al desplazarse y mejora cadencia, velocidad y recarga.',colors:{armor:'#c9c4b9',dark:'#272f39',accent:'#b95a4b',energy:'#f0b954'}},
+    {id:'bastion',name:'BASTION',role:'Defensa y contraataque',unlock:'modules',parts:4,desc:'Blindaje pesado con reducción de daño y ondas de contraataque. Requiere cuatro módulos.',colors:{armor:'#a8a59c',dark:'#252b31',accent:'#8a633f',energy:'#dcb269'}},
+    {id:'weaver',name:'WEAVER',role:'Drones y control',unlock:'cores',price:1250,desc:'Plataforma de mando. Drones, torretas, minas e invocaciones causan más daño.',colors:{armor:'#c8c1cf',dark:'#2d2834',accent:'#805c94',energy:'#d8b7ef'}},
+    {id:'wraith',name:'WRAITH',role:'Fase y precisión',unlock:'mission',mission:'mission-events-3',desc:'Chasis de fase. Evita periódicamente un impacto y acelera después de esquivarlo.',colors:{armor:'#b6bdc2',dark:'#222a30',accent:'#516e83',energy:'#9fd7e6'}}
   ]);
   const STORE_ITEMS_V340 = Object.freeze({
     skins:[
@@ -8226,6 +8220,8 @@ const btnControlPause = document.getElementById('btn-control-pause');
     toastV340,
     MECHS_V340,
     STORE_ITEMS_V340,
+    MAPS_V340,
+    DIFFICULTIES_V340,
     getProgression: () => progressionV3,
     getCores: () => Math.max(0, Math.floor(Number(progressionV3.cores) || 0)),
     setCores: (value) => {
@@ -8384,8 +8380,9 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
     fctx.save();
     fctx.globalCompositeOperation = 'destination-out';
-    const clearInner = minSide * (pc ? .17 : .18);
-    const clearOuter = Math.min(maxSide * .54, minSide * (pc ? .70 : .76));
+    const visibilityMultV11 = Math.max(.72, Math.min(1.16, Number(state.mapVisibilityMultV11) || 1));
+    const clearInner = minSide * (pc ? .17 : .18) * visibilityMultV11;
+    const clearOuter = Math.min(maxSide * .54, minSide * (pc ? .70 : .76) * visibilityMultV11);
     const visibility = fctx.createRadialGradient(w * .5, h * .5, clearInner, w * .5, h * .5, clearOuter);
     visibility.addColorStop(0, 'rgba(0,0,0,.96)');
     visibility.addColorStop(.36, 'rgba(0,0,0,.91)');
@@ -8590,3 +8587,119 @@ const btnControlPause = document.getElementById('btn-control-pause');
   };
 })();
 
+
+
+// #region v1_1_modular_gameplay_bridge
+(() => {
+  const listeners = new Map();
+  const on = (event, callback) => {
+    if (!listeners.has(event)) listeners.set(event, new Set());
+    listeners.get(event).add(callback);
+    return () => listeners.get(event)?.delete(callback);
+  };
+  const emit = (event, payload = {}) => {
+    const bucket = listeners.get(event);
+    if (!bucket) return payload;
+    for (const callback of [...bucket]) {
+      try { callback(payload); } catch (error) { console.error('[MEKORA legacy hook]', event, error); }
+    }
+    return payload;
+  };
+
+  const originalStartRunV11 = startRun;
+  startRun = function(...args) {
+    const result = originalStartRunV11(...args);
+    if (result !== false && state.phase === 'playing') {
+      emit('run:start', { state, progression: progressionV3, args, result });
+    } else {
+      emit('run:setup-opened', { state, progression: progressionV3, args, result });
+    }
+    return result;
+  };
+
+  const originalLoopV11 = loop;
+  loop = function(timestamp) {
+    emit('frame:before', { state, progression: progressionV3, timestamp });
+    const result = originalLoopV11(timestamp);
+    emit('frame:after', { state, progression: progressionV3, timestamp });
+    return result;
+  };
+
+  const originalApplyMechaDamageV11 = applyMechaDamage;
+  applyMechaDamage = function(amount, sourceX, sourceY, timestamp = performance.now(), attackers = 1) {
+    const context = { state, progression: progressionV3, amount: Number(amount) || 0, sourceX, sourceY, timestamp, attackers, cancel: false };
+    emit('mecha:damage-before', context);
+    if (context.cancel) {
+      emit('mecha:damage-cancelled', context);
+      return false;
+    }
+    const result = originalApplyMechaDamageV11(context.amount, sourceX, sourceY, timestamp, attackers);
+    emit('mecha:damage-after', { ...context, result });
+    return result;
+  };
+
+  const originalGetWeaponStatsV11 = getWeaponStats;
+  getWeaponStats = function(weaponId, level) {
+    const base = originalGetWeaponStatsV11(weaponId, level);
+    const context = { state, progression: progressionV3, weaponId, level, damage: base.damage, cooldown: base.cooldown };
+    emit('weapon:stats', context);
+    return { damage: Math.max(0, Math.round(context.damage)), cooldown: Math.max(0, Math.round(context.cooldown)) };
+  };
+
+  const originalSafeSpawnV11 = safeSpawnAroundPlayerV31;
+  safeSpawnAroundPlayerV31 = function(...args) {
+    const enemy = originalSafeSpawnV11(...args);
+    if (enemy) emit('enemy:spawn', { state, progression: progressionV3, enemy, args });
+    return enemy;
+  };
+
+  const originalDamageEnemyV11 = damageEnemy;
+  damageEnemy = function(enemy, damage, timestamp) {
+    const beforeHp = enemy?.hp;
+    const result = originalDamageEnemyV11(enemy, damage, timestamp);
+    emit('enemy:damaged', { state, progression: progressionV3, enemy, damage, beforeHp, afterHp: enemy?.hp, timestamp, result });
+    return result;
+  };
+
+  const originalRecordDefeatV11 = recordEnemyDefeatV32;
+  recordEnemyDefeatV32 = function(enemy, scrapReward) {
+    const result = originalRecordDefeatV11(enemy, scrapReward);
+    emit('enemy:defeated', { state, progression: progressionV3, enemy, scrapReward, result });
+    return result;
+  };
+
+  const originalAddScrapV11 = addScrapV33;
+  addScrapV33 = function(amount) {
+    const context = { state, progression: progressionV3, amount: Number(amount) || 0 };
+    emit('scrap:before-add', context);
+    const result = originalAddScrapV11(context.amount);
+    emit('scrap:after-add', { ...context, result });
+    return result;
+  };
+
+  window.__mekoraLegacyV1 = {
+    version: '1.1.0',
+    on,
+    emit,
+    getState: () => state,
+    getProgression: () => progressionV3,
+    saveProgression: () => { saveProgressionV3(); window.__mekoraV340Internal?.refreshCoreCountersV340?.(); return progressionV3; },
+    getDefinitions: () => ({
+      upgrades: UPGRADE_POOL,
+      synergies: SYNERGIES,
+      missions: MISSION_DEFS_V32,
+      enemies: ENEMY_DEFS_V31,
+      mechas: window.__mekoraV340Internal?.MECHS_V340 || [],
+      skins: window.__mekoraV340Internal?.STORE_ITEMS_V340?.skins || [],
+      effects: window.__mekoraV340Internal?.STORE_ITEMS_V340?.effects || [],
+      boxes: window.__mekoraV340Internal?.STORE_ITEMS_V340?.boxes || [],
+      maps: window.__mekoraV340Internal?.MAPS_V340 || [],
+      difficulties: window.__mekoraV340Internal?.DIFFICULTIES_V340 || []
+    }),
+    startRun: (...args) => startRun(...args),
+    damageMecha: (...args) => applyMechaDamage(...args),
+    spawnEnemy: (...args) => safeSpawnAroundPlayerV31(...args),
+    refreshUi: () => { updateStatsUI(); updateEconomyHudV32(); updateMissionTrackingHudV32(); }
+  };
+})();
+// #endregion v1_1_modular_gameplay_bridge

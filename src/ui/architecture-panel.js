@@ -36,11 +36,17 @@ export function createArchitecturePanel(runtime) {
 export function renderArchitecturePanel(runtime) {
   const root = createArchitecturePanel(runtime);
   const state = runtime.store.getState();
+  const cosmetics = runtime.services.get('cosmetics')?.getEquipped?.() || {};
+  const profile = runtime.services.get('gameplayProfile')?.getActiveProfile?.();
+  const audit = runtime.store.getState().contentAudit;
   const summary = [
     ['Estado', state.appState],
     ['Plataforma', `${state.platform} · ${state.inputDevice}`],
     ['Núcleos', state.cores],
-    ['Run', `${state.selectedDifficulty} · ${state.selectedMap}`]
+    ['Run', `${state.selectedDifficulty} · ${state.selectedMap}`],
+    ['Mecha', profile?.name || state.activeMecha || 'AXIOM'],
+    ['Cosméticos', `${cosmetics.skin || 'sin skin'} · ${cosmetics.effect || 'sin efecto'}`],
+    ['Contenido', audit?.ok ? 'AUDITADO' : 'REVISAR']
   ];
 
   const summaryNode = root.querySelector('[data-summary]');
@@ -57,7 +63,7 @@ export function renderArchitecturePanel(runtime) {
     modulesNode.innerHTML = runtime.modules.info().map((module) => `
       <article class="modular-module modular-module--${module.status}">
         <header><strong>${module.name}</strong><span>${module.status}</span></header>
-        <p>${module.error ? `Error: ${module.error}` : 'Módulo cargado dentro del runtime v1.'}</p>
+        <p>${module.error ? `Error: ${module.error}` : 'Módulo cargado dentro del runtime modular.'}</p>
       </article>`).join('');
   }
   return root;

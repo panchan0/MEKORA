@@ -11,6 +11,10 @@ import { ARSENAL_ITEMS } from '../data/arsenal.js';
 import { SYNERGIES } from '../data/synergies.js';
 import { ENEMIES } from '../data/enemies.js';
 import { STORE_SKINS, STORE_EFFECTS, STORE_BOXES } from '../data/store.js';
+import { MISSIONS } from '../data/missions.js';
+import { BOSSES } from '../data/bosses.js';
+import { MECHA_PROFILES } from '../data/mecha-profiles.js';
+import { MAP_MODIFIERS } from '../data/map-modifiers.js';
 
 export function createRuntime() {
   const events = new EventBus();
@@ -26,7 +30,9 @@ export function createRuntime() {
     data: {
       difficulties: DIFFICULTIES_DATA,
       maps: MAPS_DATA,
-      schemas: CONTENT_SCHEMAS
+      schemas: CONTENT_SCHEMAS,
+      mechaProfiles: MECHA_PROFILES,
+      mapModifiers: MAP_MODIFIERS
     },
     started: false,
     startedAt: null
@@ -41,7 +47,11 @@ export function createRuntime() {
     .registerCollection('effects', STORE_EFFECTS)
     .registerCollection('boxes', STORE_BOXES)
     .registerCollection('maps', MAPS_DATA)
-    .registerCollection('difficulties', DIFFICULTIES_DATA);
+    .registerCollection('difficulties', DIFFICULTIES_DATA)
+    .registerCollection('missions', MISSIONS)
+    .registerCollection('bosses', BOSSES)
+    .registerCollection('mechaProfiles', MECHA_PROFILES)
+    .registerCollection('mapModifiers', MAP_MODIFIERS);
 
   runtime.store = new Store({
     appState: document.body.dataset.phase || 'boot',

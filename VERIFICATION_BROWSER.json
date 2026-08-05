@@ -1,0 +1,198 @@
+{
+  "desktop": {
+    "release": "1.1.0",
+    "modules": [
+      {
+        "name": "persistence",
+        "status": "running",
+        "startedAt": 1785916366712,
+        "error": null
+      },
+      {
+        "name": "progression",
+        "status": "running",
+        "startedAt": 1785916366713,
+        "error": null
+      },
+      {
+        "name": "runConfig",
+        "status": "running",
+        "startedAt": 1785916366713,
+        "error": null
+      },
+      {
+        "name": "stateMachine",
+        "status": "running",
+        "startedAt": 1785916366713,
+        "error": null
+      },
+      {
+        "name": "input",
+        "status": "running",
+        "startedAt": 1785916366713,
+        "error": null
+      },
+      {
+        "name": "ui",
+        "status": "running",
+        "startedAt": 1785916366714,
+        "error": null
+      },
+      {
+        "name": "developer",
+        "status": "running",
+        "startedAt": 1785916366714,
+        "error": null
+      },
+      {
+        "name": "workflow",
+        "status": "running",
+        "startedAt": 1785916366715,
+        "error": null
+      },
+      {
+        "name": "contentService",
+        "status": "running",
+        "startedAt": 1785916366715,
+        "error": null
+      },
+      {
+        "name": "contentAudit",
+        "status": "running",
+        "startedAt": 1785916366717,
+        "error": null
+      },
+      {
+        "name": "gameplayProfile",
+        "status": "running",
+        "startedAt": 1785916366717,
+        "error": null
+      },
+      {
+        "name": "cosmetics",
+        "status": "running",
+        "startedAt": 1785916366718,
+        "error": null
+      },
+      {
+        "name": "legacyBridge",
+        "status": "running",
+        "startedAt": 1785916366718,
+        "error": null
+      }
+    ],
+    "audit": {
+      "ok": true,
+      "version": "1.1.0",
+      "checkedAt": 1785916368390,
+      "totals": {
+        "collections": 13,
+        "arsenal": 48,
+        "activeWeapons": 30,
+        "passives": 18,
+        "synergies": 30,
+        "mechas": 6,
+        "profiles": 6,
+        "enemies": 8,
+        "missions": 9,
+        "bosses": 2,
+        "maps": 3,
+        "cosmetics": 6,
+        "legacyLinks": 116
+      },
+      "implementation": {
+        "weapons": "playable",
+        "passives": "playable",
+        "synergies": "playable",
+        "mechas": "playable",
+        "cosmetics": "equipable"
+      },
+      "issues": []
+    },
+    "collections": {
+      "mechas": 6,
+      "arsenal": 48,
+      "synergies": 30,
+      "enemies": 8,
+      "skins": 3,
+      "effects": 3,
+      "boxes": 2,
+      "maps": 3,
+      "difficulties": 4,
+      "missions": 9,
+      "bosses": 2,
+      "mechaProfiles": 6,
+      "mapModifiers": 3
+    },
+    "retiredRestored": [
+      true,
+      true
+    ],
+    "mechanics": {
+      "lancer": {
+        "profile": "lancer",
+        "map": "night_foundry",
+        "hp": 125,
+        "maxHp": 125,
+        "visibility": 0.82,
+        "dps": 1.07,
+        "fireRate": 1.12
+      },
+      "bastionDamageAfterReduction": 78,
+      "wraithCancelled": true,
+      "weaverSupportDamage": 128,
+      "originsShield": 12,
+      "axiomHp": 101,
+      "nightFoundryEnemy": {
+        "type": "scrap_gunner",
+        "hp": 112,
+        "maxHp": 112,
+        "speed": 2.04,
+        "contactDamage": 11,
+        "fireIntervalV332": 1200
+      },
+      "nightFoundryScrap": 11,
+      "cosmetics": {
+        "equipped": {
+          "skin": "skin-lancer-red",
+          "effect": "fx-impact-amber"
+        },
+        "bodySkin": "skin-lancer-red",
+        "bodyEffect": "fx-impact-amber",
+        "filter": "saturate(1.25) contrast(1.05)"
+      },
+      "developer": {
+        "architectureTab": true,
+        "auditTab": true,
+        "auditVisible": true
+      }
+    },
+    "uiRun": {
+      "setupVisible": true,
+      "phase": "playing",
+      "canvasVisible": true,
+      "profile": "axiom",
+      "map": "scrap_prime"
+    },
+    "errors": []
+  },
+  "mobileLandscape": {
+    "release": "1.1.0",
+    "phase": "playing",
+    "platform": "mobile",
+    "modulesRunning": 13,
+    "auditOk": true,
+    "canvas": {
+      "width": 844,
+      "height": 390
+    },
+    "errors": []
+  },
+  "portrait": {
+    "release": "1.1.0",
+    "bootWaiting": "true",
+    "orientationDisplay": "flex",
+    "auditOk": true,
+    "errors": []
+  }
+}
