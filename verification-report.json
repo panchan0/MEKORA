@@ -1,0 +1,128 @@
+{
+  "release": "1.0.0",
+  "source_base": "MEKORA 3.4.2 / modular proof 4.0.0",
+  "architecture": {
+    "runtime_modules": [
+      "persistence",
+      "progression",
+      "runConfig",
+      "stateMachine",
+      "input",
+      "ui",
+      "developer",
+      "workflow",
+      "legacyBridge"
+    ],
+    "external_data": {
+      "mechas": 6,
+      "arsenal": 48,
+      "synergies": 30,
+      "enemies": 8,
+      "skins": 3,
+      "effects": 3,
+      "boxes": 2,
+      "maps": 3,
+      "difficulties": 4
+    },
+    "external_styles": [
+      "tokens.css",
+      "base.css",
+      "legacy.css",
+      "modular-ui.css",
+      "responsive.css"
+    ],
+    "legacy_compatibility": true
+  },
+  "verification": {
+    "static_project_verification": "passed",
+    "javascript_syntax": "passed",
+    "css_balance": "passed",
+    "html_references": "passed",
+    "module_imports": "passed",
+    "github_workflow_yaml": "passed",
+    "browser_smoke": {
+      "desktop": {
+        "release": "1.0.0",
+        "moduleStatuses": [
+          "running",
+          "running",
+          "running",
+          "running",
+          "running",
+          "running",
+          "running",
+          "running",
+          "running"
+        ],
+        "collections": {
+          "mechas": 6,
+          "arsenal": 48,
+          "synergies": 30,
+          "enemies": 8,
+          "skins": 3,
+          "effects": 3,
+          "boxes": 2,
+          "maps": 3,
+          "difficulties": 4
+        },
+        "runConfig": {
+          "difficulty": "incursion",
+          "map": "scrap_prime"
+        },
+        "wallet": {
+          "modular": 350,
+          "legacy": 350
+        },
+        "workflowWeapon": {
+          "id": "smoke-cannon",
+          "title": "New Weapon",
+          "kind": "weapon",
+          "rarity": "common",
+          "damage": 25,
+          "fireRate": 0.22,
+          "reload": 1.1,
+          "desc": "Prototype weapon.",
+          "tags": [
+            "smoke"
+          ]
+        },
+        "architecture": {
+          "visible": true,
+          "modules": 9
+        },
+        "setup": {
+          "difficulties": 4,
+          "maps": 3
+        },
+        "phase": "playing",
+        "canvas": {
+          "width": 1280,
+          "height": 720
+        },
+        "errors": []
+      },
+      "mobileLandscape": {
+        "release": "1.0.0",
+        "platform": "mobile",
+        "phase": "playing",
+        "canvas": {
+          "width": 844,
+          "height": 390
+        },
+        "errors": []
+      },
+      "portrait": {
+        "release": "1.0.0",
+        "bootWaiting": "true",
+        "orientationDisplay": "flex",
+        "errors": []
+      }
+    },
+    "static_preview_build": "passed",
+    "vite_build": "not_run_in_sandbox_registry_unavailable"
+  },
+  "notes": [
+    "The project is configured for Vite 8 and Node 22. GitHub Actions will install dependencies from the public npm registry before building.",
+    "The legacy compatibility file remains intentionally isolated and should shrink as systems are migrated into modules."
+  ]
+}
