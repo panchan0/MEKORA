@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -22,16 +21,19 @@ jobs:
 
     steps:
       - name: Descargar repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: npm
+          package-manager-cache: false
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install
+
+      - name: Verificar proyecto
+        run: npm run verify
 
       - name: Construir MEKORA
         run: npm run build
@@ -40,7 +42,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Subir versión construida
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 
