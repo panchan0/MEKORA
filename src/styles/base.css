@@ -1,0 +1,17 @@
+html {
+  color-scheme: dark;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--mk-cyan);
+  outline-offset: 3px;
+}
