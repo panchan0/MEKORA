@@ -2514,6 +2514,137 @@ body[data-ui-version="3.3.3"] .scanlines,body[data-ui-version="3.3.3"] .screen>.
     #v340-catalog .v340-grid { grid-template-columns: 1fr; }
   }
 </style>
+
+<style id="mekora-v342-pc-fog-devtools">
+  /* v3.4.2 · PC readability and developer progression tools */
+  #v342-dev-progress-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483500;
+    display: grid;
+    place-items: center;
+    padding: max(18px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left));
+    background: rgba(5, 8, 11, .94);
+    backdrop-filter: blur(10px);
+  }
+  #v342-dev-progress-modal.hidden { display: none !important; }
+  .v342-dev-card {
+    width: min(94vw, 1050px);
+    max-height: 92dvh;
+    overflow: auto;
+    border: 1px solid #596a76;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #202c36, #10171d 70%);
+    box-shadow: 0 28px 90px rgba(0,0,0,.58);
+    padding: clamp(18px, 3vw, 34px);
+  }
+  .v342-dev-head { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:16px; border-bottom:1px solid #394852; }
+  .v342-dev-head h2 { margin:0; font:500 clamp(28px,4vw,46px)/1 var(--v333-title,Impact,sans-serif); letter-spacing:.08em; color:#f2ece1; }
+  .v342-dev-wallet { display:flex; align-items:baseline; gap:9px; color:#a4b1b9; font-size:10px; letter-spacing:.12em; }
+  .v342-dev-wallet b { color:#efb95c; font-size:28px; }
+  .v342-dev-close { width:48px; height:48px; border-radius:50%; border:1px solid #596874; background:#151d24; color:#eee5d9; font-size:27px; }
+  .v342-dev-copy { margin:16px 0; color:#98a5ad; font-size:11px; line-height:1.5; }
+  .v342-dev-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .v342-dev-action {
+    min-height:112px;
+    padding:15px;
+    border:1px solid #3c4c57;
+    border-radius:16px;
+    background:linear-gradient(150deg,#24313b,#151c22);
+    color:#eee8df;
+    text-align:left;
+    transition:transform .12s,border-color .12s,background .12s;
+  }
+  .v342-dev-action:hover { border-color:#d3a45e; background:linear-gradient(150deg,#332c22,#1a1d20); }
+  .v342-dev-action:active { transform:translateY(2px); }
+  .v342-dev-action b { display:block; margin-bottom:7px; font:500 17px/1.1 var(--v333-title,Impact,sans-serif); letter-spacing:.05em; color:#f0ba63; }
+  .v342-dev-action span { display:block; color:#98a5ad; font-size:10px; line-height:1.35; }
+  #v342-dev-progress-tab { flex:0 0 160px!important; border-color:#846b47!important; color:#f1c47c!important; }
+  #v342-dev-progress-tab:hover,#v342-dev-progress-tab:focus-visible { border-color:#e0ad62!important; outline:2px solid rgba(224,173,98,.25); }
+
+  body[data-platform-v342="pc"] #hud-main-stats { top:20px!important; left:24px!important; }
+  body[data-platform-v342="pc"] #hud-main-stats [data-i18n="hud_points"] { font-size:12px!important; }
+  body[data-platform-v342="pc"] #hud-score { font-size:26px!important; line-height:1!important; }
+  body[data-platform-v342="pc"] #hud-economy-v32 { top:62px!important; left:24px!important; }
+  body[data-platform-v342="pc"] .hud-scrap-v32 { font-size:10px!important; gap:7px!important; }
+  body[data-platform-v342="pc"] .hud-scrap-v32 b { font-size:18px!important; }
+  body[data-platform-v342="pc"] .hud-missions-v32 { max-width:260px!important; gap:3px!important; }
+  body[data-platform-v342="pc"] .hud-mission-line-v32 { font-size:9px!important; }
+  body[data-platform-v342="pc"] #hud-time-block { top:18px!important; }
+  body[data-platform-v342="pc"] #hud-time-block [data-i18n="hud_time"] { font-size:11px!important; }
+  body[data-platform-v342="pc"] #hud-timer { font-size:25px!important; }
+  body[data-platform-v342="pc"] #hud-active-slots,
+  body[data-platform-v342="pc"] #hud-passives-list { gap:6px!important; }
+  body[data-platform-v342="pc"] .hud-slot { width:39px!important; height:39px!important; border-radius:9px!important; font-size:17px!important; }
+  body[data-platform-v342="pc"] .hud-slot .slot-level { right:4px!important; bottom:3px!important; font-size:10px!important; }
+  body[data-platform-v342="pc"] #ammo-hud { left:25px!important; bottom:23px!important; gap:9px!important; }
+  body[data-platform-v342="pc"] #ammo-hud .ammo-count { font-size:42px!important; }
+  body[data-platform-v342="pc"] #ammo-hud .ammo-icon { font-size:21px!important; }
+  body[data-platform-v342="pc"] #ammo-hud.reloading .ammo-count { font-size:18px!important; }
+  body[data-platform-v342="pc"] #sector-hud-v33 { top:55px!important; width:min(42%,520px)!important; }
+  body[data-platform-v342="pc"] #sector-index-v33,
+  body[data-platform-v342="pc"] #threat-v33 { font-size:9px!important; }
+  body[data-platform-v342="pc"] #sector-name-v33 { font-size:12px!important; }
+  body[data-platform-v342="pc"] .sector-node-v33 { width:25px!important; height:5px!important; }
+  body[data-platform-v342="pc"] #sector-modifier-v33 { margin-top:4px!important; font-size:8px!important; }
+  body[data-platform-v342="pc"] #event-hud-v33 { top:108px!important; width:min(38%,440px)!important; padding:7px 12px!important; }
+  body[data-platform-v342="pc"] #event-title-v33 { font-size:11px!important; }
+  body[data-platform-v342="pc"] #event-detail-v33 { font-size:9px!important; }
+  body[data-platform-v342="pc"] #boss-hud-v31 { top:108px!important; width:min(58%,620px)!important; }
+  body[data-platform-v342="pc"] #boss-name-v31 { font-size:14px!important; }
+  body[data-platform-v342="pc"] #boss-phase-v31 { font-size:11px!important; }
+  body[data-platform-v342="pc"] #boss-bar-v31 { height:13px!important; }
+  body[data-platform-v342="pc"] #encounter-notice-v31 { top:145px!important; font-size:15px!important; }
+  body[data-platform-v342="pc"] #poi-toast-v33 { right:24px!important; bottom:22px!important; font-size:11px!important; }
+  body[data-platform-v342="pc"] #v340-input-indicator { left:24px!important; bottom:90px!important; padding:8px 12px!important; font-size:10px!important; }
+
+  body[data-platform-v342="pc"] #roguelike-draft-modal { padding:22px!important; }
+  body[data-platform-v342="pc"] #draft-content-panel { width:min(96vw,1120px)!important; max-width:none!important; gap:10px!important; padding:16px 18px 22px!important; }
+  body[data-platform-v342="pc"] #draft-level-title { font-size:13px!important; }
+  body[data-platform-v342="pc"] #draft-choose-title { font-size:24px!important; margin-bottom:10px!important; }
+  body[data-platform-v342="pc"] #upgrade-cards-container {
+    width:min(92vw,1040px)!important;
+    max-width:none!important;
+    height:clamp(285px,43vh,390px)!important;
+    max-height:none!important;
+    gap:18px!important;
+    padding:11px!important;
+  }
+  body[data-platform-v342="pc"] .mekora-draft-card {
+    grid-template-rows:25px 52px minmax(38px,auto) minmax(0,1fr) 22px!important;
+    padding:16px 14px 13px!important;
+    border-width:3px!important;
+    border-radius:14px!important;
+  }
+  body[data-platform-v342="pc"] .draft-card-topline { font-size:10px!important; }
+  body[data-platform-v342="pc"] .draft-new-badge { font-size:8px!important; padding:2px 5px!important; }
+  body[data-platform-v342="pc"] .draft-card-icon { font-size:39px!important; }
+  body[data-platform-v342="pc"] .draft-card-title { font-size:16px!important; line-height:1.12!important; }
+  body[data-platform-v342="pc"] .draft-card-desc { font-size:12px!important; line-height:1.35!important; -webkit-line-clamp:5!important; }
+  body[data-platform-v342="pc"] .draft-card-level { font-size:10px!important; }
+  body[data-platform-v342="pc"] #draft-input-hint { font-size:11px!important; }
+
+  body[data-platform-v342="pc"] #pause-modal .hud-border { max-width:480px!important; padding:30px!important; }
+  body[data-platform-v342="pc"] #pause-title { font-size:28px!important; }
+  body[data-platform-v342="pc"] #pause-normal-buttons,
+  body[data-platform-v342="pc"] #pause-confirm-buttons { max-width:330px!important; gap:10px!important; }
+  body[data-platform-v342="pc"] #pause-modal button { min-height:54px!important; font-size:14px!important; }
+  body[data-platform-v342="pc"] .field-shop-panel-v32 { width:min(86%,620px)!important; padding:18px!important; gap:11px!important; }
+  body[data-platform-v342="pc"] .field-shop-header-v32 strong { font-size:18px!important; }
+  body[data-platform-v342="pc"] .field-shop-header-v32 span { font-size:10px!important; }
+  body[data-platform-v342="pc"] .field-shop-header-v32 b { font-size:22px!important; }
+  body[data-platform-v342="pc"] .field-shop-row-v32 { min-height:60px!important; padding:10px 13px!important; }
+  body[data-platform-v342="pc"] .field-shop-row-v32 strong { font-size:13px!important; }
+  body[data-platform-v342="pc"] .field-shop-row-v32 span,
+  body[data-platform-v342="pc"] .field-shop-status-v32 { font-size:10px!important; }
+  body[data-platform-v342="pc"] .field-shop-price-v32 { font-size:13px!important; }
+
+  @media (max-width: 780px), (orientation:portrait) {
+    .v342-dev-actions { grid-template-columns:1fr; }
+    .v342-dev-action { min-height:84px; }
+  }
+</style>
+
 </head>
   <body data-phase="menu" class="relative w-full h-full bg-[#526176] text-[#f0f4f8] overflow-hidden select-none" style="-webkit-user-select: none; height: 100%; overscroll-behavior: contain; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;">
 <div id="v340-boot" data-waiting="true" aria-live="polite">
@@ -11244,4 +11375,1036 @@ const btnControlPause = document.getElementById('btn-control-pause');
 
 
     <!-- MANIFEST DECLARATION AT END OF FILE -->
-    </body></html>
+    
+<script id="mekora-v342-runtime">
+(() => {
+  'use strict';
+  const V342 = '3.4.2';
+
+  function isPcV342() {
+    return window.innerWidth >= 900 && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches;
+  }
+  function syncPlatformV342() {
+    document.body.dataset.platformV342 = isPcV342() ? 'pc' : 'mobile';
+  }
+
+  const originalCameraZoomV342 = getActiveCameraZoom;
+  getActiveCameraZoom = function() {
+    const base = originalCameraZoomV342();
+    if (!isPcV342()) return base;
+    const aspect = Math.max(1, window.innerWidth / Math.max(1, window.innerHeight));
+    const pcZoom = aspect >= 2.2 ? 1.52 : aspect >= 1.75 ? 1.42 : 1.34;
+    return Math.max(base, pcZoom);
+  };
+
+  const fogV342 = {
+    texture: document.createElement('canvas'),
+    layer: document.createElement('canvas'),
+    tctx: null,
+    lctx: null,
+    image: null,
+    lastUpdate: -1,
+    frame: 0
+  };
+  fogV342.texture.width = 180;
+  fogV342.texture.height = 104;
+  fogV342.tctx = fogV342.texture.getContext('2d', { alpha: true });
+  fogV342.image = fogV342.tctx.createImageData(fogV342.texture.width, fogV342.texture.height);
+  fogV342.lctx = fogV342.layer.getContext('2d', { alpha: true });
+
+  function fractV342(n) { return n - Math.floor(n); }
+  function hashV342(x, y) {
+    return fractV342(Math.sin(x * 127.1 + y * 311.7) * 43758.5453123);
+  }
+  function smoothV342(t) { return t * t * (3 - 2 * t); }
+  function valueNoiseV342(x, y) {
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const fx = smoothV342(x - ix), fy = smoothV342(y - iy);
+    const a = hashV342(ix, iy), b = hashV342(ix + 1, iy);
+    const c = hashV342(ix, iy + 1), d = hashV342(ix + 1, iy + 1);
+    const ab = a + (b - a) * fx;
+    const cd = c + (d - c) * fx;
+    return ab + (cd - ab) * fy;
+  }
+  function fbmV342(x, y) {
+    let value = 0, amplitude = .54, frequency = 1;
+    for (let i = 0; i < 4; i++) {
+      value += valueNoiseV342(x * frequency, y * frequency) * amplitude;
+      frequency *= 2.03;
+      amplitude *= .48;
+    }
+    return value;
+  }
+  function smoothstepV342(a, b, x) {
+    const t = Math.max(0, Math.min(1, (x - a) / Math.max(.0001, b - a)));
+    return t * t * (3 - 2 * t);
+  }
+  function updateFogTextureV342(timestamp) {
+    const lowQuality = document.body.dataset.quality === 'low';
+    const interval = lowQuality ? 120 : 62;
+    if (timestamp - fogV342.lastUpdate < interval) return;
+    fogV342.lastUpdate = timestamp;
+    const w = fogV342.texture.width, h = fogV342.texture.height;
+    const data = fogV342.image.data;
+    const driftX = timestamp * .000055;
+    const driftY = timestamp * .000031;
+    let p = 0;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const nx = x / w * 4.9 + driftX;
+        const ny = y / h * 3.1 - driftY;
+        const broad = fbmV342(nx, ny);
+        const detail = fbmV342(nx * 1.72 + 9.3, ny * 1.72 - 6.7);
+        const ridge = 1 - Math.abs(detail * 2 - 1);
+        const density = smoothstepV342(.31, .88, broad * .74 + ridge * .26);
+        const alpha = Math.round(35 + density * 125);
+        data[p++] = 113 + Math.round(density * 15);
+        data[p++] = 121 + Math.round(density * 13);
+        data[p++] = 120 + Math.round(density * 10);
+        data[p++] = alpha;
+      }
+    }
+    fogV342.tctx.putImageData(fogV342.image, 0, 0);
+  }
+  function ensureFogLayerV342() {
+    if (!canvas || !ctx) return false;
+    if (fogV342.layer.width !== canvas.width || fogV342.layer.height !== canvas.height) {
+      fogV342.layer.width = canvas.width;
+      fogV342.layer.height = canvas.height;
+      fogV342.lctx = fogV342.layer.getContext('2d', { alpha: true });
+    }
+    return true;
+  }
+  drawFogV331 = function(timestamp) {
+    if (!ensureFogLayerV342()) return;
+    updateFogTextureV342(timestamp);
+    const w = canvas.width, h = canvas.height;
+    const fctx = fogV342.lctx;
+    const pc = isPcV342();
+    const minSide = Math.min(w, h);
+    const maxSide = Math.max(w, h);
+    fctx.clearRect(0, 0, w, h);
+
+    fctx.fillStyle = pc ? 'rgba(20,25,27,.24)' : 'rgba(20,25,27,.20)';
+    fctx.fillRect(0, 0, w, h);
+
+    fctx.save();
+    fctx.imageSmoothingEnabled = true;
+    fctx.globalAlpha = pc ? .90 : .82;
+    fctx.filter = document.body.dataset.quality === 'low' ? 'blur(5px)' : 'blur(11px)';
+    const swayX = Math.sin(timestamp * .00009) * 54;
+    const swayY = Math.cos(timestamp * .000073) * 30;
+    fctx.drawImage(fogV342.texture, -90 + swayX, -58 + swayY, w + 180, h + 116);
+    fctx.globalAlpha = .28;
+    fctx.drawImage(fogV342.texture, -45 - swayX * .55, -32 - swayY * .4, w + 90, h + 64);
+    fctx.restore();
+
+    fctx.save();
+    fctx.globalCompositeOperation = 'destination-out';
+    const clearInner = minSide * (pc ? .17 : .18);
+    const clearOuter = Math.min(maxSide * .54, minSide * (pc ? .70 : .76));
+    const visibility = fctx.createRadialGradient(w * .5, h * .5, clearInner, w * .5, h * .5, clearOuter);
+    visibility.addColorStop(0, 'rgba(0,0,0,.96)');
+    visibility.addColorStop(.36, 'rgba(0,0,0,.91)');
+    visibility.addColorStop(.67, 'rgba(0,0,0,.52)');
+    visibility.addColorStop(1, 'rgba(0,0,0,0)');
+    fctx.fillStyle = visibility;
+    fctx.fillRect(0, 0, w, h);
+    fctx.restore();
+
+    fctx.save();
+    const edge = Math.max(110, minSide * (pc ? .23 : .19));
+    const edgeAlpha = pc ? .62 : .48;
+    let g = fctx.createLinearGradient(0, 0, edge, 0);
+    g.addColorStop(0, `rgba(12,16,18,${edgeAlpha})`); g.addColorStop(1, 'rgba(12,16,18,0)');
+    fctx.fillStyle = g; fctx.fillRect(0, 0, edge, h);
+    g = fctx.createLinearGradient(w, 0, w - edge, 0);
+    g.addColorStop(0, `rgba(12,16,18,${edgeAlpha})`); g.addColorStop(1, 'rgba(12,16,18,0)');
+    fctx.fillStyle = g; fctx.fillRect(w - edge, 0, edge, h);
+    g = fctx.createLinearGradient(0, 0, 0, edge * .8);
+    g.addColorStop(0, `rgba(12,16,18,${edgeAlpha * .75})`); g.addColorStop(1, 'rgba(12,16,18,0)');
+    fctx.fillStyle = g; fctx.fillRect(0, 0, w, edge * .8);
+    g = fctx.createLinearGradient(0, h, 0, h - edge * .8);
+    g.addColorStop(0, `rgba(12,16,18,${edgeAlpha * .82})`); g.addColorStop(1, 'rgba(12,16,18,0)');
+    fctx.fillStyle = g; fctx.fillRect(0, h - edge * .8, w, edge * .8);
+    fctx.restore();
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(fogV342.layer, 0, 0);
+    ctx.restore();
+  };
+
+  function devProgressSummaryV342() {
+    return {
+      cores: Math.max(0, Math.floor(Number(progressionV3.cores) || 0)),
+      mechs: (progressionV3.v340?.unlockedMechs || []).length,
+      skins: (progressionV3.v340?.inventory?.skins || []).length,
+      effects: (progressionV3.v340?.inventory?.effects || []).length,
+      arsenal: Object.values(progressionV3.blueprints || {}).filter(v => v === 'unlocked').length
+    };
+  }
+  function saveDevProgressV342(message) {
+    ensureProgressionV340();
+    saveProgressionV3();
+    refreshCoreCountersV340();
+    updateDevProgressModalV342();
+    toastV340(message);
+  }
+  function addDevCoresV342(amount) {
+    progressionV3.cores = Math.max(0, Math.floor(Number(progressionV3.cores) || 0)) + amount;
+    saveDevProgressV342(`+${amount} NÚCLEOS DE PRUEBA`);
+  }
+  function unlockAllMechsV342() {
+    ensureProgressionV340();
+    progressionV3.v340.unlockedMechs = MECHS_V340.map(mech => mech.id);
+    progressionV3.mechBlueprints = progressionV3.mechBlueprints || {};
+    MECHS_V340.forEach(mech => progressionV3.mechBlueprints[mech.id] = 'unlocked');
+    progressionV3.v340.inventory.parts = progressionV3.v340.inventory.parts || {};
+    progressionV3.v340.inventory.parts.bastion = Math.max(4, progressionV3.v340.inventory.parts.bastion || 0);
+    saveDevProgressV342('TODOS LOS MECHAS DESBLOQUEADOS');
+  }
+  function unlockAllSkinsV342() {
+    ensureProgressionV340();
+    progressionV3.v340.inventory.skins = STORE_ITEMS_V340.skins.map(item => item.id);
+    saveDevProgressV342('TODAS LAS SKINS DESBLOQUEADAS');
+  }
+  function unlockAllEffectsV342() {
+    ensureProgressionV340();
+    progressionV3.v340.inventory.effects = STORE_ITEMS_V340.effects.map(item => item.id);
+    saveDevProgressV342('TODOS LOS EFECTOS DESBLOQUEADOS');
+  }
+  function unlockFullArsenalV342() {
+    progressionV3.blueprints = progressionV3.blueprints || {};
+    UPGRADE_POOL.forEach(item => progressionV3.blueprints[item.id] = 'unlocked');
+    progressionV3.discoveredContent = Array.from(new Set([
+      ...(progressionV3.discoveredContent || []),
+      ...UPGRADE_POOL.map(item => item.id),
+      ...SYNERGIES.map(item => item.id)
+    ]));
+    saveDevProgressV342('ARSENAL COMPLETO DESBLOQUEADO');
+  }
+  function unlockEverythingV342() {
+    ensureProgressionV340();
+    progressionV3.cores = Math.max(10000, Math.floor(Number(progressionV3.cores) || 0));
+    progressionV3.v340.unlockedMechs = MECHS_V340.map(mech => mech.id);
+    progressionV3.mechBlueprints = progressionV3.mechBlueprints || {};
+    MECHS_V340.forEach(mech => progressionV3.mechBlueprints[mech.id] = 'unlocked');
+    progressionV3.v340.inventory.skins = STORE_ITEMS_V340.skins.map(item => item.id);
+    progressionV3.v340.inventory.effects = STORE_ITEMS_V340.effects.map(item => item.id);
+    progressionV3.v340.inventory.parts = {...(progressionV3.v340.inventory.parts || {}), bastion: 4};
+    progressionV3.blueprints = progressionV3.blueprints || {};
+    UPGRADE_POOL.forEach(item => progressionV3.blueprints[item.id] = 'unlocked');
+    progressionV3.discoveredContent = Array.from(new Set([...(progressionV3.discoveredContent || []), ...UPGRADE_POOL.map(i => i.id), ...SYNERGIES.map(i => i.id)]));
+    saveDevProgressV342('TODO EL CONTENIDO DE TESTEO ESTÁ DISPONIBLE');
+  }
+
+  function ensureDevProgressModalV342() {
+    let root = document.getElementById('v342-dev-progress-modal');
+    if (root) return root;
+    root = document.createElement('section');
+    root.id = 'v342-dev-progress-modal';
+    root.className = 'hidden';
+    root.setAttribute('aria-modal', 'true');
+    root.setAttribute('role', 'dialog');
+    root.innerHTML = `
+      <div class="v342-dev-card">
+        <header class="v342-dev-head">
+          <div><h2>PROGRESIÓN DE TESTEO</h2><div class="v342-dev-wallet"><span>SALDO COMPARTIDO</span><b id="v342-dev-core-balance">0</b><span>NÚCLEOS</span></div></div>
+          <button class="v342-dev-close" type="button" aria-label="Cerrar">×</button>
+        </header>
+        <p class="v342-dev-copy">Estas acciones modifican el guardado local de pruebas. Los desbloqueos se reflejan inmediatamente en Garaje, Arsenal y Tienda.</p>
+        <div class="v342-dev-actions">
+          <button class="v342-dev-action" data-v342-action="cores-100" type="button"><b>+100 NÚCLEOS</b><span>Añade una cantidad pequeña para probar compras individuales.</span></button>
+          <button class="v342-dev-action" data-v342-action="cores-1000" type="button"><b>+1 000 NÚCLEOS</b><span>Añade saldo suficiente para probar varias compras.</span></button>
+          <button class="v342-dev-action" data-v342-action="mechs" type="button"><b>DESBLOQUEAR MECHAS</b><span>Habilita chasis de Núcleos, módulos y misiones.</span></button>
+          <button class="v342-dev-action" data-v342-action="skins" type="button"><b>DESBLOQUEAR SKINS</b><span>Marca todas las apariencias actuales como obtenidas.</span></button>
+          <button class="v342-dev-action" data-v342-action="effects" type="button"><b>DESBLOQUEAR EFECTOS</b><span>Habilita estelas, impactos y destrucciones visuales.</span></button>
+          <button class="v342-dev-action" data-v342-action="arsenal" type="button"><b>ARSENAL COMPLETO</b><span>Desbloquea armas, poderes, habilidades y descubrimientos de sinergias.</span></button>
+          <button class="v342-dev-action" data-v342-action="all" type="button"><b>DESBLOQUEAR TODO</b><span>Activa todo el contenido anterior y deja 10 000 Núcleos.</span></button>
+        </div>
+      </div>`;
+    document.body.appendChild(root);
+    root.querySelector('.v342-dev-close').addEventListener('click', () => root.classList.add('hidden'));
+    root.addEventListener('click', ev => { if (ev.target === root) root.classList.add('hidden'); });
+    root.querySelector('.v342-dev-actions').addEventListener('click', ev => {
+      const button = ev.target.closest('[data-v342-action]');
+      if (!button) return;
+      const action = button.dataset.v342Action;
+      if (action === 'cores-100') addDevCoresV342(100);
+      else if (action === 'cores-1000') addDevCoresV342(1000);
+      else if (action === 'mechs') unlockAllMechsV342();
+      else if (action === 'skins') unlockAllSkinsV342();
+      else if (action === 'effects') unlockAllEffectsV342();
+      else if (action === 'arsenal') unlockFullArsenalV342();
+      else if (action === 'all') unlockEverythingV342();
+    });
+    return root;
+  }
+  function updateDevProgressModalV342() {
+    const root = document.getElementById('v342-dev-progress-modal');
+    if (!root) return;
+    const summary = devProgressSummaryV342();
+    const balance = root.querySelector('#v342-dev-core-balance');
+    if (balance) balance.textContent = String(summary.cores);
+  }
+  function openDevProgressV342() {
+    const root = ensureDevProgressModalV342();
+    updateDevProgressModalV342();
+    root.classList.remove('hidden');
+  }
+  function ensureDevProgressTabV342() {
+    const tabs = document.getElementById('dev-section-tabs');
+    if (!tabs || document.getElementById('v342-dev-progress-tab')) return;
+    const button = document.createElement('button');
+    button.id = 'v342-dev-progress-tab';
+    button.className = 'dev-tab';
+    button.type = 'button';
+    button.textContent = 'PROGRESIÓN';
+    button.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); openDevProgressV342(); });
+    tabs.appendChild(button);
+  }
+
+  const originalUpdateDevMenuV342 = updateDevMenuUI;
+  updateDevMenuUI = function() {
+    const result = originalUpdateDevMenuV342();
+    ensureDevProgressTabV342();
+    return result;
+  };
+  const originalOpenDeveloperV342 = openDeveloperMenu;
+  openDeveloperMenu = function() {
+    const result = originalOpenDeveloperV342();
+    setTimeout(() => { ensureDevProgressTabV342(); updateDevProgressModalV342(); }, 0);
+    return result;
+  };
+
+  function initV342() {
+    syncPlatformV342();
+    ensureProgressionV340();
+    ensureDevProgressModalV342();
+    document.title = 'MEKORA v3.4.2';
+    document.getElementById('settings-version-text')?.replaceChildren(document.createTextNode('MEKORA v3.4.2'));
+    window.addEventListener('resize', syncPlatformV342, { passive:true });
+    window.addEventListener('orientationchange', () => setTimeout(syncPlatformV342, 60), { passive:true });
+  }
+  if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', () => setTimeout(initV342, 180), { once:true });
+  else setTimeout(initV342, 180);
+
+  window.mekoraV342 = {
+    version: V342,
+    platform: () => ({ pc: isPcV342(), zoom: getActiveCameraZoom() }),
+    developer: {
+      open: openDevProgressV342,
+      addCores: addDevCoresV342,
+      unlockMechs: unlockAllMechsV342,
+      unlockSkins: unlockAllSkinsV342,
+      unlockEffects: unlockAllEffectsV342,
+      unlockArsenal: unlockFullArsenalV342,
+      unlockAll: unlockEverythingV342,
+      summary: devProgressSummaryV342
+    },
+    fog: () => ({ texture: [fogV342.texture.width, fogV342.texture.height], layer: [fogV342.layer.width, fogV342.layer.height] })
+  };
+})();
+</script>
+
+
+<script type="module">
+(() => {
+  const V400 = '4.0.0';
+  const RUNTIME_KEY = 'mekora_v4_runtime';
+  const PROGRESSION_KEY = 'mekora_v3_progression';
+  const RUNCFG_KEY = 'mekora_v4_run_config';
+  const DEBUG_KEY = 'mekora_v4_debug';
+
+  const readJson = (key, fallback) => {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw);
+      return parsed ?? fallback;
+    } catch (error) {
+      return fallback;
+    }
+  };
+  const writeJson = (key, value) => {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (error) {}
+  };
+  const deepClone = (value) => {
+    try {
+      if (typeof structuredClone === 'function') return structuredClone(value);
+    } catch (error) {}
+    return JSON.parse(JSON.stringify(value));
+  };
+  const byId = (id) => document.getElementById(id);
+
+  function createEmitter() {
+    const listeners = new Map();
+    return {
+      on(event, callback) {
+        if (!listeners.has(event)) listeners.set(event, new Set());
+        listeners.get(event).add(callback);
+        return () => listeners.get(event)?.delete(callback);
+      },
+      once(event, callback) {
+        const off = this.on(event, (payload) => {
+          off();
+          callback(payload);
+        });
+        return off;
+      },
+      emit(event, payload = {}) {
+        listeners.get(event)?.forEach((callback) => {
+          try { callback(payload); } catch (error) { console.error('[MEKORA V4 event error]', event, error); }
+        });
+        listeners.get('*')?.forEach((callback) => {
+          try { callback({ event, payload }); } catch (error) { console.error('[MEKORA V4 wildcard error]', event, error); }
+        });
+      },
+      clear(event) {
+        if (event) listeners.delete(event); else listeners.clear();
+      },
+      count(event) {
+        return listeners.get(event)?.size || 0;
+      }
+    };
+  }
+
+  function createStore(initialState, events) {
+    let state = deepClone(initialState);
+    const subscribers = new Set();
+    return {
+      getState() {
+        return state;
+      },
+      setState(updater, meta = {}) {
+        const previous = state;
+        const candidate = typeof updater === 'function' ? updater(previous) : { ...previous, ...updater };
+        state = candidate;
+        subscribers.forEach((subscriber) => {
+          try { subscriber(state, previous, meta); } catch (error) { console.error('[MEKORA V4 store error]', error); }
+        });
+        events.emit('store:changed', { state, previous, meta });
+        return state;
+      },
+      patch(partial, meta = {}) {
+        return this.setState((prev) => ({ ...prev, ...partial }), meta);
+      },
+      subscribe(callback) {
+        subscribers.add(callback);
+        return () => subscribers.delete(callback);
+      }
+    };
+  }
+
+  function createServiceRegistry() {
+    const services = new Map();
+    return {
+      set(name, value) { services.set(name, value); return value; },
+      get(name) { return services.get(name); },
+      has(name) { return services.has(name); },
+      list() { return Array.from(services.keys()); },
+      entries() { return Array.from(services.entries()); }
+    };
+  }
+
+  function createModuleRegistry(runtime) {
+    const modules = new Map();
+    const order = [];
+    return {
+      register(name, definition) {
+        const entry = {
+          name,
+          definition,
+          started: false,
+          api: null,
+          status: 'registered',
+          error: null,
+          startedAt: null
+        };
+        modules.set(name, entry);
+        order.push(name);
+        return entry;
+      },
+      start(name) {
+        const entry = modules.get(name);
+        if (!entry || entry.started) return entry?.api;
+        try {
+          const api = entry.definition.start?.(runtime, entry) || {};
+          entry.api = api;
+          entry.started = true;
+          entry.status = 'running';
+          entry.startedAt = Date.now();
+          runtime.events.emit('module:started', { name, api });
+          return api;
+        } catch (error) {
+          entry.error = String(error?.message || error);
+          entry.status = 'error';
+          console.error('[MEKORA V4 module start error]', name, error);
+          runtime.events.emit('module:error', { name, error });
+          return null;
+        }
+      },
+      stop(name) {
+        const entry = modules.get(name);
+        if (!entry?.started) return;
+        try { entry.definition.stop?.(runtime, entry.api); } catch (error) { console.error('[MEKORA V4 module stop error]', name, error); }
+        entry.started = false;
+        entry.status = 'stopped';
+        runtime.events.emit('module:stopped', { name });
+      },
+      startAll() {
+        order.forEach((name) => this.start(name));
+      },
+      get(name) { return modules.get(name)?.api || null; },
+      info() {
+        return order.map((name) => {
+          const entry = modules.get(name);
+          return { name, status: entry.status, startedAt: entry.startedAt, error: entry.error };
+        });
+      },
+      list() { return [...order]; }
+    };
+  }
+
+  const runtime = {
+    version: V400,
+    meta: {
+      engine: 'MEKORA Modular Runtime',
+      compatibility: 'Legacy bridge v3.4.2',
+      initializedAt: Date.now()
+    },
+    events: createEmitter(),
+    services: null,
+    modules: null,
+    data: {
+      difficulties: [
+        { id: 'cadet', name: 'Cadet', label: 'CADET', desc: 'Presión reducida y ritmo de entrada más amable.', enemyScale: 0.9, rewardScale: 0.9 },
+        { id: 'pilot', name: 'Pilot', label: 'PILOT', desc: 'La forma estándar de jugar una run.', enemyScale: 1.0, rewardScale: 1.0 },
+        { id: 'ace', name: 'Ace', label: 'ACE', desc: 'Mayor presión enemiga y castigo más serio.', enemyScale: 1.18, rewardScale: 1.1 },
+        { id: 'anomaly', name: 'Anomaly', label: 'ANOMALY', desc: 'Combate extremo para builds maduras y testeo duro.', enemyScale: 1.35, rewardScale: 1.2 }
+      ],
+      maps: [
+        { id: 'scrapyard-alpha', name: 'SCRAPYARD // ALPHA', biome: 'Industrial ruin', sectorHint: 'Sector 01' },
+        { id: 'sundered-belt', name: 'SUNDERED BELT', biome: 'Metal wasteland', sectorHint: 'Sector 02' },
+        { id: 'ember-depths', name: 'EMBER DEPTHS', biome: 'Molten foundry', sectorHint: 'Sector 03' }
+      ],
+      sections: [
+        { id: 'menu', label: 'MAIN MENU' },
+        { id: 'garage', label: 'GARAGE' },
+        { id: 'arsenal', label: 'ARSENAL' },
+        { id: 'missions', label: 'MISSIONS' },
+        { id: 'store', label: 'STORE' },
+        { id: 'developer', label: 'DEVELOPER' },
+        { id: 'playing', label: 'PLAYING' },
+        { id: 'paused', label: 'PAUSED' },
+        { id: 'gameover', label: 'GAME OVER' }
+      ],
+      schema: {
+        mecha: { id: 'new-mecha', name: 'New Mecha', role: 'Adaptive chassis', unlock: 'cores', price: 600, hp: 100, speed: 6, energy: 120, tags: [] },
+        weapon: { id: 'new-weapon', title: 'New Weapon', kind: 'weapon', rarity: 'common', damage: 12, fireRate: 0.22, reload: 1.1, desc: 'Prototype weapon entry.', tags: [] },
+        ability: { id: 'new-ability', title: 'New Ability', kind: 'power', rarity: 'rare', cooldown: 8, desc: 'Prototype active ability.', tags: [] },
+        enemy: { id: 'new-enemy', name: 'New Enemy', hp: 80, speed: 2.5, xp: 15, loot: ['scrap'], tags: [] },
+        map: { id: 'new-map', name: 'New Map', biome: 'Unknown', encounterRate: 1.0, boss: 'boss-id', tags: [] },
+        shopItem: { id: 'new-item', name: 'New Item', category: 'skins', price: 250, rarity: 'common', unlock: 'store', tags: [] }
+      },
+      economy: {
+        baseRunReward: 5,
+        minibossCycle: 3,
+        bossReward: 40,
+        optionalMissionRewardType: 'cores'
+      }
+    },
+    flags: { legacyBridge: true, developerHooks: true }
+  };
+
+  runtime.services = createServiceRegistry();
+  runtime.modules = createModuleRegistry(runtime);
+  runtime.store = createStore({
+    appState: document.body.dataset.phase || 'boot',
+    inputDevice: document.body.dataset.inputDevice || 'touch',
+    platform: document.body.dataset.platformV342 || 'mobile',
+    immersive: document.body.dataset.immersive === 'true',
+    quality: document.body.dataset.quality || 'high',
+    activePanel: 'menu',
+    cores: 0,
+    selectedDifficulty: 'pilot',
+    selectedMap: 'scrapyard-alpha',
+    modules: []
+  }, runtime.events);
+
+  runtime.services.set('runtime', runtime);
+  runtime.services.set('data', runtime.data);
+
+  runtime.modules.register('persistence', {
+    start(rt) {
+      const api = {
+        keys: { runtime: RUNTIME_KEY, progression: PROGRESSION_KEY, runConfig: RUNCFG_KEY, debug: DEBUG_KEY },
+        readJson,
+        writeJson,
+        loadRuntime() {
+          return readJson(RUNTIME_KEY, { version: V400, counters: {}, notes: [] });
+        },
+        saveRuntime(payload) {
+          const base = this.loadRuntime();
+          const next = { ...base, ...payload, version: V400, updatedAt: Date.now() };
+          writeJson(RUNTIME_KEY, next);
+          return next;
+        },
+        loadProgression() {
+          return readJson(PROGRESSION_KEY, {});
+        },
+        saveProgression(progression) {
+          writeJson(PROGRESSION_KEY, progression);
+          return progression;
+        },
+        loadRunConfig() {
+          return readJson(RUNCFG_KEY, { difficulty: 'pilot', map: 'scrapyard-alpha' });
+        },
+        saveRunConfig(config) {
+          const next = { difficulty: 'pilot', map: 'scrapyard-alpha', ...config, updatedAt: Date.now() };
+          writeJson(RUNCFG_KEY, next);
+          return next;
+        }
+      };
+      rt.services.set('persistence', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('progression', {
+    start(rt) {
+      const persistence = rt.services.get('persistence');
+      const ensure = () => {
+        const progression = persistence.loadProgression();
+        progression.cores = Math.max(0, Number(progression.cores) || 0);
+        progression.unlockedMechs = Array.from(new Set(progression.unlockedMechs || ['vanguard']));
+        progression.mechBlueprints = { ...(progression.mechBlueprints || {}) };
+        progression.v340 = progression.v340 || { activeMech: 'vanguard', inventory: { skins: [], effects: [], boxesOpened: 0, parts: {} }, unlockedMechs: progression.unlockedMechs.slice() };
+        progression.v340.inventory = progression.v340.inventory || { skins: [], effects: [], boxesOpened: 0, parts: {} };
+        progression.v340.unlockedMechs = Array.from(new Set(progression.v340.unlockedMechs || progression.unlockedMechs || ['vanguard']));
+        return progression;
+      };
+      const persist = (progression) => {
+        persistence.saveProgression(progression);
+        rt.events.emit('progression:changed', { progression: deepClone(progression) });
+        rt.store.patch({ cores: Math.max(0, Number(progression.cores) || 0) }, { source: 'progression' });
+        return progression;
+      };
+      const api = {
+        snapshot() { return ensure(); },
+        getCores() { return Math.max(0, Number(ensure().cores) || 0); },
+        setCores(value) {
+          const progression = ensure();
+          progression.cores = Math.max(0, Math.floor(Number(value) || 0));
+          return persist(progression);
+        },
+        addCores(amount) {
+          const progression = ensure();
+          progression.cores = Math.max(0, Math.floor(Number(progression.cores) || 0)) + Math.floor(Number(amount) || 0);
+          return persist(progression);
+        },
+        spendCores(amount) {
+          const progression = ensure();
+          const safeAmount = Math.max(0, Math.floor(Number(amount) || 0));
+          if ((progression.cores || 0) < safeAmount) return false;
+          progression.cores -= safeAmount;
+          persist(progression);
+          return true;
+        },
+        syncLegacyCounters() {
+          document.querySelectorAll('#core-wallet-count, #v340-core-count, #v342-dev-core-balance, [data-core-counter]').forEach((node) => {
+            node.textContent = String(this.getCores());
+          });
+          return this.getCores();
+        }
+      };
+      rt.store.patch({ cores: api.getCores() }, { source: 'progression:init' });
+      rt.services.set('progression', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('runConfig', {
+    start(rt) {
+      const persistence = rt.services.get('persistence');
+      const existing = persistence.loadRunConfig();
+      rt.store.patch({ selectedDifficulty: existing.difficulty || 'pilot', selectedMap: existing.map || 'scrapyard-alpha' }, { source: 'runConfig:init' });
+      const api = {
+        get() { return { difficulty: rt.store.getState().selectedDifficulty, map: rt.store.getState().selectedMap }; },
+        setDifficulty(id) {
+          const allowed = rt.data.difficulties.some((item) => item.id === id) ? id : 'pilot';
+          if (window.mekoraV340?.setDifficulty) window.mekoraV340.setDifficulty(allowed);
+          persistence.saveRunConfig({ ...this.get(), difficulty: allowed });
+          rt.store.patch({ selectedDifficulty: allowed }, { source: 'runConfig:setDifficulty' });
+          rt.events.emit('runConfig:changed', this.get());
+          return this.get();
+        },
+        setMap(id) {
+          const allowed = rt.data.maps.some((item) => item.id === id) ? id : rt.data.maps[0].id;
+          if (window.mekoraV340?.setMap) window.mekoraV340.setMap(allowed);
+          persistence.saveRunConfig({ ...this.get(), map: allowed });
+          rt.store.patch({ selectedMap: allowed }, { source: 'runConfig:setMap' });
+          rt.events.emit('runConfig:changed', this.get());
+          return this.get();
+        },
+        apply() {
+          const current = this.get();
+          if (window.mekoraV340?.setDifficulty) window.mekoraV340.setDifficulty(current.difficulty);
+          if (window.mekoraV340?.setMap) window.mekoraV340.setMap(current.map);
+          return current;
+        }
+      };
+      api.apply();
+      rt.services.set('runConfig', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('stateMachine', {
+    start(rt) {
+      const api = {
+        normalize(phase) {
+          if (!phase) return 'boot';
+          const map = { draft: 'playing', global_network: 'menu' };
+          return map[phase] || phase;
+        },
+        get() {
+          return rt.store.getState().appState;
+        },
+        set(nextState, meta = {}) {
+          const normalized = this.normalize(nextState);
+          rt.store.patch({ appState: normalized }, { source: 'stateMachine:set', ...meta });
+          rt.events.emit('state:changed', { state: normalized, meta });
+          return normalized;
+        }
+      };
+      const observer = new MutationObserver(() => {
+        api.set(document.body.dataset.phase || 'menu', { observer: true });
+        rt.store.patch({
+          inputDevice: document.body.dataset.inputDevice || rt.store.getState().inputDevice,
+          platform: document.body.dataset.platformV342 || rt.store.getState().platform,
+          immersive: document.body.dataset.immersive === 'true',
+          quality: document.body.dataset.quality || rt.store.getState().quality
+        }, { source: 'stateMachine:dataset' });
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['data-phase', 'data-input-device', 'data-platform-v342', 'data-immersive', 'data-quality'] });
+      api.set(document.body.dataset.phase || 'menu', { init: true });
+      rt.services.set('stateMachine', api);
+      return { ...api, stop() { observer.disconnect(); } };
+    },
+    stop(rt, api) {
+      api?.stop?.();
+    }
+  });
+
+  runtime.modules.register('input', {
+    start(rt) {
+      const update = () => {
+        rt.store.patch({
+          inputDevice: document.body.dataset.inputDevice || 'touch',
+          platform: document.body.dataset.platformV342 || 'mobile'
+        }, { source: 'input:update' });
+      };
+      const pointer = () => update();
+      window.addEventListener('mousemove', pointer, { passive: true });
+      window.addEventListener('touchstart', pointer, { passive: true });
+      window.addEventListener('gamepadconnected', pointer);
+      update();
+      const api = {
+        current() { return { device: rt.store.getState().inputDevice, platform: rt.store.getState().platform }; },
+        isPc() { return this.current().platform === 'pc'; },
+        setDebugDevice(device) {
+          document.body.dataset.inputDevice = device;
+          update();
+          rt.events.emit('input:forced', this.current());
+          return this.current();
+        },
+        stop() {
+          window.removeEventListener('mousemove', pointer);
+          window.removeEventListener('touchstart', pointer);
+          window.removeEventListener('gamepadconnected', pointer);
+        }
+      };
+      rt.services.set('input', api);
+      return api;
+    },
+    stop(rt, api) { api?.stop?.(); }
+  });
+
+  runtime.modules.register('ui', {
+    start(rt) {
+      const openByButton = (id) => byId(id)?.click();
+      const api = {
+        openMenu() { openByButton('btn-back-main'); return 'menu'; },
+        openGarage() { if (window.mekoraV340?.openGarage) return window.mekoraV340.openGarage(); openByButton('btn-main-hangar'); return { opened: true }; },
+        openArsenal(tab = 'weapons') { if (window.mekoraV340?.openArsenal) return window.mekoraV340.openArsenal(tab); return { opened: false, tab }; },
+        openMissions() { if (window.mekoraV340?.openMissions) return window.mekoraV340.openMissions(); return { opened: false }; },
+        openStore(tab = 'mechs') { if (window.mekoraV340?.openStore) return window.mekoraV340.openStore(tab); return { opened: false, tab }; },
+        openDeveloper() { if (window.mekoraV342?.developer?.open) return window.mekoraV342.developer.open(); openByButton('btn-main-dev'); return { opened: true }; },
+        updateVersionStamp() {
+          document.title = `MEKORA v${V400}`;
+          byId('settings-version-text')?.replaceChildren(document.createTextNode(`MEKORA v${V400}`));
+          document.body.dataset.runtimeVersion = V400;
+        }
+      };
+      api.updateVersionStamp();
+      rt.services.set('ui', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('developer', {
+    start(rt) {
+      const actions = {
+        addCores(amount = 100) {
+          if (window.mekoraV342?.developer?.addCores) return window.mekoraV342.developer.addCores(amount);
+          return rt.services.get('progression')?.addCores(amount);
+        },
+        unlockMechs() { return window.mekoraV342?.developer?.unlockMechs?.(); },
+        unlockSkins() { return window.mekoraV342?.developer?.unlockSkins?.(); },
+        unlockEffects() { return window.mekoraV342?.developer?.unlockEffects?.(); },
+        unlockArsenal() { return window.mekoraV342?.developer?.unlockArsenal?.(); },
+        unlockAll() { return window.mekoraV342?.developer?.unlockAll?.(); },
+        summary() {
+          return window.mekoraV342?.developer?.summary?.() || { cores: rt.services.get('progression')?.getCores?.() || 0 };
+        }
+      };
+      const api = {
+        ...actions,
+        attachArchitectureTab() {
+          const tabs = byId('dev-section-tabs');
+          if (!tabs || byId('v400-architecture-tab')) return false;
+          const button = document.createElement('button');
+          button.id = 'v400-architecture-tab';
+          button.className = 'dev-tab';
+          button.type = 'button';
+          button.textContent = 'ARQUITECTURA';
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            api.openArchitectureModal();
+          });
+          tabs.appendChild(button);
+          return true;
+        },
+        ensureArchitectureModal() {
+          let root = byId('v400-architecture-modal');
+          if (root) return root;
+          root = document.createElement('section');
+          root.id = 'v400-architecture-modal';
+          root.className = 'hidden';
+          root.setAttribute('aria-modal', 'true');
+          root.setAttribute('role', 'dialog');
+          root.style.position = 'fixed';
+          root.style.inset = '0';
+          root.style.zIndex = '2300';
+          root.style.background = 'rgba(3,7,18,0.78)';
+          root.style.padding = '24px';
+          root.style.display = 'grid';
+          root.style.placeItems = 'center';
+          root.innerHTML = `
+            <div style="width:min(920px,100%);max-height:85dvh;overflow:auto;border:1px solid rgba(34,211,238,.25);border-radius:24px;background:linear-gradient(180deg,rgba(4,10,22,.95),rgba(7,17,32,.94));box-shadow:0 30px 80px rgba(0,0,0,.45);padding:22px;color:#e6faff;font-family:system-ui,sans-serif;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                <div>
+                  <div style="font-size:12px;letter-spacing:.22em;color:#67e8f9;text-transform:uppercase;">MEKORA Runtime</div>
+                  <h2 style="margin:4px 0 6px;font-size:28px;line-height:1.05;">Arquitectura modular v${V400}</h2>
+                  <p style="margin:0;color:#9ac7d8;max-width:62ch;">Base de trabajo para migrar el HTML monolítico a módulos independientes: persistencia, progresión, configuración de run, entrada, UI y herramientas de desarrollo.</p>
+                </div>
+                <button type="button" id="v400-architecture-close" style="width:42px;height:42px;border-radius:999px;border:1px solid rgba(148,163,184,.35);background:rgba(15,23,42,.6);color:#e2e8f0;font-size:24px;cursor:pointer;">×</button>
+              </div>
+              <div id="v400-architecture-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px;"></div>
+              <div id="v400-architecture-modules" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px;"></div>
+              <div style="margin-top:18px;padding:14px 16px;border-radius:18px;background:rgba(14,116,144,.12);border:1px solid rgba(103,232,249,.2);">
+                <div style="font-size:12px;letter-spacing:.18em;color:#67e8f9;text-transform:uppercase;margin-bottom:6px;">Workflow helpers</div>
+                <div style="color:#d9f4ff;font-size:14px;line-height:1.55;">Usa <code style="color:#8cf0ff;">window.mekoraV4.workflow.createEntry('weapon')</code> para generar plantillas de contenido, <code style="color:#8cf0ff;">window.mekoraV4.snapshot()</code> para inspeccionar estado y <code style="color:#8cf0ff;">window.mekoraV4.modules.info()</code> para ver los módulos activos.</div>
+              </div>
+            </div>`;
+          document.body.appendChild(root);
+          root.addEventListener('click', (event) => { if (event.target === root) root.classList.add('hidden'); });
+          root.querySelector('#v400-architecture-close')?.addEventListener('click', () => root.classList.add('hidden'));
+          return root;
+        },
+        renderArchitectureModal() {
+          const root = api.ensureArchitectureModal();
+          const state = rt.store.getState();
+          const summary = [
+            ['STATE', state.appState],
+            ['PLATFORM', `${state.platform.toUpperCase()} · ${state.inputDevice.toUpperCase()}`],
+            ['CORES', String(state.cores)],
+            ['RUN', `${state.selectedDifficulty} · ${state.selectedMap}`]
+          ];
+          const summaryNode = root.querySelector('#v400-architecture-summary');
+          if (summaryNode) summaryNode.innerHTML = summary.map(([label, value]) => `<article style="padding:14px 16px;border-radius:18px;background:rgba(15,23,42,.7);border:1px solid rgba(148,163,184,.15)"><div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#7dd3fc;">${label}</div><div style="margin-top:6px;font-size:20px;font-weight:700;color:#f8fafc;">${value}</div></article>`).join('');
+          const modNode = root.querySelector('#v400-architecture-modules');
+          if (modNode) modNode.innerHTML = rt.modules.info().map((info) => `<article style="padding:14px 16px;border-radius:18px;background:rgba(2,6,23,.58);border:1px solid ${info.status === 'running' ? 'rgba(34,197,94,.28)' : info.status === 'error' ? 'rgba(248,113,113,.35)' : 'rgba(148,163,184,.16)'}"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;"><b style="font-size:14px;color:#f8fafc;">${info.name}</b><span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:${info.status === 'running' ? '#86efac' : info.status === 'error' ? '#fca5a5' : '#cbd5e1'};">${info.status}</span></div><p style="margin:8px 0 0;color:#9ec9da;font-size:13px;line-height:1.5;">${info.error ? `Error: ${info.error}` : 'Módulo activo dentro del runtime v4.'}</p></article>`).join('');
+        },
+        openArchitectureModal() {
+          const root = api.ensureArchitectureModal();
+          api.renderArchitectureModal();
+          root.classList.remove('hidden');
+        }
+      };
+      setTimeout(() => api.attachArchitectureTab(), 120);
+      rt.events.on('module:started', () => api.renderArchitectureModal());
+      rt.services.set('developer', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('workflow', {
+    start(rt) {
+      const api = {
+        createEntry(type, overrides = {}) {
+          const schema = rt.data.schema[type];
+          if (!schema) throw new Error(`Unknown schema: ${type}`);
+          return { ...deepClone(schema), ...deepClone(overrides), tags: Array.from(new Set([...(schema.tags || []), ...(overrides.tags || [])])) };
+        },
+        exportProjectState() {
+          return {
+            version: V400,
+            runtime: readJson(RUNTIME_KEY, {}),
+            progression: readJson(PROGRESSION_KEY, {}),
+            runConfig: readJson(RUNCFG_KEY, {}),
+            snapshot: rt.snapshot()
+          };
+        },
+        saveNote(text) {
+          const persistence = rt.services.get('persistence');
+          const current = persistence.loadRuntime();
+          const notes = Array.isArray(current.notes) ? current.notes.slice(0, 49) : [];
+          notes.unshift({ text: String(text || '').slice(0, 500), at: Date.now() });
+          persistence.saveRuntime({ ...current, notes });
+          return notes;
+        },
+        listSchemas() { return Object.keys(rt.data.schema); }
+      };
+      rt.services.set('workflow', api);
+      return api;
+    }
+  });
+
+  runtime.modules.register('bridge', {
+    start(rt) {
+      const ui = rt.services.get('ui');
+      const progression = rt.services.get('progression');
+      const runConfig = rt.services.get('runConfig');
+      ui?.updateVersionStamp();
+      progression?.syncLegacyCounters();
+      runConfig?.apply();
+      const clickListener = (event) => {
+        const button = event.target.closest('button, [role="button"]');
+        if (!button) return;
+        const actionId = button.id || button.dataset.tab || button.dataset.storeTab || button.dataset.mission || button.dataset.buy || button.dataset.storeBuy || button.textContent?.trim()?.slice(0, 40) || 'unknown';
+        rt.events.emit('ui:action', { actionId, phase: rt.store.getState().appState });
+      };
+      document.addEventListener('click', clickListener, true);
+      const syncLoop = window.setInterval(() => {
+        progression?.syncLegacyCounters();
+        ui?.updateVersionStamp();
+      }, 800);
+      const api = {
+        stop() {
+          document.removeEventListener('click', clickListener, true);
+          clearInterval(syncLoop);
+        }
+      };
+      rt.services.set('bridge', api);
+      return api;
+    },
+    stop(rt, api) { api?.stop?.(); }
+  });
+
+  runtime.start = function start() {
+    this.modules.startAll();
+    this.store.patch({ modules: this.modules.list() }, { source: 'runtime:start' });
+    this.events.emit('runtime:ready', { version: this.version, modules: this.modules.list() });
+    return this;
+  };
+
+  runtime.snapshot = function snapshot() {
+    const progression = this.services.get('progression')?.snapshot?.() || {};
+    return {
+      version: this.version,
+      state: this.store.getState(),
+      modules: this.modules.info(),
+      progression: {
+        cores: progression.cores || 0,
+        unlockedMechs: progression.unlockedMechs || progression.v340?.unlockedMechs || [],
+        activeMech: progression.v340?.activeMech || 'vanguard'
+      },
+      runConfig: this.services.get('runConfig')?.get?.() || {},
+      runtime: readJson(RUNTIME_KEY, {})
+    };
+  };
+
+  runtime.command = function command(name, payload) {
+    const commands = {
+      'open:garage': () => this.services.get('ui')?.openGarage?.(),
+      'open:arsenal': () => this.services.get('ui')?.openArsenal?.(payload || 'weapons'),
+      'open:missions': () => this.services.get('ui')?.openMissions?.(),
+      'open:store': () => this.services.get('ui')?.openStore?.(payload || 'mechs'),
+      'open:developer': () => this.services.get('ui')?.openDeveloper?.(),
+      'dev:addCores': () => this.services.get('developer')?.addCores?.(Number(payload) || 100),
+      'dev:unlockAll': () => this.services.get('developer')?.unlockAll?.()
+    };
+    if (!commands[name]) throw new Error(`Unknown runtime command: ${name}`);
+    return commands[name]();
+  };
+
+  const api = {
+    version: runtime.version,
+    events: runtime.events,
+    modules: {
+      list: () => runtime.modules.list(),
+      info: () => runtime.modules.info(),
+      get: (name) => runtime.modules.get(name)
+    },
+    services: {
+      get: (name) => runtime.services.get(name),
+      list: () => runtime.services.list()
+    },
+    state: {
+      get: () => runtime.store.getState(),
+      subscribe: (callback) => runtime.store.subscribe(callback)
+    },
+    workflow: {
+      createEntry: (...args) => runtime.services.get('workflow')?.createEntry(...args),
+      exportProjectState: () => runtime.services.get('workflow')?.exportProjectState(),
+      saveNote: (text) => runtime.services.get('workflow')?.saveNote(text),
+      listSchemas: () => runtime.services.get('workflow')?.listSchemas()
+    },
+    progression: {
+      getCores: () => runtime.services.get('progression')?.getCores(),
+      addCores: (amount) => runtime.services.get('progression')?.addCores(amount),
+      setCores: (amount) => runtime.services.get('progression')?.setCores(amount),
+      syncCounters: () => runtime.services.get('progression')?.syncLegacyCounters()
+    },
+    runConfig: {
+      get: () => runtime.services.get('runConfig')?.get(),
+      setDifficulty: (id) => runtime.services.get('runConfig')?.setDifficulty(id),
+      setMap: (id) => runtime.services.get('runConfig')?.setMap(id)
+    },
+    ui: {
+      openGarage: () => runtime.services.get('ui')?.openGarage(),
+      openArsenal: (tab) => runtime.services.get('ui')?.openArsenal(tab),
+      openMissions: () => runtime.services.get('ui')?.openMissions(),
+      openStore: (tab) => runtime.services.get('ui')?.openStore(tab),
+      openDeveloper: () => runtime.services.get('ui')?.openDeveloper()
+    },
+    command: (...args) => runtime.command(...args),
+    snapshot: () => runtime.snapshot()
+  };
+
+  window.MEKORA_V4 = runtime;
+  window.mekoraV4 = api;
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => setTimeout(() => runtime.start(), 220), { once: true });
+  } else {
+    setTimeout(() => runtime.start(), 220);
+  }
+})();
+</script>
+
+</body></html>
