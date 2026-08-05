@@ -1,6 +1,6 @@
 {
   "desktop": {
-    "release": "1.1.0",
+    "release": "1.2.0",
     "modules": [
       {
         "name": "persistence",
@@ -83,7 +83,7 @@
     ],
     "audit": {
       "ok": true,
-      "version": "1.1.0",
+      "version": "1.2.0",
       "checkedAt": 1785916368390,
       "totals": {
         "collections": 13,
@@ -177,7 +177,7 @@
     "errors": []
   },
   "mobileLandscape": {
-    "release": "1.1.0",
+    "release": "1.2.0",
     "phase": "playing",
     "platform": "mobile",
     "modulesRunning": 13,
@@ -189,7 +189,7 @@
     "errors": []
   },
   "portrait": {
-    "release": "1.1.0",
+    "release": "1.2.0",
     "bootWaiting": "true",
     "orientationDisplay": "flex",
     "auditOk": true,

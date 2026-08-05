@@ -1,10 +1,10 @@
-# MEKORA v1.1.0
+# MEKORA v1.2.0
 
 Actualización de integración jugable sobre la base modular oficial de MEKORA.
 
 ## Contenido de esta versión
 
-La v1.1.0 conecta el contenido externo con el runtime jugable y evita que armas, módulos o catálogos queden registrados únicamente como tarjetas visuales.
+La v1.2.0 conecta el contenido externo con el runtime jugable y evita que armas, módulos o catálogos queden registrados únicamente como tarjetas visuales.
 
 ### Mechas jugables
 
@@ -107,3 +107,9 @@ El workflow usa `npm install`, por lo que no requiere `package-lock.json` para p
 ## Estado de migración
 
 La arquitectura modular, datos, perfiles, cosméticos y auditoría ya están separados. El combate, renderizado, enemigos y algunas pantallas todavía conservan una capa heredada para no perder funcionalidad durante la migración. Los nuevos sistemas deben agregarse fuera de `src/legacy/legacy-game.js` siempre que sea posible.
+
+
+## v1.2.0 highlights
+- Starter mecha **AXIOM** now uses the provided red-and-black placeholder art in the menu and garage.
+- Quick visual pass for frontend presentation assets while the rest of the game continues to be polished.
+- PNG proof images are generated during release verification for menu and garage previews.
