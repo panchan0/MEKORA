@@ -2,7 +2,7 @@ export const MECHA_PROFILES = Object.freeze([
   {
     id: 'axiom',
     name: 'AXIOM',
-    role: 'Unidad equilibrada de expedición',
+    role: 'Unidad inicial de pruebas visuales',
     stats: { maxHp: 160, maxShield: 15, speedMult: 1, dpsMult: 1, fireRateMult: 1, reloadSpeedMult: 1 },
     trait: { id: 'adaptive-frame', name: 'Bastidor adaptable', description: 'Recupera 1 punto de blindaje cada 4 segundos si no recibe daño.' },
     tags: ['balanced', 'starter']

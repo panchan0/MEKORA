@@ -1,0 +1,356 @@
+/* MEKORA v1.4.2 - visual identity, HUD hierarchy and presentation overhaul */
+:root {
+  --mk-display: "Bahnschrift Condensed", "Arial Narrow", "Aptos Display", system-ui, sans-serif;
+  --mk-body: "Aptos", "Segoe UI", system-ui, sans-serif;
+  --mk-data: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --mk-ink: #f2eee5;
+  --mk-muted: #80919a;
+  --mk-amber: #e7ae4d;
+  --mk-cyan: #78d9db;
+  --mk-danger: #ff645d;
+}
+body { font-family:var(--mk-body); }
+.font-title,.menu-actions-v333 button,.v340-head h2,.v340-card h3 { font-family:var(--mk-display) !important; }
+
+/* One unobtrusive build string, never a pill. */
+#v130-release-badge {
+  left:max(14px,env(safe-area-inset-left)) !important;
+  bottom:max(8px,env(safe-area-inset-bottom)) !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:rgba(180,194,198,.46) !important;
+  font:650 8px/1 var(--mk-data) !important;
+  letter-spacing:.16em !important;
+  backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+body[data-phase="playing"] #v130-release-badge,
+body[data-phase="draft"] #v130-release-badge,
+body[data-phase="gameover"] #v130-release-badge { display:none !important; }
+.v130-build-chip { display:none !important; }
+
+/* Main menu: remove redundant title copy and let the mecha + actions carry the screen. */
+.menu-panel-v333::before,
+.menu-panel-v333 > h1,
+.menu-subtitle-v333,
+.menu-stage-v333::after { display:none !important; content:none !important; }
+[data-show-on="menu"] > .menu-home-v333 {
+  grid-template-columns:minmax(0,1.5fr) minmax(350px,.74fr) !important;
+  background:
+    radial-gradient(circle at 31% 48%,rgba(56,73,81,.44),transparent 34%),
+    linear-gradient(110deg,#0b1115 0%,#0d1419 52%,#070b0e 100%) !important;
+}
+[data-show-on="menu"] > .menu-home-v333::before {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:96px 96px;
+  mask-image:linear-gradient(90deg,#000,transparent 78%);
+}
+.menu-panel-v333 {
+  padding:7vh clamp(28px,4vw,64px) 6vh clamp(20px,3vw,48px) !important;
+  justify-content:center !important;
+}
+.menu-actions-v333 { max-width:500px !important; gap:13px !important; }
+.menu-actions-v333 #btn-main-play {
+  min-height:82px !important;
+  border-radius:8px !important;
+  font:800 clamp(20px,2vw,27px)/1 var(--mk-display) !important;
+  letter-spacing:.08em !important;
+  clip-path:polygon(0 0,96% 0,100% 24%,100% 100%,4% 100%,0 76%);
+}
+.menu-actions-v333 #btn-main-hangar,.menu-actions-v333 #btn-main-global,
+.menu-actions-v333 #btn-main-missions,.menu-actions-v333 #btn-main-store {
+  min-height:64px !important; border-radius:6px !important;
+  background:rgba(21,30,36,.78) !important;
+  border:1px solid rgba(117,145,153,.32) !important;
+  font:720 15px/1 var(--mk-display) !important; letter-spacing:.09em !important;
+}
+.menu-stage-v333 .menu-mech-v340.mech-visual-v340 {
+  width:min(84%,680px) !important; height:min(91%,620px) !important;
+  filter:drop-shadow(0 34px 26px rgba(0,0,0,.62)) !important;
+}
+.menu-stage-v333::before { left:8% !important; right:2% !important; bottom:7% !important; opacity:.6; }
+
+/* Gameplay hierarchy: more useful space on desktop, compact mobile. */
+body[data-control-layout-v141="pc"] #v140-minimap-shell {
+  width:150px !important; padding:4px !important; border-radius:10px !important;
+  background:rgba(5,9,12,.28) !important;
+  border-color:rgba(120,181,184,.20) !important;
+}
+body[data-control-layout-v141="pc"] #v140-pause-button { display:none !important; }
+body[data-control-layout-v141="pc"] .v140-scrap-readout span { font-size:20px !important; }
+body[data-control-layout-v141="pc"] .v140-scrap-readout b { font-size:20px !important; }
+body[data-control-layout-v141="pc"] .v141-buff { width:35px; height:35px; }
+body[data-control-layout-v141="pc"] .v141-buff i { font-size:15px; }
+body[data-control-layout-v141="pc"] #v141-buff-dock { gap:7px; bottom:13px; max-width:56vw; }
+
+/* Weapon ammunition display: outlined active weapon + visual reload counter. */
+#v140-loadout-hud {
+  left:max(18px,env(safe-area-inset-left)) !important;
+  bottom:max(18px,env(safe-area-inset-bottom)) !important;
+  transform:none !important;
+  display:none;
+  grid-template-columns:90px auto !important;
+  align-items:end !important;
+  gap:10px !important;
+  pointer-events:none !important;
+}
+.v142-weapon-outline { width:90px; height:48px; display:grid; place-items:center; }
+#v142-weapon-canvas { width:90px; height:48px; filter:drop-shadow(0 3px 6px rgba(0,0,0,.75)); }
+.v142-ammo-copy { display:flex; align-items:baseline; gap:5px; min-width:80px; color:var(--mk-ink); text-shadow:0 3px 10px #000; }
+#v142-ammo-current { font:900 35px/.82 var(--mk-data); letter-spacing:-.08em; }
+#v142-ammo-reserve { font:700 13px/1 var(--mk-data); color:#9fb0b7; }
+#v142-ammo-pip { width:4px; height:4px; border-radius:50%; background:var(--mk-amber); box-shadow:0 0 9px var(--mk-amber); align-self:center; }
+#v140-switch-weapon { display:none !important; }
+.v140-weapon-slot { display:none !important; }
+
+/* Settings: full composition, not a tiny card stranded in blur. */
+.settings-layout-v333 {
+  grid-template-columns:minmax(260px,.72fr) minmax(400px,1.28fr) !important;
+  grid-template-rows:1fr auto !important;
+  width:min(1080px,94vw) !important; height:min(620px,88vh) !important;
+  gap:clamp(24px,4vw,64px) !important; align-items:center !important;
+  padding:clamp(24px,4vw,54px) !important;
+}
+.v142-settings-identity { align-self:stretch; display:flex; flex-direction:column; justify-content:flex-end; padding:20px 0; }
+.v142-settings-identity > span { color:#76cfd1; font:700 9px var(--mk-data); letter-spacing:.22em; }
+.v142-settings-identity h2 { margin:8px 0 14px; color:var(--mk-ink); font:850 clamp(42px,6vw,76px)/.86 var(--mk-display); letter-spacing:.035em; }
+.v142-settings-identity p { max-width:34ch; color:#81939c; font-size:13px; line-height:1.7; }
+.v142-settings-mark { width:120px; height:120px; position:relative; margin-bottom:auto; opacity:.8; }
+.v142-settings-mark::before,.v142-settings-mark::after,.v142-settings-mark i { content:""; position:absolute; border:1px solid rgba(117,213,214,.32); transform:rotate(45deg); }
+.v142-settings-mark::before { inset:12px; }.v142-settings-mark::after { inset:30px; }
+.v142-settings-mark i:nth-child(1){left:52px;top:0;width:16px;height:120px;border-width:0 1px;transform:none}
+.v142-settings-mark i:nth-child(2){left:0;top:52px;width:120px;height:16px;border-width:1px 0;transform:none}
+.v142-settings-mark i:nth-child(3){inset:47px;background:#d9a84e;border:0;box-shadow:0 0 24px rgba(217,168,78,.5)}
+.settings-layout-v333 > .hud-border {
+  width:100% !important; max-width:none !important; align-self:center !important;
+  padding:0 !important; border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important;
+}
+.settings-layout-v333 #settings-title { color:#7dd4d6 !important; font:700 10px var(--mk-data) !important; letter-spacing:.2em !important; text-align:left !important; }
+.settings-layout-v333 [data-settings-idx] { padding:16px 0 !important; border-bottom:1px solid rgba(126,151,159,.18); }
+.settings-layout-v333 input[type="range"] { height:5px !important; }
+.settings-layout-v333 .lang-btn { border-radius:4px !important; background:rgba(18,28,34,.56) !important; border-color:rgba(119,147,156,.25) !important; min-height:48px; }
+.settings-visual-v333,.settings-system-grid-v333 { display:none !important; }
+
+/* Pause settings uses the whole central stage and a clear left/right hierarchy. */
+#v141-pause-settings { padding:clamp(18px,4vw,54px) !important; background:rgba(2,5,7,.52) !important; backdrop-filter:blur(12px) saturate(.72) !important; }
+.v141-pause-settings-card {
+  width:min(1040px,94vw) !important; min-height:min(590px,84vh) !important;
+  display:grid !important; grid-template-columns:minmax(250px,.72fr) minmax(390px,1.28fr) !important;
+  gap:clamp(26px,5vw,70px) !important; align-items:center !important;
+  padding:clamp(26px,5vw,64px) !important;
+  border:0 !important; border-radius:0 !important; background:rgba(7,12,16,.82) !important;
+  box-shadow:0 40px 110px rgba(0,0,0,.48) !important;
+  clip-path:polygon(0 0,96% 0,100% 7%,100% 100%,4% 100%,0 93%);
+}
+.v142-pause-settings-identity { align-self:stretch; display:flex; flex-direction:column; justify-content:center; border-right:1px solid rgba(124,156,164,.18); padding-right:30px; }
+.v142-pause-settings-identity span { color:#74d4d5; font:700 9px var(--mk-data); letter-spacing:.2em; }
+.v142-pause-settings-identity h2 { margin:8px 0 18px; font:850 clamp(40px,5vw,68px)/.9 var(--mk-display); color:var(--mk-ink); }
+.v142-pause-settings-identity p { color:#83949c; font-size:13px; line-height:1.7; }
+.v142-pause-settings-controls { display:grid; gap:18px; }
+.v142-pause-settings-controls > header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.v142-pause-settings-controls > header span { color:#81969e; font:700 9px var(--mk-data); letter-spacing:.18em; }
+#v141-settings-close { border-radius:50% !important; }
+
+/* Sector arrival: sector name first, compact route index second, visible impact effects. */
+#v141-sector-landing { background:radial-gradient(circle at 50% 57%,rgba(41,53,58,.24),rgba(3,6,8,.96) 58%) !important; }
+.v141-sector-title { top:10% !important; }
+.v141-sector-title span { display:block; color:#7d9299 !important; font:700 10px var(--mk-data) !important; letter-spacing:.22em !important; }
+.v141-sector-title h2 { margin:8px 0 0 !important; color:var(--mk-ink) !important; font:850 clamp(42px,7vw,82px)/.9 var(--mk-display) !important; letter-spacing:.035em !important; }
+.v141-sector-title p { display:none !important; }
+.v141-landing-stage img { width:min(300px,28vw) !important; height:min(300px,48vh) !important; z-index:4; }
+.v142-landing-thrusters { position:absolute; z-index:2; left:50%; top:47%; width:190px; height:210px; transform:translate(-50%,-50%); }
+.v142-landing-thrusters span { position:absolute; top:45%; width:24px; height:90px; border-radius:50%; background:linear-gradient(180deg,rgba(229,249,255,.95),rgba(97,222,225,.8) 32%,rgba(239,166,67,.58) 68%,transparent); filter:blur(4px); opacity:0; }
+.v142-landing-thrusters span:first-child{left:42px}.v142-landing-thrusters span:last-child{right:42px}
+#v141-sector-landing.active .v142-landing-thrusters span { animation:v142LandingJet .72s ease-out .12s both; }
+@keyframes v142LandingJet { 0%{opacity:0;height:28px;transform:scaleY(.3)} 35%{opacity:.9;height:110px} 100%{opacity:0;height:44px;transform:translateY(70px) scaleY(.55)} }
+#v141-sector-landing.impact::after { content:""; position:absolute; left:50%; top:70%; width:360px; height:90px; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(ellipse,rgba(226,178,100,.34),rgba(118,95,64,.16) 38%,transparent 70%); animation:v142ImpactBloom .72s ease-out both; }
+@keyframes v142ImpactBloom { from{opacity:0;transform:translate(-50%,-50%) scale(.15)} 35%{opacity:1} to{opacity:0;transform:translate(-50%,-50%) scale(1.65)} }
+
+/* Transfer: larger unit, jets behind, concise copy and a corner progress glyph. */
+#v141-sector-transfer { background:radial-gradient(circle at 50% 48%,#344b59 0,#15232d 40%,#071015 78%) !important; }
+.v141-flight-mecha { width:min(310px,32vw) !important; z-index:4; }
+.v141-flight-mecha img { position:relative; z-index:3; }
+.v141-flight-mecha span { z-index:1; bottom:-4% !important; width:18% !important; height:18% !important; transform-origin:top center; animation:v142FlightJet 1.6s ease-in-out both !important; }
+@keyframes v142FlightJet { 0%{height:8%;opacity:.3;transform:scaleX(.55)} 55%{height:54%;opacity:.95;transform:scaleX(1)} 100%{height:72%;opacity:.72;transform:scaleX(1.12)} }
+.v141-transfer-copy { bottom:8% !important; }
+.v141-transfer-copy span { color:#8da4ab !important; font:700 9px var(--mk-data) !important; }
+.v141-transfer-copy b { color:var(--mk-ink) !important; font:800 22px var(--mk-display) !important; letter-spacing:.12em !important; }
+.v142-transfer-loader { position:absolute; right:24px; bottom:22px; width:30px; height:30px; border:2px solid rgba(255,255,255,.13); border-top-color:#e1b15d; border-radius:50%; animation:v142Spin .8s linear infinite; }
+@keyframes v142Spin { to{transform:rotate(360deg)} }
+
+/* Vendor: character stands free on the blurred game, cards carry only necessary content. */
+#v140-loot-modal.vendor-open { background:rgba(2,5,7,.40) !important; backdrop-filter:blur(12px) saturate(.72) !important; }
+.v141-vendor-card {
+  width:min(1160px,96vw) !important; height:min(650px,92vh) !important;
+  padding:clamp(22px,4vw,50px) !important; border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important;
+}
+.v141-vendor-card > header { position:absolute; top:22px; right:26px; left:auto; z-index:6; }
+.v141-vendor-card > header > div { display:flex; align-items:center; gap:9px; }
+.v141-vendor-card > header span,.v141-vendor-card > header h2 { display:none !important; }
+.v141-vendor-card > header p { margin:0 !important; color:#efbd67 !important; font:900 18px var(--mk-data) !important; text-shadow:0 3px 10px #000; }
+.v141-vendor-layout { height:100%; grid-template-columns:minmax(0,1.12fr) minmax(330px,.88fr) !important; gap:clamp(24px,5vw,70px) !important; align-items:end !important; margin:0 !important; }
+.v141-vendor-options { align-content:center !important; gap:16px !important; }
+.v141-vendor-offer {
+  min-height:132px !important; grid-template-columns:126px minmax(0,1fr) auto !important;
+  gap:18px !important; padding:14px 18px !important; border:0 !important; border-bottom:1px solid rgba(132,158,166,.24) !important;
+  border-radius:0 !important; background:linear-gradient(90deg,rgba(10,16,20,.78),rgba(10,16,20,.26)) !important;
+  clip-path:polygon(0 0,96% 0,100% 18%,100% 100%,0 100%);
+}
+.v141-vendor-offer:hover { background:linear-gradient(90deg,rgba(27,40,47,.92),rgba(10,16,20,.34)) !important; }
+.v141-vendor-offer-icon { width:126px !important; height:94px !important; border:0 !important; border-radius:0 !important; background:transparent !important; }
+.v141-vendor-offer-icon svg { width:100%; height:100%; stroke:currentColor; fill:none; stroke-width:2.2; }
+.v141-vendor-offer div b { color:var(--mk-ink); font:800 20px var(--mk-display) !important; letter-spacing:.05em; }
+.v141-vendor-offer div small { color:#8fa0a7 !important; font-size:11px !important; line-height:1.5; }
+.v141-vendor-offer em { display:none !important; }
+.v141-vendor-offer strong { min-width:78px !important; padding:0 !important; border:0 !important; background:transparent !important; color:#efbd67 !important; font:900 16px var(--mk-data) !important; }
+.v141-vendor-portrait { min-height:100% !important; overflow:visible !important; border:0 !important; border-radius:0 !important; background:transparent !important; opacity:1 !important; }
+.v141-vendor-head { top:16% !important; width:132px !important; height:96px !important; border-width:5px !important; background:#17272c !important; opacity:1 !important; animation:v142VendorLook 3.8s ease-in-out infinite; }
+.v141-vendor-head i { animation:v142VendorBlink 4.1s steps(1,end) infinite; }
+.v141-vendor-antenna { top:10% !important; height:48px !important; transform-origin:bottom center; animation:v142Antenna 2.4s ease-in-out infinite; }
+.v141-vendor-neck { top:calc(16% + 92px) !important; }
+.v141-vendor-body { top:calc(16% + 116px) !important; width:270px !important; height:290px !important; opacity:1 !important; }
+.v141-vendor-counter { display:none !important; }
+@keyframes v142VendorLook { 0%,72%,100%{transform:translateX(-50%) rotate(0)} 78%{transform:translateX(-50%) rotate(-3deg)} 86%{transform:translateX(-50%) rotate(2deg)} }
+@keyframes v142VendorBlink { 0%,88%,92%,100%{transform:scaleY(1)} 89%,91%{transform:scaleY(.12)} }
+@keyframes v142Antenna { 0%,100%{transform:translateX(-50%) rotate(-5deg)} 50%{transform:translateX(-50%) rotate(7deg)} }
+#v140-loot-modal.departing .v141-vendor-portrait { animation:v142VendorDepart .62s cubic-bezier(.24,.72,.32,1) forwards; }
+@keyframes v142VendorDepart { to{transform:translateY(-38vh) scale(.82);opacity:0} }
+
+/* Game over: cinematic hierarchy, one stats surface, two icon-only actions. */
+.screen[data-show-on="gameover"] .console-display {
+  background:
+    radial-gradient(circle at 27% 62%,rgba(105,30,31,.22),transparent 32%),
+    linear-gradient(120deg,#070b0e,#10161b 58%,#06090b) !important;
+}
+.screen[data-show-on="gameover"] .console-display > .absolute { display:none !important; }
+.v142-gameover-panel {
+  position:absolute !important; inset:0 !important; width:100% !important; max-width:none !important; height:100% !important;
+  display:grid !important; grid-template-rows:1fr auto auto !important; align-content:stretch !important;
+  padding:clamp(34px,6vw,84px) !important; border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important; animation:none !important;
+}
+.v142-gameover-panel::before { content:""; position:absolute; left:5%; bottom:9%; width:42%; height:44%; background:linear-gradient(145deg,rgba(255,93,85,.13),rgba(255,93,85,0)); clip-path:polygon(0 70%,26% 27%,47% 48%,65% 0,100% 58%,79% 100%,28% 88%); filter:drop-shadow(0 25px 45px rgba(0,0,0,.45)); }
+.v142-gameover-header { position:relative; z-index:2; align-self:end; display:grid; grid-template-columns:92px minmax(0,1fr); gap:22px; max-width:860px; }
+.v142-gameover-signal { position:relative; width:88px; height:88px; display:grid; place-items:end center; }
+.v142-gameover-signal i { position:absolute; left:50%; bottom:18px; width:4px; height:46px; transform-origin:bottom; background:#ff645d; border-radius:4px; box-shadow:0 0 16px rgba(255,100,93,.45); }
+.v142-gameover-signal i:nth-child(1){transform:translateX(-50%) rotate(-42deg);height:34px}.v142-gameover-signal i:nth-child(2){transform:translateX(-50%);height:56px}.v142-gameover-signal i:nth-child(3){transform:translateX(-50%) rotate(42deg);height:34px}
+.v142-gameover-signal span { color:#ff7770; font:700 7px var(--mk-data); letter-spacing:.12em; white-space:nowrap; }
+.v142-gameover-copy #gameover-failed-label { color:#ff7770 !important; font:700 9px var(--mk-data) !important; letter-spacing:.19em !important; }
+.v142-gameover-copy #gameover-title { margin:7px 0 10px !important; color:var(--mk-ink) !important; font:880 clamp(56px,9vw,118px)/.78 var(--mk-display) !important; letter-spacing:.015em !important; }
+.v142-gameover-copy p { max-width:52ch; color:#819199; font-size:13px; line-height:1.6; }
+.v142-gameover-summary { position:relative; z-index:2; width:min(760px,76vw); display:grid !important; grid-template-columns:repeat(3,1fr) !important; gap:0 !important; margin-top:32px; padding:18px 0; border-top:1px solid rgba(138,159,166,.22); border-bottom:1px solid rgba(138,159,166,.22); }
+.v142-gameover-summary .gameover-stat { min-height:74px !important; padding:6px 24px !important; border:0 !important; border-right:1px solid rgba(138,159,166,.16) !important; border-radius:0 !important; background:transparent !important; }
+.v142-gameover-summary .gameover-stat:last-child { border-right:0 !important; }
+.v142-gameover-summary .gameover-stat span { color:#788991 !important; font:700 8px var(--mk-data) !important; letter-spacing:.16em; }
+.v142-gameover-summary .gameover-stat strong { margin-top:6px; font:900 34px var(--mk-data) !important; }
+.v142-gameover-footer { position:relative; z-index:2; display:flex; justify-content:space-between; align-items:end; margin-top:28px; }
+.v142-gameover-footer > span { color:#596970; font:700 8px var(--mk-data); letter-spacing:.2em; }
+.v142-gameover-actions { display:flex !important; flex-direction:row !important; gap:12px !important; }
+.v142-gameover-actions .gameover-action { width:74px !important; height:74px !important; min-height:74px !important; border-radius:8px !important; border:1px solid rgba(142,163,169,.32) !important; background:rgba(15,23,28,.72) !important; color:var(--mk-ink) !important; }
+.v142-gameover-actions .gameover-action:first-child { border-color:rgba(231,174,77,.62) !important; color:#efb85c !important; }
+.v142-gameover-actions svg { width:30px; height:30px; fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; margin:auto; }
+
+@media (max-width:760px), (orientation:landscape) and (max-height:540px) {
+  [data-show-on="menu"] > .menu-home-v333 { grid-template-columns:minmax(0,1.32fr) minmax(285px,.68fr) !important; }
+  .menu-stage-v333 .menu-mech-v340.mech-visual-v340 { width:min(74%,430px) !important; height:80% !important; }
+  .menu-panel-v333 { padding:3vh 18px 3vh 12px !important; }
+  .menu-actions-v333 #btn-main-play { min-height:58px !important; }.menu-actions-v333 #btn-main-hangar,.menu-actions-v333 #btn-main-global,.menu-actions-v333 #btn-main-missions,.menu-actions-v333 #btn-main-store { min-height:44px !important; font-size:11px !important; }
+  #v140-loadout-hud { left:96px !important; bottom:9px !important; grid-template-columns:66px auto !important; gap:6px !important; }
+  .v142-weapon-outline,#v142-weapon-canvas { width:66px !important; height:36px !important; }
+  #v142-ammo-current { font-size:24px !important; }#v142-ammo-reserve { font-size:9px !important; }
+  body[data-control-layout-v141="touch"] #v140-minimap-shell { width:82px !important; }
+  .v141-pause-settings-card { min-height:86vh !important; grid-template-columns:180px 1fr !important; padding:22px !important; gap:22px !important; }
+  .v142-pause-settings-identity h2 { font-size:36px !important; }.v142-pause-settings-identity p { font-size:10px !important; }
+  .v141-vendor-card { height:96vh !important; padding:12px 18px !important; }
+  .v141-vendor-layout { grid-template-columns:minmax(0,1.25fr) minmax(210px,.75fr) !important; gap:14px !important; }
+  .v141-vendor-offer { min-height:82px !important; grid-template-columns:72px minmax(0,1fr) auto !important; padding:8px 10px !important; gap:10px !important; }
+  .v141-vendor-offer-icon { width:72px !important; height:58px !important; }.v141-vendor-offer div b { font-size:13px !important; }.v141-vendor-offer div small { font-size:8px !important; }.v141-vendor-offer strong { font-size:10px !important; min-width:52px !important; }
+  .v141-vendor-head { width:90px !important; height:66px !important; }.v141-vendor-body { width:180px !important; height:180px !important; }
+  .v141-flight-mecha { width:min(210px,27vw) !important; }
+  .v142-gameover-panel { padding:22px 34px !important; }.v142-gameover-copy #gameover-title { font-size:62px !important; }.v142-gameover-summary { width:70vw !important; margin-top:14px !important; padding:9px 0 !important; }.v142-gameover-summary .gameover-stat { min-height:55px !important; }.v142-gameover-summary .gameover-stat strong { font-size:24px !important; }.v142-gameover-actions .gameover-action { width:58px !important; height:58px !important; min-height:58px !important; }
+}
+
+/* Final v1.4.2 safeguards: no inherited console controls or stale HUD outside live play. */
+body:not([data-phase="playing"]):not([data-phase="draft"]) #v140-loadout-hud,
+body:not([data-phase="playing"]):not([data-phase="draft"]) #v141-buff-dock,
+body:not([data-phase="playing"]):not([data-phase="draft"]) #v140-wave-hud,
+body:not([data-phase="playing"]):not([data-phase="draft"]) #v140-minimap-shell,
+body:not([data-phase="playing"]):not([data-phase="draft"]) #v141-action-cluster { display:none !important; }
+body[data-combat-ui-v141="blocked"] #v140-loadout-hud,
+body[data-combat-ui-v141="blocked"] #v141-buff-dock,
+body[data-combat-ui-v141="blocked"] #v140-wave-hud,
+body[data-combat-ui-v141="blocked"] #v140-minimap-shell,
+body[data-combat-ui-v141="blocked"] #v141-action-cluster { display:none !important; }
+.screen[data-show-on="gameover"] .console-controls,
+.screen[data-show-on="settings"] .console-controls { display:none !important; }
+.screen[data-show-on="gameover"] .console-display,
+.screen[data-show-on="settings"] .console-display { inset:0 !important; width:100% !important; height:100% !important; }
+
+/* Weapon pickup: icon and only the three numbers the player needs. */
+#v141-weapon-compare { grid-template-columns:minmax(74px,1.15fr) repeat(3,minmax(44px,.7fr)) !important; }
+#v141-weapon-compare > span:not(.v141-compare-weapon) i { font:700 7px/1 var(--mk-data) !important; letter-spacing:.08em; color:#85979e !important; }
+#v141-weapon-compare > span b { font-family:var(--mk-data) !important; }
+
+/* Sector presentation typography: name dominates, route index supports it. */
+.v141-sector-title { width:min(880px,92vw) !important; text-align:center !important; }
+.v141-sector-title span { margin-bottom:9px !important; }
+.v141-sector-title h2 { max-width:92vw; margin-inline:auto !important; text-wrap:balance; }
+.v141-landing-stage { overflow:visible !important; }
+.v141-landing-stage > i { opacity:.76 !important; filter:blur(1px); }
+#v141-sector-landing.impact .v141-landing-stage img { animation:v142LandingSettle .52s cubic-bezier(.18,.72,.28,1) both !important; }
+@keyframes v142LandingSettle { 0%{transform:translateY(-38px) scale(1.08)} 45%{transform:translateY(4px) scale(.98)} 72%{transform:translateY(-4px) scale(1.01)} 100%{transform:translateY(0) scale(1)} }
+
+/* Transfer clouds get depth layers, while the mecha and jets remain the focal point. */
+.v141-clouds i:nth-child(1),.v141-clouds i:nth-child(3){filter:blur(12px) !important;opacity:.58 !important}
+.v141-clouds i:nth-child(2),.v141-clouds i:nth-child(4){filter:blur(21px) !important;opacity:.34 !important}
+.v141-transfer-copy { text-align:center !important; }
+.v141-transfer-copy::after { content:""; display:block; width:84px; height:2px; margin:12px auto 0; background:linear-gradient(90deg,transparent,#e3b35c,transparent); animation:v142RoutePulse 1.1s ease-in-out infinite; }
+@keyframes v142RoutePulse { 50%{width:146px;opacity:.45} }
+
+/* Main settings must use the stage, not float as a small generic card. */
+.screen[data-show-on="settings"] .console-display { background:radial-gradient(circle at 20% 35%,rgba(35,82,84,.2),transparent 36%),linear-gradient(125deg,#070c10,#10191e 62%,#070a0c) !important; }
+.settings-layout-v333 { width:100% !important; max-width:none !important; height:100% !important; grid-template-columns:minmax(270px,.82fr) minmax(430px,1.18fr) !important; gap:clamp(38px,7vw,100px) !important; padding:clamp(42px,7vw,92px) !important; align-items:center !important; }
+.settings-layout-v333 .settings-back-v333 { position:absolute !important; top:24px !important; left:24px !important; }
+.settings-layout-v333 #settings-version-text { display:none !important; }
+
+/* Desktop has room, so the tactical map and passive symbols can breathe. */
+body[data-control-layout-v141="pc"] #v140-minimap-shell { width:164px !important; }
+body[data-control-layout-v141="pc"] #v140-minimap { width:156px !important; height:156px !important; }
+body[data-control-layout-v141="pc"] .v141-buff { width:40px !important; height:40px !important; }
+body[data-control-layout-v141="pc"] .v141-buff i { font-size:17px !important; }
+
+/* Mobile rule: no decorative label or panel is allowed to cover the battlefield. */
+@media (pointer:coarse), (max-width:900px) {
+  #v340-input-indicator,.v130-release-badge,.v130-build-chip { display:none !important; }
+  body[data-control-layout-v141="touch"] #v140-minimap-shell { width:80px !important; padding:2px !important; background:rgba(4,8,10,.22) !important; }
+  body[data-control-layout-v141="touch"] #v140-minimap { width:76px !important; height:76px !important; }
+  body[data-control-layout-v141="touch"] #v141-buff-dock { gap:4px !important; max-width:44vw !important; bottom:7px !important; }
+  body[data-control-layout-v141="touch"] .v141-buff { width:27px !important; height:27px !important; }
+  body[data-control-layout-v141="touch"] .v141-buff i { font-size:11px !important; }
+  body[data-control-layout-v141="touch"] #v140-loadout-hud { left:86px !important; bottom:7px !important; }
+  body[data-control-layout-v141="touch"] #v141-action-cluster { right:max(10px,env(safe-area-inset-right)) !important; bottom:max(8px,env(safe-area-inset-bottom)) !important; width:160px !important; height:118px !important; background:transparent !important; }
+  body[data-control-layout-v141="touch"] .v141-action { width:45px !important; height:45px !important; border-radius:50% !important; background:rgba(11,18,22,.48) !important; backdrop-filter:blur(5px); }
+  .v142-gameover-panel { padding:22px 26px !important; }
+  .v142-gameover-header { grid-template-columns:60px minmax(0,1fr) !important; gap:14px !important; }
+  .v142-gameover-copy #gameover-title { font-size:clamp(44px,10vw,64px) !important; }
+  .v142-gameover-copy p { display:none; }
+  .v142-gameover-summary { width:min(620px,88vw) !important; }
+}
+.v142-gameover-actions .gameover-action span,
+.v142-gameover-actions .gameover-action small,
+.v142-gameover-footer > span { display:none !important; }
+@media (min-width:900px) and (pointer:fine), (min-width:900px) and (hover:hover) {
+  #joystick-move-zone,#joystick-move-knob,#v141-action-cluster,#btn-tap-fire { display:none !important; }
+}
+/* Thrusters are elongated light columns, not circles, and always render behind the unit. */
+.v141-flight-mecha span { width:24px !important; height:24px !important; border-radius:45% 45% 58% 58% !important; }
+@keyframes v142FlightJet { 0%{height:18px;opacity:.28;transform:scaleX(.55) scaleY(.45)} 45%{height:110px;opacity:.92;transform:scaleX(.82) scaleY(1)} 100%{height:156px;opacity:.74;transform:scaleX(1) scaleY(1.08)} }
+.v141-flight-mecha span { height:150px !important; transform-origin:top center !important; }
+@keyframes v142FlightJet { 0%{opacity:.2;transform:scaleX(.48) scaleY(.12)} 45%{opacity:.94;transform:scaleX(.78) scaleY(.72)} 100%{opacity:.74;transform:scaleX(1) scaleY(1)} }

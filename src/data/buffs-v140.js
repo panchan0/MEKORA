@@ -1,0 +1,20 @@
+export const BUFFS_V140 = Object.freeze([
+  { id: 'p-bounce', name: 'Ricochete', category: 'projectile', effect: 'Los proyectiles rebotan hacia un objetivo adicional.' },
+  { id: 'p-pierce', name: 'Perforación', category: 'projectile', effect: 'Los disparos atraviesan objetivos adicionales.' },
+  { id: 'p-extra-projectile', name: 'Disparo adicional', category: 'weapon', effect: 'La arma activa dispara un proyectil extra con dispersión reducida.' },
+  { id: 'p-cooldown', name: 'Refrigeración rápida', category: 'weapon', effect: 'Reduce la espera entre disparos y habilidades.' },
+  { id: 'p-last-magazine', name: 'Último cargador', category: 'ammo', effect: 'Las últimas balas del cargador infligen más daño.' },
+  { id: 'p-first-impact', name: 'Primer impacto', category: 'ammo', effect: 'El primer disparo tras recargar gana daño y perforación.' },
+  { id: 'p-lightning', name: 'Arco eléctrico', category: 'elemental', effect: 'Los impactos pueden encadenar electricidad.' },
+  { id: 'p-elemental', name: 'Carga elemental', category: 'elemental', effect: 'Los ataques aplican quemadura, congelación o ralentización.' },
+  { id: 'p-crit-effect', name: 'Núcleo crítico', category: 'damage', effect: 'Los críticos liberan una pequeña explosión de energía.' },
+  { id: 'p-explode', name: 'Ruptura inestable', category: 'damage', effect: 'Los enemigos destruidos pueden explotar.' },
+  { id: 'p-fire-zone', name: 'Residuo térmico', category: 'damage', effect: 'Las explosiones dejan zonas dañinas.' },
+  { id: 'p-extra-missile', name: 'Micromisil', category: 'weapon', effect: 'Cada varios disparos lanza un misil auxiliar.' },
+  { id: 'p-kill-cooldown', name: 'Reactor táctico', category: 'ability', effect: 'Las bajas reducen enfriamientos activos.' },
+  { id: 'p-dash-wave', name: 'Impulso expansivo', category: 'mobility', effect: 'Los desplazamientos liberan una onda de presión.' },
+  { id: 'p-shield-reflect', name: 'Escudo reflectante', category: 'defense', effect: 'Parte de los proyectiles enemigos se devuelve.' },
+  { id: 'p-melee-wave', name: 'Filo resonante', category: 'melee', effect: 'Los ataques cuerpo a cuerpo generan ondas.' },
+  { id: 'p-drone-copy', name: 'Sincronía de drones', category: 'summon', effect: 'Las unidades aliadas imitan el proyectil principal.' },
+  { id: 'p-evolve', name: 'Adaptación de campo', category: 'meta', effect: 'Aumenta la probabilidad de mejoras de mayor rareza.' }
+]);

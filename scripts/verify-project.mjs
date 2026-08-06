@@ -16,7 +16,14 @@ const required = [
   'src/core/runtime.js',
   'src/legacy/legacy-game.js',
   'src/styles/index.css',
-  'src/styles/legacy.css'
+  'src/styles/legacy.css',
+  'src/styles/v130-polish.css',
+  'src/modules/visual-polish-module.js',
+  'public/assets/mechas/axiom-placeholder.png',
+  'src/modules/combat-ui-module.js',
+  'src/styles/v141-corrections.css',
+  'src/styles/v142-interface.css',
+  'src/modules/interface-revision-module.js'
 ];
 
 for (const relative of required) {
@@ -43,7 +50,7 @@ for (const file of jsFiles) {
 }
 
 const packageJson = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-if (packageJson.version !== '1.1.0') errors.push('package.json version must be 1.1.0');
+if (packageJson.version !== '1.4.2') errors.push('package.json version must be 1.4.2');
 if (!packageJson.devDependencies?.vite) errors.push('Vite is not declared in devDependencies');
 if (packageJson.scripts?.build !== 'vite build') errors.push('Build script must use Vite');
 
@@ -101,7 +108,7 @@ const legacyStats = await stat(resolve(root, 'src/legacy/legacy-game.js'));
 if (legacyStats.size < 400_000) warnings.push('Legacy compatibility runtime is unexpectedly small');
 
 const moduleFiles = files.filter((file) => file.includes(`${join('src', 'modules')}${process.platform === 'win32' ? '\\' : '/'}`) && extname(file) === '.js');
-if (moduleFiles.length < 8) errors.push(`Expected at least 8 runtime modules, found ${moduleFiles.length}`);
+if (moduleFiles.length < 20) errors.push(`Expected at least 20 runtime modules, found ${moduleFiles.length}`);
 
 const result = {
   version: packageJson.version,

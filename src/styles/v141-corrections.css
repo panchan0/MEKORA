@@ -1,0 +1,498 @@
+/* MEKORA v1.4.2 - weapon alignment, clean HUD, sector presentation and interaction corrections */
+
+/* Remove legacy HUD fragments that must never leak into menus, pause, draft or game over. */
+#v130-combat-readout,
+#sector-hud-v33,
+#event-hud-v33,
+#sector-banner-v33,
+#sector-transition-v331,
+#encounter-notice-v31,
+#poi-toast-v33,
+#v340-input-indicator,
+#hud-active-slots,
+#hud-passives-list,
+.v141-hidden-xp,
+#btn-tap-fire,
+#v140-interact-button,
+#ammo-hud,
+#hud-main-stats,
+#hud-economy-v32,
+#hud-time-block,
+#test-mode-hud { display:none !important; }
+
+body[data-combat-ui-v141="hidden"] #v140-expedition-hud,
+body[data-combat-ui-v141="hidden"] #v140-wave-hud,
+body[data-combat-ui-v141="hidden"] #v140-minimap-shell,
+body[data-combat-ui-v141="hidden"] #v140-loadout-hud,
+body[data-combat-ui-v141="hidden"] #v141-action-cluster,
+body[data-combat-ui-v141="hidden"] #v141-buff-dock,
+body[data-combat-ui-v141="hidden"] #v140-interaction-prompt,
+body[data-combat-ui-v141="hidden"] #v141-weapon-compare,
+body[data-combat-ui-v141="blocked"] #v140-expedition-hud,
+body[data-combat-ui-v141="blocked"] #v140-wave-hud,
+body[data-combat-ui-v141="blocked"] #v140-minimap-shell,
+body[data-combat-ui-v141="blocked"] #v140-loadout-hud,
+body[data-combat-ui-v141="blocked"] #v141-action-cluster,
+body[data-combat-ui-v141="blocked"] #v141-buff-dock,
+body[data-combat-ui-v141="blocked"] #v140-interaction-prompt,
+body[data-combat-ui-v141="blocked"] #v141-weapon-compare { display:none !important; pointer-events:none !important; }
+
+body[data-combat-ui-v141="blocked"] #game-canvas,
+body[data-phase="draft"] #game-canvas {
+  filter: blur(5px) saturate(.65) brightness(.72);
+  transform: scale(1.015);
+  transition: filter .18s ease, transform .18s ease;
+}
+/* The modal itself must stay crisp. Only the gameplay canvas is blurred. */
+body[data-combat-ui-v141="blocked"] #pause-modal,
+body[data-combat-ui-v141="blocked"] #roguelike-draft-modal,
+body[data-combat-ui-v141="blocked"] #v140-loot-modal,
+body[data-combat-ui-v141="blocked"] #v141-pause-settings { filter:none !important; transform:none !important; }
+
+/* Fully retire the old oversized fire control and non-gameplay controller decks. */
+body[data-phase="playing"] #btn-tap-fire,
+body[data-phase="draft"] #btn-tap-fire,
+body[data-phase="gameover"] #btn-tap-fire { display:none !important; pointer-events:none !important; }
+body[data-combat-ui-v141="blocked"] .screen[data-show-on="playing"] > .console-controls,
+body[data-combat-ui-v141="hidden"] .screen[data-show-on="playing"] > .console-controls,
+body[data-phase="gameover"] .screen[data-show-on="gameover"] > .console-controls { display:none !important; pointer-events:none !important; }
+
+/* Top left: small transparent minimap, no title or extra copy. */
+#v140-minimap-shell {
+  position:fixed !important;
+  z-index:1300 !important;
+  top:max(12px,env(safe-area-inset-top)) !important;
+  left:max(12px,env(safe-area-inset-left)) !important;
+  right:auto !important;
+  width:112px !important;
+  padding:3px !important;
+  border:1px solid rgba(117,177,180,.24) !important;
+  border-radius:12px !important;
+  background:rgba(5,9,12,.38) !important;
+  box-shadow:0 7px 22px rgba(0,0,0,.2) !important;
+  backdrop-filter:blur(3px) !important;
+  pointer-events:none !important;
+}
+#v140-minimap { width:100% !important; aspect-ratio:1 !important; border-radius:9px !important; }
+.v140-minimap-head { display:none !important; }
+
+/* Top right: pause and scrap only, without large background containers. */
+#v140-expedition-hud {
+  position:fixed !important;
+  z-index:1320 !important;
+  top:max(12px,env(safe-area-inset-top)) !important;
+  right:max(12px,env(safe-area-inset-right)) !important;
+  left:auto !important;
+  display:none;
+  flex-direction:row !important;
+  align-items:center !important;
+  gap:8px !important;
+  pointer-events:auto !important;
+}
+#v140-pause-button {
+  order:2;
+  width:38px !important;
+  min-width:38px !important;
+  height:38px !important;
+  border:1px solid rgba(223,183,108,.45) !important;
+  border-radius:50% !important;
+  background:rgba(8,13,17,.38) !important;
+  color:#f2e8d8 !important;
+  box-shadow:none !important;
+  backdrop-filter:blur(3px);
+}
+.v140-scrap-readout {
+  order:1;
+  min-width:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:5px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:#e8b35b !important;
+  text-shadow:0 2px 7px #000;
+}
+.v140-scrap-readout::before { content:none !important; }
+.v140-scrap-readout span { font-size:17px !important; color:#d6a354 !important; }
+.v140-scrap-readout b { font-size:16px !important; color:#f0c673 !important; }
+
+/* Top center: only wave - sector. */
+#v140-wave-hud {
+  position:fixed !important;
+  z-index:1310 !important;
+  top:max(13px,env(safe-area-inset-top)) !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:auto !important;
+  display:none;
+  pointer-events:none !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#v141-wave-index {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#f1eee8;
+  font:900 13px ui-monospace,monospace;
+  letter-spacing:.08em;
+  text-shadow:0 2px 8px #000,0 0 10px rgba(0,0,0,.75);
+}
+#v141-wave-index i { color:#819198; font-style:normal; }
+#v141-wave-index em { color:#e1a94e; font-style:normal; font-size:12px; }
+
+/* Compact dual-weapon status: no wide cards, no switch container. */
+#v140-loadout-hud {
+  position:fixed !important;
+  z-index:1330 !important;
+  left:50% !important;
+  bottom:max(48px,calc(env(safe-area-inset-bottom) + 48px)) !important;
+  transform:translateX(-50%) !important;
+  width:auto !important;
+  display:none;
+  grid-template-columns:44px 44px !important;
+  gap:7px !important;
+  pointer-events:auto !important;
+}
+.v140-weapon-slot {
+  width:44px !important;
+  min-width:44px !important;
+  height:44px !important;
+  min-height:44px !important;
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  grid-template-rows:1fr auto !important;
+  place-items:center !important;
+  gap:0 !important;
+  padding:4px !important;
+  border:1px solid rgba(127,146,153,.32) !important;
+  border-radius:50% !important;
+  background:rgba(7,12,15,.42) !important;
+  box-shadow:0 5px 16px rgba(0,0,0,.24) !important;
+  text-align:center !important;
+}
+.v140-weapon-slot.active { border-color:rgba(239,181,83,.86) !important; background:rgba(46,35,19,.52) !important; }
+.v140-slot-index,.v140-weapon-slot small { display:none !important; }
+.v140-weapon-slot b { grid-row:1 !important; font-size:8px !important; letter-spacing:0 !important; max-width:38px; }
+.v140-weapon-slot em { grid-row:2 !important; grid-column:1 !important; font-size:7px !important; line-height:1 !important; color:#e9b45d !important; }
+.v140-switch-weapon { display:none !important; }
+
+/* Passive buffs live in small circles at the bottom center. */
+#v141-buff-dock {
+  position:fixed;
+  z-index:1328;
+  left:50%;
+  bottom:max(9px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  max-width:48vw;
+  pointer-events:none;
+}
+#v141-buff-dock.empty { display:none !important; }
+.v141-buff {
+  position:relative;
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(117,174,176,.34);
+  border-radius:50%;
+  background:rgba(6,11,14,.5);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.v141-buff i { color:#9ee1df; font:900 12px ui-monospace,monospace; font-style:normal; }
+.v141-buff b { position:absolute; right:-2px; bottom:-2px; min-width:12px; height:12px; display:grid; place-items:center; border-radius:50%; background:#dba34e; color:#15100a; font:900 7px ui-monospace,monospace; }
+
+/* Mobile controls: four nearby buttons without a shared container background. */
+#v141-action-cluster {
+  position:fixed;
+  z-index:1370;
+  right:max(14px,env(safe-area-inset-right));
+  bottom:max(13px,env(safe-area-inset-bottom));
+  width:132px;
+  height:122px;
+  display:none;
+  pointer-events:none;
+}
+.v141-action {
+  position:absolute;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid rgba(154,181,187,.48);
+  border-radius:50%;
+  background:rgba(9,15,19,.44);
+  color:#e7efef;
+  box-shadow:0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter:blur(3px);
+  pointer-events:auto;
+  touch-action:none;
+}
+.v141-action span { font:900 18px ui-monospace,monospace; }
+.v141-action:active { transform:scale(.93); background:rgba(35,52,60,.72); }
+.v141-action-fire { right:0; bottom:0; width:58px; height:58px; border-color:rgba(240,115,104,.7); color:#ff756a; }
+.v141-action-dash { right:62px; bottom:4px; color:#7fe0e3; }
+.v141-action-switch { right:8px; bottom:64px; color:#edb75c; }
+.v141-action-interact { right:66px; bottom:61px; color:#aebbc0; opacity:.45; }
+.v141-action-interact.available { opacity:1; border-color:rgba(237,178,82,.75); color:#f0b75c; animation:v141InteractPulse 1.2s ease-in-out infinite; }
+.v141-action-dash.cooling { opacity:.32; }
+@keyframes v141InteractPulse { 50% { transform:scale(1.07); box-shadow:0 0 18px rgba(237,178,82,.38); } }
+
+/* The old movement control is smaller and visible only for touch gameplay. */
+body[data-control-layout-v141="touch"][data-combat-ui-v141="active"] #joystick-move-zone {
+  display:flex !important;
+  position:fixed !important;
+  left:max(15px,env(safe-area-inset-left)) !important;
+  bottom:max(17px,env(safe-area-inset-bottom)) !important;
+  width:88px !important;
+  height:88px !important;
+  border:1px solid rgba(119,191,190,.34) !important;
+  background:rgba(8,16,19,.16) !important;
+  opacity:.62 !important;
+  z-index:1360 !important;
+  backdrop-filter:none !important;
+}
+body[data-control-layout-v141="touch"][data-combat-ui-v141="active"] #joystick-move-knob {
+  width:34px !important;
+  height:34px !important;
+  border-width:1px !important;
+  opacity:.72 !important;
+}
+#joystick-move-zone > span { display:none !important; }
+body[data-control-layout-v141="touch"][data-combat-ui-v141="active"] #v141-action-cluster { display:block !important; }
+body[data-control-layout-v141="pc"] #joystick-move-zone,
+body[data-control-layout-v141="pc"] #v141-action-cluster,
+body[data-input-device="keyboard_mouse"] #joystick-move-zone,
+body[data-input-device="keyboard_mouse"] #v141-action-cluster { display:none !important; }
+
+/* Minimal interaction key for chest/vendor. */
+#v140-interaction-prompt {
+  position:fixed !important;
+  z-index:1360 !important;
+  left:50% !important;
+  bottom:96px !important;
+  transform:translateX(-50%) !important;
+  min-width:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  display:flex !important;
+  flex-direction:row !important;
+  gap:5px !important;
+  color:#efb55a;
+  text-shadow:0 2px 8px #000;
+}
+#v140-interaction-prompt.hidden { display:none !important; }
+#v140-interaction-prompt i { font-style:normal; font-size:15px; }
+#v140-interaction-prompt b { display:grid; place-items:center; width:22px; height:22px; border:1px solid rgba(239,181,90,.65); border-radius:50%; background:rgba(8,12,15,.45); font-size:9px; }
+
+/* Weapon comparison slides above buff circles only while standing directly over a dropped weapon. */
+#v141-weapon-compare {
+  --v141-weapon-color:#f1b84d;
+  position:fixed;
+  z-index:1350;
+  left:50%;
+  bottom:max(78px,calc(env(safe-area-inset-bottom) + 78px));
+  transform:translate(-50%,0);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 9px;
+  border:1px solid color-mix(in srgb,var(--v141-weapon-color) 54%,transparent);
+  border-radius:999px;
+  background:rgba(6,10,13,.63);
+  backdrop-filter:blur(5px);
+  animation:v141CompareIn .18s ease-out both;
+  pointer-events:none;
+}
+#v141-weapon-compare.hidden { display:none !important; }
+#v141-weapon-compare span { min-width:34px; display:flex; align-items:center; justify-content:center; gap:3px; }
+#v141-weapon-compare i { color:var(--v141-weapon-color); font:900 12px ui-monospace,monospace; font-style:normal; }
+#v141-weapon-compare b { color:#f0f3f3; font:900 10px ui-monospace,monospace; }
+.v141-compare-weapon { padding-right:6px; border-right:1px solid rgba(139,157,164,.22); }
+@keyframes v141CompareIn { from { opacity:0; transform:translate(-50%,14px); } to { opacity:1; transform:translate(-50%,0); } }
+
+/* Pause is a clean modal. The obsolete immersive-exit/abandon branch is removed. */
+#pause-modal { background:rgba(3,7,10,.58) !important; backdrop-filter:blur(7px) !important; }
+#pause-modal > .hud-border { border:1px solid rgba(112,137,147,.28) !important; background:rgba(12,19,24,.88) !important; box-shadow:0 24px 70px rgba(0,0,0,.48) !important; }
+#btn-exit,#pause-confirm-buttons { display:none !important; }
+#pause-normal-buttons { max-width:210px !important; gap:8px !important; }
+#pause-normal-buttons > button { min-height:40px; border-radius:11px !important; background:rgba(20,30,37,.74) !important; border:1px solid rgba(116,143,153,.27) !important; color:#eaf1f1 !important; }
+#pause-normal-buttons #btn-resume { border-color:rgba(91,205,205,.48) !important; color:#8fe5e6 !important; }
+#pause-normal-buttons #v140-save-exit { border-color:rgba(231,174,83,.5) !important; color:#efbb65 !important; }
+#pause-normal-buttons #v141-pause-settings-button { color:#d9e4e5 !important; }
+
+#v141-pause-settings {
+  position:fixed;
+  inset:0;
+  z-index:2750;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:rgba(3,7,10,.65);
+  backdrop-filter:blur(9px);
+}
+#v141-pause-settings.hidden { display:none !important; }
+.v141-pause-settings-card {
+  width:min(430px,94vw);
+  display:grid;
+  gap:16px;
+  padding:20px;
+  border:1px solid rgba(112,144,153,.35);
+  border-radius:20px;
+  background:linear-gradient(155deg,rgba(20,30,36,.98),rgba(7,12,15,.98));
+  color:#eaf1f1;
+  box-shadow:0 28px 80px rgba(0,0,0,.55);
+}
+.v141-pause-settings-card header { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+.v141-pause-settings-card header span { color:#71d4d7; font:700 8px ui-monospace,monospace; letter-spacing:.16em; }
+.v141-pause-settings-card h2 { margin:3px 0 0; font:900 23px var(--v333-title,system-ui,sans-serif); }
+#v141-settings-close { width:38px; height:38px; border-radius:50%; border:1px solid rgba(131,153,161,.28); background:#172128; color:#edf2f3; font-size:22px; }
+.v141-pause-settings-card label { display:grid; gap:7px; }
+.v141-pause-settings-card label span { display:flex; justify-content:space-between; color:#a7b5bb; font:700 10px ui-monospace,monospace; }
+.v141-pause-settings-card label b { color:#7ad9dc; }
+.v141-pause-settings-card input { width:100%; accent-color:#67cdd0; }
+.v141-language-row { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+.v141-language-row button { min-height:38px; border:1px solid rgba(112,137,147,.26); border-radius:10px; background:#172128; color:#98a8ae; }
+.v141-language-row button.active { border-color:#69d3d5; color:#dffafa; background:#19353a; }
+
+/* Vendor: actual character portrait on the right, three one-purchase offers on the left. */
+#v140-loot-modal {
+  position:fixed;
+  inset:0;
+  z-index:2600;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:rgba(3,7,10,.68);
+  backdrop-filter:blur(9px);
+}
+#v140-loot-modal.hidden { display:none !important; }
+.v141-vendor-card {
+  width:min(920px,96vw);
+  max-height:90dvh;
+  overflow:auto;
+  padding:20px;
+  border:1px solid rgba(108,142,151,.35);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(15,24,29,.98),rgba(7,12,15,.99));
+  box-shadow:0 32px 90px rgba(0,0,0,.58);
+  color:#edf2f3;
+}
+.v141-vendor-card header { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; }
+.v141-vendor-card header span { color:#68d4d7; font:700 8px ui-monospace,monospace; letter-spacing:.18em; }
+.v141-vendor-card h2 { margin:3px 0 0; font:900 clamp(25px,4vw,42px) var(--v333-title,system-ui,sans-serif); }
+.v141-vendor-card header p { margin:6px 0 0; color:#dba957; font:900 14px ui-monospace,monospace; }
+#v140-loot-close { width:40px; height:40px; border-radius:50%; border:1px solid rgba(134,157,166,.3); background:#172128; color:#eef2f3; font-size:22px; }
+.v141-vendor-layout { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(250px,.75fr); gap:20px; align-items:stretch; margin-top:18px; }
+.v141-vendor-options { display:grid; gap:10px; align-content:center; }
+.v141-vendor-offer {
+  min-height:88px;
+  display:grid;
+  grid-template-columns:46px minmax(0,1fr) auto auto;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid rgba(107,132,141,.28);
+  border-radius:15px;
+  background:linear-gradient(150deg,rgba(28,41,48,.82),rgba(12,18,22,.9));
+  color:#edf2f3;
+  text-align:left;
+}
+.v141-vendor-offer:active { transform:scale(.985); }
+.v141-vendor-offer.insufficient { animation:v141NoScrap .28s linear; border-color:#df6b62; }
+@keyframes v141NoScrap { 33% { transform:translateX(-5px); } 66% { transform:translateX(5px); } }
+.v141-vendor-offer-icon { width:42px; height:42px; display:grid; place-items:center; border:1px solid rgba(97,212,214,.32); border-radius:12px; color:#71d8da; background:rgba(14,45,49,.4); font-size:20px; }
+.v141-vendor-offer div { min-width:0; }
+.v141-vendor-offer b { display:block; font-size:13px; line-height:1.15; }
+.v141-vendor-offer small { display:block; margin-top:4px; color:#91a3aa; font-size:9px; }
+.v141-vendor-offer em { color:#f0c06d; font:900 13px ui-monospace,monospace; font-style:normal; }
+.v141-vendor-offer strong { min-width:62px; padding:8px 9px; border-radius:9px; background:#d9a449; color:#17120a; font:900 9px ui-monospace,monospace; text-align:center; }
+.v141-vendor-portrait { position:relative; min-height:330px; overflow:hidden; border:1px solid rgba(96,150,155,.24); border-radius:20px; background:radial-gradient(circle at 50% 32%,rgba(66,119,122,.24),rgba(6,11,14,.86) 64%); }
+.v141-vendor-head { position:absolute; left:50%; top:52px; width:100px; height:76px; transform:translateX(-50%); border:4px solid #527176; border-radius:18px 18px 13px 13px; background:#17272c; box-shadow:0 0 30px rgba(92,208,211,.18); }
+.v141-vendor-head i { position:absolute; top:30px; width:17px; height:6px; border-radius:3px; background:#67d8db; box-shadow:0 0 12px #67d8db; }
+.v141-vendor-head i:first-child { left:20px; }.v141-vendor-head i:last-child { right:20px; }
+.v141-vendor-antenna { position:absolute; left:50%; top:24px; width:3px; height:32px; background:#6d8589; transform:translateX(-50%); }
+.v141-vendor-antenna::after { content:''; position:absolute; left:50%; top:-5px; width:10px; height:10px; transform:translateX(-50%); border-radius:50%; background:#dca94e; box-shadow:0 0 12px #dca94e; }
+.v141-vendor-neck { position:absolute; left:50%; top:126px; width:34px; height:24px; transform:translateX(-50%); background:#23373d; }
+.v141-vendor-body { position:absolute; left:50%; top:145px; width:190px; height:180px; transform:translateX(-50%); clip-path:polygon(20% 0,80% 0,100% 30%,90% 100%,10% 100%,0 30%); background:linear-gradient(145deg,#284047,#142328); border-top:4px solid #5b777b; }
+.v141-vendor-body span { position:absolute; left:50%; top:45px; transform:translateX(-50%); color:#dda94e; font-size:42px; }
+.v141-vendor-counter { position:absolute; left:7%; right:7%; bottom:-8px; height:70px; border:2px solid #41575c; border-radius:14px 14px 0 0; background:#111b20; }
+
+/* Sector landing and flight loading. */
+#v141-sector-landing,#v141-sector-transfer {
+  position:fixed;
+  inset:0;
+  z-index:2500;
+  overflow:hidden;
+  background:rgba(4,8,11,.9);
+  pointer-events:none;
+}
+#v141-sector-landing.hidden,#v141-sector-transfer.hidden { display:none !important; }
+.v141-sector-title { position:absolute; z-index:4; left:50%; top:16%; transform:translateX(-50%); width:min(620px,90vw); text-align:center; }
+.v141-sector-title span,.v141-transfer-copy span { color:#83a2a8; font:700 9px ui-monospace,monospace; letter-spacing:.22em; }
+.v141-sector-title h2 { margin:5px 0 0; color:#f0eee8; font:900 clamp(34px,6vw,68px) var(--v333-title,system-ui,sans-serif); letter-spacing:.1em; }
+.v141-sector-title p { margin:3px 0 0; color:#dba957; font:800 12px ui-monospace,monospace; letter-spacing:.14em; }
+.v141-landing-stage { position:absolute; inset:0; }
+.v141-landing-stage img { position:absolute; left:50%; top:-52%; width:min(220px,24vw); height:min(220px,38vh); object-fit:contain; transform:translateX(-50%); filter:drop-shadow(0 25px 20px rgba(0,0,0,.58)); }
+#v141-sector-landing.active .v141-landing-stage img { animation:v141Land .95s cubic-bezier(.2,.72,.22,1) forwards; }
+@keyframes v141Land { 0% { top:-50%; transform:translateX(-50%) scale(.68); } 70% { top:49%; transform:translate(-50%,-50%) scale(1.05); } 100% { top:52%; transform:translate(-50%,-50%) scale(1); } }
+.v141-landing-stage::after { content:''; position:absolute; left:50%; top:67%; width:240px; height:58px; transform:translate(-50%,-50%) scale(.2); border-radius:50%; background:radial-gradient(ellipse,rgba(219,174,99,.36),rgba(90,75,58,.18) 44%,transparent 72%); opacity:0; }
+#v141-sector-landing.impact .v141-landing-stage::after { animation:v141Dust .65s ease-out forwards; }
+@keyframes v141Dust { 0% { opacity:0; transform:translate(-50%,-50%) scale(.2); } 40% { opacity:1; } 100% { opacity:0; transform:translate(-50%,-50%) scale(1.6); } }
+.v141-landing-stage i { position:absolute; left:50%; top:65%; width:7px; height:7px; border-radius:50%; background:#dcb36d; opacity:0; }
+#v141-sector-landing.impact .v141-landing-stage i { animation:v141Particle .7s ease-out forwards; }
+.v141-landing-stage i:nth-child(2){--x:-120px;--y:-45px}.v141-landing-stage i:nth-child(3){--x:105px;--y:-38px}.v141-landing-stage i:nth-child(4){--x:-76px;--y:-88px}.v141-landing-stage i:nth-child(5){--x:82px;--y:-76px}.v141-landing-stage i:nth-child(6){--x:-145px;--y:4px}.v141-landing-stage i:nth-child(7){--x:140px;--y:8px}
+@keyframes v141Particle { from { opacity:1; transform:translate(-50%,-50%) scale(1); } to { opacity:0; transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.2); } }
+
+#v141-sector-transfer { background:linear-gradient(180deg,#273b49,#111b24 54%,#071015); }
+.v141-clouds i { position:absolute; width:42vw; height:18vw; min-height:90px; border-radius:50%; background:rgba(221,231,232,.16); filter:blur(18px); animation:v141Cloud 2.1s linear infinite; }
+.v141-clouds i:nth-child(1){top:8%;left:-18%;}.v141-clouds i:nth-child(2){top:38%;left:70%;animation-delay:-.6s}.v141-clouds i:nth-child(3){top:66%;left:-22%;animation-delay:-1.1s}.v141-clouds i:nth-child(4){top:79%;left:60%;animation-delay:-1.6s}
+@keyframes v141Cloud { from { transform:translateX(-18vw); } to { transform:translateX(42vw); } }
+.v141-flight-mecha { position:absolute; left:50%; top:47%; width:min(210px,25vw); transform:translate(-50%,-50%); animation:v141Flight 1.1s ease-in-out infinite alternate; }
+.v141-flight-mecha img { width:100%; height:auto; object-fit:contain; filter:drop-shadow(0 20px 20px rgba(0,0,0,.55)); }
+.v141-flight-mecha span { position:absolute; bottom:-12%; width:20%; height:45%; border-radius:50%; background:linear-gradient(#dff6ff,#6ddce0 26%,#e9a74c 58%,transparent); filter:blur(3px); animation:v141Jet .16s linear infinite alternate; }
+.v141-flight-mecha span:nth-of-type(1){left:26%}.v141-flight-mecha span:nth-of-type(2){right:26%}
+@keyframes v141Flight { from { transform:translate(-50%,-50%) rotate(-1deg); } to { transform:translate(-50%,-53%) rotate(1deg); } }
+@keyframes v141Jet { to { height:58%; opacity:.72; } }
+.v141-transfer-copy { position:absolute; left:50%; bottom:9%; transform:translateX(-50%); text-align:center; }
+.v141-transfer-copy b { display:block; margin-top:5px; color:#f0eee8; font:900 20px ui-monospace,monospace; letter-spacing:.14em; }
+
+@media (max-width:760px), (orientation:landscape) and (max-height:540px) {
+  #v140-minimap-shell { top:7px !important; left:8px !important; width:88px !important; padding:2px !important; border-radius:9px !important; }
+  #v140-expedition-hud { top:7px !important; right:8px !important; gap:6px !important; }
+  #v140-pause-button { width:32px !important; min-width:32px !important; height:32px !important; font-size:13px !important; }
+  .v140-scrap-readout span { font-size:14px !important; }.v140-scrap-readout b { font-size:13px !important; }
+  #v140-wave-hud { top:9px !important; }
+  #v141-wave-index { font-size:11px !important; gap:5px !important; }
+  #v140-loadout-hud { bottom:max(42px,calc(env(safe-area-inset-bottom) + 42px)) !important; grid-template-columns:38px 38px !important; gap:5px !important; }
+  .v140-weapon-slot { width:38px !important; min-width:38px !important; height:38px !important; min-height:38px !important; }
+  .v140-weapon-slot b { font-size:7px !important; }.v140-weapon-slot em { font-size:6px !important; }
+  #v141-buff-dock { gap:4px !important; max-width:42vw !important; }
+  .v141-buff { width:23px !important; height:23px !important; }.v141-buff i { font-size:10px !important; }
+  #v141-action-cluster { right:7px !important; bottom:7px !important; width:116px !important; height:106px !important; }
+  .v141-action { width:42px !important; height:42px !important; }.v141-action-fire { width:52px !important; height:52px !important; }.v141-action span { font-size:16px !important; }
+  .v141-action-dash { right:54px !important; }.v141-action-switch { right:4px !important; bottom:55px !important; }.v141-action-interact { right:57px !important; bottom:53px !important; }
+  body[data-control-layout-v141="touch"][data-combat-ui-v141="active"] #joystick-move-zone { left:8px !important; bottom:9px !important; width:76px !important; height:76px !important; }
+  body[data-control-layout-v141="touch"][data-combat-ui-v141="active"] #joystick-move-knob { width:29px !important; height:29px !important; }
+  #v141-weapon-compare { bottom:max(64px,calc(env(safe-area-inset-bottom) + 64px)) !important; padding:5px 7px !important; }
+  .v141-vendor-card { padding:13px !important; border-radius:18px !important; }
+  .v141-vendor-card h2 { font-size:25px !important; }
+  .v141-vendor-layout { grid-template-columns:minmax(0,1.35fr) minmax(180px,.65fr) !important; gap:12px !important; margin-top:10px !important; }
+  .v141-vendor-offer { min-height:66px !important; grid-template-columns:36px minmax(0,1fr) auto auto !important; padding:8px !important; gap:7px !important; }
+  .v141-vendor-offer-icon { width:34px !important; height:34px !important; font-size:16px !important; }.v141-vendor-offer b { font-size:10px !important; }.v141-vendor-offer small { font-size:7px !important; }.v141-vendor-offer em { font-size:10px !important; }.v141-vendor-offer strong { min-width:48px !important; padding:6px !important; font-size:7px !important; }
+  .v141-vendor-portrait { min-height:230px !important; }.v141-vendor-head { top:28px !important; width:72px !important; height:56px !important; }.v141-vendor-head i { top:22px !important; }.v141-vendor-neck { top:81px !important; }.v141-vendor-body { top:99px !important; width:140px !important; height:135px !important; }.v141-vendor-counter { height:48px !important; }
+  .v141-sector-title { top:10% !important; }.v141-sector-title h2 { font-size:34px !important; }.v141-sector-title p { font-size:9px !important; }
+  .v141-landing-stage img { width:min(160px,22vw) !important; height:min(160px,40vh) !important; }
+  .v141-flight-mecha { width:min(150px,22vw) !important; }
+}

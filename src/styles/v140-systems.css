@@ -1,0 +1,280 @@
+/* MEKORA v1.4.0 - dual weapons, waves, expedition HUD and run persistence */
+
+#v140-expedition-hud {
+  position: fixed;
+  z-index: 1320;
+  top: max(14px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  display: none;
+  align-items: stretch;
+  gap: 8px;
+  pointer-events: auto;
+  font-family: var(--v333-body, system-ui, sans-serif);
+}
+#v140-pause-button {
+  width: 48px;
+  min-width: 48px;
+  border: 1px solid rgba(131,154,164,.44);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(27,39,47,.94), rgba(11,17,22,.96));
+  color: #f4eee4;
+  font: 900 17px var(--v333-title, system-ui, sans-serif);
+  box-shadow: 0 10px 26px rgba(0,0,0,.34);
+}
+.v140-scrap-readout {
+  min-width: 122px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  padding: 8px 13px;
+  border: 1px solid rgba(131,154,164,.34);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(24,34,41,.94), rgba(10,15,19,.96));
+  box-shadow: 0 10px 26px rgba(0,0,0,.34);
+}
+.v140-scrap-readout::before { content: '▰'; grid-row: 1 / 3; margin-right: 9px; color: #dba859; font-size: 21px; }
+.v140-scrap-readout span { font-size: 8px; letter-spacing: .16em; color: #8ea0a8; }
+.v140-scrap-readout b { font-size: 19px; line-height: 1; color: #f1c16c; }
+
+#v140-wave-hud {
+  position: fixed;
+  z-index: 1310;
+  top: max(14px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(510px, 42vw);
+  display: none;
+  grid-template-columns: minmax(150px,.7fr) minmax(220px,1.3fr);
+  gap: 10px;
+  pointer-events: none;
+  font-family: var(--v333-body, system-ui, sans-serif);
+}
+.v140-wave-sector,.v140-wave-main {
+  border: 1px solid rgba(119,143,153,.32);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(22,31,38,.92), rgba(9,14,18,.95));
+  box-shadow: 0 12px 30px rgba(0,0,0,.34);
+  backdrop-filter: blur(8px);
+}
+.v140-wave-sector { display: flex; flex-direction: column; justify-content: center; padding: 9px 13px; }
+.v140-wave-sector span { color: #e6b35d; font-size: 9px; letter-spacing: .15em; }
+.v140-wave-sector b { color: #eef4f5; font-size: 11px; letter-spacing: .08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.v140-wave-main { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 5px 10px; padding: 9px 12px; }
+#v140-wave-label { font-weight: 900; color: #edf3f4; font-size: 11px; letter-spacing: .1em; }
+#v140-wave-status { color: #73d8dc; font-size: 9px; font-style: normal; letter-spacing: .08em; }
+.v140-wave-progress { grid-column: 1 / -1; height: 5px; overflow: hidden; border-radius: 999px; background: rgba(75,91,98,.38); }
+.v140-wave-progress i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg,#d4873b,#f0bd5d); box-shadow: 0 0 12px rgba(239,177,73,.55); transition: width .25s ease; }
+
+#v140-minimap-shell {
+  position: fixed;
+  z-index: 1300;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  width: 184px;
+  padding: 7px;
+  display: none;
+  border: 1px solid rgba(111,157,164,.38);
+  border-radius: 15px;
+  background: rgba(8,13,17,.91);
+  box-shadow: 0 14px 36px rgba(0,0,0,.4);
+  pointer-events: none;
+}
+.v140-minimap-head { display: flex; justify-content: space-between; padding: 1px 4px 6px; font-family: var(--v333-body, system-ui, sans-serif); }
+.v140-minimap-head b { font-size: 8px; letter-spacing: .15em; color: #dce9eb; }
+.v140-minimap-head span { font-size: 8px; color: #6ed8dc; }
+#v140-minimap { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px; image-rendering: auto; }
+
+#v140-loadout-hud {
+  position: fixed;
+  z-index: 1330;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(560px, 52vw);
+  display: none;
+  grid-template-columns: minmax(160px,1fr) 54px minmax(160px,1fr);
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+.v140-weapon-slot,.v140-switch-weapon {
+  border: 1px solid rgba(116,139,148,.38);
+  background: linear-gradient(145deg, rgba(26,37,44,.94), rgba(10,15,19,.96));
+  color: #f0f4f5;
+  box-shadow: 0 13px 30px rgba(0,0,0,.38);
+  font-family: var(--v333-body, system-ui, sans-serif);
+}
+.v140-weapon-slot {
+  position: relative;
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 1px 9px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  text-align: left;
+  opacity: .7;
+}
+.v140-weapon-slot.active { opacity: 1; border-color: rgba(237,175,75,.8); box-shadow: 0 0 0 1px rgba(237,175,75,.2),0 14px 30px rgba(0,0,0,.42); }
+.v140-slot-index { grid-row: 1 / 3; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 8px; background: rgba(224,162,68,.14); color: #eeb55b; font-weight: 900; }
+.v140-weapon-slot b { font-size: 11px; letter-spacing: .08em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.v140-weapon-slot small { font-size: 8px; color: #8fa2aa; letter-spacing: .12em; }
+.v140-weapon-slot em { grid-row: 1 / 3; grid-column: 3; font-style: normal; color: #f1c16b; font-size: 11px; font-weight: 900; white-space: nowrap; }
+.v140-switch-weapon { width: 54px; height: 54px; border-radius: 50%; font-size: 25px; color: #f0b85b; }
+
+#v140-interaction-prompt {
+  position: fixed;
+  z-index: 1360;
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  min-width: 250px;
+  padding: 10px 15px;
+  border: 1px solid rgba(237,178,82,.55);
+  border-radius: 13px;
+  background: rgba(9,14,18,.94);
+  box-shadow: 0 12px 32px rgba(0,0,0,.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+#v140-interaction-prompt.hidden,#v140-interact-button.hidden { display: none !important; }
+#v140-interaction-prompt b { font-size: 11px; color: #f2bd61; letter-spacing: .12em; }
+#v140-interaction-prompt span { font-size: 8px; color: #a8b6bc; letter-spacing: .08em; }
+#v140-interact-button {
+  position: fixed;
+  z-index: 1370;
+  right: max(92px, calc(env(safe-area-inset-right) + 92px));
+  bottom: max(112px, calc(env(safe-area-inset-bottom) + 112px));
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid #f0b75c;
+  background: rgba(31,42,48,.94);
+  color: #f0b75c;
+  font: 900 18px var(--v333-title, system-ui, sans-serif);
+  box-shadow: 0 12px 28px rgba(0,0,0,.4);
+}
+
+#v140-loot-modal,#v140-run-complete {
+  position: fixed;
+  inset: 0;
+  z-index: 2600;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3,7,10,.8);
+  backdrop-filter: blur(12px);
+}
+#v140-loot-modal.hidden,#v140-run-complete.hidden { display: none !important; }
+.v140-loot-card,.v140-complete-card {
+  width: min(980px, 96vw);
+  max-height: 88dvh;
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid rgba(119,147,157,.35);
+  border-radius: 24px;
+  background: linear-gradient(155deg,rgba(19,28,34,.98),rgba(7,11,14,.99));
+  box-shadow: 0 32px 90px rgba(0,0,0,.58);
+  color: #edf2f3;
+  font-family: var(--v333-body, system-ui, sans-serif);
+}
+.v140-loot-card header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.v140-loot-card header span,.v140-complete-card>span { color: #e9ad52; font-size: 9px; letter-spacing: .2em; }
+.v140-loot-card h2,.v140-complete-card h2 { margin: 3px 0 5px; color: #f2eee7; font-size: clamp(28px,4vw,48px); line-height: .95; letter-spacing: .05em; }
+.v140-loot-card>p,.v140-complete-card p { margin: 0 0 18px; color: #91a3aa; font-size: 12px; line-height: 1.55; }
+#v140-loot-close { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(137,159,168,.32); background: #172128; color: #eef2f3; font-size: 24px; }
+.v140-loot-options { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.v140-loot-option {
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(105,130,140,.3);
+  border-radius: 18px;
+  background: linear-gradient(155deg,rgba(31,43,51,.88),rgba(12,18,23,.94));
+  color: #edf2f3;
+  text-align: left;
+}
+.v140-loot-option:hover:not(:disabled) { transform: translateY(-2px); border-color: rgba(235,177,78,.7); }
+.v140-loot-option:disabled { opacity: .45; }
+.v140-loot-option b { font-size: 18px; line-height: 1.05; }
+.v140-loot-option small { color: #77d6da; font-size: 9px; letter-spacing: .1em; }
+.v140-loot-option p { color: #9aabb1; font-size: 11px; line-height: 1.5; flex: 1; }
+.v140-loot-option em { align-self: stretch; padding: 10px; border-radius: 10px; background: linear-gradient(135deg,#e8b14b,#bd7831); color: #17120a; font-style: normal; font-size: 10px; font-weight: 900; text-align: center; }
+.v140-loot-rarity { padding: 4px 7px; border-radius: 7px; background: rgba(130,146,153,.15); color: #a8b7bc; font-size: 8px; letter-spacing: .12em; }
+.v140-loot-rarity.uncommon { color:#79d9c6; }.v140-loot-rarity.rare { color:#86b5ff; }.v140-loot-rarity.starter { color:#e8b45b; }
+
+.v140-complete-card { width: min(620px,94vw); text-align: center; }
+.v140-complete-stats { margin: 22px auto; display: grid; grid-template-columns: repeat(4,auto); gap: 8px 14px; justify-content: center; align-items: baseline; }
+.v140-complete-stats b { font-size: 28px; color: #f0b65b; }.v140-complete-stats span { font-size: 9px; color: #8fa1a8; }
+#v140-complete-menu { min-height: 52px; padding: 0 30px; border: 0; border-radius: 13px; background: linear-gradient(135deg,#e8b14b,#bd7831); color: #17120a; font-weight: 900; }
+
+#v140-continue-run {
+  grid-column: 1 / -1;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 18px;
+  border: 1px solid rgba(102,212,217,.48);
+  border-radius: 16px;
+  background: linear-gradient(145deg,rgba(24,55,59,.92),rgba(12,28,32,.96));
+  color: #e7f7f8;
+}
+#v140-continue-run b { font-size: 14px; letter-spacing: .08em; }
+#v140-continue-run span { color: #71d6da; font-size: 9px; }
+#v140-save-exit { border-color: rgba(103,210,214,.48) !important; color: #80e0e3 !important; }
+
+/* The old six-slot loadout is replaced by the dual-slot HUD. */
+#hud-active-slots { display: none !important; }
+body[data-phase="playing"] #v130-combat-readout { left: max(14px,env(safe-area-inset-left)); bottom: max(92px,env(safe-area-inset-bottom)); }
+body[data-phase="draft"] #v140-loadout-hud,
+body[data-phase="draft"] #v140-interaction-prompt,
+body[data-phase="gameover"] #v140-loadout-hud { opacity: .3; pointer-events: none; }
+
+@media (orientation: landscape) and (max-height: 540px) {
+  #v140-wave-hud { top: 7px; width: min(460px,44vw); }
+  #v140-expedition-hud { top: 7px; left: 8px; }
+  #v140-minimap-shell { top: 7px; right: 8px; width: 138px; }
+  #v140-loadout-hud { bottom: 7px; width: min(480px,54vw); }
+  .v140-weapon-slot { min-height: 48px; padding: 5px 9px; }
+  .v140-switch-weapon { width: 46px; height: 46px; }
+  .v140-loot-card { padding: 15px; }
+  .v140-loot-option { min-height: 165px; padding: 11px; gap: 5px; }
+  .v140-loot-option b { font-size: 14px; }.v140-loot-option p { font-size: 9px; }
+}
+
+@media (max-width: 760px) {
+  #v140-minimap-shell { width: 126px; }
+  #v140-wave-hud { width: 42vw; grid-template-columns: 1fr; }
+  .v140-wave-sector { display: none; }
+  #v140-loadout-hud { width: 47vw; grid-template-columns: minmax(95px,1fr) 42px minmax(95px,1fr); }
+  .v140-weapon-slot { min-height: 47px; padding: 5px 7px; gap: 1px 5px; }
+  .v140-slot-index { width: 21px; height: 21px; font-size: 9px; }
+  .v140-weapon-slot b { font-size: 8px; }.v140-weapon-slot small { font-size: 6px; }.v140-weapon-slot em { font-size: 8px; }
+  .v140-switch-weapon { width: 42px; height: 42px; font-size: 20px; }
+  .v140-loot-options { grid-template-columns: 1fr; }
+}
+
+/* Remove legacy duplicates replaced by the v1.4 tactical HUD. */
+body[data-phase="playing"] #hud-main-stats,
+body[data-phase="playing"] #hud-economy-v32,
+body[data-phase="playing"] #hud-time-block,
+body[data-phase="playing"] #sector-hud-v33,
+body[data-phase="playing"] #ammo-hud {
+  display: none !important;
+}
+body[data-phase="playing"] #btn-control-pause,
+body[data-phase="playing"] #btn-mute,
+body[data-phase="playing"] #btn-fullscreen {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

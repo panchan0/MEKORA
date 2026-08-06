@@ -1,0 +1,10 @@
+MEKORA v1.4.2 - VERIFICACIÓN
+
+- JavaScript: 54 archivos sin errores de sintaxis.
+- CSS: 10 hojas con llaves balanceadas.
+- Runtime: 20 módulos registrados.
+- Navegador: escenas de menú, derrota, gameplay PC, gameplay móvil, recarga, entrada de sector, transición y vendedor verificadas en Chromium.
+- Errores de consola: 0.
+- Errores de página: 0.
+- Documentación: DOCX renderizados y revisados; PDF renderizados nuevamente y revisados.
+- Build de Vite: no ejecutado localmente porque el registro npm del entorno no contiene vite@8. El workflow de GitHub Actions permanece incluido.

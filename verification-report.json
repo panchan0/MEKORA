@@ -1,9 +1,9 @@
 {
-  "version": "1.2.0",
-  "filesChecked": 64,
-  "javascriptChecked": 44,
-  "cssChecked": 6,
-  "modulesFound": 13,
+  "version": "1.4.2",
+  "filesChecked": 106,
+  "javascriptChecked": 53,
+  "cssChecked": 9,
+  "modulesFound": 19,
   "errors": [],
   "warnings": []
 }

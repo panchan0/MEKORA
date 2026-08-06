@@ -6,12 +6,12 @@ export const MECHAS = Object.freeze([
     "role": "Unidad equilibrada de expedición",
     "unlock": "starter",
     "price": 0,
-    "desc": "Chasis marfil y óxido, movilidad estable y respuesta precisa.",
+    "desc": "Placeholder inicial de pruebas: chasis rojo y negro para iteración rápida visual.",
     "colors": {
-      "armor": "#d7d0c2",
-      "dark": "#29343a",
-      "accent": "#a6523f",
-      "energy": "#e0ad4e"
+      "armor": "#ff1d13",
+      "dark": "#050505",
+      "accent": "#111111",
+      "energy": "#ff5850"
     }
   },
   {

@@ -1,0 +1,120 @@
+MEKORA v1.4.2 - CHANGELOG DETALLADO
+
+ENFOQUE DE LA VERSIÓN
+Revisión completa de identidad visual, jerarquía de interfaz, lectura del combate y adaptación diferenciada entre PC y móvil. Esta entrega no añade contenido por acumularlo: corrige cómo se presenta, se entiende y se siente el contenido existente.
+
+REFERENCIAS DE DISEÑO ESTUDIADAS
+- Hades: jerarquía tipográfica, prompts legibles, reducción de efectos que obstruyen el combate y presentación distintiva de derrota.
+- Soul Knight: control inmediato, autoapuntado e interfaz móvil comprensible con pocas acciones visibles.
+- Dead Cells: combate 2D rápido, siluetas legibles, lectura del peligro y cámara que mantiene al personaje presente.
+Los principios fueron adaptados a MEKORA. No se copiaron layouts, arte ni interfaces.
+
+MENÚ PRINCIPAL
+- Eliminado el título MEKORA sobredimensionado del panel derecho.
+- Eliminados TACTICAL SALVAGE RUNTIME, EXPEDICIÓN MECÁNICA, UNIDAD AXIOM y BAY 01 / ACTIVE UNIT.
+- Eliminados los duplicados de versión.
+- Conservado un único texto BUILD 1.4.2 en la esquina inferior izquierda, sin fondo ni contenedor.
+- Reequilibrada la composición entre mecha y navegación.
+
+SISTEMA TIPOGRÁFICO
+- Nueva jerarquía Display, UI y Data para separar títulos, controles e información numérica.
+- Mayor contraste entre títulos de pantalla, etiquetas auxiliares y datos de combate.
+- Ajustados tracking, alturas de línea y tamaños responsivos.
+- Reducido el aspecto de plantilla genérica repetida entre menús.
+
+PANTALLA DE DERROTA
+- Reconstrucción cinematográfica completa.
+- MISIÓN FALLIDA pasa a ser el elemento principal.
+- Nivel, puntos y núcleos se agrupan en una sola superficie horizontal.
+- Reintentar y menú aparecen como dos acciones laterales con iconos, sin texto redundante.
+- Eliminados paneles apilados, botones circulares verticales y fondos de cuadrícula dominantes.
+- Mejor uso del espacio vacío y nueva composición diagonal de fondo.
+
+CONFIGURACIÓN
+- La pantalla principal utiliza todo el espacio útil mediante una composición de dos columnas.
+- La zona izquierda comunica identidad del sistema y la derecha contiene los controles.
+- Música, efectos e idioma mantienen el mismo estado persistente dentro y fuera de partida.
+- Los ajustes desde pausa utilizan el mismo lenguaje visual y no una tarjeta pequeña aislada.
+
+ENTRADA DE SECTOR
+- El nombre del sector es ahora el título principal.
+- SECTOR N / 5 funciona como índice secundario.
+- El mecha desciende con propulsores y permanece visible durante la presentación.
+- El impacto genera partículas, onda expansiva y temblor de pantalla.
+- Movimiento, apuntado y disparo permanecen bloqueados durante 1560 ms.
+- La interfaz de sector desaparece antes de devolver el control.
+
+TRANSICIÓN ENTRE SECTORES
+- Mecha aumentado de escala.
+- Nubes en varias capas y profundidad desenfocada.
+- Propulsores colocados detrás de los pies.
+- Las llamas comienzan pequeñas y crecen progresivamente.
+- Añadidos nombre del destino, ruta en curso e indicador de carga discreto.
+
+GAMEPLAY Y CÁMARA
+- Zoom de PC ajustado entre 1.60 y 1.80 según anchura de pantalla.
+- Zoom móvil mínimo ajustado a 1.16.
+- Sprite del mecha aumentado a 118 x 118 px.
+- El mapa conserva contexto, pero el jugador deja de sentirse diminuto.
+
+ARMA ACTIVA Y SECUNDARIA
+- El arma activa permanece separada del sprite del mecha.
+- Punto de anclaje subido a pecho y abdomen superior.
+- Escala de gameplay establecida en 0.58.
+- El mecha solo cambia entre orientación izquierda y derecha.
+- El arma conserva apuntado independiente.
+- El arma secundaria permanece en la espalda y sigue la orientación horizontal del mecha.
+
+HUD DE MUNICIÓN
+- Eliminadas las tarjetas circulares de arma del dock de buffs.
+- Añadida silueta blanca del arma activa en la esquina inferior izquierda.
+- Cargador y reserva aparecen junto a la silueta, sin fondo.
+- Eliminado el texto RECARGANDO.
+- Durante la recarga, el número sube visualmente desde cero hasta la capacidad final.
+- La velocidad del conteo respeta el tiempo real de recarga y sus modificadores.
+
+HUD DE PC
+- Minimapa aumentado a 164 x 164 px.
+- Buffs circulares más grandes y legibles.
+- Joysticks y botones táctiles completamente ocultos.
+- El botón de pausa no ocupa espacio; Escape controla la pausa.
+- Eliminados textos de plataforma, versión y paneles táctiles heredados.
+
+HUD MÓVIL
+- Minimapa reducido a 80 x 80 px.
+- Un joystick de movimiento y cuatro acciones compactas: disparo, dash, cambio e interacción.
+- Controles colocados cerca de los pulgares y sin fondo agrupador.
+- Eliminadas etiquetas TÁCTIL, versión durante gameplay y paneles redundantes.
+- Ajustes de tamaño para evitar superposición con minimapa, buffs y arma.
+
+VENDEDOR
+- Personaje sólido, sin transparencia y sin caja propia.
+- Colocado en la zona inferior derecha sobre el gameplay desenfocado.
+- Animación sutil de cabeza, ojos y antena.
+- Tres ofertas limpias a la izquierda con arte SVG, nombre y precio.
+- Eliminados emojis, subtítulos redundantes y texto UNA COMPRA POR SECTOR.
+- El comportamiento de una compra por vendedor permanece: tras comprar, se retira.
+
+FOG
+- Sector 1 con menor densidad y mayor radio visible para facilitar aprendizaje.
+- Intensidad progresiva por sector.
+- Fog fuerte reservado para sectores avanzados y condiciones de baja visibilidad.
+
+ARQUITECTURA
+- Nuevo módulo interfaceRevision.
+- Total: 20 módulos activos.
+- Nueva hoja v142-interface.css para identidad y adaptación responsiva.
+- La lógica de arma, vendedor, oleadas y configuración continúa separada en módulos.
+
+VERIFICACIÓN
+- 101 archivos revisados antes de empaquetar documentación final.
+- 54 archivos JavaScript revisados.
+- 10 hojas CSS verificadas.
+- 20 módulos detectados.
+- Pruebas en Chromium mediante bundle de verificación sin errores de consola ni de página.
+- Pruebas específicas de menú, derrota, PC, móvil, recarga, entrada, transferencia y vendedor.
+
+LÍMITES CONOCIDOS
+- AXIOM y las armas continúan usando arte placeholder.
+- El balance de zoom, fog y tamaños deberá afinarse con sesiones prolongadas en dispositivos reales.
+- El build real de Vite no pudo ejecutarse en el entorno de desarrollo porque el registro npm interno no contiene Vite 8. GitHub Actions seguirá realizando el build con el registro público configurado por GitHub.

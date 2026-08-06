@@ -4,6 +4,7 @@ import {
   REQUIRED_COLLECTIONS,
   CONTENT_IMPLEMENTATION_RULES
 } from '../data/content-implementation.js';
+import { STARTER_WEAPON_BY_MECHA_V140 } from '../data/weapons-v140.js';
 
 function uniqueIds(items = []) {
   const seen = new Set();
@@ -57,6 +58,9 @@ export const contentAuditModule = {
         const maps = runtime.content.all('maps');
         const mapModifiers = runtime.content.all('mapModifiers');
         const difficulties = runtime.content.all('difficulties');
+        const weaponsV140 = runtime.content.all('weaponsV140');
+        const buffsV140 = runtime.content.all('buffsV140');
+        const wavesV140 = runtime.content.all('wavesV140');
 
         const weaponIds = ids(weapons);
         const passiveIds = ids(passives);
@@ -69,6 +73,8 @@ export const contentAuditModule = {
         const missionIds = ids(missions);
         const mapIds = ids(maps);
         const modifierIds = ids(mapModifiers);
+        const weaponIdsV140 = ids(weaponsV140);
+        const buffIdsV140 = ids(buffsV140);
 
         const missingWeapons = ACTIVE_WEAPON_IDS.filter((id) => !weaponIds.has(id));
         const missingPassives = PASSIVE_IDS.filter((id) => !passiveIds.has(id));
@@ -116,6 +122,15 @@ export const contentAuditModule = {
           ];
         });
 
+        const v140Issues = [
+          ...Object.entries(STARTER_WEAPON_BY_MECHA_V140).flatMap(([mechaId, weaponId]) => [
+            ...(mechaIds.has(mechaId) ? [] : [`Arma inicial referencia mecha inexistente: ${mechaId}`]),
+            ...(weaponIdsV140.has(weaponId) ? [] : [`Mecha ${mechaId} referencia arma inicial inexistente: ${weaponId}`])
+          ]),
+          ...wavesV140.flatMap((wave) => (wave.pool || []).filter((id) => !enemyIds.has(id)).map((id) => `Oleada sector ${wave.sector} referencia enemigo inexistente: ${id}`)),
+          ...buffsV140.filter((buff) => !passiveIds.has(buff.id)).map((buff) => `Buff v1.4 sin módulo heredado compatible: ${buff.id}`)
+        ];
+
         const fieldIssues = [
           ...validateRequiredFields(weapons, CONTENT_IMPLEMENTATION_RULES.activeWeapon.requires, 'Arma'),
           ...validateRequiredFields(passives, CONTENT_IMPLEMENTATION_RULES.passive.requires, 'Módulo'),
@@ -136,6 +151,7 @@ export const contentAuditModule = {
           ...invalidMissionRewards,
           ...invalidBosses,
           ...fieldIssues,
+          ...v140Issues,
           ...legacyIssues,
           ...Object.entries(duplicates).flatMap(([collection, foundIds]) => foundIds.map((id) => `ID duplicado en ${collection}: ${id}`))
         ];
@@ -157,7 +173,10 @@ export const contentAuditModule = {
             bosses: bosses.length,
             maps: maps.length,
             cosmetics: skins.length + effects.length,
-            legacyLinks: legacyChecks.reduce((total, [, modularIds]) => total + modularIds.size, 0)
+            legacyLinks: legacyChecks.reduce((total, [, modularIds]) => total + modularIds.size, 0),
+            weaponsV140: weaponsV140.length,
+            buffsV140: buffsV140.length,
+            waveSectorsV140: wavesV140.length
           },
           implementation: {
             weapons: CONTENT_IMPLEMENTATION_RULES.activeWeapon.status,

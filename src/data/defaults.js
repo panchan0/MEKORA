@@ -1,6 +1,6 @@
 export const RELEASE = Object.freeze({
   name: 'MEKORA',
-  version: '1.1.0',
+  version: '1.4.2',
   architecture: 'Modular Runtime',
   legacyCompatibility: '3.4.2'
 });

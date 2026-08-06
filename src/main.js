@@ -15,6 +15,13 @@ import { contentServiceModule } from './modules/content-service-module.js';
 import { contentAuditModule } from './modules/content-audit-module.js';
 import { gameplayProfileModule } from './modules/gameplay-profile-module.js';
 import { cosmeticsModule } from './modules/cosmetics-module.js';
+import { visualPolishModule } from './modules/visual-polish-module.js';
+import { weaponSystemModule } from './modules/weapon-system-module.js';
+import { waveDirectorModule } from './modules/wave-director-module.js';
+import { expeditionModule } from './modules/expedition-module.js';
+import { runSaveModule } from './modules/run-save-module.js';
+import { combatUiModule } from './modules/combat-ui-module.js';
+import { interfaceRevisionModule } from './modules/interface-revision-module.js';
 
 const runtime = createRuntime();
 runtime.modules.register('persistence', persistenceModule);
@@ -29,6 +36,13 @@ runtime.modules.register('contentService', contentServiceModule);
 runtime.modules.register('contentAudit', contentAuditModule);
 runtime.modules.register('gameplayProfile', gameplayProfileModule);
 runtime.modules.register('cosmetics', cosmeticsModule);
+runtime.modules.register('visualPolish', visualPolishModule);
+runtime.modules.register('weaponSystem', weaponSystemModule);
+runtime.modules.register('waveDirector', waveDirectorModule);
+runtime.modules.register('expedition', expeditionModule);
+runtime.modules.register('runSave', runSaveModule);
+runtime.modules.register('combatUi', combatUiModule);
+runtime.modules.register('interfaceRevision', interfaceRevisionModule);
 runtime.modules.register('legacyBridge', legacyBridgeModule);
 
 const publicApi = {
@@ -73,6 +87,34 @@ const publicApi = {
   gameplay: {
     getMechaProfile: () => runtime.services.get('gameplayProfile')?.getActiveProfile(),
     getMapModifier: () => runtime.services.get('gameplayProfile')?.getActiveMapModifier()
+  },
+  weapons: {
+    list: () => runtime.services.get('weaponSystem')?.list(),
+    getActive: () => runtime.services.get('weaponSystem')?.getActiveWeapon(),
+    switch: (slot) => runtime.services.get('weaponSystem')?.switchWeapon(slot),
+    equip: (id, slot) => runtime.services.get('weaponSystem')?.equipWeapon(id, slot),
+    snapshot: () => runtime.services.get('weaponSystem')?.snapshot()
+  },
+  waves: {
+    snapshot: () => runtime.services.get('waveDirector')?.snapshot(),
+    enterSector: (sector) => runtime.services.get('waveDirector')?.enterSector?.(window.__mekoraLegacyV1?.getState?.(), sector)
+  },
+  expedition: {
+    interact: () => runtime.services.get('expedition')?.interact(),
+    showChest: () => runtime.services.get('expedition')?.showChestPreview(),
+    showVendor: () => runtime.services.get('expedition')?.showVendorPreview(),
+    objects: () => runtime.services.get('expedition')?.getObjects()
+  },
+  runSave: {
+    save: (reason) => runtime.services.get('runSave')?.save(reason),
+    load: () => runtime.services.get('runSave')?.load(),
+    clear: () => runtime.services.get('runSave')?.clear(),
+    continue: () => runtime.services.get('runSave')?.continueRun()
+  },
+  combatUi: {
+    dash: () => runtime.services.get('combatUi')?.performDash(),
+    refresh: () => runtime.services.get('combatUi')?.updateVisibility(window.__mekoraLegacyV1?.getState?.()),
+    openSettings: () => runtime.services.get('combatUi')?.openPauseSettings()
   },
   workflow: {
     listSchemas: () => runtime.services.get('workflow')?.listSchemas(),

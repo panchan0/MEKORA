@@ -15,6 +15,9 @@ import { MISSIONS } from '../data/missions.js';
 import { BOSSES } from '../data/bosses.js';
 import { MECHA_PROFILES } from '../data/mecha-profiles.js';
 import { MAP_MODIFIERS } from '../data/map-modifiers.js';
+import { WEAPONS_V140 } from '../data/weapons-v140.js';
+import { BUFFS_V140 } from '../data/buffs-v140.js';
+import { SECTOR_WAVES_V140 } from '../data/waves-v140.js';
 
 export function createRuntime() {
   const events = new EventBus();
@@ -32,7 +35,10 @@ export function createRuntime() {
       maps: MAPS_DATA,
       schemas: CONTENT_SCHEMAS,
       mechaProfiles: MECHA_PROFILES,
-      mapModifiers: MAP_MODIFIERS
+      mapModifiers: MAP_MODIFIERS,
+      weaponsV140: WEAPONS_V140,
+      buffsV140: BUFFS_V140,
+      wavesV140: SECTOR_WAVES_V140
     },
     started: false,
     startedAt: null
@@ -51,7 +57,10 @@ export function createRuntime() {
     .registerCollection('missions', MISSIONS)
     .registerCollection('bosses', BOSSES)
     .registerCollection('mechaProfiles', MECHA_PROFILES)
-    .registerCollection('mapModifiers', MAP_MODIFIERS);
+    .registerCollection('mapModifiers', MAP_MODIFIERS)
+    .registerCollection('weaponsV140', WEAPONS_V140)
+    .registerCollection('buffsV140', BUFFS_V140)
+    .registerCollection('wavesV140', SECTOR_WAVES_V140);
 
   runtime.store = new Store({
     appState: document.body.dataset.phase || 'boot',
